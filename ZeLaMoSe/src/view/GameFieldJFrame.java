@@ -8,12 +8,12 @@ package view;
  *
  * @author Patrick Zenhäusern
  */
-public class GameJFrame extends javax.swing.JFrame {
+public class GameFieldJFrame extends javax.swing.JFrame {
 
   /**
    * Creates new form frmGame
    */
-  public GameJFrame() {
+  public GameFieldJFrame() {
     initComponents();
   }
 
@@ -31,11 +31,11 @@ public class GameJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 681, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 671, Short.MAX_VALUE)
         );
 
         pack();
@@ -61,13 +61,13 @@ public class GameJFrame extends javax.swing.JFrame {
         }
       }
     } catch (ClassNotFoundException ex) {
-      java.util.logging.Logger.getLogger(GameJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+      java.util.logging.Logger.getLogger(GameFieldJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     } catch (InstantiationException ex) {
-      java.util.logging.Logger.getLogger(GameJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+      java.util.logging.Logger.getLogger(GameFieldJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     } catch (IllegalAccessException ex) {
-      java.util.logging.Logger.getLogger(GameJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+      java.util.logging.Logger.getLogger(GameFieldJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-      java.util.logging.Logger.getLogger(GameJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+      java.util.logging.Logger.getLogger(GameFieldJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
     //</editor-fold>
 
@@ -77,7 +77,7 @@ public class GameJFrame extends javax.swing.JFrame {
     java.awt.EventQueue.invokeLater(new Runnable() {
 
       public void run() {
-        new GameJFrame().setVisible(true);
+        new GameFieldJFrame().setVisible(true);
       }
     });
   }
