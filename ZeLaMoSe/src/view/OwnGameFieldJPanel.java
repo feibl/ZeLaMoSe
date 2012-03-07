@@ -8,12 +8,12 @@ package view;
  *
  * @author Patrick Zenhäusern
  */
-public class OwnGameFieldJPanel1 extends javax.swing.JPanel {
+public class OwnGameFieldJPanel extends javax.swing.JPanel {
 
   /**
    * Creates new form pnlGameField
    */
-  public OwnGameFieldJPanel1() {
+  public OwnGameFieldJPanel() {
     initComponents();
   }
 
