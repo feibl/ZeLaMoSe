@@ -25,17 +25,136 @@ public class MainJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        pnlSinglePlayer = new javax.swing.JPanel();
+        lblSinglePlayer = new javax.swing.JLabel();
+        lblStartGame = new javax.swing.JLabel();
+        pnlMultiPlayer = new javax.swing.JPanel();
+        lblMultiPlayer = new javax.swing.JLabel();
+        lblCreateGame = new javax.swing.JLabel();
+        lblJoinGame = new javax.swing.JLabel();
+        pnlControl = new javax.swing.JPanel();
+        lblHelp = new javax.swing.JLabel();
+        lblExit = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("~ZeLaMoSe - Tetris~");
+
+        pnlSinglePlayer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+
+        lblSinglePlayer.setText("SinglePlayer");
+
+        lblStartGame.setText("Start Game");
+
+        javax.swing.GroupLayout pnlSinglePlayerLayout = new javax.swing.GroupLayout(pnlSinglePlayer);
+        pnlSinglePlayer.setLayout(pnlSinglePlayerLayout);
+        pnlSinglePlayerLayout.setHorizontalGroup(
+            pnlSinglePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSinglePlayerLayout.createSequentialGroup()
+                .addGap(112, 112, 112)
+                .addGroup(pnlSinglePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblStartGame)
+                    .addComponent(lblSinglePlayer))
+                .addContainerGap(151, Short.MAX_VALUE))
+        );
+        pnlSinglePlayerLayout.setVerticalGroup(
+            pnlSinglePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSinglePlayerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblSinglePlayer)
+                .addGap(18, 18, 18)
+                .addComponent(lblStartGame)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pnlMultiPlayer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+
+        lblMultiPlayer.setText("MultiPlayer");
+
+        lblCreateGame.setText("Create Game");
+
+        lblJoinGame.setText("Join Game");
+
+        javax.swing.GroupLayout pnlMultiPlayerLayout = new javax.swing.GroupLayout(pnlMultiPlayer);
+        pnlMultiPlayer.setLayout(pnlMultiPlayerLayout);
+        pnlMultiPlayerLayout.setHorizontalGroup(
+            pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMultiPlayerLayout.createSequentialGroup()
+                .addGap(113, 113, 113)
+                .addGroup(pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblMultiPlayer)
+                    .addComponent(lblJoinGame)
+                    .addComponent(lblCreateGame))
+                .addContainerGap(145, Short.MAX_VALUE))
+        );
+        pnlMultiPlayerLayout.setVerticalGroup(
+            pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMultiPlayerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblMultiPlayer)
+                .addGap(18, 18, 18)
+                .addComponent(lblCreateGame)
+                .addGap(18, 18, 18)
+                .addComponent(lblJoinGame)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pnlControl.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+
+        lblHelp.setText("Help");
+
+        lblExit.setText("Exit");
+
+        javax.swing.GroupLayout pnlControlLayout = new javax.swing.GroupLayout(pnlControl);
+        pnlControl.setLayout(pnlControlLayout);
+        pnlControlLayout.setHorizontalGroup(
+            pnlControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlControlLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(lblHelp)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 243, Short.MAX_VALUE)
+                .addComponent(lblExit)
+                .addGap(20, 20, 20))
+        );
+        pnlControlLayout.setVerticalGroup(
+            pnlControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlControlLayout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(pnlControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblHelp)
+                    .addComponent(lblExit))
+                .addContainerGap(32, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(41, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(pnlSinglePlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlMultiPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(45, 45, 45))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(136, 136, 136)
+                .addComponent(jLabel1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jLabel1)
+                .addGap(28, 28, 28)
+                .addComponent(pnlSinglePlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(pnlMultiPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(pnlControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -82,5 +201,16 @@ public class MainJFrame extends javax.swing.JFrame {
     });
   }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lblCreateGame;
+    private javax.swing.JLabel lblExit;
+    private javax.swing.JLabel lblHelp;
+    private javax.swing.JLabel lblJoinGame;
+    private javax.swing.JLabel lblMultiPlayer;
+    private javax.swing.JLabel lblSinglePlayer;
+    private javax.swing.JLabel lblStartGame;
+    private javax.swing.JPanel pnlControl;
+    private javax.swing.JPanel pnlMultiPlayer;
+    private javax.swing.JPanel pnlSinglePlayer;
     // End of variables declaration//GEN-END:variables
 }
