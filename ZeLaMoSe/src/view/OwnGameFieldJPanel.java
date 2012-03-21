@@ -135,7 +135,6 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel {
         lblNumberOfLines.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblNumberOfLines.setText("Number of Lines");
         lblNumberOfLines.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        lblNumberOfLines.setPreferredSize(new java.awt.Dimension(81, 18));
 
         lblNumberOfLinesValue.setText("<NumberOfLinesValue>");
 
@@ -221,7 +220,7 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(lblLevelValue)
                         .addGap(18, 18, 18)
-                        .addComponent(lblNumberOfLines, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblNumberOfLines)
                         .addGap(18, 18, 18)
                         .addComponent(lblNumberOfLinesValue)
                         .addGap(18, 18, 18)

@@ -42,7 +42,6 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         ownGameFieldJPanel1 = new view.OwnGameFieldJPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1026, 710));
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
