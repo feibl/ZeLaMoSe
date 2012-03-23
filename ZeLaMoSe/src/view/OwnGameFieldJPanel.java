@@ -4,17 +4,22 @@
  */
 package view;
 
+import com.jogamp.opengl.util.Animator;
+import com.jogamp.opengl.util.FPSAnimator;
+
 /**
  *
  * @author Patrick Zenhäusern
  */
 public class OwnGameFieldJPanel extends javax.swing.JPanel {
+    private int FRAME_RATE = 30;
 
   /**
    * Creates new form pnlGameField
    */
   public OwnGameFieldJPanel() {
     initComponents();
+    initGLRenderer();
   }
 
   /**
@@ -248,4 +253,11 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel {
     private javax.swing.JPanel pnlNextPiece;
     private javax.swing.JToggleButton tglSound;
     // End of variables declaration//GEN-END:variables
+
+    private void initGLRenderer() {
+        GLRenderer renderer = new GLRenderer();
+        glPnlGameField.addGLEventListener(renderer);
+        FPSAnimator animator = new FPSAnimator(glPnlGameField, FRAME_RATE, true);
+        animator.start();
+    }
 }
