@@ -1,17 +1,34 @@
 package domain;
 
-import java.util.Arrays;
+import java.awt.Color;
 
 public class Stone {
 
     // Array in dem die Steine liegen
     private boolean[][] stoneGrid = new boolean[4][4];
     private int rotation; // Winkel um den gedreht ist
-    private int width; // Aktuelle breite des Steins
-    private int height; // Aktuelle H�he des Steins
     private StoneType type;
-
-    //	 Array auf 0 setzen
+    
+    /**
+     * Konstruktor
+     */
+    public Stone(StoneType type) {
+        rotation = 0; // Am Anfang keine Drehung
+        this.type = type;
+        switch (type) {
+            case I:
+                I0(stoneGrid);
+                break;
+            case J:
+                J0(stoneGrid);
+                break;
+            case L:
+                L0(stoneGrid);
+                break;
+        }
+        
+    }
+    
     private void initStoneGrid(boolean[][] grid) {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
@@ -27,10 +44,10 @@ public class Stone {
      */
     private void I0(boolean[][] grid) {
         initStoneGrid(grid);
-        grid[0][2] = true;
-        grid[1][2] = true;
-        grid[2][2] = true;
-        grid[3][2] = true;
+        grid[0][1] = true;
+        grid[1][1] = true;
+        grid[2][1] = true;
+        grid[3][1] = true;
     }
 
     /**
@@ -53,10 +70,12 @@ public class Stone {
      */
     private void I180(boolean[][] grid) {
         initStoneGrid(grid);
-        grid[0][1] = true;
-        grid[1][1] = true;
-        grid[2][1] = true;
-        grid[3][1] = true;
+
+
+        grid[0][2] = true;
+        grid[1][2] = true;
+        grid[2][2] = true;
+        grid[3][2] = true;
     }
 
     /**
@@ -79,10 +98,10 @@ public class Stone {
      */
     private void J0(boolean[][] grid) {
         initStoneGrid(grid);
-        grid[0][3] = true;
-        grid[0][2] = true;
-        grid[1][2] = true;
-        grid[2][2] = true;
+        grid[0][0] = true;
+        grid[0][1] = true;
+        grid[1][1] = true;
+        grid[2][1] = true;
     }
 
     /**
@@ -92,10 +111,10 @@ public class Stone {
      */
     private void J90(boolean[][] grid) {
         initStoneGrid(grid);
-        grid[1][3] = true;
-        grid[1][2] = true;
+        grid[1][0] = true;
         grid[1][1] = true;
-        grid[2][3] = true;
+        grid[1][2] = true;
+        grid[2][0] = true;
     }
 
     /**
@@ -105,10 +124,10 @@ public class Stone {
      */
     private void J180(boolean[][] grid) {
         initStoneGrid(grid);
-        grid[0][2] = true;
-        grid[1][2] = true;
-        grid[2][2] = true;
+        grid[0][1] = true;
+        grid[1][1] = true;
         grid[2][1] = true;
+        grid[2][2] = true;
     }
 
     /**
@@ -118,10 +137,10 @@ public class Stone {
      */
     private void J270(boolean[][] grid) {
         initStoneGrid(grid);
-        grid[0][1] = true;
-        grid[1][3] = true;
-        grid[1][2] = true;
+        grid[0][2] = true;
         grid[1][1] = true;
+        grid[1][2] = true;
+        grid[1][0] = true;
     }
 
     /**
@@ -131,10 +150,10 @@ public class Stone {
      */
     private void L0(boolean[][] grid) {
         initStoneGrid(grid);
-        grid[0][2] = true;
-        grid[1][2] = true;
-        grid[2][2] = true;
-        grid[2][3] = true;
+        grid[0][1] = true;
+        grid[1][1] = true;
+        grid[2][0] = true;
+        grid[2][1] = true;
     }
 
     /**
@@ -144,10 +163,10 @@ public class Stone {
      */
     private void L90(boolean[][] grid) {
         initStoneGrid(grid);
-        grid[1][3] = true;
-        grid[1][2] = true;
+        grid[1][0] = true;
         grid[1][1] = true;
-        grid[2][1] = true;
+        grid[1][2] = true;
+        grid[2][2] = true;
     }
 
     /**
@@ -159,8 +178,8 @@ public class Stone {
         initStoneGrid(grid);
         grid[0][1] = true;
         grid[0][2] = true;
-        grid[1][2] = true;
-        grid[2][2] = true;
+        grid[1][1] = true;
+        grid[2][1] = true;
     }
 
     /**
@@ -170,30 +189,13 @@ public class Stone {
      */
     private void L270(boolean[][] grid) {
         initStoneGrid(grid);
-        grid[0][3] = true;
-        grid[1][3] = true;
-        grid[1][2] = true;
+        grid[0][0] = true;
+        grid[1][0] = true;
         grid[1][1] = true;
+        grid[1][2] = true;
     }
 
-    /**
-     * Konstruktor
-     */
-    public Stone(StoneType type) {
-        rotation = 0; // Am Anfang keine Drehung
-        this.type = type;
-        switch (type) {
-            case I:
-                I0(stoneGrid);
-                break;
-            case J:
-                J0(stoneGrid);
-                break;
-            case L:
-                L0(stoneGrid);
-                break;
-        }
-    }
+    
 
     public boolean[][] getStoneGrid() {
         return stoneGrid;
@@ -214,7 +216,7 @@ public class Stone {
                         I180(stoneGrid);
                         break;
                     case 270:
-                        I270:
+                        I270(stoneGrid);
                         break;
 
                 }
@@ -231,7 +233,7 @@ public class Stone {
                         J180(stoneGrid);
                         break;
                     case 270:
-                        J270:
+                        J270(stoneGrid);
                         break;
 
                 }
@@ -248,7 +250,7 @@ public class Stone {
                         L180(stoneGrid);
                         break;
                     case 270:
-                        L270:
+                        L270(stoneGrid);
                         break;
 
                 }
@@ -258,7 +260,7 @@ public class Stone {
     }
 
     public void turnright() {
-        rotation = (rotation+ 90) % 360;
+        rotation = rotation + 90 % 360;
         calcGrid();
     }
 
@@ -266,9 +268,13 @@ public class Stone {
         if (rotation == 0) {
             rotation = 270;
         } else {
-            rotation = rotation - 90;
+            rotation -= 90;
         }
         calcGrid();
+    }
+    
+    public Color getColor(){
+        return type.getColor();
     }
 
     /**
@@ -292,29 +298,29 @@ public class Stone {
 
 
         Stone testStone = new Stone(StoneType.L);
-        
-        testStone.turnright();
         testStone.print();
-        
-        testStone.turnright();
-        testStone.print();
-        
-        testStone.turnright();
-        testStone.print();
-        
-        testStone.turnright();
-        testStone.print();
-        
-        
-        
+
+        for (int i = 0; i < 4; i++) {
+            testStone.turnleft();
+            testStone.print();
+        }
+
     }
-    
-    public  void print(){
+
+    public void print() {
+
         System.out.println(rotation);
-        System.out.println(Arrays.toString(getStoneGrid()[0]));
-        System.out.println(Arrays.toString(getStoneGrid()[1]));
-        System.out.println(Arrays.toString(getStoneGrid()[2]));
-        System.out.println(Arrays.toString(getStoneGrid()[3]));
+        for (int i = 0; i < 4; i++) {
+            String lineOutput = "";
+            for (int j = 0; j < 4; j++) {
+                if (stoneGrid[j][i]) {
+                    lineOutput += "[x]";
+                } else {
+                    lineOutput += "[ ]";
+                }
+            }
+            System.out.println(lineOutput);
+        }
         System.out.println("");
     }
 }

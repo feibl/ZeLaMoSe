@@ -4,11 +4,28 @@
  */
 package domain;
 
+import java.awt.Color;
+
 /**
  *
  * @author Cyrill
  */
 public enum StoneType {
-    I,L,J,O,Z,S,T
+    I(new Color(100,100,100)),
+    L(new Color(255,0,0)),
+    J(new Color(0,255,0));
+    
+    private final Color color;
+
+    private StoneType(Color c) {
+        color = c;
+        
+    }
+    
+    public Color getColor(){
+        return color;
+    }
+    
+    
     
 }
