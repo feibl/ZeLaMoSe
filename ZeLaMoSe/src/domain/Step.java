@@ -1,0 +1,44 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package domain;
+
+import java.util.ArrayList;
+
+/**
+ *
+ * @author chrigi
+ */
+public class Step {
+    int seqNum;
+    int sessionId;
+    ArrayList<Action> actions;
+
+    public Step(int seqNum) {
+        this.seqNum = seqNum;
+        actions = new ArrayList<>();
+    }
+    
+    public int seqNum() {
+        return seqNum;
+    }
+    
+    public void setSessionId(int id) {
+        this.sessionId = id;
+    }
+    
+    public int sessionId() {
+        return sessionId;
+    }
+    
+    public void addAction(Action action) {
+        actions.add(action);
+    }
+    
+    public ArrayList<Action> actions() {
+        return actions;
+    }
+
+    
+}
