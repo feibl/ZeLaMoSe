@@ -4,7 +4,7 @@
  */
 package domain.actions;
 
-import domain.StoneType;
+import domain.Stone;
 
 /**
  *
@@ -12,13 +12,13 @@ import domain.StoneType;
  */
 public class NewblockAction extends Action{
 
-    StoneType type;
-    public NewblockAction(StoneType type, int timestamp) {
+    Stone type;
+    public NewblockAction(Stone type, int timestamp) {
         super(ActionType.NEWBLOCK, timestamp);
         this.type = type;
     }
     
-    public StoneType getBlocktype() {
+    public Stone getBlocktype() {
         return type;
     }
     

@@ -1,263 +1,39 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package domain;
 
 import java.awt.Color;
 
-public class Stone {
+/**
+ *
+ * @author Cyrill
+ */
+public abstract class Stone {
 
-    // Array in dem die Steine liegen
-    private boolean[][] stoneGrid = new boolean[4][4];
-    private int rotation; // Winkel um den gedreht ist
-    private StoneType type;
-    
-    /**
-     * Konstruktor
-     */
-    public Stone(StoneType type) {
-        rotation = 0; // Am Anfang keine Drehung
-        this.type = type;
-        switch (type) {
-            case I:
-                I0(stoneGrid);
-                break;
-            case J:
-                J0(stoneGrid);
-                break;
-            case L:
-                L0(stoneGrid);
-                break;
-        }
-        
+    protected Color color;
+    protected boolean[][] stoneGrid = new boolean[4][4];
+    protected int rotation;
+     
+    public Stone(Color c){
+        color = c;
+        rotation = 0; 
+        rotation0(stoneGrid);
     }
-    
-    private void initStoneGrid(boolean[][] grid) {
+        
+    protected void initStoneGrid(boolean[][] grid) {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 grid[i][j] = false;
             }
         }
     }
-
-    /**
-     * Default position of an I-Block
-     *
-     * @param grid
-     */
-    private void I0(boolean[][] grid) {
-        initStoneGrid(grid);
-        grid[0][1] = true;
-        grid[1][1] = true;
-        grid[2][1] = true;
-        grid[3][1] = true;
+        
+    public Color getColor(){
+        return color;
     }
-
-    /**
-     * Position of an I-Block clockwise turned by 90 deg
-     *
-     * @param grid
-     */
-    private void I90(boolean[][] grid) {
-        initStoneGrid(grid);
-        grid[2][0] = true;
-        grid[2][1] = true;
-        grid[2][2] = true;
-        grid[2][3] = true;
-    }
-
-    /**
-     * Position of an I-Block clockwise turned by 180 deg
-     *
-     * @param grid
-     */
-    private void I180(boolean[][] grid) {
-        initStoneGrid(grid);
-
-
-        grid[0][2] = true;
-        grid[1][2] = true;
-        grid[2][2] = true;
-        grid[3][2] = true;
-    }
-
-    /**
-     * Position of an I-Block clockwise turned by 180 deg
-     *
-     * @param grid
-     */
-    private void I270(boolean[][] grid) {
-        initStoneGrid(grid);
-        grid[1][0] = true;
-        grid[1][1] = true;
-        grid[1][2] = true;
-        grid[1][3] = true;
-    }
-
-    /**
-     * Default position of an J-Block
-     *
-     * @param grid
-     */
-    private void J0(boolean[][] grid) {
-        initStoneGrid(grid);
-        grid[0][0] = true;
-        grid[0][1] = true;
-        grid[1][1] = true;
-        grid[2][1] = true;
-    }
-
-    /**
-     * Position of an j-Block clockwise turned by 90 deg
-     *
-     * @param grid
-     */
-    private void J90(boolean[][] grid) {
-        initStoneGrid(grid);
-        grid[1][0] = true;
-        grid[1][1] = true;
-        grid[1][2] = true;
-        grid[2][0] = true;
-    }
-
-    /**
-     * Position of an j-Block clockwise turned by 180 deg
-     *
-     * @param grid
-     */
-    private void J180(boolean[][] grid) {
-        initStoneGrid(grid);
-        grid[0][1] = true;
-        grid[1][1] = true;
-        grid[2][1] = true;
-        grid[2][2] = true;
-    }
-
-    /**
-     * Position of an j-Block clockwise turned by 270 deg
-     *
-     * @param grid
-     */
-    private void J270(boolean[][] grid) {
-        initStoneGrid(grid);
-        grid[0][2] = true;
-        grid[1][1] = true;
-        grid[1][2] = true;
-        grid[1][0] = true;
-    }
-
-    /**
-     * Default position of an L-Block
-     *
-     * @param grid
-     */
-    private void L0(boolean[][] grid) {
-        initStoneGrid(grid);
-        grid[0][1] = true;
-        grid[1][1] = true;
-        grid[2][0] = true;
-        grid[2][1] = true;
-    }
-
-    /**
-     * Position of an L-Block clockwise turned by 90 deg
-     *
-     * @param grid
-     */
-    private void L90(boolean[][] grid) {
-        initStoneGrid(grid);
-        grid[1][0] = true;
-        grid[1][1] = true;
-        grid[1][2] = true;
-        grid[2][2] = true;
-    }
-
-    /**
-     * Position of an L-Block clockwise turned by 180 deg
-     *
-     * @param grid
-     */
-    private void L180(boolean[][] grid) {
-        initStoneGrid(grid);
-        grid[0][1] = true;
-        grid[0][2] = true;
-        grid[1][1] = true;
-        grid[2][1] = true;
-    }
-
-    /**
-     * Position of an L-Block clockwise turned by 270 deg
-     *
-     * @param grid
-     */
-    private void L270(boolean[][] grid) {
-        initStoneGrid(grid);
-        grid[0][0] = true;
-        grid[1][0] = true;
-        grid[1][1] = true;
-        grid[1][2] = true;
-    }
-
     
-
-    public boolean[][] getStoneGrid() {
-        return stoneGrid;
-    }
-
-    private void calcGrid() {
-        switch (type) {
-
-            case I:
-                switch (rotation) {
-                    case 0:
-                        I0(stoneGrid);
-                        break;
-                    case 90:
-                        I90(stoneGrid);
-                        break;
-                    case 180:
-                        I180(stoneGrid);
-                        break;
-                    case 270:
-                        I270(stoneGrid);
-                        break;
-
-                }
-                break;
-            case J:
-                switch (rotation) {
-                    case 0:
-                        J0(stoneGrid);
-                        break;
-                    case 90:
-                        J90(stoneGrid);
-                        break;
-                    case 180:
-                        J180(stoneGrid);
-                        break;
-                    case 270:
-                        J270(stoneGrid);
-                        break;
-
-                }
-                break;
-            case L:
-                switch (rotation) {
-                    case 0:
-                        L0(stoneGrid);
-                        break;
-                    case 90:
-                        L90(stoneGrid);
-                        break;
-                    case 180:
-                        L180(stoneGrid);
-                        break;
-                    case 270:
-                        L270(stoneGrid);
-                        break;
-
-                }
-                break;
-
-        }
-    }
 
     public void turnright() {
         rotation = rotation + 90 % 360;
@@ -273,13 +49,34 @@ public class Stone {
         calcGrid();
     }
     
-    public Color getColor(){
-        return type.getColor();
+    protected abstract void rotation0 (boolean[][] grid);
+    protected abstract void rotation90 (boolean[][] grid);
+    protected abstract void rotation180 (boolean[][] grid);
+    protected abstract void rotation270 (boolean[][] grid);
+    
+    public boolean[][] getStoneGrid() {
+        return stoneGrid;
     }
-
-    /**
-     * Aktuellen Stein auf der Konsole ausgeben
-     */
+    
+     protected void calcGrid() {
+        initStoneGrid(stoneGrid);
+        switch (rotation) {
+            case 0:
+                rotation0(stoneGrid);
+                break;
+            case 90:
+                rotation90(stoneGrid);
+                break;
+            case 180:
+                rotation180(stoneGrid);
+                break;
+            case 270:
+                rotation270(stoneGrid);
+                break;
+        }
+    
+   }
+     
     public void printstone() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
@@ -290,24 +87,8 @@ public class Stone {
         }
         System.out.println();
     }
-
-    /**
-     * Main zum testen
-     */
-    public static void main(String[] args) {
-
-
-        Stone testStone = new Stone(StoneType.L);
-        testStone.print();
-
-        for (int i = 0; i < 4; i++) {
-            testStone.turnleft();
-            testStone.print();
-        }
-
-    }
-
-    public void print() {
+    
+   public void print() {
 
         System.out.println(rotation);
         for (int i = 0; i < 4; i++) {
@@ -322,5 +103,18 @@ public class Stone {
             System.out.println(lineOutput);
         }
         System.out.println("");
+    }
+   
+   
+    public static void main(String[] args) {
+
+        Stone testStone = new StoneL();
+        testStone.print();
+
+        for (int i = 0; i < 4; i++) {
+            testStone.turnleft();
+            testStone.print();
+        }
+
     }
 }
