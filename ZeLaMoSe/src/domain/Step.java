@@ -11,12 +11,13 @@ import java.util.ArrayList;
  * @author chrigi
  */
 public class Step {
-    int seqNum;
-    int sessionId;
-    ArrayList<Action> actions;
+    private int seqNum;
+    private int sessionId;
+    private ArrayList<Action> actions;
 
-    public Step(int seqNum) {
+    public Step(int seqNum, int sessionId) {
         this.seqNum = seqNum;
+        this.sessionId = sessionId;
         actions = new ArrayList<>();
     }
     
@@ -24,9 +25,9 @@ public class Step {
         return seqNum;
     }
     
-    public void setSessionId(int id) {
-        this.sessionId = id;
-    }
+//    public void setSessionId(int id) {
+//        this.sessionId = id;
+//    }
     
     public int sessionId() {
         return sessionId;
