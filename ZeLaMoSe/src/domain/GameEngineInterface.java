@@ -6,8 +6,8 @@ package domain;
 
 /**
  *
- * @author Cyrill
+ * @author chrigi
  */
-enum ActionType {
-    ROTATION_CLOCKWISE, ROTATION_COUNTERCLOCKWISE, SOFTDROP
+public interface GameEngineInterface extends ActionInterface, SimulationStateInterface{
+    int sessionId();
 }
