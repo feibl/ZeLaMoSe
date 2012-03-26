@@ -4,6 +4,8 @@
  */
 package domain;
 
+import domain.actions.Action;
+import domain.actions.ActionType;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Random;

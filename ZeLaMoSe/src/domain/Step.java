@@ -4,6 +4,7 @@
  */
 package domain;
 
+import domain.actions.Action;
 import java.util.ArrayList;
 
 /**

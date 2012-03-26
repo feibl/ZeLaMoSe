@@ -4,6 +4,8 @@
  */
 package domain;
 
+import domain.actions.Action;
+
 /**
  *
  * @author chrigi

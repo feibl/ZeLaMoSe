@@ -4,6 +4,9 @@
  */
 package domain;
 
+import domain.actions.ActionType;
+import domain.actions.Action;
+import domain.actions.RotateAction;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -45,7 +48,7 @@ public class SimulationControllerTest {
   public void testAddStep() {
       System.out.println("addStep");
       Step step = new Step(0, sessionId);
-      Action action = new Action(ActionType.ROTATION_CLOCKWISE, 10);
+      Action action = new RotateAction(10, RotateAction.Direction.LEFT);
       step.addAction(action);
       instance.addStep(step);
       assertEquals(null, engine.getLastAction());
