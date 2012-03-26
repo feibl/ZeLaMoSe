@@ -16,8 +16,7 @@ public class BlockQueue {
     
     
     public Stone getNextStone(){
-//        return new Stone(StoneType.values()[randomgenerator.nextInt(StoneType.values().length)]);
-        return new Stone(StoneType.I);
+        return new Stone(StoneType.values()[randomgenerator.nextInt(StoneType.values().length)]);
     }
     
     

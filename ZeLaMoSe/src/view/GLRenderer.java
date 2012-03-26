@@ -4,10 +4,13 @@
  */
 package view;
 
-import domain.Action;
 import domain.BlockQueue;
 import domain.FakeGameEngine;
 import domain.Stone;
+import domain.actions.Action;
+import domain.actions.MoveAction;
+import domain.actions.RotateAction;
+import domain.actions.RotateAction.Direction;
 import java.awt.Color;
 import java.util.Observable;
 import java.util.Observer;
@@ -25,12 +28,10 @@ import javax.media.opengl.glu.GLU;
 class GLRenderer implements GLEventListener, Observer {
 
     private int width, heigth, blocksize;
-    private boolean[][] gamefield = new boolean[12][24];
     private FakeGameEngine engine;
     private Stone currentStone;
     private BlockQueue queue = new BlockQueue();
     private final int defaultX = 4, defaultY = 15;
-    private int x = defaultX, y = defaultY;
 
     public GLRenderer(int width, int height, int blocksize) {
         this.width = width;
@@ -79,16 +80,29 @@ class GLRenderer implements GLEventListener, Observer {
         actionHandling(engine.getLastAction());
     }
 
-    private void actionHandling(Action lastAction) {
-        switch (lastAction.getType()) {
-            case ROTATION_CLOCKWISE:
-                rotateClocckwise();
+    private void actionHandling(Action action) {
+        switch (action.getType()) {
+            case ROTATION:
+                System.out.println("rotation");
+                handleRotateAction(((RotateAction)action).getDirection());
                 break;
-            case ROTATION_COUNTERCLOCKWISE:
-                rotateCounterclockwise();
+            case MOVE:
+                System.out.println("move");
+                handleMoveAction(((MoveAction)action).getDirection());
                 break;
-            case SOFTDROP:
-                softdrop();
+            case HARDDROP:
+                System.out.println("harddrop");
+                HandleHarddropAction();
+                break;
+            case NEWBLOCK:
+                System.out.println("newblock");
+                HandleNewblockAction();
+                break;
+            case NEWLINE:
+                System.out.println("newln");
+                break;
+            case RMLINE:
+                System.out.println("rmln");
                 break;
         }
     }
@@ -100,9 +114,9 @@ class GLRenderer implements GLEventListener, Observer {
 
         ////////////////////
         //drawing the grid
-        red = 255f;
-        green = 255f;
-        blue = 255;
+        red = 0.2f;
+        green = 0.2f;
+        blue = 0.2f;
 
         gl.glColor3f(red, green, blue);
 
@@ -123,20 +137,7 @@ class GLRenderer implements GLEventListener, Observer {
         gl.glEnd();
     }
 
-    private void rotateClocckwise() {
-        System.out.println("clockwise");
-        currentStone.turnright();
-    }
 
-    private void rotateCounterclockwise() {
-        System.out.println("counterclockwise");
-        currentStone.turnleft();
-    }
-
-    private void softdrop() {
-        y--;
-        System.out.println("softdrop");
-    }
 
     private void drawCurrentStone(GL2 gl) {
         Color stoneColor = currentStone.getColor();
@@ -144,7 +145,8 @@ class GLRenderer implements GLEventListener, Observer {
         gl.glColor3f(stoneColor.getRed(), stoneColor.getGreen(), stoneColor.getBlue());
 
         gl.glBegin(GL2.GL_QUADS);
-
+        int x = currentStone.getX();
+        int y = currentStone.getY();
         boolean[][] grid = currentStone.getStoneGrid();
         for (int a = 0; a < 4; a++) {
             for (int b = 0; b < 4; b++) {
@@ -158,5 +160,36 @@ class GLRenderer implements GLEventListener, Observer {
         }
 
         gl.glEnd();
+    }
+
+    private void handleRotateAction(Direction direction) {
+        if(direction == Direction.LEFT)
+            currentStone.turnleft();
+        else
+            currentStone.turnright();
+    }
+
+    private void handleMoveAction(MoveAction.Direction direction) {
+        switch(direction){
+            case DOWN:
+                currentStone.setY(currentStone.getY()-1);
+                break;
+            case LEFT:
+                currentStone.setX(currentStone.getX()-1);
+                break;
+            case RIGHT:
+                currentStone.setX(currentStone.getX()+1);
+                break;
+        }
+    }
+
+    private void HandleHarddropAction() {
+        currentStone.setY(2);
+    }
+
+    private void HandleNewblockAction() {
+        currentStone = queue.getNextStone();
+        currentStone.setX(defaultX);
+        currentStone.setY(defaultY);
     }
 }
