@@ -19,7 +19,7 @@ public class Step {
     public Step(int seqNum, int sessionId) {
         this.seqNum = seqNum;
         this.sessionId = sessionId;
-        actions = new ArrayList<>();
+        actions = new ArrayList<Action>();
     }
     
     public int seqNum() {
