@@ -11,7 +11,7 @@ import java.awt.Color;
  * @author Cyrill
  */
 public enum StoneType {
-    I(new Color(100,100,100)),
+    I(new Color(0,0,255)),
     L(new Color(255,0,0)),
     J(new Color(0,255,0));
     
