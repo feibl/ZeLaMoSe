@@ -15,9 +15,9 @@ import java.util.TreeMap;
  * @author chrigi
  */
 public class SimulationController implements StepInterface {
-  private Map<Integer, Step> stepQueue = new HashMap<>();
-  private Map<Integer, GameEngineInterface> engines = new HashMap<>();
-  private Map<Integer, String> sessions = new HashMap<>();
+  private Map<Integer, Step> stepQueue = new HashMap<Integer, Step>();
+  private Map<Integer, GameEngineInterface> engines = new HashMap<Integer, GameEngineInterface>();
+  private Map<Integer, String> sessions = new HashMap<Integer, String>();
   
   public SimulationController() {
     
@@ -48,7 +48,7 @@ public class SimulationController implements StepInterface {
    * - Simulation ACtions
    */
   public void simulateStep(int seqNum) {
-      Map <Action, Integer> actionList = new TreeMap<>(new Comparator(){
+      Map <Action, Integer> actionList = new TreeMap<Action, Integer>(new Comparator(){
 
           @Override
           public int compare(Object t, Object t1) {
@@ -76,7 +76,6 @@ public class SimulationController implements StepInterface {
           assert (engines.containsKey(e.getValue()));
           GameEngineInterface g = engines.get(e.getValue());
           g.simulateAction(e.getKey());
-          //engines.put(g.sessionId(), g);
       }
   }
   
