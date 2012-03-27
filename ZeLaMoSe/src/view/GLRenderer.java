@@ -6,7 +6,7 @@ package view;
 
 import domain.BlockQueue;
 import domain.FakeGameEngine;
-import domain.stone.Stone;
+import domain.block.Block;
 import domain.actions.Action;
 import domain.actions.MoveAction;
 import domain.actions.RotateAction;
@@ -30,7 +30,7 @@ class GLRenderer implements GLEventListener, Observer {
     private int viewportWidth, viewportHeight, blocksize;
     private final int gridWidth = 12, gridHeight=24;
     private FakeGameEngine engine;
-    private Stone currentBlock;
+    private Block currentBlock;
     private BlockQueue queue = new BlockQueue();
     private final int defaultX = 4, defaultY = 15;
     private Color[][] stackGrid;
@@ -39,7 +39,7 @@ class GLRenderer implements GLEventListener, Observer {
         this.viewportWidth = width;
         this.viewportHeight = height;
         this.blocksize = blocksize;
-        currentBlock = queue.nextBlock();
+        currentBlock = queue.getNextBlock();
         initStackGrid();
     }
 
@@ -190,7 +190,7 @@ class GLRenderer implements GLEventListener, Observer {
     }
 
     private void HandleNewblockAction() {
-        currentBlock = queue.nextBlock();
+        currentBlock = queue.getNextBlock();
         currentBlock.setX(defaultX);
         currentBlock.setY(defaultY);
     }

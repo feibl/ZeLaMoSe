@@ -4,7 +4,6 @@
  */
 package domain;
 
-import com.sun.org.apache.bcel.internal.generic.SWITCH;
 import domain.actions.*;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -43,7 +42,7 @@ public class FakeGameEngine extends Observable{
                              action = new RotateAction(0, RotateAction.Direction.values()[randomGenerator.nextInt(2)]);
                              break;
                          case NEWBLOCK:
-                             action = new NewblockAction(queue.nextBlock(),0);
+                             action = new NewblockAction(queue.getNextBlock(),0);
                             break;
                          default:
                              action = new RotateAction(0, RotateAction.Direction.values()[randomGenerator.nextInt(2)]);
