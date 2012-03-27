@@ -6,6 +6,9 @@ package view;
 
 import com.jogamp.opengl.util.FPSAnimator;
 import domain.FakeGameEngine;
+import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLProfile;
+import javax.media.opengl.awt.GLJPanel;
 
 /**
  *
@@ -32,7 +35,7 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel {
 
         lblTimeValue = new javax.swing.JLabel();
         lblTime = new javax.swing.JLabel();
-        glPnlGameField = new javax.media.opengl.awt.GLJPanel();
+        glPnlGameField = new javax.media.opengl.awt.GLJPanel(getGLCaps());
         pnlNextPiece = new javax.swing.JPanel();
         lblNextPiece = new javax.swing.JLabel();
         lblYourScoreValue = new javax.swing.JLabel();
@@ -255,11 +258,19 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void initGLRenderer() {
+         
+        
         GLRenderer renderer = new GLRenderer(360,660,30);
         glPnlGameField.addGLEventListener(renderer);
         FPSAnimator animator = new FPSAnimator(glPnlGameField, FRAME_RATE, true);
         animator.start();
         renderer.setEngine(new FakeGameEngine());
         
+    }
+    
+    private GLCapabilities getGLCaps(){
+        //best GL settings
+        GLProfile glp = GLProfile.getDefault();
+        return new GLCapabilities(glp);
     }
 }

@@ -144,6 +144,9 @@
           <Dimension value="[360, 660]"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.media.opengl.awt.GLJPanel(getGLCaps())"/>
+      </AuxValues>
 
       <Layout>
         <DimensionLayout dim="0">
