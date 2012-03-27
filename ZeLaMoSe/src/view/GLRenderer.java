@@ -27,17 +27,20 @@ import javax.media.opengl.glu.GLU;
  */
 class GLRenderer implements GLEventListener, Observer {
 
-    private int width, heigth, blocksize;
+    private int viewportWidth, viewportHeight, blocksize;
+    private final int gridWidth = 12, gridHeight=24;
     private FakeGameEngine engine;
-    private Stone currentStone;
+    private Stone currentBlock;
     private BlockQueue queue = new BlockQueue();
     private final int defaultX = 4, defaultY = 15;
+    private Color[][] stackGrid;
 
     public GLRenderer(int width, int height, int blocksize) {
-        this.width = width;
-        this.heigth = height;
+        this.viewportWidth = width;
+        this.viewportHeight = height;
         this.blocksize = blocksize;
-        currentStone = queue.getNextStone();
+        currentBlock = queue.nextBlock();
+        initStackGrid();
     }
 
     @Override
@@ -47,10 +50,10 @@ class GLRenderer implements GLEventListener, Observer {
 
         gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         gl.glLineWidth(1.0f);
-        gl.glViewport(0, 0, width, heigth);
+        gl.glViewport(0, 0, viewportWidth, viewportHeight);
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();
-        glu.gluOrtho2D(0, width, 0, heigth);
+        glu.gluOrtho2D(0, viewportWidth, 0, viewportHeight);
     }
 
     @Override
@@ -62,7 +65,8 @@ class GLRenderer implements GLEventListener, Observer {
         GL2 gl = drawable.getGL().getGL2();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         drawGrid(gl);
-        drawCurrentStone(gl);
+        drawStackGrid(gl);
+        drawCurrentBlock(gl);
     }
 
     @Override
@@ -111,7 +115,6 @@ class GLRenderer implements GLEventListener, Observer {
 
 
         float red, green, blue;
-
         ////////////////////
         //drawing the grid
         red = 0.2f;
@@ -123,15 +126,15 @@ class GLRenderer implements GLEventListener, Observer {
         gl.glBegin(GL.GL_LINES);
 
         //draw the vertical lines
-        for (int x = 0; x <= width; x += blocksize) {
+        for (int x = 0; x <= viewportWidth; x += blocksize) {
             gl.glVertex2d(x, 0);
-            gl.glVertex2d(x, heigth);
+            gl.glVertex2d(x, viewportHeight);
         }
 
         //draw the horizontal lines
-        for (int y = 0; y <= heigth; y += blocksize) {
+        for (int y = 0; y <= viewportHeight; y += blocksize) {
             gl.glVertex2d(0, y);
-            gl.glVertex2d(width, y);
+            gl.glVertex2d(viewportWidth, y);
         }
 
         gl.glEnd();
@@ -139,15 +142,15 @@ class GLRenderer implements GLEventListener, Observer {
 
 
 
-    private void drawCurrentStone(GL2 gl) {
-        Color stoneColor = currentStone.getColor();
+    private void drawCurrentBlock(GL2 gl) {
+        Color blockColor = currentBlock.getColor();
 
-        gl.glColor3f(stoneColor.getRed(), stoneColor.getGreen(), stoneColor.getBlue());
+        gl.glColor3f(blockColor.getRed(), blockColor.getGreen(), blockColor.getBlue());
 
         gl.glBegin(GL2.GL_QUADS);
-        int x = currentStone.getX();
-        int y = currentStone.getY();
-        boolean[][] grid = currentStone.getStoneGrid();
+        int x = currentBlock.getX();
+        int y = currentBlock.getY();
+        boolean[][] grid = currentBlock.getStoneGrid();
         for (int a = 0; a < 4; a++) {
             for (int b = 0; b < 4; b++) {
                 if (grid[a][b]) {
@@ -158,38 +161,50 @@ class GLRenderer implements GLEventListener, Observer {
                 }
             }
         }
-
         gl.glEnd();
     }
 
     private void handleRotateAction(Direction direction) {
         if(direction == Direction.LEFT)
-            currentStone.turnleft();
+            currentBlock.turnleft();
         else
-            currentStone.turnright();
+            currentBlock.turnright();
     }
 
     private void handleMoveAction(MoveAction.Direction direction) {
         switch(direction){
             case DOWN:
-                currentStone.setY(currentStone.getY()-1);
+                currentBlock.setY(currentBlock.getY()-1);
                 break;
             case LEFT:
-                currentStone.setX(currentStone.getX()-1);
+                currentBlock.setX(currentBlock.getX()-1);
                 break;
             case RIGHT:
-                currentStone.setX(currentStone.getX()+1);
+                currentBlock.setX(currentBlock.getX()+1);
                 break;
         }
     }
 
     private void HandleHarddropAction() {
-        currentStone.setY(2);
+        currentBlock.setY(2);
     }
 
     private void HandleNewblockAction() {
-        currentStone = queue.getNextStone();
-        currentStone.setX(defaultX);
-        currentStone.setY(defaultY);
+        currentBlock = queue.nextBlock();
+        currentBlock.setX(defaultX);
+        currentBlock.setY(defaultY);
+    }
+
+    private void initStackGrid() {
+        stackGrid = new Color[gridWidth][gridHeight];
+        for(int i = 0; i<gridWidth;i++){
+            for(int j = 0; j < gridHeight; j++){
+                stackGrid[i][j] = Color.BLACK;
+            }
+        }
+    }
+
+    private void drawStackGrid(GL2 gl) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

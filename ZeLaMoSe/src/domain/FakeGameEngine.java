@@ -43,7 +43,7 @@ public class FakeGameEngine extends Observable{
                              action = new RotateAction(0, RotateAction.Direction.values()[randomGenerator.nextInt(2)]);
                              break;
                          case NEWBLOCK:
-                             action = new NewblockAction(queue.getNextStone(),0);
+                             action = new NewblockAction(queue.nextBlock(),0);
                             break;
                          default:
                              action = new RotateAction(0, RotateAction.Direction.values()[randomGenerator.nextInt(2)]);
