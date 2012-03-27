@@ -16,7 +16,7 @@ enum LineDefinition {
 public class NewlineAction extends Action{
     LineDefinition line;
 
-    public NewlineAction(int timestamp, LineDefinition line) {
+    public NewlineAction(long timestamp, LineDefinition line) {
         super(ActionType.NEWLINE, timestamp);
         this.line = line;
     }

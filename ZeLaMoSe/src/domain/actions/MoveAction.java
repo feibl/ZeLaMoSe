@@ -16,7 +16,7 @@ public class MoveAction extends Action {
     private Direction dir;
     private int speed;
 
-    public MoveAction(int timestamp, Direction dir, int speed) {
+    public MoveAction(long timestamp, Direction dir, int speed) {
         super(ActionType.MOVE, timestamp);
         this.dir = dir;
         this.speed = speed;
