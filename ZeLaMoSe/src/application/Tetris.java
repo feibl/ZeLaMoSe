@@ -6,6 +6,7 @@ package application;
 
 import domain.SimulationController;
 import domain.TestrisController;
+import network.NetworkHandlerImpl;
 import view.OwnGameFieldJPanel;
 
 /**
@@ -17,7 +18,7 @@ public class Tetris {
     TestrisController testrisController;
 
     public Tetris() {
-        testrisController = new TestrisController(new SimulationController());
+        testrisController = new TestrisController(new SimulationController(), new NetworkHandlerImpl());
         
     }
     

@@ -5,6 +5,7 @@
 package domain;
 
 import java.util.Observable;
+import network.NetworkHandler;
 
 /**
  *
@@ -19,10 +20,12 @@ public class TestrisController extends Observable {
     }
 
     private SimulationController simulationController;
-    //private NetworkHandler networkHandler = new
+    private NetworkHandler networkHandler;
     //private StepGenerator
-    public TestrisController(SimulationController sController/*, NetworkHandler nH, StepGenerator sG*/) {
+    
+    public TestrisController(SimulationController sController, NetworkHandler nH/*, StepGenerator sG*/) {
         simulationController = sController;
+        networkHandler = nH;
     }
     
 //    public Map<Integer, String> getAvailableSessions() {
