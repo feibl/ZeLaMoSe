@@ -4,8 +4,8 @@
  */
 package view;
 
-import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.FPSAnimator;
+import domain.FakeGameEngine;
 
 /**
  *
@@ -255,9 +255,11 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void initGLRenderer() {
-        GLRenderer renderer = new GLRenderer();
+        GLRenderer renderer = new GLRenderer(360,660,30);
         glPnlGameField.addGLEventListener(renderer);
         FPSAnimator animator = new FPSAnimator(glPnlGameField, FRAME_RATE, true);
         animator.start();
+        renderer.setEngine(new FakeGameEngine());
+        
     }
 }
