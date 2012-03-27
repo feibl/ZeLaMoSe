@@ -37,6 +37,7 @@ public class SimulationController implements StepInterface {
    * Register session
    */
   public void addSession(int sessionId, String name, GameEngineInterface gameEngine) {
+      assert(!engines.containsKey(sessionId));
       engines.put(sessionId, gameEngine);
       sessions.put(sessionId, name);
   }
