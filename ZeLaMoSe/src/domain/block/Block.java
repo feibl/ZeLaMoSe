@@ -2,53 +2,67 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.stone;
+package domain.block;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
  * @author Cyrill
  */
-public abstract class Stone {
+public abstract class Block {
 
     protected Color color;
     protected boolean[][] stoneGrid = new boolean[4][4];
-    protected int rotation, x, y, width, height;
+    protected int rotation, x, y;
+    private ArrayList<Class> subclasses;
 
     public int getHeight() {
+        int height = 0;
+        for(int i = 0; i < stoneGrid.length ; i++){
+            for (int j = 0; j < stoneGrid.length; j++) {
+                if (stoneGrid[j][i]){
+                    height++;
+                    break;
+                }
+            }
+        }
         return height;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
-    }
 
     public int getWidth() {
+        int width = 0;
+        for(int i = 0; i < stoneGrid.length ; i++){
+            for (int j = 0; j < stoneGrid.length; j++) {
+                if (stoneGrid[i][j]){
+                    width++;
+                    break;
+                }
+            }
+        }
         return width;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
 
     public int getX() {
         return x;
     }
 
     public void setX(int x) {
-        this.x = x;
+        this.x  = x;
     }
-
+    
     public int getY() {
         return y;
     }
-
     public void setY(int y) {
-        this.y = y;
+        this.y  = y;
     }
      
-    public Stone(Color c){
+    public Block(Color c){
         color = c;
         rotation = 0; 
         rotation0(stoneGrid);
@@ -68,7 +82,7 @@ public abstract class Stone {
     
 
     public void turnright() {
-        rotation = rotation + 90 % 360;
+        rotation = (rotation + 90) % 360;
         calcGrid();
     }
 
@@ -139,12 +153,13 @@ public abstract class Stone {
    
    
     public static void main(String[] args) {
-
-        Stone testStone = new StoneL();
-        testStone.print();
+        Random randomGenerator = new Random(System.currentTimeMillis());
+        Block testStone =  (BlockType.values()[randomGenerator.nextInt(BlockType.values().length)]).createBlock();
 
         for (int i = 0; i < 4; i++) {
-            testStone.turnleft();
+            testStone.turnright();
+            System.out.println("Height: " + testStone.getHeight());
+            System.out.println("Width: " + testStone.getWidth());
             testStone.print();
         }
 

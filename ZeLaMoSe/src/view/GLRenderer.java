@@ -6,7 +6,7 @@ package view;
 
 import domain.BlockQueue;
 import domain.FakeGameEngine;
-import domain.stone.Stone;
+import domain.block.Block;
 import domain.actions.Action;
 import domain.actions.MoveAction;
 import domain.actions.RotateAction;
@@ -29,7 +29,7 @@ class GLRenderer implements GLEventListener, Observer {
 
     private int width, heigth, blocksize;
     private FakeGameEngine engine;
-    private Stone currentStone;
+    private Block currentStone;
     private BlockQueue queue = new BlockQueue();
     private final int defaultX = 4, defaultY = 15;
 
