@@ -6,7 +6,7 @@ package view;
 
 import domain.BlockQueue;
 import domain.FakeGameEngine;
-import domain.Stone;
+import domain.stone.Stone;
 import domain.actions.Action;
 import domain.actions.MoveAction;
 import domain.actions.RotateAction;

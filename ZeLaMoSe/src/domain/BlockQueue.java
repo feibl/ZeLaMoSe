@@ -4,6 +4,8 @@
  */
 package domain;
 
+import domain.stone.StoneI;
+import domain.stone.Stone;
 import java.util.Random;
 
 /**
@@ -12,11 +14,11 @@ import java.util.Random;
  */
 public class BlockQueue {
     
-    private Random randomgenerator = new Random();
+    private Random randomgenerator = new Random(System.currentTimeMillis());
     
     
     public Stone getNextStone(){
-        return new Stone(StoneType.values()[randomgenerator.nextInt(StoneType.values().length)]);
+        return new StoneI();
     }
     
     

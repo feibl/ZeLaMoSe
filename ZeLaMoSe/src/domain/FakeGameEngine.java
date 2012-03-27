@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 public class FakeGameEngine extends Observable{
     int FAKE_ACTIONS_TO_GENERATE = 150;
     ArrayList<Action> actionHistory = new ArrayList<Action>();
+    BlockQueue queue = new BlockQueue();
     
     public FakeGameEngine(){
         new Thread(new Runnable() {
@@ -42,7 +43,7 @@ public class FakeGameEngine extends Observable{
                              action = new RotateAction(0, RotateAction.Direction.values()[randomGenerator.nextInt(2)]);
                              break;
                          case NEWBLOCK:
-                             action = new NewblockAction(StoneType.values()[randomGenerator.nextInt(3)], 0);
+                             action = new NewblockAction(queue.getNextStone(),0);
                             break;
                          default:
                              action = new RotateAction(0, RotateAction.Direction.values()[randomGenerator.nextInt(2)]);

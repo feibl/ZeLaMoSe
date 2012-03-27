@@ -4,7 +4,7 @@
  */
 package domain.actions;
 
-import domain.Stone;
+import domain.stone.Stone;
 
 /**
  *
