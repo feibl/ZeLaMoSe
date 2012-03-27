@@ -10,9 +10,5 @@ package domain;
  */
 public interface StepProducerInterface {
   
-    /*
-    * Register StepConsumer
-    */
-    public void addListener(StepInterface listener);
-  
+  public Step getStep();
 }
