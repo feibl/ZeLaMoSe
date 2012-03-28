@@ -4,29 +4,18 @@
  */
 package network;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
 /**
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
-public class Session {
-  private final int id;
-  private final String nickname;
-  public Session(int id, String nickname) {
-    this.id = id;
-    this.nickname = nickname;
-  }
+public interface Session extends Remote {
 
-  /**
-   * @return the nickname
-   */
-  public String getNickname() {
-    return nickname;
-  }
+   public void sendMessage(NetworkMessage message) throws RemoteException;
 
-  /**
-   * @return the id
-   */
-  public int getId() {
-    return id;
-  }
+   public void removeThisSession() throws RemoteException;
+
+   public SessionInformation getSessionInformation() throws RemoteException;
 }

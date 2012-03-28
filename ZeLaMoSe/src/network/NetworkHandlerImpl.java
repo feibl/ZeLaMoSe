@@ -4,70 +4,77 @@
  */
 package network;
 
+import network.NetworkHandler;
 import domain.Step;
 import domain.StepInterface;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import network.Session;
 
 /**
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
-public class NetworkHandlerImpl extends NetworkHandler implements ClientHandler {
+public class NetworkHandlerImpl extends NetworkHandler {
 
-  @Override
-  public Session getAddedSession() {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
+   private Handler handler;
+   private Session session;
+   private ConcurrentLinkedQueue updateQueue;
 
-  @Override
-  public int getRandomGeneratorSeed() {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
+   public NetworkHandlerImpl(Handler handler) {
+      this.handler = handler;
+   }
 
-  @Override
-  public Session getRemovedSession() {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
+   public NetworkHandlerImpl() {
+   }
 
-  @Override
-  public void connectToServer(InetAddress address) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
+   @Override
+   public SessionInformation getAddedSession() {
+      throw new UnsupportedOperationException("Not supported yet.");
+   }
 
-  @Override
-  public void addStep(Step step) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
+   @Override
+   public int getRandomGeneratorSeed() {
+      throw new UnsupportedOperationException("Not supported yet.");
+   }
 
-  @Override
-  public void receiveStep(Step step) throws RemoteException {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
+   @Override
+   public SessionInformation getRemovedSession() {
+      throw new UnsupportedOperationException("Not supported yet.");
+   }
 
-  @Override
-  public void receiveStartGameEvent() throws RemoteException {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
+   @Override
+   public SessionInformation connectToServer(String nickname, String ip, String servername) throws MalformedURLException, NotBoundException, RemoteException {
+      Object lookupObject = Naming.lookup("rmi://" + ip + "/" + servername);
+      System.out.println(lookupObject.toString());
+      
+      if (lookupObject instanceof GameServer) {
+         GameServer server = (GameServer) lookupObject;
+         session = server.createSession(nickname, handler);
+         
+         return session.getSessionInformation();
+      } else {
+         throw new NotBoundException();
+      }
+   }
 
-  @Override
-  public void receiveRandomGeneratorSeed(int seed) throws RemoteException {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
+   @Override
+   public void addStep(Step step) {
+      throw new UnsupportedOperationException("Not supported yet.");
+   }
 
-  @Override
-  public void notifySessionAdded(int sessionID, String nickname) throws RemoteException {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
+   @Override
+   public Step getStep() {
+      throw new UnsupportedOperationException("Not supported yet.");
+   }
 
-  @Override
-  public void notifySessionRemoved(int sessionID, String nickname) throws RemoteException {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public Step getStep() {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-  
+   @Override
+   public void disconnectFromServer() {
+      throw new UnsupportedOperationException("Not supported yet.");
+   }
 }
