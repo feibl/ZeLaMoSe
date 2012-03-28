@@ -9,14 +9,14 @@ package domain.actions;
  * @author chrigi
  */
 public class NewlineAction extends Action{
-    boolean[] line;
+    boolean[][] line;
 
-    public NewlineAction(long timestamp, boolean[] line) {
+    public NewlineAction(long timestamp, boolean[][] line) {
         super(ActionType.NEWLINE, timestamp);
         this.line = line;
     }
     
-    public boolean[] getLine() {
+    public boolean[][] getLine() {
         return line;
     }
     

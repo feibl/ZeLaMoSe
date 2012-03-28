@@ -28,15 +28,18 @@ class GLRenderer implements GLEventListener, Observer {
     private Block currentBlock;
     private BlockQueue queue = new BlockQueue();
     private final int defaultX = 4, defaultY = 22;
-    private Color[][] stackGrid;
+    private Color[][] grid;
     private Color bgColor = Color.BLACK;
     private Color garbageLineColor = new Color(139, 0, 0);
+    private boolean debug = true;
 
     public GLRenderer(int width, int height, int blocksize) {
         this.viewportWidth = width;
         this.viewportHeight = height;
         this.blocksize = blocksize;
         currentBlock = queue.getNextBlock();
+        currentBlock.setX(4);
+        currentBlock.setY(24);
         initStackGrid();
     }
 
@@ -50,7 +53,12 @@ class GLRenderer implements GLEventListener, Observer {
         gl.glViewport(0, 0, viewportWidth, viewportHeight);
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();
-        glu.gluOrtho2D(0, viewportWidth, 0, viewportHeight);
+
+        if (debug) {
+            glu.gluOrtho2D(-100, viewportWidth + 100, -100, viewportHeight + 100);
+        } else {
+            glu.gluOrtho2D(0, viewportWidth, 0, viewportHeight);
+        }
     }
 
     @Override
@@ -164,10 +172,10 @@ class GLRenderer implements GLEventListener, Observer {
     }
 
     private void initStackGrid() {
-        stackGrid = new Color[gridWidth][gridHeight];
+        grid = new Color[gridWidth][gridHeight];
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
-                stackGrid[i][j] = bgColor;
+                grid[i][j] = bgColor;
             }
         }
     }
@@ -177,15 +185,15 @@ class GLRenderer implements GLEventListener, Observer {
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
 
-                Color colorField = stackGrid[i][j];
+                Color colorField = grid[i][j];
                 gl.glColor3f(colorField.getRed(), colorField.getGreen(), colorField.getBlue());
 
                 gl.glBegin(GL2.GL_QUADS);
 
-                gl.glVertex2i(blocksize * i, blocksize * j);
-                gl.glVertex2i(blocksize * i, blocksize * (j - 1));
-                gl.glVertex2i(blocksize * (i + 1), blocksize * (j - 1));
-                gl.glVertex2i(blocksize * (i + 1), blocksize * j);
+                gl.glVertex2i(blocksize * i, blocksize * (j + 1));
+                gl.glVertex2i(blocksize * i, blocksize * (j));
+                gl.glVertex2i(blocksize * (i + 1), blocksize * (j));
+                gl.glVertex2i(blocksize * (i + 1), blocksize * (j + 1));
 
                 gl.glEnd();
             }
@@ -198,7 +206,7 @@ class GLRenderer implements GLEventListener, Observer {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (currentBlock.getStoneGrid()[i][j]) {
-                    stackGrid[currentBlock.getX() + i][currentBlock.getY() + j] = currentBlock.getColor();
+                    grid[currentBlock.getX() + i][currentBlock.getY() + j] = currentBlock.getColor();
                 }
             }
         }
@@ -233,22 +241,34 @@ class GLRenderer implements GLEventListener, Observer {
         currentBlock.setY(defaultY);
     }
 
-    private void handleNewlineAction(boolean[] line) {
+    private void handleNewlineAction(boolean[][] line) {
+
         for (int i = 0; i < gridWidth; i++) {
-            for (int j = (gridHeight-2); j >= 0; j--) {
-                stackGrid[i][j + 1] = stackGrid[i][j];
-                if (j == 0) {
-                    if (line[i]) {
-                        stackGrid[i][j] = garbageLineColor;
-                    } else {
-                        stackGrid[i][j] = bgColor;
-                    }
+            for (int j = gridHeight - 1 - line[0].length; j >= 0; j--) {
+                grid[i][j + line[0].length] = grid[i][j];
+            }
+        }
+
+        for (int i = 0; i < line.length; i++) {
+            for (int j = 0; j < line[i].length; j++) {
+                if (line[i][j]) {
+                    grid[i][j] = garbageLineColor;
+                } else {
+                    grid[i][j] = bgColor;
                 }
             }
         }
     }
 
     private void handleRmlineAction(RmlineAction rmlineAction) {
+        int numOfLines = rmlineAction.getNumlines();
+        int offset = rmlineAction.getOffset();
+        
+        for (int i = 0; i < gridWidth; i++) {
+            for (int j = offset; j < gridHeight-numOfLines; j++) {
+                grid[i][j] = grid[i][j+numOfLines];
+            }
+        }
         
     }
 }

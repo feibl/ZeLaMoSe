@@ -15,22 +15,23 @@ import java.util.logging.Logger;
  *
  * @author Cyrill
  */
-public class FakeGameEngine extends Observable{
-    int FAKE_ACTIONS_TO_GENERATE = 150;
+public class FakeGameEngine extends Observable {
+
+    int FAKE_ACTIONS_TO_GENERATE = 2;
     ArrayList<Action> actionHistory = new ArrayList<Action>();
     BlockQueue queue = new BlockQueue();
-    
-    public FakeGameEngine(){
+
+    public FakeGameEngine() {
         new Thread(new Runnable() {
 
             @Override
             public void run() {
                 Random randomGenerator = new Random(System.currentTimeMillis());
-                
+
                 //generates 50 random Actions
-                for(int i=0;i<FAKE_ACTIONS_TO_GENERATE;i++){
+                for (int i = 0; i < FAKE_ACTIONS_TO_GENERATE; i++) {
                     int randomActionValue = randomGenerator.nextInt(ActionType.values().length);
-                     Action action = null;
+                    Action action = null;
 //                     switch(ActionType.values()[randomActionValue]){
 //                         case HARDDROP:
 //                             action = new HarddropAction(0);
@@ -48,32 +49,34 @@ public class FakeGameEngine extends Observable{
 //                             action = new RotateAction(0, RotateAction.Direction.values()[randomGenerator.nextInt(2)]);
 //                             break;
 //                     }
-                     boolean[] garbageLine = new boolean[12];
-                     for (int j = 0; j < 12; j++) {
-                        garbageLine[j] = true;
+                    boolean[][] garbageLine = new boolean[12][2];
+                    for (int l = 0; l < garbageLine.length; l++) {
+                        for (int j = 0; j < 2; j++) {
+                            garbageLine[l][j] = true;
+                        }
                     }
-                             action = new NewlineAction(0, garbageLine);
+                    action = new NewlineAction(0, garbageLine);
                     addNewAction(action);
                     try {
-                        Thread.sleep(1500+randomGenerator.nextInt(900));
+                        Thread.sleep(2500 + randomGenerator.nextInt(900));
                     } catch (InterruptedException ex) {
                         Logger.getLogger(FakeGameEngine.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+                
+                addNewAction(new RmlineAction(0, 2, 1));
+                
             }
         }).start();
     }
-    
-    public void addNewAction(Action action){
+
+    public void addNewAction(Action action) {
         actionHistory.add(action);
         setChanged();
         notifyObservers();
     }
-    
-    
-    public Action getLastAction(){
-        return actionHistory.get(actionHistory.size()-1);
+
+    public Action getLastAction() {
+        return actionHistory.get(actionHistory.size() - 1);
     }
-    
-    
 }
