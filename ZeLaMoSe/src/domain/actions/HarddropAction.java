@@ -10,7 +10,7 @@ package domain.actions;
  */
 public class HarddropAction extends Action {
 
-    public HarddropAction(int timestamp) {
+    public HarddropAction(long timestamp) {
         super(ActionType.HARDDROP, timestamp);
     }
     

@@ -4,24 +4,19 @@
  */
 package domain.actions;
 
-enum LineDefinition {
-    LINE1,
-    LINE2
-}
-
 /**
  *
  * @author chrigi
  */
 public class NewlineAction extends Action{
-    LineDefinition line;
+    boolean[] line;
 
-    public NewlineAction(int timestamp, LineDefinition line) {
+    public NewlineAction(long timestamp, boolean[] line) {
         super(ActionType.NEWLINE, timestamp);
         this.line = line;
     }
     
-    public LineDefinition getLine() {
+    public boolean[] getLine() {
         return line;
     }
     

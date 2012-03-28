@@ -15,7 +15,7 @@ public class RotateAction extends Action {
     }
     private Direction dir;
 
-    public RotateAction(int timestamp, Direction dir) {
+    public RotateAction(long timestamp, Direction dir) {
         super(ActionType.ROTATION, timestamp);
         this.dir = dir;
     }

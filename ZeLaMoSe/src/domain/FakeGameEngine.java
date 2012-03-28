@@ -31,26 +31,31 @@ public class FakeGameEngine extends Observable{
                 for(int i=0;i<FAKE_ACTIONS_TO_GENERATE;i++){
                     int randomActionValue = randomGenerator.nextInt(ActionType.values().length);
                      Action action = null;
-                     switch(ActionType.values()[randomActionValue]){
-                         case HARDDROP:
-                             action = new HarddropAction(0);
-                             break;
-                         case MOVE:
-                             action = new MoveAction(0, MoveAction.Direction.values()[randomGenerator.nextInt(3)], 0);
-                             break;
-                         case ROTATION:
-                             action = new RotateAction(0, RotateAction.Direction.values()[randomGenerator.nextInt(2)]);
-                             break;
-                         case NEWBLOCK:
-                             action = new NewblockAction(queue.getNextBlock(),0);
-                            break;
-                         default:
-                             action = new RotateAction(0, RotateAction.Direction.values()[randomGenerator.nextInt(2)]);
-                             break;
-                     }
+//                     switch(ActionType.values()[randomActionValue]){
+//                         case HARDDROP:
+//                             action = new HarddropAction(0);
+//                             break;
+//                         case MOVE:
+//                             action = new MoveAction(0, MoveAction.Direction.values()[randomGenerator.nextInt(3)], 0);
+//                             break;
+//                         case ROTATION:
+//                             action = new RotateAction(0, RotateAction.Direction.values()[randomGenerator.nextInt(2)]);
+//                             break;
+//                         case NEWBLOCK:
+//                             action = new NewblockAction(queue.getNextBlock(),0);
+//                            break;
+//                         default:
+//                             action = new RotateAction(0, RotateAction.Direction.values()[randomGenerator.nextInt(2)]);
+//                             break;
+//                     }
+                     boolean[] garbageLine = new boolean[12];
+                     for (int j = 0; j < 12; j++) {
+                        garbageLine[j] = true;
+                    }
+                             action = new NewlineAction(0, garbageLine);
                     addNewAction(action);
                     try {
-                        Thread.sleep(500+randomGenerator.nextInt(900));
+                        Thread.sleep(1500+randomGenerator.nextInt(900));
                     } catch (InterruptedException ex) {
                         Logger.getLogger(FakeGameEngine.class.getName()).log(Level.SEVERE, null, ex);
                     }

@@ -13,7 +13,7 @@ import domain.block.Block;
 public class NewblockAction extends Action{
 
     Block type;
-    public NewblockAction(Block type, int timestamp) {
+    public NewblockAction(Block type, long timestamp) {
         super(ActionType.NEWBLOCK, timestamp);
         this.type = type;
     }

@@ -13,9 +13,9 @@ public class Action {
     ActionType type;
     
     //The timestamp is relative to the step, here in milliseconds
-    int ts = 0;
+    long ts = 0;
     
-    public Action(ActionType type, int timestamp) {
+    public Action(ActionType type, java.lang.Long timestamp) {
         this.type = type;
         this.ts = timestamp;
     }
@@ -24,7 +24,7 @@ public class Action {
         return type;
     }
     
-    public int getTimestamp() {
+    public long getTimestamp() {
         return ts;
     }
     

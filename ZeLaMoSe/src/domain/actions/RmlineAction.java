@@ -11,7 +11,7 @@ package domain.actions;
 public class RmlineAction extends Action{
     private int numlines;
     private int offset;
-    public RmlineAction(int timestamp, int numlines, int offset) {
+    public RmlineAction(long timestamp, int numlines, int offset) {
         super(ActionType.RMLINE, timestamp);
         this.numlines = numlines;
         this.offset = offset;

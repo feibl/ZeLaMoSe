@@ -5,6 +5,8 @@
 package domain.block;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -15,6 +17,7 @@ public abstract class Block {
     protected Color color;
     protected boolean[][] stoneGrid = new boolean[4][4];
     protected int rotation, x, y;
+    private ArrayList<Class> subclasses;
 
     public int getHeight() {
         int height = 0;
@@ -150,8 +153,8 @@ public abstract class Block {
    
    
     public static void main(String[] args) {
-
-        Block testStone = new BlockZ();
+        Random randomGenerator = new Random(System.currentTimeMillis());
+        Block testStone =  (BlockType.values()[randomGenerator.nextInt(BlockType.values().length)]).createBlock();
 
         for (int i = 0; i < 4; i++) {
             testStone.turnright();

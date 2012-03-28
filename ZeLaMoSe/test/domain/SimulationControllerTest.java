@@ -16,9 +16,13 @@ import static org.junit.Assert.*;
  */
 public class SimulationControllerTest {
   int sessionId = 666;
+  int sessionId2 = 667;
+  int sessionId3 = 668;
   String name = "name";
   SimulationController instance;
-  MockGameEngine engine;
+  MockGameEngine engine1;
+  MockGameEngine engine2;
+  MockGameEngine engine3;
 
   public SimulationControllerTest() {
   }
@@ -26,8 +30,12 @@ public class SimulationControllerTest {
   @Before
   public void setUp() {
       instance = new SimulationController();
-      engine = new MockGameEngine(sessionId);
-      instance.addSession(sessionId, name, engine);
+      engine1 = new MockGameEngine(sessionId);
+      instance.addSession(sessionId, name, engine1);
+      engine2 = new MockGameEngine(sessionId2);
+      instance.addSession(sessionId2, name, engine2);
+      engine3 = new MockGameEngine(sessionId3);
+      instance.addSession(sessionId3, name, engine3);
   }
   
   @After
@@ -38,7 +46,16 @@ public class SimulationControllerTest {
   public void testGetSimulation() {
       System.out.println("getSimulation");
       assertEquals(instance.getSimulation(0), null);
-      assertEquals(instance.getSimulation(sessionId), engine);
+      assertEquals(instance.getSimulation(sessionId), engine1);
+      assertEquals(instance.getSimulation(sessionId2), engine2);
+      assertEquals(instance.getSimulation(sessionId3), engine3);
+  }
+  
+  Step createStep(int id, Action action) {
+      Step step = new Step(0, id);
+      
+      step.addAction(action);
+      return step;
   }
 
   /**
@@ -47,14 +64,32 @@ public class SimulationControllerTest {
   @Test
   public void testAddStep() {
       System.out.println("addStep");
-      Step step = new Step(0, sessionId);
+      
       Action action = new RotateAction(10, RotateAction.Direction.LEFT);
-      step.addAction(action);
-      instance.addStep(step);
-      assertEquals(null, engine.getLastAction());
-      //instance.simulateStep(1);
-      //assertEquals(null, engine.getLastAction());
+      instance.addStep(createStep(sessionId, action));
+      instance.addStep(createStep(sessionId2, action));
+      instance.addStep(createStep(sessionId3, action));
+      
+      //Nothin simulated so far
+      assertEquals(null, engine1.getLastAction());
+      assertEquals(null, engine2.getLastAction());
+      assertEquals(null, engine3.getLastAction());
+      
+      //Wrong step simulation doesn't trigger simulation
+//      instance.simulateStep(1);
+//      assertEquals(null, engine1.getLastAction());
+//      assertEquals(null, engine2.getLastAction());
+//      assertEquals(null, engine3.getLastAction());
+      
+      //Simulation adds actions to engines
       instance.simulateStep(0);
-      assertEquals(action, engine.getLastAction());
+      assertEquals(action, engine1.getLastAction());
+      assertEquals(action, engine2.getLastAction());
+      assertEquals(action, engine3.getLastAction());
+  }
+  
+  @Test
+  public void testActionSorting() {
+      System.out.println("addStep");
   }
 }
