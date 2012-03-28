@@ -6,12 +6,6 @@ package network;
 
 import network.NetworkHandler;
 import domain.Step;
-import domain.StepInterface;
-import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import network.Session;
@@ -24,10 +18,23 @@ public class NetworkHandlerImpl extends NetworkHandler {
 
    private Handler handler;
    private Session session;
-   private ConcurrentLinkedQueue updateQueue;
+   private GameServer server;
+   private ConcurrentLinkedQueue<NetworkMessage> updateQueue;
 
-   public NetworkHandlerImpl(Handler handler) {
+   public NetworkHandlerImpl(Handler handler, GameServer server) {
       this.handler = handler;
+      this.server = server;
+   }
+
+   public NetworkHandlerImpl(Handler handler, GameServer server, ConcurrentLinkedQueue<NetworkMessage> updateQueue) {
+      this.updateQueue = updateQueue;
+      this.handler = handler;
+      this.server = server;
+   }
+
+   public NetworkHandlerImpl(GameServer server) {
+      //this.Handler = new LobbyHandler();
+      this.server = server;
    }
 
    public NetworkHandlerImpl() {
@@ -49,18 +56,9 @@ public class NetworkHandlerImpl extends NetworkHandler {
    }
 
    @Override
-   public SessionInformation connectToServer(String nickname, String ip, String servername) throws MalformedURLException, NotBoundException, RemoteException {
-      Object lookupObject = Naming.lookup("rmi://" + ip + "/" + servername);
-      System.out.println(lookupObject.toString());
-      
-      if (lookupObject instanceof GameServer) {
-         GameServer server = (GameServer) lookupObject;
-         session = server.createSession(nickname, handler);
-         
-         return session.getSessionInformation();
-      } else {
-         throw new NotBoundException();
-      }
+   public SessionInformation connectToServer(String nickname) throws RemoteException, ServerFullException {
+      session = server.createSession(nickname, handler);
+      return session.getSessionInformation();
    }
 
    @Override
@@ -75,6 +73,11 @@ public class NetworkHandlerImpl extends NetworkHandler {
 
    @Override
    public void disconnectFromServer() {
+      throw new UnsupportedOperationException("Not supported yet.");
+   }
+
+   @Override
+   public void requestForUpdate() {
       throw new UnsupportedOperationException("Not supported yet.");
    }
 }

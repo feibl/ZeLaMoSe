@@ -4,12 +4,15 @@
  */
 package network;
 
-import java.io.Serializable;
-
 /**
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
-public interface NetworkMessage extends Serializable {
-  public Object getMessageObject();
+public class ServerFullException extends Exception {
+
+   @Override
+   public String getMessage() {
+      return "Connection Refused: Server ist Full";
+   }
+   
 }

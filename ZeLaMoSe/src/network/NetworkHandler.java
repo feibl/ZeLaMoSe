@@ -7,6 +7,7 @@ package network;
 import domain.StepInterface;
 import domain.StepProducerInterface;
 import java.net.InetAddress;
+import java.rmi.RemoteException;
 import java.util.Observable;
 import network.Session;
 
@@ -15,6 +16,7 @@ import network.Session;
  * @author Fabian Senn <fsenn@hsr.ch>
  */
 public abstract class NetworkHandler extends Observable implements StepInterface, StepProducerInterface {
+   public enum UpdateType {STEP, SESSION_ADDED};
 
    public abstract SessionInformation getAddedSession();
 
@@ -22,7 +24,9 @@ public abstract class NetworkHandler extends Observable implements StepInterface
 
    public abstract SessionInformation getRemovedSession();
 
-   public abstract SessionInformation connectToServer(String nickname, String ip, String servername) throws Exception;
+   public abstract SessionInformation connectToServer(String nickname) throws RemoteException, ServerFullException;
 
    public abstract void disconnectFromServer();
+   
+   public abstract void requestForUpdate();
 }

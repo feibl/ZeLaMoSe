@@ -11,12 +11,12 @@ import java.rmi.server.UnicastRemoteObject;
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
-class LobbySession extends UnicastRemoteObject implements Session {
+public class LobbySession extends UnicastRemoteObject implements Session {
 
    private SessionInformation sessionInformation;
    private Handler handler;
    
-   LobbySession(SessionInformation sessionInformation, Handler handler) throws RemoteException {
+   public LobbySession(SessionInformation sessionInformation, Handler handler) throws RemoteException {
       this.sessionInformation = sessionInformation;
       this.handler = handler;
    }
