@@ -17,7 +17,8 @@ public class BlockQueue {
     private Random randomgenerator = new Random(System.currentTimeMillis());
     
     
-    public Block getNextStone(){
+
+    public Block getNextBlock(){
         return new BlockI();
     }
     

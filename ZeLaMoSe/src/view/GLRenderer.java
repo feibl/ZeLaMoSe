@@ -6,18 +6,13 @@ package view;
 
 import domain.BlockQueue;
 import domain.FakeGameEngine;
+import domain.actions.*;
 import domain.block.Block;
-import domain.actions.Action;
-import domain.actions.MoveAction;
-import domain.actions.RotateAction;
 import domain.actions.RotateAction.Direction;
 import java.awt.Color;
 import java.util.Observable;
 import java.util.Observer;
-import javax.media.opengl.GL;
-import javax.media.opengl.GL2;
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLEventListener;
+import javax.media.opengl.*;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 
@@ -27,17 +22,25 @@ import javax.media.opengl.glu.GLU;
  */
 class GLRenderer implements GLEventListener, Observer {
 
-    private int width, heigth, blocksize;
+    private int viewportWidth, viewportHeight, blocksize;
+    private final int gridWidth = 12, gridHeight = 24;
     private FakeGameEngine engine;
-    private Block currentStone;
+    private Block currentBlock;
     private BlockQueue queue = new BlockQueue();
-    private final int defaultX = 4, defaultY = 15;
+    private final int defaultX = 4, defaultY = 22;
+    private Color[][] grid;
+    private Color bgColor = Color.BLACK;
+    private Color garbageLineColor = new Color(139, 0, 0);
+    private boolean debug = true;
 
     public GLRenderer(int width, int height, int blocksize) {
-        this.width = width;
-        this.heigth = height;
+        this.viewportWidth = width;
+        this.viewportHeight = height;
         this.blocksize = blocksize;
-        currentStone = queue.getNextStone();
+        currentBlock = queue.getNextBlock();
+        currentBlock.setX(4);
+        currentBlock.setY(24);
+        initStackGrid();
     }
 
     @Override
@@ -47,10 +50,15 @@ class GLRenderer implements GLEventListener, Observer {
 
         gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         gl.glLineWidth(1.0f);
-        gl.glViewport(0, 0, width, heigth);
+        gl.glViewport(0, 0, viewportWidth, viewportHeight);
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();
-        glu.gluOrtho2D(0, width, 0, heigth);
+
+        if (debug) {
+            glu.gluOrtho2D(-100, viewportWidth + 100, -100, viewportHeight + 100);
+        } else {
+            glu.gluOrtho2D(0, viewportWidth, 0, viewportHeight);
+        }
     }
 
     @Override
@@ -61,8 +69,12 @@ class GLRenderer implements GLEventListener, Observer {
     public void display(GLAutoDrawable drawable) {
         GL2 gl = drawable.getGL().getGL2();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-        drawGrid(gl);
-        drawCurrentStone(gl);
+
+
+        drawStackGrid(gl);
+        drawCurrentBlock(gl);
+
+        drawGridLines(gl);
     }
 
     @Override
@@ -80,38 +92,38 @@ class GLRenderer implements GLEventListener, Observer {
         actionHandling(engine.getLastAction());
     }
 
+//   - rotation (direction): rotate current block in direction by 90
+// * - move (direction, speed): move block in direction (left, right, down) with speed (number of grids) 
+// * - rmline (number of lines, offset): remove a number of lines, first with offset from bottom
+// * - newline (line definition): add new line to bottom. line according to supplied definition
+// * - A new block enters the game
     private void actionHandling(Action action) {
         switch (action.getType()) {
             case ROTATION:
                 System.out.println("rotation");
-                handleRotateAction(((RotateAction)action).getDirection());
+                handleRotateAction(((RotateAction) action).getDirection());
                 break;
             case MOVE:
                 System.out.println("move");
-                handleMoveAction(((MoveAction)action).getDirection());
-                break;
-            case HARDDROP:
-                System.out.println("harddrop");
-                HandleHarddropAction();
+                handleMoveAction((MoveAction) action);
                 break;
             case NEWBLOCK:
                 System.out.println("newblock");
-                HandleNewblockAction();
+                HandleNewblockAction(((NewblockAction) action).getBlocktype());
                 break;
             case NEWLINE:
-                System.out.println("newln");
+                handleNewlineAction(((NewlineAction) action).getLine());
                 break;
             case RMLINE:
-                System.out.println("rmln");
+                handleRmlineAction((RmlineAction) action);
                 break;
         }
     }
 
-    private void drawGrid(GL2 gl) {
+    private void drawGridLines(GL2 gl) {
 
 
         float red, green, blue;
-
         ////////////////////
         //drawing the grid
         red = 0.2f;
@@ -123,73 +135,140 @@ class GLRenderer implements GLEventListener, Observer {
         gl.glBegin(GL.GL_LINES);
 
         //draw the vertical lines
-        for (int x = 0; x <= width; x += blocksize) {
+        for (int x = 0; x <= viewportWidth; x += blocksize) {
             gl.glVertex2d(x, 0);
-            gl.glVertex2d(x, heigth);
+            gl.glVertex2d(x, viewportHeight);
         }
 
         //draw the horizontal lines
-        for (int y = 0; y <= heigth; y += blocksize) {
+        for (int y = 0; y <= viewportHeight; y += blocksize) {
             gl.glVertex2d(0, y);
-            gl.glVertex2d(width, y);
+            gl.glVertex2d(viewportWidth, y);
         }
 
         gl.glEnd();
     }
 
+    private void drawCurrentBlock(GL2 gl) {
+        Color blockColor = currentBlock.getColor();
 
-
-    private void drawCurrentStone(GL2 gl) {
-        Color stoneColor = currentStone.getColor();
-
-        gl.glColor3f(stoneColor.getRed(), stoneColor.getGreen(), stoneColor.getBlue());
+        gl.glColor3f(blockColor.getRed(), blockColor.getGreen(), blockColor.getBlue());
 
         gl.glBegin(GL2.GL_QUADS);
-        int x = currentStone.getX();
-        int y = currentStone.getY();
-        boolean[][] grid = currentStone.getStoneGrid();
+        int x = currentBlock.getX();
+        int y = currentBlock.getY();
+        boolean[][] grid = currentBlock.getStoneGrid();
         for (int a = 0; a < 4; a++) {
             for (int b = 0; b < 4; b++) {
                 if (grid[a][b]) {
-                    gl.glVertex2i(blocksize * (x + a), blocksize*(y-b));
-                    gl.glVertex2i(blocksize * (x + a), blocksize*(y-b-1));
-                    gl.glVertex2i(blocksize * (x + 1 + a) , blocksize*(y-b-1));
-                    gl.glVertex2i(blocksize * (x + 1 + a), blocksize*(y-b));
+                    gl.glVertex2i(blocksize * (x + a), blocksize * (y - b));
+                    gl.glVertex2i(blocksize * (x + a), blocksize * (y - b - 1));
+                    gl.glVertex2i(blocksize * (x + 1 + a), blocksize * (y - b - 1));
+                    gl.glVertex2i(blocksize * (x + 1 + a), blocksize * (y - b));
                 }
             }
         }
-
         gl.glEnd();
     }
 
-    private void handleRotateAction(Direction direction) {
-        if(direction == Direction.LEFT)
-            currentStone.turnleft();
-        else
-            currentStone.turnright();
+    private void initStackGrid() {
+        grid = new Color[gridWidth][gridHeight];
+        for (int i = 0; i < gridWidth; i++) {
+            for (int j = 0; j < gridHeight; j++) {
+                grid[i][j] = bgColor;
+            }
+        }
     }
 
-    private void handleMoveAction(MoveAction.Direction direction) {
-        switch(direction){
+    private void drawStackGrid(GL2 gl) {
+
+        for (int i = 0; i < gridWidth; i++) {
+            for (int j = 0; j < gridHeight; j++) {
+
+                Color colorField = grid[i][j];
+                gl.glColor3f(colorField.getRed(), colorField.getGreen(), colorField.getBlue());
+
+                gl.glBegin(GL2.GL_QUADS);
+
+                gl.glVertex2i(blocksize * i, blocksize * (j + 1));
+                gl.glVertex2i(blocksize * i, blocksize * (j));
+                gl.glVertex2i(blocksize * (i + 1), blocksize * (j));
+                gl.glVertex2i(blocksize * (i + 1), blocksize * (j + 1));
+
+                gl.glEnd();
+            }
+        }
+
+
+    }
+
+    private void projectCurrentblockToGrid() {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (currentBlock.getStoneGrid()[i][j]) {
+                    grid[currentBlock.getX() + i][currentBlock.getY() + j] = currentBlock.getColor();
+                }
+            }
+        }
+    }
+
+    private void handleRotateAction(Direction direction) {
+        if (direction == Direction.LEFT) {
+            currentBlock.turnleft();
+        } else {
+            currentBlock.turnright();
+        }
+    }
+
+    private void handleMoveAction(MoveAction action) {
+        switch (action.getDirection()) {
             case DOWN:
-                currentStone.setY(currentStone.getY()-1);
+                currentBlock.setY(currentBlock.getY() - action.getSpeed());
                 break;
             case LEFT:
-                currentStone.setX(currentStone.getX()-1);
+                currentBlock.setX(currentBlock.getX() - action.getSpeed());
                 break;
             case RIGHT:
-                currentStone.setX(currentStone.getX()+1);
+                currentBlock.setX(currentBlock.getX() + action.getSpeed());
                 break;
         }
     }
 
-    private void HandleHarddropAction() {
-        currentStone.setY(2);
+    private void HandleNewblockAction(Block block) {
+        projectCurrentblockToGrid();
+        currentBlock = block;
+        currentBlock.setX(defaultX);
+        currentBlock.setY(defaultY);
     }
 
-    private void HandleNewblockAction() {
-        currentStone = queue.getNextStone();
-        currentStone.setX(defaultX);
-        currentStone.setY(defaultY);
+    private void handleNewlineAction(boolean[][] line) {
+
+        for (int i = 0; i < gridWidth; i++) {
+            for (int j = gridHeight - 1 - line[0].length; j >= 0; j--) {
+                grid[i][j + line[0].length] = grid[i][j];
+            }
+        }
+
+        for (int i = 0; i < line.length; i++) {
+            for (int j = 0; j < line[i].length; j++) {
+                if (line[i][j]) {
+                    grid[i][j] = garbageLineColor;
+                } else {
+                    grid[i][j] = bgColor;
+                }
+            }
+        }
+    }
+
+    private void handleRmlineAction(RmlineAction rmlineAction) {
+        int numOfLines = rmlineAction.getNumlines();
+        int offset = rmlineAction.getOffset();
+        
+        for (int i = 0; i < gridWidth; i++) {
+            for (int j = offset; j < gridHeight-numOfLines; j++) {
+                grid[i][j] = grid[i][j+numOfLines];
+            }
+        }
+        
     }
 }
