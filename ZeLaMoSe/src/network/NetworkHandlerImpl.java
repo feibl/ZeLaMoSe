@@ -6,9 +6,9 @@ package network;
 
 import network.NetworkHandler;
 import domain.Step;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import network.Session;
 
 /**
  *
@@ -17,24 +17,15 @@ import network.Session;
 public class NetworkHandlerImpl extends NetworkHandler {
 
    private Handler handler;
-   private Session session;
-   private GameServer server;
-   private ConcurrentLinkedQueue<NetworkMessage> updateQueue;
+   private Step lastStep;
+   private ConcurrentLinkedQueue<SessionInformation> addedSessions = new ConcurrentLinkedQueue<SessionInformation>();
+   private ConcurrentLinkedQueue<SessionInformation> removedSessions = new ConcurrentLinkedQueue<SessionInformation>();
+   private ConcurrentLinkedQueue<Step> steps = new ConcurrentLinkedQueue<Step>();
+   private SessionInformation lastAddedSession;
+   private SessionInformation lastRemovedSession;
 
-   public NetworkHandlerImpl(Handler handler, GameServer server) {
+   public void setHandler(Handler handler) {
       this.handler = handler;
-      this.server = server;
-   }
-
-   public NetworkHandlerImpl(Handler handler, GameServer server, ConcurrentLinkedQueue<NetworkMessage> updateQueue) {
-      this.updateQueue = updateQueue;
-      this.handler = handler;
-      this.server = server;
-   }
-
-   public NetworkHandlerImpl(GameServer server) {
-      //this.Handler = new LobbyHandler();
-      this.server = server;
    }
 
    public NetworkHandlerImpl() {
@@ -42,7 +33,7 @@ public class NetworkHandlerImpl extends NetworkHandler {
 
    @Override
    public SessionInformation getAddedSession() {
-      throw new UnsupportedOperationException("Not supported yet.");
+      return lastAddedSession;
    }
 
    @Override
@@ -52,23 +43,31 @@ public class NetworkHandlerImpl extends NetworkHandler {
 
    @Override
    public SessionInformation getRemovedSession() {
-      throw new UnsupportedOperationException("Not supported yet.");
+      return lastRemovedSession;
    }
 
    @Override
-   public SessionInformation connectToServer(String nickname) throws RemoteException, ServerFullException {
-      session = server.createSession(nickname, handler);
-      return session.getSessionInformation();
+   public SessionInformation connectToServer(String nickname, String serverName, String ip, ClientRemote clientRemote) throws Exception {
+      //Invoke this in a Thread with Callback Function
+      Object lookupObject = Naming.lookup("rmi://" + ip + '/' + serverName);
+
+      if (lookupObject instanceof GameServerRemote) {
+         GameServerRemote server = (GameServerRemote) lookupObject;
+         return server.createSession(nickname, clientRemote);
+      } else {
+         throw new RemoteException();
+      }
+
    }
 
    @Override
-   public void addStep(Step step) {
+   public void addStep(Step step) throws RemoteException {
       throw new UnsupportedOperationException("Not supported yet.");
    }
 
    @Override
    public Step getStep() {
-      throw new UnsupportedOperationException("Not supported yet.");
+      return lastStep;
    }
 
    @Override
@@ -76,8 +75,39 @@ public class NetworkHandlerImpl extends NetworkHandler {
       throw new UnsupportedOperationException("Not supported yet.");
    }
 
+   public void notifyStepReceived(Step step) {
+      throw new UnsupportedOperationException("Not supported yet.");
+   }
+
    @Override
    public void requestForUpdate() {
-      throw new UnsupportedOperationException("Not supported yet.");
+//      if (!updateQueue.isEmpty()) {
+//         NetworkMessage message = updateQueue.poll();
+//         UpdateType updateType = null;
+//         if (message instanceof SessionAddedMessage) {
+//            lastAddedSession = (SessionInformation) message.getMessageObject();
+//            updateType = UpdateType.SESSION_ADDED;
+//         }
+//         if (message instanceof SessionRemovedMessage) {
+//            lastRemovedSession = (SessionInformation) message.getMessageObject();
+//            updateType = UpdateType.SESSION_REMOVED;
+//         }
+//         setChanged();
+//         notifyObservers(updateType);
+//      }
+   }
+
+   public void notifySessionAdded(SessionInformation addedSession) {
+      lastAddedSession = addedSession;
+      setChanged();
+      notifyObservers();
+      lastAddedSession = null;
+   }
+
+   public void notifySessionRemoved(SessionInformation removedSession) {
+      lastRemovedSession = removedSession;
+      setChanged();
+      notifyObservers();
+      lastAddedSession = null;
    }
 }

@@ -4,16 +4,10 @@
  */
 package network;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-import java.util.List;
-
 /**
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
-public interface GameServer extends Remote{
-  public Session createSession(String nickname, Handler handler) throws RemoteException, ServerFullException;
-  public List<SessionInformation> getSessionList() throws RemoteException;
-  public void startGame() throws RemoteException;
+public interface GameServer {
+   public void startGame();
 }
