@@ -81,12 +81,12 @@ public abstract class Block {
     }
     
 
-    public void turnright() {
+    public void rotateRight() {
         rotation = (rotation + 90) % 360;
         calcGrid();
     }
 
-    public void turnleft() {
+    public void rotateLeft() {
         if (rotation == 0) {
             rotation = 270;
         } else {
@@ -100,7 +100,7 @@ public abstract class Block {
     protected abstract void rotation180 (boolean[][] grid);
     protected abstract void rotation270 (boolean[][] grid);
     
-    public boolean[][] getStoneGrid() {
+    public boolean[][] getBlockGrid() {
         return stoneGrid;
     }
     
@@ -154,10 +154,10 @@ public abstract class Block {
    
     public static void main(String[] args) {
         Random randomGenerator = new Random(System.currentTimeMillis());
-        Block testStone =  (BlockType.values()[randomGenerator.nextInt(BlockType.values().length)]).createBlock();
-
+//        Block testStone =  (BlockType.values()[randomGenerator.nextInt(BlockType.values().length)]).createBlock();
+        Block testStone = new BlockT();
         for (int i = 0; i < 4; i++) {
-            testStone.turnright();
+            testStone.rotateRight();
             System.out.println("Height: " + testStone.getHeight());
             System.out.println("Width: " + testStone.getWidth());
             testStone.print();

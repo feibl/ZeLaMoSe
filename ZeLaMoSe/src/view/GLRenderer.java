@@ -22,16 +22,18 @@ import javax.media.opengl.glu.GLU;
  */
 class GLRenderer implements GLEventListener, Observer {
 
+    private boolean debug = true;
+    
     private int viewportWidth, viewportHeight, blocksize;
     private final int gridWidth = 12, gridHeight = 24;
     private FakeGameEngine engine;
     private Block currentBlock;
     private BlockQueue queue = new BlockQueue();
-    private final int defaultX = 4, defaultY = 22;
+    private final int defaultX = 4, defaultY = 23;
     private Color[][] grid;
     private Color bgColor = Color.BLACK;
     private Color garbageLineColor = new Color(139, 0, 0);
-    private boolean debug = true;
+    
 
     public GLRenderer(int width, int height, int blocksize) {
         this.viewportWidth = width;
@@ -157,7 +159,7 @@ class GLRenderer implements GLEventListener, Observer {
         gl.glBegin(GL2.GL_QUADS);
         int x = currentBlock.getX();
         int y = currentBlock.getY();
-        boolean[][] grid = currentBlock.getStoneGrid();
+        boolean[][] grid = currentBlock.getBlockGrid();
         for (int a = 0; a < 4; a++) {
             for (int b = 0; b < 4; b++) {
                 if (grid[a][b]) {
@@ -205,7 +207,7 @@ class GLRenderer implements GLEventListener, Observer {
     private void projectCurrentblockToGrid() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                if (currentBlock.getStoneGrid()[i][j]) {
+                if (currentBlock.getBlockGrid()[i][j]) {
                     grid[currentBlock.getX() + i][currentBlock.getY() + j] = currentBlock.getColor();
                 }
             }
@@ -214,9 +216,9 @@ class GLRenderer implements GLEventListener, Observer {
 
     private void handleRotateAction(Direction direction) {
         if (direction == Direction.LEFT) {
-            currentBlock.turnleft();
+            currentBlock.rotateLeft();
         } else {
-            currentBlock.turnright();
+            currentBlock.rotateRight();
         }
     }
 
