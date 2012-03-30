@@ -8,7 +8,10 @@ import network.NetworkHandler;
 import domain.Step;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  *
@@ -23,12 +26,15 @@ public class NetworkHandlerImpl extends NetworkHandler {
    private ConcurrentLinkedQueue<Step> steps = new ConcurrentLinkedQueue<Step>();
    private SessionInformation lastAddedSession;
    private SessionInformation lastRemovedSession;
+   private SessionInformation ownSession;
+   private ExecutorService threadPool;
 
    public void setHandler(Handler handler) {
       this.handler = handler;
    }
 
    public NetworkHandlerImpl() {
+      threadPool = Executors.newFixedThreadPool(1);
    }
 
    @Override
@@ -47,17 +53,8 @@ public class NetworkHandlerImpl extends NetworkHandler {
    }
 
    @Override
-   public SessionInformation connectToServer(String nickname, String serverName, String ip, ClientRemote clientRemote) throws Exception {
-      //Invoke this in a Thread with Callback Function
-      Object lookupObject = Naming.lookup("rmi://" + ip + '/' + serverName);
-
-      if (lookupObject instanceof GameServerRemote) {
-         GameServerRemote server = (GameServerRemote) lookupObject;
-         return server.createSession(nickname, clientRemote);
-      } else {
-         throw new RemoteException();
-      }
-
+   public void connectToServer(final String nickname, final String serverName, final String ip) {
+      threadPool.submit(new ConnectionRunnable(this, ip, serverName, nickname));
    }
 
    @Override
@@ -109,5 +106,21 @@ public class NetworkHandlerImpl extends NetworkHandler {
       setChanged();
       notifyObservers();
       lastAddedSession = null;
+   }
+
+   void notifyConnectionEstablished(SessionInformation session) {
+      ownSession = session;
+      setChanged();
+      notifyObservers(UpdateType.CONNECTION_ESTABLISHED);
+   }
+
+   void notifyExceptionThrown(Exception ex) {
+      setChanged();
+      notifyObservers(UpdateType.EXCEPTION_THROWN);
+   }
+
+   @Override
+   public SessionInformation getOwnSession() {
+      return ownSession;
    }
 }
