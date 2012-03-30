@@ -4,10 +4,12 @@
  */
 package domain;
 
+import java.rmi.RemoteException;
+
 /**
  *
  * @author chrigi
  */
 public interface StepInterface {
-    public void addStep(Step step);
+    public void addStep(Step step) throws RemoteException;
 }
