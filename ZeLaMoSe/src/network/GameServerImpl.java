@@ -10,6 +10,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,20 +33,23 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
       SessionInformation sInfo = new SessionInformation(id++, nickname);
       for (int i = 0; i < sessionList.length; i++) {
          if (sessionList[i] == null) {
-            LobbySession lobbySession = new LobbySession(sInfo, clientRemote);
+            LobbySession lobbySession = new LobbySession(sInfo, clientRemote, this);
             clientRemote.reportServerRemote(lobbySession);
-            sessionList[i] = lobbySession;
             notifyOthersSessionAdded(lobbySession);
+            sessionList[i] = lobbySession;
             return sInfo;
          }
       }
       throw new ServerFullException();
    }
 
+   @Override
    public List<SessionInformation> getSessionList() {
       List<SessionInformation> returnList = new ArrayList<SessionInformation>();
       for (Session session : sessionList) {
-         returnList.add(session.getSessionInformation());
+         if (session != null) {
+            returnList.add(session.getSessionInformation());
+         }
       }
       return returnList;
    }
@@ -69,7 +74,7 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
          Session s = sessionList[i];
          if (s != null) {
             try {
-               s.getClientRemote().notifySessionRemoved(session.getSessionInformation());
+               s.sendSessionRemovedMessage(session.getSessionInformation());
             } catch (RemoteException ex) {
                removeSession(s);
             }
@@ -82,11 +87,24 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
          Session s = sessionList[i];
          if (s != null && s != session) {
             try {
-               s.getClientRemote().notifySessionAdded(session.getSessionInformation());
+               s.sendSessionAddedMessage(session.getSessionInformation());
             } catch (RemoteException ex) {
                removeSession(s);
             }
          }
+      }
+   }
+
+   public void postMessage(Session sender, String message) {
+      for (Session s : sessionList) {
+         if (s != null) {
+            try {
+               s.sendMessage(sender.getSessionInformation(), message);
+            } catch (RemoteException ex) {
+               removeSession(s);
+            }
+         }
+
       }
    }
 }

@@ -18,5 +18,4 @@ public interface Handler {
    public void addChatMessage(String message);
    public void addStep(Step step);
    public List<SessionInformation> getOtherSessions();
-   public void setRemote(ServerRemote serverRemote);
 }

@@ -28,33 +28,40 @@ public class LobbyHandler extends UnicastRemoteObject implements ClientRemote, H
    }
 
    @Override
-   public void notifyChatMessage(String sender, String message) throws RemoteException {
-      throw new UnsupportedOperationException("Not supported yet.");
+   public void notifyChatMessage(ChatMessage message) {
+      networkHandlerImpl.notifyChatMessageReceived(message);
    }
 
    @Override
-   public void notifySessionAdded(SessionInformation session) throws RemoteException {
+   public void notifySessionAdded(SessionInformation session) {
       networkHandlerImpl.notifySessionAdded(session);
    }
 
    @Override
-   public void notifySessionRemoved(SessionInformation session) throws RemoteException {
+   public void notifySessionRemoved(SessionInformation session) {
       networkHandlerImpl.notifySessionRemoved(session);
    }
 
    @Override
-   public void reportServerRemote(ServerRemote remote) throws RemoteException {
+   public void reportServerRemote(ServerRemote remote) {
       this.serverRemote = remote;
    }
 
    @Override
    public void disconnect() {
-      throw new UnsupportedOperationException("Not supported yet.");
+      try {
+         serverRemote.disconnect();
+      } catch (RemoteException ex) {
+      }
    }
 
    @Override
    public void addChatMessage(String message) {
-      throw new UnsupportedOperationException("Not supported yet.");
+      try {
+         serverRemote.addChatMessage(message);
+      } catch (RemoteException ex) {
+         networkHandlerImpl.notifyExceptionThrown(ex);
+      }
    }
 
    @Override
@@ -64,11 +71,6 @@ public class LobbyHandler extends UnicastRemoteObject implements ClientRemote, H
 
    @Override
    public List<SessionInformation> getOtherSessions() {
-      throw new UnsupportedOperationException("Not supported yet.");
-   }
-
-   @Override
-   public void setRemote(ServerRemote serverRemote) {
       throw new UnsupportedOperationException("Not supported yet.");
    }
 }

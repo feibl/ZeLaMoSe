@@ -6,6 +6,7 @@ package networkTest;
 
 import domain.Step;
 import java.rmi.RemoteException;
+import network.ChatMessage;
 import network.ClientRemote;
 import network.ServerRemote;
 import network.SessionInformation;
@@ -14,14 +15,10 @@ import network.SessionInformation;
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
-public abstract class ClientRemoteAdapter implements ClientRemote {
+public class ClientRemoteAdapter implements ClientRemote {
 
    @Override
    public void notifyStep(Step step) throws RemoteException {
-   }
-
-   @Override
-   public void notifyChatMessage(String sender, String message) throws RemoteException {
    }
 
    @Override
@@ -34,5 +31,9 @@ public abstract class ClientRemoteAdapter implements ClientRemote {
 
    @Override
    public void reportServerRemote(ServerRemote remote) throws RemoteException {
+   }
+
+   @Override
+   public void notifyChatMessage(ChatMessage message) throws RemoteException {
    }
 }

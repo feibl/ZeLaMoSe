@@ -15,12 +15,14 @@ import java.util.List;
  */
 public class LobbySession extends UnicastRemoteObject implements ServerRemote, Session {
 
+   private GameServerImpl gameServer;
    private SessionInformation sessionInformation;
    private ClientRemote client;
-   
-   public LobbySession(SessionInformation sessionInformation, ClientRemote client) throws RemoteException {
+
+   public LobbySession(SessionInformation sessionInformation, ClientRemote client, GameServerImpl gameServer) throws RemoteException {
       this.sessionInformation = sessionInformation;
       this.client = client;
+      this.gameServer = gameServer;
    }
 
    @Override
@@ -28,22 +30,14 @@ public class LobbySession extends UnicastRemoteObject implements ServerRemote, S
       return sessionInformation;
    }
 
-   /**
-    * @return the handler
-    */
-   @Override
-   public ClientRemote getClientRemote() {
-      return client;
-   }
-
    @Override
    public void disconnect() throws RemoteException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      gameServer.removeSession(this);
    }
 
    @Override
    public void addChatMessage(String message) throws RemoteException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      gameServer.postMessage(this, message);
    }
 
    @Override
@@ -55,5 +49,24 @@ public class LobbySession extends UnicastRemoteObject implements ServerRemote, S
    public List<SessionInformation> getOtherSessions() throws RemoteException {
       throw new UnsupportedOperationException("Not supported yet.");
    }
-   
+
+   @Override
+   public void sendMessage(SessionInformation sender, String message) throws RemoteException {
+      client.notifyChatMessage(new ChatMessage(sender, message));
+   }
+
+   @Override
+   public void sendStep(Step step) throws RemoteException {
+      throw new UnsupportedOperationException("Not supported yet.");
+   }
+
+   @Override
+   public void sendSessionAddedMessage(SessionInformation sessionInfo) throws RemoteException {
+      client.notifySessionAdded(sessionInfo);
+   }
+
+   @Override
+   public void sendSessionRemovedMessage(SessionInformation sessionInfo) throws RemoteException {
+      client.notifySessionRemoved(sessionInfo);
+   }
 }

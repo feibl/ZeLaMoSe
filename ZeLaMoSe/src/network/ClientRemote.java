@@ -14,7 +14,7 @@ import java.rmi.RemoteException;
  */
 public interface ClientRemote extends Remote {
    public void notifyStep(Step step) throws RemoteException;
-   public void notifyChatMessage(String sender, String message) throws RemoteException;
+   public void notifyChatMessage(ChatMessage message) throws RemoteException;
    public void notifySessionAdded(SessionInformation session) throws RemoteException;
    public void notifySessionRemoved(SessionInformation session) throws RemoteException;
    public void reportServerRemote(ServerRemote remote) throws RemoteException;

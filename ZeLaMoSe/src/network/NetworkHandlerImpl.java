@@ -8,6 +8,7 @@ import network.NetworkHandler;
 import domain.Step;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -21,16 +22,20 @@ public class NetworkHandlerImpl extends NetworkHandler {
 
    private Handler handler;
    private Step lastStep;
-   private ConcurrentLinkedQueue<SessionInformation> addedSessions = new ConcurrentLinkedQueue<SessionInformation>();
-   private ConcurrentLinkedQueue<SessionInformation> removedSessions = new ConcurrentLinkedQueue<SessionInformation>();
-   private ConcurrentLinkedQueue<Step> steps = new ConcurrentLinkedQueue<Step>();
    private SessionInformation lastAddedSession;
    private SessionInformation lastRemovedSession;
    private SessionInformation ownSession;
+   private ChatMessage chatMessage;
    private ExecutorService threadPool;
-
+   private List<SessionInformation> sessionList;
+   private Exception thrownException;
+   
    public void setHandler(Handler handler) {
       this.handler = handler;
+   }
+
+   public Handler getHandler() {
+      return handler;
    }
 
    public NetworkHandlerImpl() {
@@ -53,7 +58,7 @@ public class NetworkHandlerImpl extends NetworkHandler {
    }
 
    @Override
-   public void connectToServer(final String nickname, final String serverName, final String ip) {
+   public void connectToServer(final String ip, final String serverName, final String nickname) {
       threadPool.submit(new ConnectionRunnable(this, ip, serverName, nickname));
    }
 
@@ -69,52 +74,27 @@ public class NetworkHandlerImpl extends NetworkHandler {
 
    @Override
    public void disconnectFromServer() {
-      throw new UnsupportedOperationException("Not supported yet.");
+      threadPool.execute(new DisconnectionRunnable(handler));
    }
 
    public void notifyStepReceived(Step step) {
       throw new UnsupportedOperationException("Not supported yet.");
    }
 
-   @Override
-   public void requestForUpdate() {
-//      if (!updateQueue.isEmpty()) {
-//         NetworkMessage message = updateQueue.poll();
-//         UpdateType updateType = null;
-//         if (message instanceof SessionAddedMessage) {
-//            lastAddedSession = (SessionInformation) message.getMessageObject();
-//            updateType = UpdateType.SESSION_ADDED;
-//         }
-//         if (message instanceof SessionRemovedMessage) {
-//            lastRemovedSession = (SessionInformation) message.getMessageObject();
-//            updateType = UpdateType.SESSION_REMOVED;
-//         }
-//         setChanged();
-//         notifyObservers(updateType);
-//      }
-   }
-
    public void notifySessionAdded(SessionInformation addedSession) {
       lastAddedSession = addedSession;
       setChanged();
-      notifyObservers();
-      lastAddedSession = null;
+      notifyObservers(UpdateType.SESSION_ADDED);
    }
 
    public void notifySessionRemoved(SessionInformation removedSession) {
       lastRemovedSession = removedSession;
       setChanged();
-      notifyObservers();
-      lastAddedSession = null;
+      notifyObservers(UpdateType.SESSION_REMOVED);
    }
 
-   void notifyConnectionEstablished(SessionInformation session) {
-      ownSession = session;
-      setChanged();
-      notifyObservers(UpdateType.CONNECTION_ESTABLISHED);
-   }
-
-   void notifyExceptionThrown(Exception ex) {
+   public void notifyExceptionThrown(Exception ex) {
+      thrownException = ex;
       setChanged();
       notifyObservers(UpdateType.EXCEPTION_THROWN);
    }
@@ -122,5 +102,38 @@ public class NetworkHandlerImpl extends NetworkHandler {
    @Override
    public SessionInformation getOwnSession() {
       return ownSession;
+   }
+
+   public void notifyConnectionEstablished(SessionInformation ownSession, List<SessionInformation> sessionList) {
+      this.ownSession = ownSession;
+      this.sessionList = sessionList;
+      setChanged();
+      notifyObservers(UpdateType.CONNECTION_ESTABLISHED);
+   }
+
+   @Override
+   public List<SessionInformation> getSessionList() {
+      return sessionList;
+   }
+
+   @Override
+   public void sendChatMessage(final String message) {
+      threadPool.execute(new SendChatMessageRunnable(message, handler));    
+   }
+
+   void notifyChatMessageReceived(ChatMessage message) {
+      this.chatMessage = message;
+      setChanged();
+      notifyObservers(UpdateType.CHAT_MESSAGE_RECEIVED);
+   }
+
+   @Override
+   public ChatMessage getChatMessage() {
+      return chatMessage;
+   }
+
+   @Override
+   public Exception getThrownException() {
+      return thrownException;
    }
 }

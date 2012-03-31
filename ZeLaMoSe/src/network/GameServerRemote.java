@@ -14,4 +14,5 @@ import java.util.List;
  */
 public interface GameServerRemote extends Remote {
   public SessionInformation createSession(String nickname, ClientRemote clientRemote) throws RemoteException, ServerFullException;
+  public List<SessionInformation> getSessionList() throws RemoteException;
 }

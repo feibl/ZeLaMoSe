@@ -4,6 +4,7 @@
  */
 package network;
 
+import domain.Step;
 import java.rmi.RemoteException;
 
 /**
@@ -12,5 +13,9 @@ import java.rmi.RemoteException;
  */
 public interface Session {
    public SessionInformation getSessionInformation();
-   public ClientRemote getClientRemote();
+   public void sendMessage(SessionInformation sender, String message) throws RemoteException;
+   public void sendStep(Step step) throws RemoteException;
+   public void sendSessionAddedMessage(SessionInformation sessionInfo) throws RemoteException;
+   public void sendSessionRemovedMessage(SessionInformation sessionInfo) throws RemoteException;
+   //public ClientRemote getClientRemote();
 }
