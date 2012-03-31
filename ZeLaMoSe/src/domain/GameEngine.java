@@ -18,6 +18,10 @@ public class GameEngine extends Observable implements GameEngineInterface {
     private Action lastAction;
     private int sessionId;
     private Block[][] grid;
+
+    public Block[][] getGrid() {
+        return grid;
+    }
     int gridwidth = 12, gridheight = 24, defaultX = 4, defaultY = 23;
     private BlockQueue queue;
     private Block currentBlock;
@@ -30,6 +34,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
         this.sessionId = sessionId;
         grid = new Block[gridwidth][gridheight];
         queue = new BlockQueue(seed);
+        currentBlock = queue.getNextBlock();
     }
 
     public void setLastAction(Action action) {
@@ -177,6 +182,21 @@ public class GameEngine extends Observable implements GameEngineInterface {
         }
         currentBlock.setY(tempY);
         moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, fieldsToMove));
+    }
+
+    public void print() {
+        for (int i = 0; i < gridheight; i++) {
+            String lineOutput = "";
+            for (int j = 0; j < gridwidth; j++) {
+                if (grid[j][i] != null) {
+                    lineOutput += "[" + grid[j][i].getPrintLetter() + "]";
+                } else {
+                    lineOutput += "[ ]";
+                }
+            }
+            System.out.println(lineOutput);
+        }
+        System.out.println("");
     }
 
     /**

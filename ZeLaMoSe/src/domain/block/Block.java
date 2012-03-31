@@ -18,6 +18,7 @@ public abstract class Block {
     protected boolean[][] stoneGrid = new boolean[4][4];
     protected int rotation, x, y;
     private ArrayList<Class> subclasses;
+    protected String printLetter;
 
     public int getHeight() {
         int height = 0;
@@ -62,9 +63,10 @@ public abstract class Block {
         this.y  = y;
     }
      
-    public Block(Color c){
+    public Block(Color c,String printLetter){
         color = c;
         rotation = 0; 
+        this.printLetter = printLetter;
         rotation0(stoneGrid);
     }
         
@@ -133,7 +135,10 @@ public abstract class Block {
         }
         System.out.println();
     }
-    
+   public String getPrintLetter(){
+       return printLetter;
+   }
+   
    public void print() {
 
         System.out.println(rotation);
@@ -141,7 +146,7 @@ public abstract class Block {
             String lineOutput = "";
             for (int j = 0; j < 4; j++) {
                 if (stoneGrid[j][i]) {
-                    lineOutput += "[x]";
+                    lineOutput += "["+printLetter+"]";
                 } else {
                     lineOutput += "[ ]";
                 }
