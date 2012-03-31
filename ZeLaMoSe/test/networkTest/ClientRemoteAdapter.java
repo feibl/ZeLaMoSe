@@ -36,4 +36,8 @@ public class ClientRemoteAdapter implements ClientRemote {
    @Override
    public void notifyChatMessage(ChatMessage message) throws RemoteException {
    }
+
+   @Override
+   public void notifyGameStarted(ServerRemote remote) throws RemoteException {
+   }
 }

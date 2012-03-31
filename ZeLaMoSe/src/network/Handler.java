@@ -5,9 +5,6 @@
 package network;
 
 import domain.Step;
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-import java.util.List;
 
 /**
  *
@@ -17,5 +14,4 @@ public interface Handler {
   public void disconnect();
    public void addChatMessage(String message);
    public void addStep(Step step);
-   public List<SessionInformation> getOtherSessions();
 }

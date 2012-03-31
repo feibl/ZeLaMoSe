@@ -8,6 +8,8 @@ import domain.Step;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -70,7 +72,19 @@ public class LobbyHandler extends UnicastRemoteObject implements ClientRemote, H
    }
 
    @Override
-   public List<SessionInformation> getOtherSessions() {
-      throw new UnsupportedOperationException("Not supported yet.");
+   public void notifyGameStarted(ServerRemote newRemote) {
+      GameHandler newHandler = null;
+      try {
+         newHandler = new GameHandler(networkHandlerImpl, newRemote);
+      } catch (RemoteException ex) {
+         Logger.getLogger(LobbyHandler.class.getName()).log(Level.SEVERE, null, ex);
+      }
+      networkHandlerImpl.setHandler(newHandler);
+      try {
+         newRemote.reportClientRemote(newHandler);
+      } catch (RemoteException ex) {
+         networkHandlerImpl.notifyExceptionThrown(ex);
+      }
+      networkHandlerImpl.notifyGameStarted();
    }
 }

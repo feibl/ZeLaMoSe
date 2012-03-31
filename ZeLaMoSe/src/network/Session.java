@@ -18,4 +18,6 @@ public interface Session {
    public void sendSessionAddedMessage(SessionInformation sessionInfo) throws RemoteException;
    public void sendSessionRemovedMessage(SessionInformation sessionInfo) throws RemoteException;
    //public ClientRemote getClientRemote();
+
+   public void sendStartSignal() throws RemoteException;
 }

@@ -136,4 +136,9 @@ public class NetworkHandlerImpl extends NetworkHandler {
    public Exception getThrownException() {
       return thrownException;
    }
+
+   void notifyGameStarted() {
+      setChanged();
+      notifyObservers(UpdateType.GAME_STARTED);
+   }
 }

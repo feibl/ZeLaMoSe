@@ -56,7 +56,16 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
 
    @Override
    public void startGame() {
-      throw new UnsupportedOperationException("Not supported yet.");
+      for (int i = 0; i < sessionList.length; i++) {
+         Session s = sessionList[i];
+         if (s != null) {
+            try {
+               s.sendStartSignal();
+            } catch (RemoteException ex) {
+               removeSession(s);
+            }
+         }
+      }
    }
 
    public void removeSession(Session session) {
@@ -105,6 +114,15 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
             }
          }
 
+      }
+   }
+
+   public void setSession(Session oldSession, Session newSession) {
+      for (int i = 0; i < sessionList.length; i++) {
+         Session s = sessionList[i];
+         if (s != null && s == oldSession) {
+            sessionList[i] = newSession;
+         }
       }
    }
 }
