@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.DefaultListModel;
+import javax.swing.SwingUtilities;
 import network.NetworkHandler.UpdateType;
 
 /**
@@ -36,7 +37,7 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
       this.gameServer = gameServer;
       this.networkHandler = networkHandler;
       initComponents();
-      for(SessionInformation session : sessionList) {
+      for (SessionInformation session : sessionList) {
          model.addElement(session.getNickname());
       }
    }
@@ -58,7 +59,12 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         chatArea.setColumns(20);
         chatArea.setEditable(false);
@@ -80,7 +86,6 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
 
         jLabel1.setText("Playerlist:");
 
-        jTextField1.setText("jTextField1");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -139,8 +144,16 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
 
    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
       // TODO add your handling code here:
-      sendButton.doClick();
+      if (jTextField1.getText() != "") {
+         sendButton.doClick();
+      }
    }//GEN-LAST:event_jTextField1ActionPerformed
+
+   private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+      // TODO add your handling code here:
+      networkHandler.disconnectFromServer();
+      System.exit(0);
+   }//GEN-LAST:event_formWindowClosing
 
    /**
     * @param args the command line arguments
@@ -195,12 +208,37 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
 
    @Override
    public void update(Observable o, Object o1) {
-      switch((UpdateType)o1) {
+      switch ((UpdateType) o1) {
          case CHAT_MESSAGE_RECEIVED:
-            chatArea.append(networkHandler.getChatMessage().toString());
+            writeToChatArea(networkHandler.getChatMessage().toString());
+            break;
+         case SESSION_ADDED:
+            writeToChatArea(networkHandler.getAddedSession().getNickname() + " enters");
+            updatePlayerList(networkHandler.getSessionList());
+            break;
+         case SESSION_REMOVED:
+            writeToChatArea(networkHandler.getRemovedSession().getNickname() + " has left");
+            updatePlayerList(networkHandler.getSessionList());
             break;
          case EXCEPTION_THROWN:
             break;
       }
+   }
+
+   private void writeToChatArea(String message) {
+      chatArea.append(message + '\n');
+   }
+
+   private void updatePlayerList(final List<SessionInformation> newSessionList) {
+      SwingUtilities.invokeLater(new Runnable() {
+
+         @Override
+         public void run() {
+            model.clear();
+            for (SessionInformation session : newSessionList) {
+               model.addElement(session.getNickname());
+            }
+         }
+      });
    }
 }

@@ -171,19 +171,19 @@ public class MenuJFrame extends javax.swing.JFrame implements Observer {
       UpdateType type = (UpdateType) o1;
       switch (type) {
          case CONNECTION_ESTABLISHED:
-            synchronized (networkHandler) {
-               List<SessionInformation> sessionList = networkHandler.getSessionList();
-               final ClientJFrame clientJFrame = new ClientJFrame(gameServerImpl, networkHandler, sessionList);
-               
-               java.awt.EventQueue.invokeLater(new Runnable() {
-                  public void run() {
-                     clientJFrame.setVisible(true);
-                  }
-               });
+            List<SessionInformation> sessionList = networkHandler.getSessionList();
+            final ClientJFrame clientJFrame = new ClientJFrame(gameServerImpl, networkHandler, sessionList);
 
-               networkHandler.deleteObserver(this);
-               networkHandler.addObserver(clientJFrame);
-            }
+            java.awt.EventQueue.invokeLater(new Runnable() {
+
+               public void run() {
+                  clientJFrame.setVisible(true);
+               }
+            });
+
+            networkHandler.deleteObserver(this);
+            networkHandler.addObserver(clientJFrame);
+
             setVisible(false);
             break;
          case EXCEPTION_THROWN:

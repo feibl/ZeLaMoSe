@@ -50,7 +50,7 @@ class GameSession extends UnicastRemoteObject implements Session, ServerRemote{
 
    @Override
    public void sendStartSignal() throws RemoteException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      // Throw Exception because Game already started?
    }
 
    @Override
