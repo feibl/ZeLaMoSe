@@ -4,10 +4,8 @@
  */
 package networkTest;
 
-import network.ConnectionRunnable;
-import network.DisconnectionRunnable;
-import network.NetworkHandlerImpl;
-import network.SendChatMessageRunnable;
+import domain.Step;
+import network.*;
 
 /**
  *
@@ -28,6 +26,11 @@ public class NetworkHandlerImplWithoutThreads extends NetworkHandlerImpl{
    @Override
    public void sendChatMessage(String message) {
       new SendChatMessageRunnable(message, super.getHandler()).run();
+   }
+
+   @Override
+   public void addStep(Step step) {
+      new AddStepRunnable(step, super.getHandler()).run();
    }
    
 }

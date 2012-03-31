@@ -68,7 +68,7 @@ public class LobbyHandler extends UnicastRemoteObject implements ClientRemote, H
 
    @Override
    public void addStep(Step step) {
-      throw new UnsupportedOperationException("Not supported yet.");
+      //throw Exception?
    }
 
    @Override

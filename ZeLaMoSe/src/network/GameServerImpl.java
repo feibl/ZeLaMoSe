@@ -4,6 +4,7 @@
  */
 package network;
 
+import domain.Step;
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
@@ -122,6 +123,18 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
          Session s = sessionList[i];
          if (s != null && s == oldSession) {
             sessionList[i] = newSession;
+         }
+      }
+   }
+
+   void distributeStepToOthers(Session sender, Step step) {
+      for (Session s : sessionList) {
+         if (s != null && s != sender) {
+            try {
+               s.sendStep(step);
+            } catch (RemoteException ex) {
+               removeSession(s);
+            }
          }
       }
    }

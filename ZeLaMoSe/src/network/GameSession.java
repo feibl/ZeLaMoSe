@@ -35,7 +35,7 @@ class GameSession extends UnicastRemoteObject implements Session, ServerRemote{
 
    @Override
    public void sendStep(Step step) throws RemoteException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      client.notifyStep(step);
    }
 
    @Override
@@ -65,7 +65,7 @@ class GameSession extends UnicastRemoteObject implements Session, ServerRemote{
 
    @Override
    public void addStep(Step step) throws RemoteException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      gameServer.distributeStepToOthers(this, step);
    }
 
    @Override

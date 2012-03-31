@@ -8,6 +8,8 @@ import domain.Step;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -34,12 +36,16 @@ class GameHandler extends UnicastRemoteObject implements Handler, ClientRemote{
 
    @Override
    public void addStep(Step step) {
-      throw new UnsupportedOperationException("Not supported yet.");
+      try {
+         server.addStep(step);
+      } catch (RemoteException ex) {
+         networkHandler.notifyExceptionThrown(ex);
+      }
    }
 
    @Override
    public void notifyStep(Step step) throws RemoteException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      networkHandler.notifyStepReceived(step);
    }
 
    @Override
