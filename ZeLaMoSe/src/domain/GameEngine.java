@@ -23,7 +23,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
     private Block currentBlock;
 
     public GameEngine(int sessionId) {
-        this(sessionId, System.currentTimeMillis());
+        this(sessionId, System.nanoTime());
     }
 
     public GameEngine(int sessionId, long seed) {
@@ -32,7 +32,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
         queue = new BlockQueue(seed);
     }
 
-    public void setLasAction(Action action) {
+    public void setLastAction(Action action) {
         lastAction = action;
         setChanged();
         notifyObservers();
@@ -69,11 +69,9 @@ public class GameEngine extends Observable implements GameEngineInterface {
             case LEFT:
                 moveSidewards(-1, moveAction);
                 break;
-
             case RIGHT:
                 moveSidewards(1, moveAction);
                 break;
-
             case DOWN:
                 moveDownwards(moveAction);
                 break;
@@ -81,12 +79,14 @@ public class GameEngine extends Observable implements GameEngineInterface {
         }
     }
 
-    private boolean gotCollision() {
+    private boolean checkForCollision() {
         boolean[][] blockGrid = currentBlock.getBlockGrid();
-        for (int x = 0; x < 4; x++) {
-            for (int y = 0; y < 4; y++) {
+        for (int x = 0; x < blockGrid.length; x++) {
+            for (int y = 0; y < blockGrid.length; y++) {
                 if (blockGrid[x][y]) {
                     try {
+                        //TODO
+                        //Warum - y ?
                         if (grid[currentBlock.getX() + x][currentBlock.getY() - y] != null) {
                             return true;
                         }
@@ -106,17 +106,17 @@ public class GameEngine extends Observable implements GameEngineInterface {
      */
     private void moveSidewards(int offset, MoveAction moveAction) {
         currentBlock.setX(currentBlock.getX() + offset);
-        if (gotCollision()) {
+        if (checkForCollision()) {
             currentBlock.setX(currentBlock.getX() - offset);
         } else {
-            setLasAction(moveAction);
+            setLastAction(moveAction);
         }
     }
 
-    private void saveCurrenblockTogrid() {
+    private void saveCurrenblockToGrid() {
         boolean[][] blockGrid = currentBlock.getBlockGrid();
-        for (int x = 0; x < 4; x++) {
-            for (int y = 0; y < 4; y++) {
+        for (int x = 0; x < blockGrid.length; x++) {
+            for (int y = 0; y < blockGrid.length; y++) {
                 if (blockGrid[x][y]) {
                     grid[currentBlock.getX() + x][currentBlock.getY() - y] = currentBlock;
                 }
@@ -141,7 +141,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
         }
 
         for (Integer i : linesToRemove) {
-            setLasAction(new RmlineAction(0, 1, i));
+            setLastAction(new RmlineAction(0, 1, i));
         }
 
     }
@@ -150,19 +150,20 @@ public class GameEngine extends Observable implements GameEngineInterface {
         switch (action.getDirection()) {
             case LEFT:
                 currentBlock.rotateLeft();
-                if (gotCollision()) {
+                if (checkForCollision()) {
                     currentBlock.rotateRight();
                 } else {
-                    setLasAction(action);
+                    setLastAction(action);
                 }
                 break;
             case RIGHT:
                 currentBlock.rotateRight();
-                if (gotCollision()) {
+                if (checkForCollision()) {
                     currentBlock.rotateLeft();
                 } else {
-                    setLasAction(action);
+                    setLastAction(action);
                 }
+                break;
         }
     }
 
@@ -170,22 +171,20 @@ public class GameEngine extends Observable implements GameEngineInterface {
         //evaluate first how many gridfields the current stone can be moved down
         int tempY = currentBlock.getY();
         int fieldsToMove = 0;
-        while (!gotCollision()) {
+        while (!checkForCollision()) {
             currentBlock.setY(currentBlock.getY() - 1);
             fieldsToMove++;
         }
-        
         currentBlock.setY(tempY);
-        
         moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, fieldsToMove));
-
     }
 
     /**
-     * moves the current block downwards, the amount of gridfields moved depends on the "speed" set in the moveAction
+     * moves the current block downwards, the amount of gridfields moved depends on the "speed" set in the
+     * moveAction
      *
-     * If a collision happens the currentBlock will be moved on gridfield upwards, a new Block will be generated and it
-     * will be checked if there are lines to remove
+     * If a collision happens the currentBlock will be moved on gridfield upwards, a new Block will be generated
+     * and it will be checked if there are lines to remove
      *
      *
      * @param moveAction
@@ -193,23 +192,22 @@ public class GameEngine extends Observable implements GameEngineInterface {
     private void moveDownwards(MoveAction moveAction) {
         int speed = moveAction.getSpeed();
         currentBlock.setY(currentBlock.getY() - speed);
-        if (gotCollision()) {
+        if (checkForCollision()) {
             currentBlock.setY(currentBlock.getY() + 1);
 
-            saveCurrenblockTogrid();
+            saveCurrenblockToGrid();
 
             currentBlock = queue.getNextBlock();
-            setLasAction(new NewblockAction(currentBlock, sessionId));
+            setLastAction(new NewblockAction(currentBlock, sessionId));
 
             checkForLinesToRemove();
 
-            if (gotCollision()) {
+            if (checkForCollision()) {
                 //if collision got detected this must be becaus of the newly created block
-                
                 //TODO generate GameOverAction
             }
         } else {
-            setLasAction(moveAction);
+            setLastAction(moveAction);
         }
     }
 }
