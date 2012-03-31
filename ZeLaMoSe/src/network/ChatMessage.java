@@ -26,6 +26,11 @@ public class ChatMessage implements Serializable {
    public SessionInformation getSender() {
       return sender;
    }
+
+   @Override
+   public String toString() {
+      return sender.getNickname() + ": " + message;
+   }
    
    
 }

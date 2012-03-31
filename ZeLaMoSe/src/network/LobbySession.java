@@ -46,11 +46,6 @@ public class LobbySession extends UnicastRemoteObject implements ServerRemote, S
    }
 
    @Override
-   public List<SessionInformation> getOtherSessions() throws RemoteException {
-      throw new UnsupportedOperationException("Not supported yet.");
-   }
-
-   @Override
    public void sendMessage(SessionInformation sender, String message) throws RemoteException {
       client.notifyChatMessage(new ChatMessage(sender, message));
    }
@@ -68,5 +63,17 @@ public class LobbySession extends UnicastRemoteObject implements ServerRemote, S
    @Override
    public void sendSessionRemovedMessage(SessionInformation sessionInfo) throws RemoteException {
       client.notifySessionRemoved(sessionInfo);
+   }
+
+   @Override
+   public void sendStartSignal() throws RemoteException {
+      GameSession newSession = new GameSession(sessionInformation, gameServer);
+      gameServer.setSession(this, newSession);
+      client.notifyGameStarted(newSession);
+   }
+
+   @Override
+   public void reportClientRemote(ClientRemote clientRemote) throws RemoteException {
+      throw new UnsupportedOperationException("Not supported yet.");
    }
 }

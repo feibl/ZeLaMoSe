@@ -4,11 +4,13 @@
  */
 package domain.actions;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Cyrill
  */
-public class Action {
+public class Action implements Serializable{
     
     ActionType type;
     

@@ -5,13 +5,14 @@
 package domain;
 
 import domain.actions.Action;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author chrigi
  */
-public class Step {
+public class Step implements Serializable {
     private int seqNum;
     private int sessionId;
     private ArrayList<Action> actions;

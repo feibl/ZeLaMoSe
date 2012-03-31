@@ -4,14 +4,10 @@
  */
 package network;
 
-import domain.Step;
-
 /**
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
-public interface Handler {
-  public void disconnect();
-   public void addChatMessage(String message);
-   public void addStep(Step step);
+public class GameAlreadyStartedException extends Exception {
+   
 }

@@ -6,11 +6,7 @@ package network;
 
 import network.NetworkHandler;
 import domain.Step;
-import java.rmi.Naming;
-import java.rmi.RemoteException;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -63,8 +59,8 @@ public class NetworkHandlerImpl extends NetworkHandler {
    }
 
    @Override
-   public void addStep(Step step) throws RemoteException {
-      throw new UnsupportedOperationException("Not supported yet.");
+   public void addStep(Step step) {
+      threadPool.execute(new AddStepRunnable(step, handler));
    }
 
    @Override
@@ -78,7 +74,9 @@ public class NetworkHandlerImpl extends NetworkHandler {
    }
 
    public void notifyStepReceived(Step step) {
-      throw new UnsupportedOperationException("Not supported yet.");
+      lastStep = step;
+      setChanged();
+      notifyObservers(UpdateType.STEP);
    }
 
    public void notifySessionAdded(SessionInformation addedSession) {
@@ -135,5 +133,10 @@ public class NetworkHandlerImpl extends NetworkHandler {
    @Override
    public Exception getThrownException() {
       return thrownException;
+   }
+
+   void notifyGameStarted() {
+      setChanged();
+      notifyObservers(UpdateType.GAME_STARTED);
    }
 }
