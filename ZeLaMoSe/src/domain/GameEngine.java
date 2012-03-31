@@ -18,11 +18,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
     private Action lastAction;
     private int sessionId;
     private Block[][] grid;
-
-    public Block[][] getGrid() {
-        return grid;
-    }
-    int gridwidth = 12, gridheight = 24, defaultX = 4, defaultY = 23;
+    int gridwidth = 12, gridheight = 24, defaultX = 4, defaultY = 0;
     private BlockQueue queue;
     private Block currentBlock;
 
@@ -34,11 +30,17 @@ public class GameEngine extends Observable implements GameEngineInterface {
         this.sessionId = sessionId;
         grid = new Block[gridwidth][gridheight];
         queue = new BlockQueue(seed);
-        currentBlock = queue.getNextBlock();
+        //do we need this here? how does the first block come in?
+        nextBlock();
     }
 
+    public Block[][] getGrid() {
+        return grid;
+    }
+        
     public void setLastAction(Action action) {
         lastAction = action;
+        saveCurrenblockToGrid();
         setChanged();
         notifyObservers();
     }
@@ -90,9 +92,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
             for (int y = 0; y < blockGrid.length; y++) {
                 if (blockGrid[x][y]) {
                     try {
-                        //TODO
-                        //Warum - y ?
-                        if (grid[currentBlock.getX() + x][currentBlock.getY() - y] != null) {
+                        if (grid[currentBlock.getX() + x][currentBlock.getY() + y] != null && !grid[currentBlock.getX() + x][currentBlock.getY() + y].equals(currentBlock)) {
                             return true;
                         }
                     } catch (IndexOutOfBoundsException e) {
@@ -118,12 +118,27 @@ public class GameEngine extends Observable implements GameEngineInterface {
         }
     }
 
+    private void nextBlock() {
+        currentBlock = queue.getNextBlock();
+        currentBlock.setX(defaultX);
+        currentBlock.setY(defaultY);
+        setLastAction(new NewblockAction(currentBlock, sessionId));
+    }
+
     private void saveCurrenblockToGrid() {
         boolean[][] blockGrid = currentBlock.getBlockGrid();
+        //Refactor find a better way to delte the old block references
+                for (int x = 0; x < gridwidth; x++) {
+            for (int y = 0; y < gridheight; y++) {
+                if (grid[x][y] != null && grid[x][y].equals(currentBlock)) {
+                    grid[x][y] = null;   
+                }
+            }
+            }
         for (int x = 0; x < blockGrid.length; x++) {
             for (int y = 0; y < blockGrid.length; y++) {
                 if (blockGrid[x][y]) {
-                    grid[currentBlock.getX() + x][currentBlock.getY() - y] = currentBlock;
+                    grid[currentBlock.getX() + x][currentBlock.getY() + y] = currentBlock;
                 }
             }
         }
@@ -177,9 +192,10 @@ public class GameEngine extends Observable implements GameEngineInterface {
         int tempY = currentBlock.getY();
         int fieldsToMove = 0;
         while (!checkForCollision()) {
-            currentBlock.setY(currentBlock.getY() - 1);
+            currentBlock.setY(currentBlock.getY() + 1);
             fieldsToMove++;
         }
+        fieldsToMove--;
         currentBlock.setY(tempY);
         moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, fieldsToMove));
     }
@@ -211,14 +227,11 @@ public class GameEngine extends Observable implements GameEngineInterface {
      */
     private void moveDownwards(MoveAction moveAction) {
         int speed = moveAction.getSpeed();
-        currentBlock.setY(currentBlock.getY() - speed);
+        currentBlock.setY(currentBlock.getY() + speed);
         if (checkForCollision()) {
-            currentBlock.setY(currentBlock.getY() + 1);
-
+            currentBlock.setY(currentBlock.getY() - speed);
             saveCurrenblockToGrid();
-
-            currentBlock = queue.getNextBlock();
-            setLastAction(new NewblockAction(currentBlock, sessionId));
+            nextBlock();
 
             checkForLinesToRemove();
 

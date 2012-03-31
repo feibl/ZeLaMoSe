@@ -5,10 +5,10 @@
 package domain;
 
 import domain.actions.HarddropAction;
+import domain.actions.MoveAction;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.*;
-import static org.junit.Assert.*;
 /**
  *
  * @author Patrick Zenhäusern
@@ -27,18 +27,22 @@ public class GameEngineTest {
     }
     
     @Test
-    public void checkIfGridIsEmpty(){
+    public void checkInitialGrid(){
        for(int i = 0; i < gameEngine.gridheight; i++){
            for(int j= 0; j < gameEngine.gridwidth; j++){
-               assertEquals(null, (gameEngine.getGrid())[j][i]);
+              // assertEquals(null, (gameEngine.getGrid())[j][i]);
            }
        }
     }
     
     @Test 
     public void addDownAction(){
-       gameEngine.simulateAction(new HarddropAction(1));
-       assertEquals(false,true);
+       gameEngine.simulateAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+    }
+    
+    @Test
+    public void hardDropAction(){
+       gameEngine.simulateAction(new HarddropAction(System.nanoTime()));
     }
     
 }
