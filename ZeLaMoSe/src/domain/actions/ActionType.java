@@ -18,10 +18,11 @@ package domain.actions;
  * - move (direction, speed): move block in direction (left, right, down) with speed (number of grids) 
  * - rmline (number of lines, offset): remove a number of lines, first with offset from bottom
  * - newline (line definition): add new line to bottom.
- * - A new block enters the game
+ * - newBlock: A new block enters the game
+ * - GameOver: :-(
  * 
  */
 public enum ActionType {
     ROTATION, MOVE, HARDDROP,
-    RMLINE, NEWLINE, NEWBLOCK
+    RMLINE, NEWLINE, NEWBLOCK, GAMEOVER
 }
