@@ -19,7 +19,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
     private int sessionId;
     private Block[][] grid;
     int gridwidth = 12, gridheight = 24, defaultX = 4, defaultY = 0;
-    private BlockQueue queue;
+    private BlockQueueInterface queue;
     private Block currentBlock;
 
     public GameEngine(int sessionId) {
@@ -30,6 +30,15 @@ public class GameEngine extends Observable implements GameEngineInterface {
         this.sessionId = sessionId;
         grid = new Block[gridwidth][gridheight];
         queue = new BlockQueue(seed);
+        //do we need this here? how does the first block come in?
+        nextBlock();
+    }
+    
+    //Called to fake a blockqueue
+     public GameEngine(int sessionId, long seed,BlockQueueInterface fakeQueue) {
+        this.sessionId = sessionId;
+        grid = new Block[gridwidth][gridheight];
+        queue = fakeQueue;
         //do we need this here? how does the first block come in?
         nextBlock();
     }

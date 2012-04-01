@@ -12,7 +12,7 @@ import java.util.Random;
  *
  * @author Cyrill
  */
-public class BlockQueue {
+public class BlockQueue implements BlockQueueInterface {
     
     private Random randomGenerator;
 
@@ -32,11 +32,11 @@ public class BlockQueue {
         randomGenerator = new Random(seed);
     }
     
-    
-
     public Block getNextBlock(){
         return (BlockType.values()[randomGenerator.nextInt(BlockType.values().length)]).createBlock();
     }
+
+
     
     
 }
