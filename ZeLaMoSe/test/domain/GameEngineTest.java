@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.*;
 import org.junit.rules.TestName;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -167,7 +168,51 @@ public class GameEngineTest {
         gameEngine.simulateAction(new HarddropAction(System.nanoTime()));
         gameEngine.print();
         gameEngine.simulateAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+    }
 
+    @Test
+    public void gameOver() {
+        gameEngine.simulateAction(new HarddropAction(System.nanoTime()));
+        gameEngine.print();
+        gameEngine.simulateAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+        gameEngine.simulateAction(new HarddropAction(System.nanoTime()));
+        gameEngine.print();
+        gameEngine.simulateAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+        gameEngine.simulateAction(new HarddropAction(System.nanoTime()));
+        gameEngine.print();
+        gameEngine.simulateAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+        gameEngine.simulateAction(new HarddropAction(System.nanoTime()));
+        gameEngine.print();
+        gameEngine.simulateAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+        gameEngine.simulateAction(new HarddropAction(System.nanoTime()));
+        gameEngine.print();
+        gameEngine.simulateAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+        gameEngine.simulateAction(new HarddropAction(System.nanoTime()));
+        gameEngine.print();
+        gameEngine.simulateAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+        gameEngine.simulateAction(new HarddropAction(System.nanoTime()));
+        gameEngine.print();
+        gameEngine.simulateAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+        gameEngine.simulateAction(new HarddropAction(System.nanoTime()));
+        gameEngine.print();
+        gameEngine.simulateAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+        gameEngine.simulateAction(new HarddropAction(System.nanoTime()));
+        gameEngine.print();
+        gameEngine.simulateAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+        gameEngine.simulateAction(new HarddropAction(System.nanoTime()));
+        gameEngine.print();
+        gameEngine.simulateAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+        gameEngine.simulateAction(new HarddropAction(System.nanoTime()));
+        gameEngine.print();
+        gameEngine.simulateAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+        gameEngine.simulateAction(new HarddropAction(System.nanoTime()));
+        gameEngine.print();
+        gameEngine.simulateAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+        gameEngine.simulateAction(new HarddropAction(System.nanoTime()));
+        gameEngine.print();
+        gameEngine.simulateAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+        gameEngine.simulateAction(new HarddropAction(System.nanoTime()));
+        assertEquals(true,gameEngine.isGameOver());
     }
 
     private void fillInFakes() {
@@ -180,6 +225,13 @@ public class GameEngineTest {
         queue.blocklist.add(new BlockO());
         queue.blocklist.add(new BlockO());
         queue.blocklist.add(new BlockO());
+        queue.blocklist.add(new BlockZ());
+        queue.blocklist.add(new BlockZ());
+        queue.blocklist.add(new BlockZ());
+        queue.blocklist.add(new BlockZ());
+        queue.blocklist.add(new BlockZ());
+        queue.blocklist.add(new BlockZ());
+        queue.blocklist.add(new BlockZ());
         queue.blocklist.add(new BlockZ());
     }
 }
