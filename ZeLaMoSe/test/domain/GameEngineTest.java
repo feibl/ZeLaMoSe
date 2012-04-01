@@ -180,6 +180,6 @@ public class GameEngineTest {
         queue.blocklist.add(new BlockO());
         queue.blocklist.add(new BlockO());
         queue.blocklist.add(new BlockO());
-        queue.blocklist.add(new BlockI());
+        queue.blocklist.add(new BlockZ());
     }
 }
