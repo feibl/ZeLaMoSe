@@ -224,7 +224,7 @@ public class RMILocalhostTest {
       NetworkHandlerImpl sender = new NetworkHandlerImplWithoutThreads();
       sender.addObserver(observer);
       sender.connectToServer(IP, SERVER_NAME, SENDER);
-      for (int i = 0; i < MAX_SESSIONS-1; i++) {
+      for (int i = 0; i < MAX_SESSIONS - 1; i++) {
          NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
          handler.addObserver(observer);
          handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + " 1");
@@ -252,7 +252,7 @@ public class RMILocalhostTest {
       gameServerImpl.startGame();
       assertEquals(MAX_SESSIONS, count);
    }
-   
+
    @Test
    public void testIgnoreSecondStartSignal() {
       Observer observer = new Observer() {
@@ -273,7 +273,7 @@ public class RMILocalhostTest {
       gameServerImpl.startGame();
       assertEquals(MAX_SESSIONS, count);
    }
-   
+
    @Test
    public void testIgnoreStepsIfNotStarted() {
       final String SENDER = "Sender";
@@ -289,16 +289,17 @@ public class RMILocalhostTest {
       NetworkHandlerImpl sender = new NetworkHandlerImplWithoutThreads();
       sender.addObserver(observer);
       sender.connectToServer(IP, SERVER_NAME, SENDER);
-      for (int i = 0; i < MAX_SESSIONS-1; i++) {
+      for (int i = 0; i < MAX_SESSIONS - 1; i++) {
          NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
          handler.addObserver(observer);
          handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + " 1");
       }
       sender.addStep(new Step(1, 3));
-      
+
       assertFalse(flag);
    }
-      @Test
+
+   @Test
    public void testStepsIfGameStarted() {
       final String SENDER = "Sender";
       Observer observer = new Observer() {
@@ -313,14 +314,16 @@ public class RMILocalhostTest {
       NetworkHandlerImpl sender = new NetworkHandlerImplWithoutThreads();
       sender.addObserver(observer);
       sender.connectToServer(IP, SERVER_NAME, SENDER);
-      for (int i = 0; i < MAX_SESSIONS-1; i++) {
+      for (int i = 0; i < MAX_SESSIONS - 1; i++) {
          NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
          handler.addObserver(observer);
          handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + " 1");
       }
       gameServerImpl.startGame();
       sender.addStep(new Step(1, 3));
-      
+
       assertEquals(3, count);
    }
+   
+   
 }

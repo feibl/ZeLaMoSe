@@ -157,7 +157,7 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
 
    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
       // TODO add your handling code here:
-      if (jTextField1.getText() != "") {
+      if (jTextField1.getText().isEmpty()) {
          sendButton.doClick();
       }
    }//GEN-LAST:event_jTextField1ActionPerformed
@@ -252,8 +252,9 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
                   jTextField1.addKeyListener(new KeyAdapter() {
 
                      @Override
-                     public void keyTyped(java.awt.event.KeyEvent e) {
+                     public void keyPressed(java.awt.event.KeyEvent e) {
                         jTextField1.setText("");
+
                         inputSampler.dispatchKeyEvent(e);
                      }
                   });
@@ -280,10 +281,11 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
 
 
          case STEP:
-            
+
             StepProducerInterface stepProducer = (StepProducerInterface) o;
-            if(o instanceof StepGenerator)
+            if (o instanceof StepGenerator) {
                networkHandler.addStep(stepProducer.getStep());
+            }
             Step step = stepProducer.getStep();
             writeToChatArea("Step received from " + step.sessionId());
             for (Action action : step.actions()) {
