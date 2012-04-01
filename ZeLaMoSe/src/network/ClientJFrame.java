@@ -6,9 +6,14 @@ package network;
 
 import com.jogamp.newt.event.KeyEvent;
 import domain.InputSampler;
+import domain.Step;
 import domain.StepGenerator;
+import domain.StepProducerInterface;
+import domain.actions.Action;
 import java.awt.event.KeyAdapter;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.SwingUtilities;
 import network.NetworkHandler.UpdateType;
@@ -34,8 +39,9 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
       initComponents();
    }
 
-   public ClientJFrame(GameServer gameServer, NetworkHandler networkHandler, List<SessionInformation> sessionList) {
+   public ClientJFrame(GameServer gameServer, NetworkHandler networkHandler, SessionInformation ownSession, List<SessionInformation> sessionList) {
       this.sessionList = sessionList;
+      this.ownSession = ownSession;
       this.gameServer = gameServer;
       this.networkHandler = networkHandler;
       initComponents();
@@ -67,11 +73,6 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
                 formWindowClosing(evt);
             }
         });
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                formKeyPressed(evt);
-            }
-        });
 
         chatArea.setColumns(20);
         chatArea.setEditable(false);
@@ -86,6 +87,11 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
         });
 
         startButton.setLabel("Start");
+        startButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startButtonActionPerformed(evt);
+            }
+        });
 
         jList1.setModel(model);
         jList1.setFocusable(false);
@@ -163,9 +169,10 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
       System.exit(0);
    }//GEN-LAST:event_formWindowClosing
 
-   private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+   private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
       // TODO add your handling code here:
-   }//GEN-LAST:event_formKeyPressed
+      gameServer.startGame();
+   }//GEN-LAST:event_startButtonActionPerformed
 
    /**
     * @param args the command line arguments
@@ -240,32 +247,48 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
                @Override
                public void run() {
                   startButton.setEnabled(false);
-               }
-            });
-            this.addKeyListener(new KeyAdapter() {
+                  sendButton.setEnabled(false);
+                  jTextField1.removeAll();
+                  jTextField1.addKeyListener(new KeyAdapter() {
 
-               @Override
-               public void keyPressed(java.awt.event.KeyEvent e) {
-                  inputSampler.dispatchKeyEvent(e);
+                     @Override
+                     public void keyTyped(java.awt.event.KeyEvent e) {
+                        jTextField1.setText("");
+                        inputSampler.dispatchKeyEvent(e);
+                     }
+                  });
                }
             });
             stepGenerator = new StepGenerator(inputSampler, ownSession.getId());
             stepGenerator.addObserver(this);
-            Timer timer = new Timer("Step-Generator");
-            timer.schedule(new TimerTask() {
+
+            new Thread(new Runnable() {
 
                @Override
                public void run() {
-                  writeToChatArea("Step generated");
-                  stepGenerator.niggasInParis();
+                  while (true) {
+                     try {
+                        Thread.sleep(5000);
+                        stepGenerator.niggasInParis();
+                     } catch (InterruptedException ex) {
+                        Logger.getLogger(ClientJFrame.class.getName()).log(Level.SEVERE, null, ex);
+                     }
+                  }
                }
-            }, new Date(), 1000);
-            timer.purge();
+            }).start();
             break;
 
 
          case STEP:
-
+            
+            StepProducerInterface stepProducer = (StepProducerInterface) o;
+            if(o instanceof StepGenerator)
+               networkHandler.addStep(stepProducer.getStep());
+            Step step = stepProducer.getStep();
+            writeToChatArea("Step received from " + step.sessionId());
+            for (Action action : step.actions()) {
+               writeToChatArea('\t' + action.getTimestamp() + " " + action.getType().name());
+            }
             break;
          case EXCEPTION_THROWN:
             break;

@@ -172,7 +172,7 @@ public class MenuJFrame extends javax.swing.JFrame implements Observer {
       switch (type) {
          case CONNECTION_ESTABLISHED:
             List<SessionInformation> sessionList = networkHandler.getSessionList();
-            final ClientJFrame clientJFrame = new ClientJFrame(gameServerImpl, networkHandler, sessionList);
+            final ClientJFrame clientJFrame = new ClientJFrame(gameServerImpl, networkHandler, networkHandler.getOwnSession(), sessionList);
 
             java.awt.EventQueue.invokeLater(new Runnable() {
 

@@ -26,7 +26,11 @@ class GameHandler extends UnicastRemoteObject implements Handler, ClientRemote{
 
    @Override
    public void disconnect() {
-      throw new UnsupportedOperationException("Not supported yet.");
+      try {
+         server.disconnect();
+      } catch (RemoteException ex) {
+         Logger.getLogger(GameHandler.class.getName()).log(Level.SEVERE, null, ex);
+      }
    }
 
    @Override

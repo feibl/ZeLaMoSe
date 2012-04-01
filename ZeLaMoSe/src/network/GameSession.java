@@ -55,7 +55,7 @@ class GameSession extends UnicastRemoteObject implements Session, ServerRemote{
 
    @Override
    public void disconnect() throws RemoteException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      gameServer.removeSession(this);
    }
 
    @Override
