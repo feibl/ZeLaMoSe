@@ -10,6 +10,7 @@ import domain.actions.MoveAction;
 import domain.actions.RotateAction;
 import java.awt.event.KeyEvent;
 import java.util.Observable;
+import network.NetworkHandler;
 
 /**
  *
@@ -27,6 +28,7 @@ public class StepGenerator extends Observable implements StepProducerInterface {
 
     public StepGenerator(InputSampler inputsampler,int sessionID) {
         this.inputsampler = inputsampler;
+        this.sessionID = sessionID;
     }
     
     //Called from somewhere
@@ -58,7 +60,7 @@ public class StepGenerator extends Observable implements StepProducerInterface {
             }
         }
         setChanged();
-        notifyObservers();
+        notifyObservers(NetworkHandler.UpdateType.STEP);
     }
 
     @Override
