@@ -10,6 +10,7 @@ import java.net.InetAddress;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Observable;
+import java.util.concurrent.ExecutorService;
 
 /**
  *
@@ -41,4 +42,6 @@ public abstract class NetworkHandler extends Observable implements StepInterface
    public abstract ChatMessage getChatMessage();
    
    public abstract Exception getThrownException();
+   
+   public abstract ExecutorService getThreadPool();
 }

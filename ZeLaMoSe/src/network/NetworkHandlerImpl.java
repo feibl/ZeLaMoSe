@@ -6,7 +6,7 @@ package network;
 
 import network.NetworkHandler;
 import domain.Step;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -23,7 +23,7 @@ public class NetworkHandlerImpl extends NetworkHandler {
    private SessionInformation ownSession;
    private ChatMessage chatMessage;
    private ExecutorService threadPool;
-   private List<SessionInformation> sessionList;
+   private Map<Integer, SessionInformation> sessionList = new HashMap<Integer, SessionInformation>();
    private Exception thrownException;
    
    public void setHandler(Handler handler) {
@@ -81,12 +81,14 @@ public class NetworkHandlerImpl extends NetworkHandler {
 
    public void notifySessionAdded(SessionInformation addedSession) {
       lastAddedSession = addedSession;
+      sessionList.put(addedSession.getId(), addedSession);
       setChanged();
       notifyObservers(UpdateType.SESSION_ADDED);
    }
 
    public void notifySessionRemoved(SessionInformation removedSession) {
       lastRemovedSession = removedSession;
+      sessionList.remove(new Integer(removedSession.getId()));
       setChanged();
       notifyObservers(UpdateType.SESSION_REMOVED);
    }
@@ -104,14 +106,16 @@ public class NetworkHandlerImpl extends NetworkHandler {
 
    public void notifyConnectionEstablished(SessionInformation ownSession, List<SessionInformation> sessionList) {
       this.ownSession = ownSession;
-      this.sessionList = sessionList;
+      for(SessionInformation session: sessionList) {
+         this.sessionList.put(session.getId(), session);
+      }
       setChanged();
       notifyObservers(UpdateType.CONNECTION_ESTABLISHED);
    }
 
    @Override
    public List<SessionInformation> getSessionList() {
-      return sessionList;
+      return new ArrayList<SessionInformation>(sessionList.values());
    }
 
    @Override
@@ -138,5 +142,10 @@ public class NetworkHandlerImpl extends NetworkHandler {
    void notifyGameStarted() {
       setChanged();
       notifyObservers(UpdateType.GAME_STARTED);
+   }
+
+   @Override
+   public ExecutorService getThreadPool() {
+      return threadPool;
    }
 }

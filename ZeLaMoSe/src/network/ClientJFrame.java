@@ -5,10 +5,10 @@
 package network;
 
 import com.jogamp.newt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import domain.InputSampler;
+import domain.StepGenerator;
+import java.awt.event.KeyAdapter;
+import java.util.*;
 import javax.swing.DefaultListModel;
 import javax.swing.SwingUtilities;
 import network.NetworkHandler.UpdateType;
@@ -24,6 +24,8 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
    private SessionInformation ownSession;
    private List<SessionInformation> sessionList = new ArrayList<SessionInformation>();
    private DefaultListModel model = new DefaultListModel();
+   private InputSampler inputSampler = new InputSampler();
+   private StepGenerator stepGenerator;
 
    /**
     * Creates new form ClientJFrame
@@ -63,6 +65,11 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
+            }
+        });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
             }
         });
 
@@ -152,8 +159,13 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
       // TODO add your handling code here:
       networkHandler.disconnectFromServer();
+      networkHandler.getThreadPool().shutdown();
       System.exit(0);
    }//GEN-LAST:event_formWindowClosing
+
+   private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+      // TODO add your handling code here:
+   }//GEN-LAST:event_formKeyPressed
 
    /**
     * @param args the command line arguments
@@ -206,6 +218,7 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JToggleButton startButton;
     // End of variables declaration//GEN-END:variables
 
+   //Attention!! Race Conditions if two Threads at the same Time commit an update of the same Type. Synchronized networkHandler?
    @Override
    public void update(Observable o, Object o1) {
       switch ((UpdateType) o1) {
@@ -219,6 +232,40 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
          case SESSION_REMOVED:
             writeToChatArea(networkHandler.getRemovedSession().getNickname() + " has left");
             updatePlayerList(networkHandler.getSessionList());
+            break;
+         case GAME_STARTED:
+            writeToChatArea("Game has started");
+            SwingUtilities.invokeLater(new Runnable() {
+
+               @Override
+               public void run() {
+                  startButton.setEnabled(false);
+               }
+            });
+            this.addKeyListener(new KeyAdapter() {
+
+               @Override
+               public void keyPressed(java.awt.event.KeyEvent e) {
+                  inputSampler.dispatchKeyEvent(e);
+               }
+            });
+            stepGenerator = new StepGenerator(inputSampler, ownSession.getId());
+            stepGenerator.addObserver(this);
+            Timer timer = new Timer("Step-Generator");
+            timer.schedule(new TimerTask() {
+
+               @Override
+               public void run() {
+                  writeToChatArea("Step generated");
+                  stepGenerator.niggasInParis();
+               }
+            }, new Date(), 1000);
+            timer.purge();
+            break;
+
+
+         case STEP:
+
             break;
          case EXCEPTION_THROWN:
             break;
