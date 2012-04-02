@@ -55,7 +55,7 @@ public class FakeGameEngine extends Observable {
                             garbageLine[l][j] = true;
                         }
                     }
-                    action = new NewlineAction(0, garbageLine);
+                    action = new NewLineAction(0, garbageLine);
                     addNewAction(action);
                     try {
                         Thread.sleep(2500 + randomGenerator.nextInt(900));
@@ -64,7 +64,7 @@ public class FakeGameEngine extends Observable {
                     }
                 }
                 
-                addNewAction(new RmlineAction(0, 2, 1));
+                addNewAction(new RmLineAction(0, 2, 1));
                 
             }
         }).start();

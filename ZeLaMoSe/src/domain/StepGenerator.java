@@ -4,7 +4,7 @@
  */
 package domain;
 
-import domain.actions.HarddropAction;
+import domain.actions.HardDropAction;
 import domain.actions.InputEvent;
 import domain.actions.MoveAction;
 import domain.actions.RotateAction;
@@ -55,7 +55,7 @@ public class StepGenerator extends Observable implements StepProducerInterface {
                     break;
                 case KeyEvent.VK_SPACE:
                 case KeyEvent.VK_UP:
-                    step.addAction(new HarddropAction(relativeTime));
+                    step.addAction(new HardDropAction(relativeTime));
                     break;
             }
         }

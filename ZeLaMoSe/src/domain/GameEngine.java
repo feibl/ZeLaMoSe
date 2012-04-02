@@ -159,7 +159,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
             currentBlock.setX(defaultX);
             currentBlock.setY(defaultY);
                     saveCurrenblockToGrid();
-            setLastAction(new NewblockAction(currentBlock, sessionId));
+            setLastAction(new NewBlockAction(currentBlock, sessionId));
         }
         //TODO
         //what to do when gameOver is true???
@@ -185,8 +185,8 @@ public class GameEngine extends Observable implements GameEngineInterface {
         }
     }
 
-    //TODO refactor method that the generate RmlineAction can remove multiple lines at once, 
-    //Maybe have to refactor the RmlineAction for this Reason
+    //TODO refactor method that the generate RmLineAction can remove multiple lines at once, 
+    //Maybe have to refactor the RmLineAction for this Reason
     private void checkForLinesToRemove() {
         boolean removeLine;
         ArrayList<Integer> linesToRemove = new ArrayList<Integer>();
@@ -302,7 +302,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
         if (linesToRemove.size() > 1) {
             System.out.println("multi lines remove: " + linesToRemove.size());
         }
-        setLastAction(new RmlineAction(0, 1, gridheight - 1));
+        setLastAction(new RmLineAction(0, 1, gridheight - 1));
 
 
     }

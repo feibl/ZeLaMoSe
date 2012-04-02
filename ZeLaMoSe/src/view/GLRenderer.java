@@ -109,13 +109,13 @@ class GLRenderer implements GLEventListener, Observer {
                 handleMoveAction((MoveAction) action);
                 break;
             case NEWBLOCK:
-                HandleNewblockAction(((NewblockAction) action).getBlocktype());
+                HandleNewblockAction(((NewBlockAction) action).getBlocktype());
                 break;
             case NEWLINE:
-                handleNewlineAction(((NewlineAction) action).getLine());
+                handleNewlineAction(((NewLineAction) action).getLine());
                 break;
             case RMLINE:
-                handleRmlineAction((RmlineAction) action);
+                handleRmlineAction((RmLineAction) action);
                 break;
         }
         if(debug){
@@ -268,7 +268,7 @@ class GLRenderer implements GLEventListener, Observer {
         }
     }
 
-    private void handleRmlineAction(RmlineAction rmlineAction) {
+    private void handleRmlineAction(RmLineAction rmlineAction) {
         saveCurrentblockToGrid();
         currentBlock=null;
         printGrid();
