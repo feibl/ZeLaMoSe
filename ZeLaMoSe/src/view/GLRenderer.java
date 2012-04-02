@@ -4,12 +4,14 @@
  */
 package view;
 
-import domain.BlockQueue;
 import domain.GameEngine;
 import domain.actions.*;
 import domain.block.Block;
 import domain.actions.RotateAction.Direction;
 import java.awt.Color;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import javax.media.opengl.*;
@@ -27,7 +29,6 @@ class GLRenderer implements GLEventListener, Observer {
     private final int gridWidth = 12, gridHeight = 24;
     private GameEngine engine;
     private Block currentBlock;
-    private BlockQueue queue = new BlockQueue();
     private final int defaultX = 4, defaultY = 23;
     private Color[][] grid;
     private Color bgColor = Color.BLACK;
@@ -90,7 +91,7 @@ class GLRenderer implements GLEventListener, Observer {
 
     @Override
     public void update(Observable o, Object o1) {
-        actionHandling(engine.getSimulationState());
+        handleActions(engine.getSimulationState());
     }
 
 //   - rotation (direction): rotate current block in direction by 90
@@ -98,7 +99,8 @@ class GLRenderer implements GLEventListener, Observer {
 // * - rmline (number of lines, offset): remove a number of lines, first with offset from bottom
 // * - newline (line definition): add new line to bottom. line according to supplied definition
 // * - A new block enters the game
-    private void actionHandling(Action action) {
+    private void handleActions(Action action) {
+        
         switch (action.getType()) {
             case ROTATION:
                 handleRotateAction(((RotateAction) action).getDirection());
@@ -115,6 +117,9 @@ class GLRenderer implements GLEventListener, Observer {
             case RMLINE:
                 handleRmlineAction((RmlineAction) action);
                 break;
+        }
+        if(debug){
+            System.out.println("GLREnderer: actiontype recieved "+action.getType());
         }
     }
 
@@ -156,13 +161,13 @@ class GLRenderer implements GLEventListener, Observer {
         int x = currentBlock.getX();
         int y = currentBlock.getY();
         boolean[][] grid = currentBlock.getBlockGrid();
-        for (int a = 0; a < 4; a++) {
-            for (int b = 0; b < 4; b++) {
+        for (int a = 0; a < grid.length; a++) {
+            for (int b = 0; b < grid.length; b++) {
                 if (grid[a][b]) {
+                    gl.glVertex2i(blocksize * (x + a), blocksize * (y - b+1));
                     gl.glVertex2i(blocksize * (x + a), blocksize * (y - b));
-                    gl.glVertex2i(blocksize * (x + a), blocksize * (y - b - 1));
-                    gl.glVertex2i(blocksize * (x + 1 + a), blocksize * (y - b - 1));
                     gl.glVertex2i(blocksize * (x + 1 + a), blocksize * (y - b));
+                    gl.glVertex2i(blocksize * (x + 1 + a), blocksize * (y - b+1));
                 }
             }
         }
@@ -200,11 +205,11 @@ class GLRenderer implements GLEventListener, Observer {
 
     }
 
-    private void projectCurrentblockToGrid() {
+    private void saveCurrentblockToGrid() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (currentBlock.getBlockGrid()[i][j]) {
-                    grid[currentBlock.getX() + i][currentBlock.getY() + j] = currentBlock.getColor();
+                    grid[currentBlock.getX() +i][currentBlock.getY() - j] = currentBlock.getColor();
                 }
             }
         }
@@ -236,9 +241,9 @@ class GLRenderer implements GLEventListener, Observer {
         if ((currentBlock != null)) {
 
 
-            projectCurrentblockToGrid();
+            saveCurrentblockToGrid();
         }
-        currentBlock = block;
+        currentBlock = (Block)block.clone();
         currentBlock.setX(defaultX);
         currentBlock.setY(defaultY);
 
@@ -273,5 +278,20 @@ class GLRenderer implements GLEventListener, Observer {
             }
         }
 
+    }
+    
+    public void printGrid() {
+        for (int i = gridHeight-1; i >= 0; i--) {
+            String lineOutput = "";
+            for (int j = 0; j < gridWidth; j++) {
+                if (grid[j][i] != bgColor) {
+                    lineOutput += "[X]";
+                } else {
+                    lineOutput += "[ ]";
+                }
+            }
+            System.out.println(lineOutput);
+        }
+        System.out.println("");
     }
 }
