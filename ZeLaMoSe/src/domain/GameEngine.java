@@ -18,9 +18,14 @@ public class GameEngine extends Observable implements GameEngineInterface {
     private Action lastAction;
     private int sessionId;
     private Block[][] grid;
-    int gridwidth = 12, gridheight = 24, defaultX = 4, defaultY = 23;
-    private BlockQueue queue;
+    int gridwidth = 12, gridheight = 24, defaultX = 4, defaultY = 0;
+    private BlockQueueInterface queue;
     private Block currentBlock;
+    private boolean gameOver;
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
 
     public GameEngine(int sessionId) {
         this(sessionId, System.nanoTime());
@@ -30,10 +35,26 @@ public class GameEngine extends Observable implements GameEngineInterface {
         this.sessionId = sessionId;
         grid = new Block[gridwidth][gridheight];
         queue = new BlockQueue(seed);
+        //do we need this here? how does the first block come in?
+        nextBlock();
+    }
+
+    //Called to fake a blockqueue
+    public GameEngine(int sessionId, long seed, BlockQueueInterface fakeQueue) {
+        this.sessionId = sessionId;
+        grid = new Block[gridwidth][gridheight];
+        queue = fakeQueue;
+        //do we need this here? how does the first block come in?
+        nextBlock();
+    }
+
+    public Block[][] getGrid() {
+        return grid;
     }
 
     public void setLastAction(Action action) {
         lastAction = action;
+        saveCurrenblockToGrid();
         setChanged();
         notifyObservers();
     }
@@ -64,6 +85,22 @@ public class GameEngine extends Observable implements GameEngineInterface {
         return lastAction;
     }
 
+    private boolean checkForGameOver() {
+        for (int y = 0; y < currentBlock.getHeight(); y++) {
+            for (int x = 0; x < currentBlock.getWidth(); x++) {
+                if (grid[defaultX + x][defaultY + y] != null) {
+                    gameOver = true;
+                    System.out.println("Game Over");
+                    break;
+                }
+            }
+            if (gameOver) {
+                break;
+            }
+        }
+        return gameOver;
+    }
+
     private void handleMoveAction(MoveAction moveAction) {
         switch (moveAction.getDirection()) {
             case LEFT:
@@ -85,9 +122,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
             for (int y = 0; y < blockGrid.length; y++) {
                 if (blockGrid[x][y]) {
                     try {
-                        //TODO
-                        //Warum - y ?
-                        if (grid[currentBlock.getX() + x][currentBlock.getY() - y] != null) {
+                        if (grid[currentBlock.getX() + x][currentBlock.getY() + y] != null && !grid[currentBlock.getX() + x][currentBlock.getY() + y].equals(currentBlock)) {
                             return true;
                         }
                     } catch (IndexOutOfBoundsException e) {
@@ -113,12 +148,31 @@ public class GameEngine extends Observable implements GameEngineInterface {
         }
     }
 
+    private void nextBlock() {
+        currentBlock = queue.getNextBlock();
+        if (!checkForGameOver()) {
+        currentBlock.setX(defaultX);
+        currentBlock.setY(defaultY);
+        setLastAction(new NewblockAction(currentBlock, sessionId));
+        } 
+        //TODO
+        //what to do when gameOver is true???
+    }
+
     private void saveCurrenblockToGrid() {
         boolean[][] blockGrid = currentBlock.getBlockGrid();
+        //Refactor find a better way to delte the old block references
+        for (int x = 0; x < gridwidth; x++) {
+            for (int y = 0; y < gridheight; y++) {
+                if (grid[x][y] != null && grid[x][y].equals(currentBlock)) {
+                    grid[x][y] = null;
+                }
+            }
+        }
         for (int x = 0; x < blockGrid.length; x++) {
             for (int y = 0; y < blockGrid.length; y++) {
                 if (blockGrid[x][y]) {
-                    grid[currentBlock.getX() + x][currentBlock.getY() - y] = currentBlock;
+                    grid[currentBlock.getX() + x][currentBlock.getY() + y] = currentBlock;
                 }
             }
         }
@@ -126,24 +180,21 @@ public class GameEngine extends Observable implements GameEngineInterface {
 
     //TODO refactor method that the generate RmlineAction can remove multiple lines at once, 
     //Maybe have to refactor the RmlineAction for this Reason
-    private void checkForLinesToRemove() {
-        ArrayList<Integer> linesToRemove = new ArrayList<Integer>();
-        for (int y = gridheight; y < gridheight; y++) {
-            boolean lineToRemove = true;
-            for (int x = gridwidth; x < gridwidth; x++) {
-                if (grid[x][y] == null) {
-                    lineToRemove = false;
-                }
-            }
-            if (lineToRemove) {
-                linesToRemove.add(y);
+    private void checkForLinesToRemove(int multiLines) {
+        boolean lineToRemove = true;
+        for (int x = 0; x < gridwidth; x++) {
+            if (grid[x][gridheight - 1] == null) {
+                lineToRemove = false;
             }
         }
-
-        for (Integer i : linesToRemove) {
-            setLastAction(new RmlineAction(0, 1, i));
+        if (lineToRemove) {
+            removeLine(multiLines);
+        } else {
+            if (multiLines > 1) {
+                //TODO event for multi line remove
+                System.out.println("multi line removed: " + multiLines + " Lines");
+            }
         }
-
     }
 
     private void handleRotateAction(RotateAction action) {
@@ -172,11 +223,27 @@ public class GameEngine extends Observable implements GameEngineInterface {
         int tempY = currentBlock.getY();
         int fieldsToMove = 0;
         while (!checkForCollision()) {
-            currentBlock.setY(currentBlock.getY() - 1);
+            currentBlock.setY(currentBlock.getY() + 1);
             fieldsToMove++;
         }
+        fieldsToMove--;
         currentBlock.setY(tempY);
         moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, fieldsToMove));
+    }
+
+    public void print() {
+        for (int i = 0; i < gridheight; i++) {
+            String lineOutput = "";
+            for (int j = 0; j < gridwidth; j++) {
+                if (grid[j][i] != null) {
+                    lineOutput += "[" + grid[j][i].getPrintLetter() + "]";
+                } else {
+                    lineOutput += "[ ]";
+                }
+            }
+            System.out.println(lineOutput);
+        }
+        System.out.println("");
     }
 
     /**
@@ -191,23 +258,32 @@ public class GameEngine extends Observable implements GameEngineInterface {
      */
     private void moveDownwards(MoveAction moveAction) {
         int speed = moveAction.getSpeed();
-        currentBlock.setY(currentBlock.getY() - speed);
+        currentBlock.setY(currentBlock.getY() + speed);
         if (checkForCollision()) {
-            currentBlock.setY(currentBlock.getY() + 1);
-
+            currentBlock.setY(currentBlock.getY() - speed);
             saveCurrenblockToGrid();
-
-            currentBlock = queue.getNextBlock();
-            setLastAction(new NewblockAction(currentBlock, sessionId));
-
-            checkForLinesToRemove();
-
-            if (checkForCollision()) {
-                //if collision got detected this must be becaus of the newly created block
-                //TODO generate GameOverAction
-            }
+            checkForLinesToRemove(0);
+            nextBlock();
         } else {
             setLastAction(moveAction);
         }
+    }
+
+    private void removeLine(int numberOfRmLines) {
+
+        //remove the bottom line
+        for (int x = 0; x < gridwidth; x++) {
+            grid[x][gridheight - 1] = null;
+        }
+
+        //move everythign downward
+        for (int y = gridheight - 2; y >= 0; y--) {
+            for (int x = 0; x < gridwidth; x++) {
+                grid[x][y + 1] = grid[x][y];
+            }
+        }
+        setLastAction(new RmlineAction(0, 1, gridheight - 1));
+        checkForLinesToRemove(++numberOfRmLines);
+
     }
 }

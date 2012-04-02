@@ -14,7 +14,7 @@ public class BlockI extends Block {
     
     
     public BlockI(){
-        super(new Color(100,100,100));
+        super(new Color(100,100,100),"I");
     }
 
     @Override

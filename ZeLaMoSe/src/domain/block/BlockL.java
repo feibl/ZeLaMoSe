@@ -13,7 +13,7 @@ import java.awt.Color;
 public class BlockL  extends Block{
 
     public BlockL() {
-        super(new Color(255,0,0));
+        super(new Color(255,0,0),"L");
     }
 
     @Override

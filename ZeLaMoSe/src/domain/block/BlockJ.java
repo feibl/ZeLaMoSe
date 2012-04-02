@@ -10,16 +10,15 @@ import java.awt.Color;
  *
  * @author Patrick Zenhäusern
  */
-public class BlockJ extends Block{
+public class BlockJ extends Block {
 
     public BlockJ() {
-        super(new Color(0,255,0));
+        super(new Color(0, 255, 0), "J");
     }
-    
-    
+
     @Override
     protected void rotation0(boolean[][] grid) {
-                grid[0][0] = true;
+        grid[0][0] = true;
         grid[0][1] = true;
         grid[1][1] = true;
         grid[2][1] = true;
@@ -27,7 +26,7 @@ public class BlockJ extends Block{
 
     @Override
     protected void rotation90(boolean[][] grid) {
-               grid[1][0] = true;
+        grid[1][0] = true;
         grid[1][1] = true;
         grid[1][2] = true;
         grid[2][0] = true;
@@ -35,7 +34,7 @@ public class BlockJ extends Block{
 
     @Override
     protected void rotation180(boolean[][] grid) {
-                grid[0][1] = true;
+        grid[0][1] = true;
         grid[1][1] = true;
         grid[2][1] = true;
         grid[2][2] = true;
@@ -43,10 +42,9 @@ public class BlockJ extends Block{
 
     @Override
     protected void rotation270(boolean[][] grid) {
-               grid[0][2] = true;
+        grid[0][2] = true;
         grid[1][1] = true;
         grid[1][2] = true;
         grid[1][0] = true;
     }
-    
 }
