@@ -66,6 +66,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
 
     @Override
     public void simulateAction(Action action) {
+        System.out.println(currentBlock.getPrintLetter());
         switch (action.getType()) {
             case MOVE:
                 handleMoveAction((MoveAction) action);
@@ -151,10 +152,10 @@ public class GameEngine extends Observable implements GameEngineInterface {
     private void nextBlock() {
         currentBlock = queue.getNextBlock();
         if (!checkForGameOver()) {
-        currentBlock.setX(defaultX);
-        currentBlock.setY(defaultY);
-        setLastAction(new NewblockAction(currentBlock, sessionId));
-        } 
+            currentBlock.setX(defaultX);
+            currentBlock.setY(defaultY);
+            setLastAction(new NewblockAction(currentBlock, sessionId));
+        }
         //TODO
         //what to do when gameOver is true???
     }
@@ -169,6 +170,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
                 }
             }
         }
+
         for (int x = 0; x < blockGrid.length; x++) {
             for (int y = 0; y < blockGrid.length; y++) {
                 if (blockGrid[x][y]) {
@@ -247,11 +249,10 @@ public class GameEngine extends Observable implements GameEngineInterface {
     }
 
     /**
-     * moves the current block downwards, the amount of gridfields moved depends on the "speed" set in the
-     * moveAction
+     * moves the current block downwards, the amount of gridfields moved depends on the "speed" set in the moveAction
      *
-     * If a collision happens the currentBlock will be moved on gridfield upwards, a new Block will be generated
-     * and it will be checked if there are lines to remove
+     * If a collision happens the currentBlock will be moved on gridfield upwards, a new Block will be generated and it
+     * will be checked if there are lines to remove
      *
      *
      * @param moveAction

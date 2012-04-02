@@ -5,7 +5,7 @@
 package view;
 
 import domain.BlockQueue;
-import domain.FakeGameEngine;
+import domain.GameEngine;
 import domain.actions.*;
 import domain.block.Block;
 import domain.actions.RotateAction.Direction;
@@ -26,7 +26,7 @@ class GLRenderer implements GLEventListener, Observer {
     
     private int viewportWidth, viewportHeight, blocksize;
     private final int gridWidth = 12, gridHeight = 24;
-    private FakeGameEngine engine;
+    private GameEngine engine;
     private Block currentBlock;
     private BlockQueue queue = new BlockQueue();
     private final int defaultX = 4, defaultY = 23;
@@ -83,7 +83,7 @@ class GLRenderer implements GLEventListener, Observer {
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
     }
 
-    void setEngine(FakeGameEngine fakeGameEngine) {
+    void setEngine(GameEngine fakeGameEngine) {
         engine = fakeGameEngine;
         engine.addObserver(this);
 
@@ -91,7 +91,7 @@ class GLRenderer implements GLEventListener, Observer {
 
     @Override
     public void update(Observable o, Object o1) {
-        actionHandling(engine.getLastAction());
+        actionHandling(engine.getSimulationState());
     }
 
 //   - rotation (direction): rotate current block in direction by 90
