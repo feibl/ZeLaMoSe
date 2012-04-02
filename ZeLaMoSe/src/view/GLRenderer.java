@@ -269,14 +269,18 @@ class GLRenderer implements GLEventListener, Observer {
     }
 
     private void handleRmlineAction(RmlineAction rmlineAction) {
+        saveCurrentblockToGrid();
+        currentBlock=null;
+        printGrid();
         int numOfLines = rmlineAction.getNumlines();
-        int offset = rmlineAction.getOffset();
+        int offset = 23-rmlineAction.getOffset();
 
         for (int i = 0; i < gridWidth; i++) {
             for (int j = offset; j < gridHeight - numOfLines; j++) {
                 grid[i][j] = grid[i][j + numOfLines];
             }
         }
+        printGrid();
 
     }
     
