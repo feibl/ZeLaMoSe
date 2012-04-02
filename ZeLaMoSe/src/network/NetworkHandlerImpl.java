@@ -25,6 +25,12 @@ public class NetworkHandlerImpl extends NetworkHandler {
    private ExecutorService threadPool;
    private Map<Integer, SessionInformation> sessionList = new HashMap<Integer, SessionInformation>();
    private Exception thrownException;
+
+    @Override
+    public void runStep() {
+        //call notify observers from here => hand all data over to TetrisController for the nex simulation step
+        throw new UnsupportedOperationException("Not supported yet.");
+    }  
    
    public void setHandler(Handler handler) {
       this.handler = handler;

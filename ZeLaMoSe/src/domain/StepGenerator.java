@@ -22,17 +22,17 @@ public class StepGenerator extends Observable implements StepProducerInterface {
     
 
    private InputSampler inputsampler;
-    private Step step;
+   private Step step;
    private int counter = 0;
    private int sessionID;
 
     public StepGenerator(InputSampler inputsampler,int sessionID) {
         this.inputsampler = inputsampler;
         this.sessionID = sessionID;
-    }
+    }    
     
-    //Called from somewhere
-    public void niggasInParis(){
+    @Override
+    public void runStep(){
         step = new Step(counter++,sessionID);
         long currentTime = System.nanoTime();
         for(InputEvent ie : inputsampler.getAndRemoveAllFromQueue()){

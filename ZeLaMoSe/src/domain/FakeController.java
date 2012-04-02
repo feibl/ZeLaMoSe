@@ -33,7 +33,7 @@ public class FakeController implements Observer{
                     } catch (InterruptedException ex) {
                         Logger.getLogger(FakeController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    sg.niggasInParis();
+                    sg.runStep();
                 }
             }
         }).start();

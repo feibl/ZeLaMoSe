@@ -11,4 +11,6 @@ package domain;
 public interface StepProducerInterface {
   
   public Step getStep();
+  //Called every 50ms
+  public void runStep();
 }
