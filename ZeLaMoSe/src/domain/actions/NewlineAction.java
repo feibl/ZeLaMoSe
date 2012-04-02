@@ -8,10 +8,10 @@ package domain.actions;
  *
  * @author chrigi
  */
-public class NewLineAction extends Action{
+public class NewlineAction extends Action{
     boolean[][] line;
 
-    public NewLineAction(long timestamp, boolean[][] line) {
+    public NewlineAction(long timestamp, boolean[][] line) {
         super(ActionType.NEWLINE, timestamp);
         this.line = line;
     }

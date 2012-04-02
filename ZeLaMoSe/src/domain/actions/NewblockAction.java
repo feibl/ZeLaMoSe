@@ -10,10 +10,10 @@ import domain.block.Block;
  *
  * @author chrigi
  */
-public class NewBlockAction extends Action{
+public class NewblockAction extends Action{
 
     Block type;
-    public NewBlockAction(Block type, long timestamp) {
+    public NewblockAction(Block type, long timestamp) {
         super(ActionType.NEWBLOCK, timestamp);
         this.type = type;
     }
