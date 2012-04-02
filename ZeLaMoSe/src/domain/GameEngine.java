@@ -35,7 +35,9 @@ public class GameEngine extends Observable implements GameEngineInterface {
         this.sessionId = sessionId;
         grid = new Block[gridwidth][gridheight];
         queue = new BlockQueue(seed);
-        //do we need this here? how does the first block come in?
+    }
+
+    public void start() {
         nextBlock();
     }
 
@@ -44,8 +46,6 @@ public class GameEngine extends Observable implements GameEngineInterface {
         this.sessionId = sessionId;
         grid = new Block[gridwidth][gridheight];
         queue = fakeQueue;
-        //do we need this here? how does the first block come in?
-        nextBlock();
     }
 
     public Block[][] getGrid() {
@@ -66,7 +66,6 @@ public class GameEngine extends Observable implements GameEngineInterface {
 
     @Override
     public void simulateAction(Action action) {
-        System.out.println(currentBlock.getPrintLetter());
         switch (action.getType()) {
             case MOVE:
                 handleMoveAction((MoveAction) action);
@@ -178,6 +177,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
                 }
             }
         }
+     print();
     }
 
     //TODO refactor method that the generate RmlineAction can remove multiple lines at once, 
@@ -264,7 +264,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
             currentBlock.setY(currentBlock.getY() - speed);
             saveCurrenblockToGrid();
             checkForLinesToRemove(0);
-            nextBlock();
+            start();
         } else {
             setLastAction(moveAction);
         }

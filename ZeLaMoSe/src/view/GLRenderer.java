@@ -23,7 +23,6 @@ import javax.media.opengl.glu.GLU;
 class GLRenderer implements GLEventListener, Observer {
 
     private boolean debug = true;
-    
     private int viewportWidth, viewportHeight, blocksize;
     private final int gridWidth = 12, gridHeight = 24;
     private GameEngine engine;
@@ -33,15 +32,11 @@ class GLRenderer implements GLEventListener, Observer {
     private Color[][] grid;
     private Color bgColor = Color.BLACK;
     private Color garbageLineColor = new Color(139, 0, 0);
-    
 
     public GLRenderer(int width, int height, int blocksize) {
         this.viewportWidth = width;
         this.viewportHeight = height;
         this.blocksize = blocksize;
-        currentBlock = queue.getNextBlock();
-        currentBlock.setX(4);
-        currentBlock.setY(24);
         initStackGrid();
     }
 
@@ -69,14 +64,18 @@ class GLRenderer implements GLEventListener, Observer {
 
     @Override
     public void display(GLAutoDrawable drawable) {
-        GL2 gl = drawable.getGL().getGL2();
-        gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+        if (currentBlock != null) {
 
 
-        drawStackGrid(gl);
-        drawCurrentBlock(gl);
+            GL2 gl = drawable.getGL().getGL2();
+            gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
-        drawGridLines(gl);
+
+            drawStackGrid(gl);
+            drawCurrentBlock(gl);
+
+            drawGridLines(gl);
+        }
     }
 
     @Override
@@ -102,15 +101,12 @@ class GLRenderer implements GLEventListener, Observer {
     private void actionHandling(Action action) {
         switch (action.getType()) {
             case ROTATION:
-                System.out.println("rotation");
                 handleRotateAction(((RotateAction) action).getDirection());
                 break;
             case MOVE:
-                System.out.println("move");
                 handleMoveAction((MoveAction) action);
                 break;
             case NEWBLOCK:
-                System.out.println("newblock");
                 HandleNewblockAction(((NewblockAction) action).getBlocktype());
                 break;
             case NEWLINE:
@@ -237,10 +233,15 @@ class GLRenderer implements GLEventListener, Observer {
     }
 
     private void HandleNewblockAction(Block block) {
-        projectCurrentblockToGrid();
+        if ((currentBlock != null)) {
+
+
+            projectCurrentblockToGrid();
+        }
         currentBlock = block;
         currentBlock.setX(defaultX);
         currentBlock.setY(defaultY);
+
     }
 
     private void handleNewlineAction(boolean[][] line) {
@@ -265,12 +266,12 @@ class GLRenderer implements GLEventListener, Observer {
     private void handleRmlineAction(RmlineAction rmlineAction) {
         int numOfLines = rmlineAction.getNumlines();
         int offset = rmlineAction.getOffset();
-        
+
         for (int i = 0; i < gridWidth; i++) {
-            for (int j = offset; j < gridHeight-numOfLines; j++) {
-                grid[i][j] = grid[i][j+numOfLines];
+            for (int j = offset; j < gridHeight - numOfLines; j++) {
+                grid[i][j] = grid[i][j + numOfLines];
             }
         }
-        
+
     }
 }

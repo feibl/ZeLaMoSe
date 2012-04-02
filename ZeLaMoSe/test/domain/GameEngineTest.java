@@ -30,6 +30,7 @@ public class GameEngineTest {
         queue = new FakeBlockQueue();
         fillInFakes();
         gameEngine = new GameEngine(12345, 1, queue);
+        gameEngine.start();
         System.out.println("Start " + name.getMethodName() + "----------------------------------");
 
     }

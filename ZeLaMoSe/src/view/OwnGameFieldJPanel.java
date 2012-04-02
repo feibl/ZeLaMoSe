@@ -276,6 +276,7 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel {
         renderer.setEngine(ge);
         
         new FakeController(ge, sg);
+        ge.start();
         
         
         
