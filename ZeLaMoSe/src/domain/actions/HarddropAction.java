@@ -8,9 +8,9 @@ package domain.actions;
  *
  * @author chrigi
  */
-public class HarddropAction extends Action {
+public class HardDropAction extends Action {
 
-    public HarddropAction(long timestamp) {
+    public HardDropAction(long timestamp) {
         super(ActionType.HARDDROP, timestamp);
     }
     

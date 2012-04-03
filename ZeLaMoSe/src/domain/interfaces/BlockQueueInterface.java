@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain;
+package domain.interfaces;
 
 import domain.block.Block;
-import domain.block.BlockI;
+import domain.block.IBlock;
 import java.util.LinkedList;
 import java.util.Queue;
 

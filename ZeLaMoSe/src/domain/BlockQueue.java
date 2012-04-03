@@ -4,6 +4,7 @@
  */
 package domain;
 
+import domain.interfaces.BlockQueueInterface;
 import domain.block.Block;
 import domain.block.BlockType;
 import java.util.Random;

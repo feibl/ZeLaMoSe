@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain;
+package domain.interfaces;
 
 import domain.actions.Action;
 
@@ -10,6 +10,6 @@ import domain.actions.Action;
  *
  * @author chrigi
  */
-public interface SimulationStateInterface {
-    public Action getSimulationState();
+public interface ActionInterface {
+    public void handleAction(Action action);
 }

@@ -4,7 +4,8 @@
  */
 package domain;
 
-import domain.actions.HarddropAction;
+import domain.interfaces.StepProducerInterface;
+import domain.actions.HardDropAction;
 import domain.actions.InputEvent;
 import domain.actions.MoveAction;
 import domain.actions.RotateAction;
@@ -21,21 +22,21 @@ import network.NetworkHandler;
 public class StepGenerator extends Observable implements StepProducerInterface {
     
 
-   private InputSampler inputsampler;
+   private InputSampler inputSampler;
    private Step step;
    private int counter = 0;
    private int sessionID;
 
     public StepGenerator(InputSampler inputsampler,int sessionID) {
-        this.inputsampler = inputsampler;
+        this.inputSampler = inputsampler;
         this.sessionID = sessionID;
     }    
     
     @Override
-    public void runStep(){
+    public void niggasInParis(){
         step = new Step(counter++,sessionID);
         long currentTime = System.nanoTime();
-        for(InputEvent ie : inputsampler.getAndRemoveAllFromQueue()){
+        for(InputEvent ie : inputSampler.getAndRemoveAll()){
             long relativeTime = (currentTime-ie.getAbsoluteTimeStamp());
             switch(ie.getKeyEvent()){
                 case KeyEvent.VK_LEFT:
@@ -55,7 +56,7 @@ public class StepGenerator extends Observable implements StepProducerInterface {
                     break;
                 case KeyEvent.VK_SPACE:
                 case KeyEvent.VK_UP:
-                    step.addAction(new HarddropAction(relativeTime));
+                    step.addAction(new HardDropAction(relativeTime));
                     break;
             }
         }

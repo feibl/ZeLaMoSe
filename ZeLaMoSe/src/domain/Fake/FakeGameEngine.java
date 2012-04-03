@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain;
+package domain.Fake;
 
+import domain.BlockQueue;
 import domain.actions.*;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -55,7 +56,7 @@ public class FakeGameEngine extends Observable {
                             garbageLine[l][j] = true;
                         }
                     }
-                    action = new NewlineAction(0, garbageLine);
+                    action = new NewLineAction(0, garbageLine);
                     addNewAction(action);
                     try {
                         Thread.sleep(2500 + randomGenerator.nextInt(900));

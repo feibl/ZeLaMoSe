@@ -16,15 +16,15 @@ import java.util.logging.Logger;
 public abstract class Block implements Cloneable {
 
     protected Color color;
-    protected boolean[][] stoneGrid = new boolean[4][4];
+    protected boolean[][] grid = new boolean[4][4];
     protected int rotation, x, y;
     protected String printLetter;
 
     public int getHeight() {
         int height = 0;
-        for(int i = 0; i < stoneGrid.length ; i++){
-            for (int j = 0; j < stoneGrid.length; j++) {
-                if (stoneGrid[j][i]){
+        for(int i = 0; i < grid.length ; i++){
+            for (int j = 0; j < grid.length; j++) {
+                if (grid[j][i]){
                     height++;
                     break;
                 }
@@ -36,9 +36,9 @@ public abstract class Block implements Cloneable {
 
     public int getWidth() {
         int width = 0;
-        for(int i = 0; i < stoneGrid.length ; i++){
-            for (int j = 0; j < stoneGrid.length; j++) {
-                if (stoneGrid[i][j]){
+        for(int i = 0; i < grid.length ; i++){
+            for (int j = 0; j < grid.length; j++) {
+                if (grid[i][j]){
                     width++;
                     break;
                 }
@@ -67,10 +67,10 @@ public abstract class Block implements Cloneable {
         color = c;
         rotation = 0; 
         this.printLetter = printLetter;
-        rotation0(stoneGrid);
+        rotation0(grid);
     }
         
-    protected void initStoneGrid(boolean[][] grid) {
+    protected void initializeGrid(boolean[][] grid) {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 grid[i][j] = false;
@@ -85,7 +85,7 @@ public abstract class Block implements Cloneable {
 
     public void rotateRight() {
         rotation = (rotation + 90) % 360;
-        calcGrid();
+        handleRotation();
     }
 
     public void rotateLeft() {
@@ -94,7 +94,7 @@ public abstract class Block implements Cloneable {
         } else {
             rotation -= 90;
         }
-        calcGrid();
+        handleRotation();
     }
     
     protected abstract void rotation0 (boolean[][] grid);
@@ -102,39 +102,29 @@ public abstract class Block implements Cloneable {
     protected abstract void rotation180 (boolean[][] grid);
     protected abstract void rotation270 (boolean[][] grid);
     
-    public boolean[][] getBlockGrid() {
-        return stoneGrid;
+    public boolean[][] getGrid() {
+        return grid;
     }
     
-     protected void calcGrid() {
-        initStoneGrid(stoneGrid);
+     protected void handleRotation() {
+        initializeGrid(grid);
         switch (rotation) {
             case 0:
-                rotation0(stoneGrid);
+                rotation0(grid);
                 break;
             case 90:
-                rotation90(stoneGrid);
+                rotation90(grid);
                 break;
             case 180:
-                rotation180(stoneGrid);
+                rotation180(grid);
                 break;
             case 270:
-                rotation270(stoneGrid);
+                rotation270(grid);
                 break;
         }
     
    }
-     
-    public void printstone() {
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                System.out.print(stoneGrid[j][i]);
-                System.out.print(" ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
+       
    public String getPrintLetter(){
        return printLetter;
    }
@@ -145,7 +135,7 @@ public abstract class Block implements Cloneable {
         for (int i = 0; i < 4; i++) {
             String lineOutput = "";
             for (int j = 0; j < 4; j++) {
-                if (stoneGrid[j][i]) {
+                if (grid[j][i]) {
                     lineOutput += "["+printLetter+"]";
                 } else {
                     lineOutput += "[ ]";
@@ -168,7 +158,7 @@ public abstract class Block implements Cloneable {
     public static void main(String[] args) {
         Random randomGenerator = new Random(System.currentTimeMillis());
 //        Block testStone =  (BlockType.values()[randomGenerator.nextInt(BlockType.values().length)]).createBlock();
-        Block testStone = new BlockT();
+        Block testStone = new TBlock();
         for (int i = 0; i < 4; i++) {
             testStone.rotateRight();
             System.out.println("Height: " + testStone.getHeight());

@@ -13,9 +13,9 @@ import java.util.logging.Logger;
  * @author Patrick Zenhäusern
  */
 public enum BlockType {
-    BlockI(BlockI.class), BlockJ(BlockJ.class), BlockL(BlockL.class), 
-    BlockO(BlockO.class), BlockS(BlockS.class), BlockT(BlockT.class), 
-    BlockZ(BlockZ.class);
+    I(IBlock.class), J(JBlock.class), L(LBlock.class), 
+    O(OBlock.class), S(SBlock.class), T(TBlock.class), 
+    Z(ZBlock.class);
     
     private final Class className;
 
