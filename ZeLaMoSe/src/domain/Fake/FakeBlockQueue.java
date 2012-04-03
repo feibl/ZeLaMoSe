@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain;
+package domain.Fake;
 
+import domain.interfaces.BlockQueueInterface;
 import domain.block.Block;
 import java.util.LinkedList;
 import java.util.Queue;

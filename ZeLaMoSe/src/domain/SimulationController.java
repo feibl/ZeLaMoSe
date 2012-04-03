@@ -4,6 +4,9 @@
  */
 package domain;
 
+import domain.interfaces.StepInterface;
+import domain.interfaces.GameEngineInterface;
+import domain.interfaces.SimulationStateInterface;
 import domain.actions.Action;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -16,7 +19,7 @@ import java.util.TreeMap;
  */
 public class SimulationController implements StepInterface {
   private Map<Integer, Step> stepQueue = new HashMap<Integer, Step>();
-  private Map<Integer, GameEngineInterface> engines = new HashMap<Integer, GameEngineInterface>();
+  private Map<Integer, GameEngineInterface> gameEngines = new HashMap<Integer, GameEngineInterface>();
   private Map<Integer, String> sessions = new HashMap<Integer, String>();
   
   public SimulationController() {
@@ -25,20 +28,20 @@ public class SimulationController implements StepInterface {
 
   @Override
   public void addStep(Step step) {
-      if (stepQueue.containsKey(step.sessionId())) {
+      if (stepQueue.containsKey(step.getSessionID())) {
           //throw new Exception("session");
           assert(false);
       }
 
-      stepQueue.put(step.sessionId(), step);
+      stepQueue.put(step.getSessionID(), step);
   }
   
   /*
    * Register session
    */
   public void addSession(int sessionId, String name, GameEngineInterface gameEngine) {
-      assert(!engines.containsKey(sessionId));
-      engines.put(sessionId, gameEngine);
+      assert(!gameEngines.containsKey(sessionId));
+      gameEngines.put(sessionId, gameEngine);
       sessions.put(sessionId, name);
   }
   
@@ -64,24 +67,24 @@ public class SimulationController implements StepInterface {
       for (int session: sessions.keySet()) {
           assert(stepQueue.containsKey(session));
           Step s = stepQueue.remove(session);      
-          if (s.seqNum() != seqNum) {
-              //throw new Exception("Invalid sequenceNumber"+s.seqNum());
+          if (s.getSequenceNumber() != seqNum) {
+              //throw new Exception("Invalid sequenceNumber"+s.getSequenceNumber());
               assert(false);
           }
-          for (Action a: s.actions()) {
+          for (Action a: s.getActions()) {
               actionList.put(a, session);
           }
       }
       assert(stepQueue.isEmpty());
       for (Map.Entry<Action, Integer> e: actionList.entrySet()) {
-          assert (engines.containsKey(e.getValue()));
-          GameEngineInterface g = engines.get(e.getValue());
-          g.simulateAction(e.getKey());
+          assert (gameEngines.containsKey(e.getValue()));
+          GameEngineInterface g = gameEngines.get(e.getValue());
+          g.handleAction(e.getKey());
       }
   }
   
   SimulationStateInterface getSimulation(int sessionId) {
-      return engines.get(sessionId);
+      return gameEngines.get(sessionId);
   }
     
 }

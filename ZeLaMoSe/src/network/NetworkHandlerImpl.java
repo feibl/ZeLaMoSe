@@ -27,7 +27,7 @@ public class NetworkHandlerImpl extends NetworkHandler {
    private Exception thrownException;
 
     @Override
-    public void runStep() {
+    public void niggasInParis() {
         //call notify observers from here => hand all data over to TetrisController for the nex simulation step
         throw new UnsupportedOperationException("Not supported yet.");
     }  

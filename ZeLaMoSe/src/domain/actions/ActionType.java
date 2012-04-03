@@ -24,5 +24,5 @@ package domain.actions;
  */
 public enum ActionType {
     ROTATION, MOVE, HARDDROP,
-    RMLINE, NEWLINE, NEWBLOCK, GAMEOVER
+    REMOVELINE, NEWLINE, NEWBLOCK, GAMEOVER
 }

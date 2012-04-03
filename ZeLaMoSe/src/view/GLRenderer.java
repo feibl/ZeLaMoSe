@@ -25,19 +25,19 @@ import javax.media.opengl.glu.GLU;
 class GLRenderer implements GLEventListener, Observer {
 
     private boolean debug = true;
-    private int viewportWidth, viewportHeight, blocksize;
+    private int viewPortWidth, viewPortHeight, blockSize;
     private final int gridWidth = 12, gridHeight = 24;
-    private GameEngine engine;
+    private GameEngine gameEngine;
     private Block currentBlock;
     private final int defaultX = 4, defaultY = 23;
     private Color[][] grid;
-    private Color bgColor = Color.BLACK;
+    private Color backGroundColor = Color.BLACK;
     private Color garbageLineColor = new Color(139, 0, 0);
 
     public GLRenderer(int width, int height, int blocksize) {
-        this.viewportWidth = width;
-        this.viewportHeight = height;
-        this.blocksize = blocksize;
+        this.viewPortWidth = width;
+        this.viewPortHeight = height;
+        this.blockSize = blocksize;
         initStackGrid();
     }
 
@@ -48,14 +48,14 @@ class GLRenderer implements GLEventListener, Observer {
 
         gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         gl.glLineWidth(1.0f);
-        gl.glViewport(0, 0, viewportWidth, viewportHeight);
+        gl.glViewport(0, 0, viewPortWidth, viewPortHeight);
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();
 
         if (debug) {
-            glu.gluOrtho2D(-100, viewportWidth + 100, -100, viewportHeight + 100);
+            glu.gluOrtho2D(-100, viewPortWidth + 100, -100, viewPortHeight + 100);
         } else {
-            glu.gluOrtho2D(0, viewportWidth, 0, viewportHeight);
+            glu.gluOrtho2D(0, viewPortWidth, 0, viewPortHeight);
         }
     }
 
@@ -72,7 +72,7 @@ class GLRenderer implements GLEventListener, Observer {
             gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
 
-            drawStackGrid(gl);
+            drawBlockStack(gl);
             drawCurrentBlock(gl);
 
             drawGridLines(gl);
@@ -84,14 +84,14 @@ class GLRenderer implements GLEventListener, Observer {
     }
 
     void setEngine(GameEngine fakeGameEngine) {
-        engine = fakeGameEngine;
-        engine.addObserver(this);
+        gameEngine = fakeGameEngine;
+        gameEngine.addObserver(this);
 
     }
 
     @Override
     public void update(Observable o, Object o1) {
-        handleActions(engine.getSimulationState());
+        handleAction(gameEngine.getSimulationState());
     }
 
 //   - rotation (direction): rotate current block in direction by 90
@@ -99,7 +99,7 @@ class GLRenderer implements GLEventListener, Observer {
 // * - rmline (number of lines, offset): remove a number of lines, first with offset from bottom
 // * - newline (line definition): add new line to bottom. line according to supplied definition
 // * - A new block enters the game
-    private void handleActions(Action action) {
+    private void handleAction(Action action) {
         
         switch (action.getType()) {
             case ROTATION:
@@ -109,13 +109,13 @@ class GLRenderer implements GLEventListener, Observer {
                 handleMoveAction((MoveAction) action);
                 break;
             case NEWBLOCK:
-                HandleNewblockAction(((NewblockAction) action).getBlocktype());
+                handleNewBlockAction(((NewBlockAction) action).getBlocktype());
                 break;
             case NEWLINE:
-                handleNewlineAction(((NewlineAction) action).getLine());
+                handleNewLineAction(((NewLineAction) action).getLine());
                 break;
-            case RMLINE:
-                handleRmlineAction((RmlineAction) action);
+            case REMOVELINE:
+                handleRemoveLineAction((RemoveLineAction) action);
                 break;
         }
         if(debug){
@@ -138,15 +138,15 @@ class GLRenderer implements GLEventListener, Observer {
         gl.glBegin(GL.GL_LINES);
 
         //draw the vertical lines
-        for (int x = 0; x <= viewportWidth; x += blocksize) {
+        for (int x = 0; x <= viewPortWidth; x += blockSize) {
             gl.glVertex2d(x, 0);
-            gl.glVertex2d(x, viewportHeight);
+            gl.glVertex2d(x, viewPortHeight);
         }
 
         //draw the horizontal lines
-        for (int y = 0; y <= viewportHeight; y += blocksize) {
+        for (int y = 0; y <= viewPortHeight; y += blockSize) {
             gl.glVertex2d(0, y);
-            gl.glVertex2d(viewportWidth, y);
+            gl.glVertex2d(viewPortWidth, y);
         }
 
         gl.glEnd();
@@ -160,14 +160,14 @@ class GLRenderer implements GLEventListener, Observer {
         gl.glBegin(GL2.GL_QUADS);
         int x = currentBlock.getX();
         int y = currentBlock.getY();
-        boolean[][] grid = currentBlock.getBlockGrid();
+        boolean[][] grid = currentBlock.getGrid();
         for (int a = 0; a < grid.length; a++) {
             for (int b = 0; b < grid.length; b++) {
                 if (grid[a][b]) {
-                    gl.glVertex2i(blocksize * (x + a), blocksize * (y - b+1));
-                    gl.glVertex2i(blocksize * (x + a), blocksize * (y - b));
-                    gl.glVertex2i(blocksize * (x + 1 + a), blocksize * (y - b));
-                    gl.glVertex2i(blocksize * (x + 1 + a), blocksize * (y - b+1));
+                    gl.glVertex2i(blockSize * (x + a), blockSize * (y - b+1));
+                    gl.glVertex2i(blockSize * (x + a), blockSize * (y - b));
+                    gl.glVertex2i(blockSize * (x + 1 + a), blockSize * (y - b));
+                    gl.glVertex2i(blockSize * (x + 1 + a), blockSize * (y - b+1));
                 }
             }
         }
@@ -178,12 +178,12 @@ class GLRenderer implements GLEventListener, Observer {
         grid = new Color[gridWidth][gridHeight];
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
-                grid[i][j] = bgColor;
+                grid[i][j] = backGroundColor;
             }
         }
     }
 
-    private void drawStackGrid(GL2 gl) {
+    private void drawBlockStack(GL2 gl) {
 
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
@@ -193,10 +193,10 @@ class GLRenderer implements GLEventListener, Observer {
 
                 gl.glBegin(GL2.GL_QUADS);
 
-                gl.glVertex2i(blocksize * i, blocksize * (j + 1));
-                gl.glVertex2i(blocksize * i, blocksize * (j));
-                gl.glVertex2i(blocksize * (i + 1), blocksize * (j));
-                gl.glVertex2i(blocksize * (i + 1), blocksize * (j + 1));
+                gl.glVertex2i(blockSize * i, blockSize * (j + 1));
+                gl.glVertex2i(blockSize * i, blockSize * (j));
+                gl.glVertex2i(blockSize * (i + 1), blockSize * (j));
+                gl.glVertex2i(blockSize * (i + 1), blockSize * (j + 1));
 
                 gl.glEnd();
             }
@@ -208,7 +208,7 @@ class GLRenderer implements GLEventListener, Observer {
     private void saveCurrentblockToGrid() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                if (currentBlock.getBlockGrid()[i][j]) {
+                if (currentBlock.getGrid()[i][j]) {
                     grid[currentBlock.getX() +i][currentBlock.getY() - j] = currentBlock.getColor();
                 }
             }
@@ -237,7 +237,7 @@ class GLRenderer implements GLEventListener, Observer {
         }
     }
 
-    private void HandleNewblockAction(Block block) {
+    private void handleNewBlockAction(Block block) {
         if ((currentBlock != null)) {
 
 
@@ -249,7 +249,7 @@ class GLRenderer implements GLEventListener, Observer {
 
     }
 
-    private void handleNewlineAction(boolean[][] line) {
+    private void handleNewLineAction(boolean[][] line) {
 
         for (int i = 0; i < gridWidth; i++) {
             for (int j = gridHeight - 1 - line[0].length; j >= 0; j--) {
@@ -262,25 +262,33 @@ class GLRenderer implements GLEventListener, Observer {
                 if (line[i][j]) {
                     grid[i][j] = garbageLineColor;
                 } else {
-                    grid[i][j] = bgColor;
+                    grid[i][j] = backGroundColor;
                 }
             }
         }
     }
 
-    private void handleRmlineAction(RmlineAction rmlineAction) {
+    private void handleRemoveLineAction(RemoveLineAction rmlineAction) {
         saveCurrentblockToGrid();
         currentBlock=null;
         printGrid();
         List<Integer> linesToRemove = rmlineAction.getLinesToRemove();
 
-        //TODO lines must be removed from top to bottom - because
-        //else the line Number in getLinesToRemove is wrong
-        for (int i = 0; i < gridWidth; i++) {
-            for(Integer j : linesToRemove) {
-                grid[i][23-j-1] = grid[i][23-j];
+        for (Integer lineToRemove : linesToRemove) {
+            //remove the lineToRemove line
+            for (int x = 0; x < gridWidth; x++) {
+                grid[x][23-lineToRemove] = null;
+            }
+
+            //move everythign downward
+            for (int y = 23-lineToRemove + 1; y <= 23; y++) {
+                for (int x = 0; x < gridWidth; x++) {
+                    grid[x][y - 1] = grid[x][y];
+                }
             }
         }
+        
+        
         printGrid();
 
     }
@@ -289,7 +297,7 @@ class GLRenderer implements GLEventListener, Observer {
         for (int i = gridHeight-1; i >= 0; i--) {
             String lineOutput = "";
             for (int j = 0; j < gridWidth; j++) {
-                if (grid[j][i] != bgColor) {
+                if (grid[j][i] != backGroundColor) {
                     lineOutput += "[X]";
                 } else {
                     lineOutput += "[ ]";
