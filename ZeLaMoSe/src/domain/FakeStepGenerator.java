@@ -4,6 +4,8 @@
  */
 package domain;
 
+import domain.interfaces.StepProducerInterface;
+
 /**
  *
  * @author chrigi
@@ -12,7 +14,7 @@ public class FakeStepGenerator implements StepProducerInterface {
     public Step step;
 
     @Override
-    public void runStep() {
+    public void niggasInParis() {
         //do noting
     }
     

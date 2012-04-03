@@ -16,11 +16,11 @@ import domain.actions.InputEvent;
  */
 public class TetrisControllerTest {
     
-    TestrisController tC;
+    TetrisController tC;
     SimulationController sC;
     FakeNetworkHandler nH;
     FakeStepGenerator sG;
-    int sessionID = 3
+    int sessionID = 3;
 
     public TetrisControllerTest() {
         
@@ -32,8 +32,8 @@ public class TetrisControllerTest {
         sC = new SimulationController();
         nH = new FakeNetworkHandler();
         sG = new FakeStepGenerator();
-        sG.step = new Step(seqNum, sessionID)
-        tC = new TestrisController(sC, nH, sG);
+        sG.step = new Step(0, sessionID);
+        tC = new TetrisController(sC, nH, sG);
     }
   
     @After

@@ -12,5 +12,5 @@ import java.util.Collection;
  * @author chrigi
  */
 public interface InputSamplerInterface {
-    public Collection<InputEvent> getAndRemoveAllFromQueue();
+    public Collection<InputEvent> getAndRemoveAll();
 }
