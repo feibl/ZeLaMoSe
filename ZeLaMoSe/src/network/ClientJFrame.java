@@ -269,7 +269,7 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
 
                @Override
                public void run() {
-                  stepGenerator.runStep();
+                  stepGenerator.niggasInParis();
                }
             };
             
