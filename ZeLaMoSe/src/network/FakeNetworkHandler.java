@@ -90,7 +90,7 @@ public class FakeNetworkHandler extends NetworkHandler {
     }
 
     @Override
-    public void runStep() {
+    public void niggasInParis() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     

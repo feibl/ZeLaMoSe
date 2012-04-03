@@ -27,10 +27,13 @@ public class StepGenerator extends Observable implements StepProducerInterface {
    private int counter = 0;
    private int sessionID;
 
-    public StepGenerator(InputSampler inputsampler,int sessionID) {
+    public StepGenerator(InputSampler inputsampler) {
         this.inputSampler = inputsampler;
+    }
+    
+    public void setSessionID(int sessionID) {
         this.sessionID = sessionID;
-    }    
+    }
     
     @Override
     public void niggasInParis(){

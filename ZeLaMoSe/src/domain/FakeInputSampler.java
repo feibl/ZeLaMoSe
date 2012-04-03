@@ -16,7 +16,7 @@ public class FakeInputSampler implements InputSamplerInterface{
     public Collection<InputEvent> inputEvents = new ConcurrentLinkedQueue<InputEvent>();
 
     @Override
-    public Collection<InputEvent> getAndRemoveAllFromQueue() {
+    public Collection<InputEvent> getAndRemoveAll() {
         return inputEvents;
     }
     
