@@ -8,7 +8,7 @@ import com.jogamp.opengl.util.FPSAnimator;
 import domain.Fake.FakeController;
 import domain.GameEngine;
 import domain.InputSampler;
-import domain.StepGenerator;
+import domain.StepGeneratorImpl;
 import java.awt.KeyboardFocusManager;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
@@ -265,7 +265,7 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel {
         KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(is);
         
-        StepGenerator sg = new StepGenerator(is, 0);
+        StepGeneratorImpl sg = new StepGeneratorImpl(is, 0);
         
         
         GLRenderer renderer = new GLRenderer(360,660,30);

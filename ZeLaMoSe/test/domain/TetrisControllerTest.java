@@ -4,11 +4,13 @@
  */
 package domain;
 
+import domain.fake.FakeStepGenerator;
 import network.FakeNetworkHandler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import domain.actions.InputEvent;
+import domain.interfaces.SimulationStateInterface;
 
 /**
  *
@@ -45,7 +47,7 @@ public class TetrisControllerTest {
         nH.setConnected();
         SimulationStateInterface gE = sC.getSimulation(sessionID);
         
-        sG.addAction(new InputEvent( 5000));
+        
         
         tC.runStep();
         
