@@ -4,6 +4,8 @@
  */
 package domain;
 
+import domain.interfaces.StepProducerInterface;
+import domain.interfaces.SimulationStateInterface;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.TimerTask;
@@ -77,7 +79,7 @@ public class TetrisController extends Observable implements Observer {
      */
     public void runStep() {
         System.out.println("running step: "+currentStep+" time: "+System.nanoTime());
-        stepGenerator.runStep();
+        stepGenerator.niggasInParis();
         simulationController.simulateStep(currentStep);
         currentStep++;
         
