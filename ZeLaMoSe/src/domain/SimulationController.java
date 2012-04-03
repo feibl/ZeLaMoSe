@@ -8,6 +8,7 @@ import domain.interfaces.StepInterface;
 import domain.interfaces.GameEngineInterface;
 import domain.interfaces.SimulationStateInterface;
 import domain.actions.Action;
+import domain.actions.MoveAction;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,7 @@ public class SimulationController implements StepInterface {
   private Map<Integer, Step> stepQueue = new HashMap<Integer, Step>();
   private Map<Integer, GameEngineInterface> gameEngines = new HashMap<Integer, GameEngineInterface>();
   private Map<Integer, String> sessions = new HashMap<Integer, String>();
+  private final int advanceStepLimit = 20; //advance by one every 20 steps
   
   public SimulationController() {
     
@@ -53,6 +55,10 @@ public class SimulationController implements StepInterface {
    * - Simulation ACtions
    */
   public void simulateStep(int seqNum) {
+      boolean advance = false;
+      if (seqNum % advanceStepLimit == 0) {
+          advance = true;
+      }
       Map <Action, Integer> actionList = new TreeMap<Action, Integer>(new Comparator(){
 
           @Override
@@ -80,6 +86,9 @@ public class SimulationController implements StepInterface {
       for (Map.Entry<Action, Integer> e: actionList.entrySet()) {
           assert (gameEngines.containsKey(e.getValue()));
           GameEngineInterface g = gameEngines.get(e.getValue());
+          if (advance) {
+              g.handleAction(new MoveAction(0, MoveAction.Direction.DOWN, 1));
+          }
           g.handleAction(e.getKey());
       }
   }
