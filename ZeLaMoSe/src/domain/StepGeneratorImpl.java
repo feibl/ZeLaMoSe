@@ -64,7 +64,7 @@ public class StepGeneratorImpl extends StepGenerator {
             }
         }
         setChanged();
-        notifyObservers(NetworkHandler.UpdateType.STEP);
+        notifyObservers(TetrisController.UpdateType.STEP);
     }
 
     @Override

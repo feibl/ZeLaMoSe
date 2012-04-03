@@ -23,11 +23,10 @@ import network.SessionInformation;
  */
 public class TetrisController extends Observable implements Observer {
     private Timer timer;
-    enum UpdateType {
-        GameStarted,
-        SessionAdded,
-        SessionRemoved
-    }
+      public enum UpdateType {
+
+      STEP, SESSION_ADDED, SESSION_REMOVED, CONNECTION_ESTABLISHED, EXCEPTION_THROWN
+   ,  CHAT_MESSAGE_RECEIVED, GAME_STARTED};
 
     private SimulationController simulationController;
     private NetworkHandler networkHandler;
@@ -52,22 +51,22 @@ public class TetrisController extends Observable implements Observer {
         return simulationController.getSimulation(sessionId);
     }
     
-    void startServer() {
+    public void startServer() {
         //TODO create server and connectToServer
     }
     
-    void connectToServer(String ip, int port) {
+    public void connectToServer(String ip, int port) {
         //TODO connect networkhandler to server
         networkHandler.connectToServer(ip, "servername", "nickname");
     }
     
-    void startGame() {
+    public void startGame() {
         //networkHandler.startGame();
     }
 
     @Override
     public void update(Observable o, Object o1) {
-        if (o1 == NetworkHandler.UpdateType.STEP) {
+        if (o1 == UpdateType.STEP) {
             System.out.println("adding step: ");
             StepProducerInterface producer = (StepProducerInterface)o;
             Step step = producer.getStep();
@@ -77,19 +76,19 @@ public class TetrisController extends Observable implements Observer {
                 networkHandler.addStep(step);
             }
         }
-        if (o1 == NetworkHandler.UpdateType.GAME_STARTED) {
+        if (o1 == UpdateType.GAME_STARTED) {
             System.out.println("starting game");
             run();
         }
         
-        if (o1 == NetworkHandler.UpdateType.SESSION_ADDED) {
+        if (o1 == UpdateType.SESSION_ADDED) {
             System.out.println("session added");
         }
         
-        if (o1 == NetworkHandler.UpdateType.SESSION_REMOVED) {
+        if (o1 == UpdateType.SESSION_REMOVED) {
             System.out.println("session removed");
         }
-        if (o1 == NetworkHandler.UpdateType.CONNECTION_ESTABLISHED) {
+        if (o1 == UpdateType.CONNECTION_ESTABLISHED) {
             System.out.println("connection established");
             SessionInformation sessionInformation = networkHandler.getOwnSession();
             localSessionID = sessionInformation.getId();
