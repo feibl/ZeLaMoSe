@@ -11,7 +11,7 @@ import java.util.Observable;
  *
  * @author chrigi
  */
-public class MockGameEngine extends Observable implements GameEngineInterface {
+public class MockGameEngine extends GameEngineInterface {
   private Action lastAction;
   private int sessionId;
   public MockGameEngine(int sessionId) {

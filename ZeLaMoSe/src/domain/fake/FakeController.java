@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.Fake;
+package domain.fake;
 
 import domain.GameEngine;
 import domain.StepGeneratorImpl;

@@ -5,7 +5,7 @@
 package view;
 
 import com.jogamp.opengl.util.FPSAnimator;
-import domain.Fake.FakeController;
+import domain.fake.FakeController;
 import domain.GameEngine;
 import domain.InputSampler;
 import domain.StepGeneratorImpl;
