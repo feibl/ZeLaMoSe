@@ -6,6 +6,7 @@ package view;
 
 import domain.InputSampler;
 import java.awt.KeyboardFocusManager;
+import view.music.Music;
 
 /**
  *
@@ -19,6 +20,7 @@ public class GameFieldJFrame extends javax.swing.JFrame {
     public GameFieldJFrame() {
         initListeners();
         initComponents();
+        startMusic();
     }
 
     /**
@@ -260,6 +262,17 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         //Hijack the keyboard manager
         KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(new InputSampler());
+    }
+
+    private static void startMusic() {
+        try {
+            Music m = new Music();
+            m.init();
+   
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 
 

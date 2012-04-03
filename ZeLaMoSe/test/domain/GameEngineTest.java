@@ -187,6 +187,11 @@ public class GameEngineTest {
         addCurrentBlockToTestGrid(7, 23);
 
         gameEngine.handleAction(new HardDropAction(System.nanoTime()));
+        addCurrentBlockToTestGrid(4, 0);
+        addCurrentBlockToTestGrid(4, 1);
+        addCurrentBlockToTestGrid(5, 1);
+        addCurrentBlockToTestGrid(6, 1);
+
         checkTestGrid();
     }
 
