@@ -162,9 +162,9 @@ public class GameEngine extends Observable implements GameEngineInterface {
             currentBlock.setY(defaultY);
                     saveCurrenblockToGrid();
             setLastAction(new NewBlockAction(currentBlock, sessionId));
+        }else {
+            
         }
-        //TODO
-        //what to do when gameOver is true???
     }
 
     private void saveCurrenblockToGrid() {
