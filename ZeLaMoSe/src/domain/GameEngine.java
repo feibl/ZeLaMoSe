@@ -246,6 +246,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
         fieldsToMove--;
         currentBlock.setY(tempY);
         moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, fieldsToMove));
+        checkForLinesToRemove();
         nextBlock();
     }
 
@@ -283,7 +284,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
             checkForLinesToRemove();
             nextBlock();
         } else {
-                    saveCurrenblockToGrid();
+            saveCurrenblockToGrid();
             setLastAction(moveAction);
         }
     }
