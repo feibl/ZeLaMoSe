@@ -9,6 +9,7 @@ import java.util.Observer;
 import java.util.TimerTask;
 import java.util.Timer;
 import network.NetworkHandler;
+import network.SessionInformation;
 
 /**
  *
@@ -32,10 +33,12 @@ public class TestrisController extends Observable implements Observer {
     
     private int currentStep = 0;
     private final int stepDuration = 50; //in millisecond
+    private int localSessionID = -1;
     
-    public TestrisController(SimulationController sController, NetworkHandler nH/*, StepGenerator sG*/) {
+    public TestrisController(SimulationController sController, NetworkHandler nH, StepGenerator sG) {
         simulationController = sController;
         networkHandler = nH;
+        stepGenerator = sG;
         stepGenerator.addObserver(this);
     }
     
@@ -53,10 +56,11 @@ public class TestrisController extends Observable implements Observer {
     
     void connectToServer(String ip, int port) {
         //TODO connect networkhandler to server
+        networkHandler.connectToServer(ip, "servername", "nickname");
     }
     
     void startGame() {
-        //Trigger startGame in server
+        //networkHandler.startGame();
     }
 
     @Override
@@ -66,9 +70,35 @@ public class TestrisController extends Observable implements Observer {
             StepProducerInterface producer = (StepProducerInterface)o;
             Step step = producer.getStep();
             simulationController.addStep(step);
+            assert(localSessionID >= 0);
+            if (step.sessionId() == localSessionID) {
+                networkHandler.addStep(step);
+            }
         }
+        if (o1 == NetworkHandler.UpdateType.GAME_STARTED) {
+            System.out.println("starting game");
+            run();
+        }
+        
+        if (o1 == NetworkHandler.UpdateType.SESSION_ADDED) {
+            System.out.println("session added");
+        }
+        
+        if (o1 == NetworkHandler.UpdateType.SESSION_REMOVED) {
+            System.out.println("session removed");
+        }
+        if (o1 == NetworkHandler.UpdateType.CONNECTION_ESTABLISHED) {
+            System.out.println("connection established");
+            SessionInformation sessionInformation = networkHandler.getOwnSession();
+            localSessionID = sessionInformation.getId();
+            stepGenerator.setSessionID(sessionInformation.getId());
+            simulationController.addSession(localSessionID, "localSessionName", new GameEngine(localSessionID));
+        }
+        
+        
+        
     }
-    
+      
     
     /*
      * Called every 50ms
@@ -84,7 +114,7 @@ public class TestrisController extends Observable implements Observer {
     }
     
     //Start the step timer
-    public void run() { 
+    private void run() { 
         TimerTask timerTask = new TimerTask() {
                                   @Override
                                   public void run() {

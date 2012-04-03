@@ -21,18 +21,25 @@ import network.NetworkHandler;
 public class StepGenerator extends Observable implements StepProducerInterface {
     
 
-   private InputSampler inputsampler;
+   private InputSamplerInterface inputsampler;
    private Step step;
    private int counter = 0;
    private int sessionID;
 
-    public StepGenerator(InputSampler inputsampler,int sessionID) {
+    public StepGenerator(InputSamplerInterface inputsampler) {
         this.inputsampler = inputsampler;
-        this.sessionID = sessionID;
     }    
+    
+    public void setSessionID(int sessionID) {
+        this.sessionID = sessionID;
+    }
     
     @Override
     public void runStep(){
+        if (sessionID < 0) {
+            //Session ID must be set when the game begins
+            assert(false);
+        }
         step = new Step(counter++,sessionID);
         long currentTime = System.nanoTime();
         for(InputEvent ie : inputsampler.getAndRemoveAllFromQueue()){
