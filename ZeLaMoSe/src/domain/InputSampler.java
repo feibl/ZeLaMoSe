@@ -35,9 +35,9 @@ public class InputSampler implements KeyEventDispatcher, InputSamplerInterface {
       return false;
    }
 
-   public Collection<InputEvent> getAndRemoveAllFromQueue() {
+   public Collection<InputEvent> getAndRemoveAll() {
       Collection<InputEvent> c = new ArrayList<InputEvent>(keyEventQueue);
-      keyEventQueue.clear();
+      keyEventQueue.removeAll(c);
       return c;
    }
 }

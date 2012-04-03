@@ -8,7 +8,7 @@ import com.jogamp.newt.event.KeyEvent;
 import domain.InputSampler;
 import domain.Step;
 import domain.StepGenerator;
-import domain.StepProducerInterface;
+import domain.interfaces.StepProducerInterface;
 import domain.actions.Action;
 import java.awt.event.KeyAdapter;
 import java.util.*;
@@ -263,20 +263,17 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
             stepGenerator = new StepGenerator(inputSampler, ownSession.getId());
             stepGenerator.addObserver(this);
 
-            new Thread(new Runnable() {
+            Timer timer = new Timer();
+
+            TimerTask timerTask = new TimerTask() {
 
                @Override
                public void run() {
-                  while (true) {
-                     try {
-                        Thread.sleep(5000);
-                        stepGenerator.niggasInParis();
-                     } catch (InterruptedException ex) {
-                        Logger.getLogger(ClientJFrame.class.getName()).log(Level.SEVERE, null, ex);
-                     }
-                  }
+                  stepGenerator.niggasInParis();
                }
-            }).start();
+            };
+            
+            timer.scheduleAtFixedRate(timerTask, 0, 50);
             break;
 
 
@@ -287,8 +284,8 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
                networkHandler.addStep(stepProducer.getStep());
             }
             Step step = stepProducer.getStep();
-            writeToChatArea("Step received from " + step.sessionId());
-            for (Action action : step.actions()) {
+            writeToChatArea("Step received from " + step.getSessionID());
+            for (Action action : step.getActions()) {
                writeToChatArea('\t' + action.getTimestamp() + " " + action.getType().name());
             }
             break;

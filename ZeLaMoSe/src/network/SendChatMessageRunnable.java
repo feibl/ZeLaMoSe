@@ -19,7 +19,7 @@ public class SendChatMessageRunnable implements Runnable {
    
    @Override
    public void run() {
-      handler.addChatMessage(message);
+      handler.sendChatMessage(message);
    }
    
 }

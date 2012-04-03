@@ -12,6 +12,6 @@ import domain.Step;
  */
 public interface Handler {
   public void disconnect();
-   public void addChatMessage(String message);
-   public void addStep(Step step);
+   public void sendChatMessage(String message);
+   public void sendStep(Step step);
 }

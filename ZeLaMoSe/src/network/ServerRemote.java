@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface ServerRemote extends Remote, Serializable {
    public void disconnect() throws RemoteException;
-   public void addChatMessage(String message) throws RemoteException;
-   public void addStep(Step step) throws RemoteException;
-   public void reportClientRemote(ClientRemote clientRemote) throws RemoteException;
+   public void receiveChatMessage(String message) throws RemoteException;
+   public void receiveStep(Step step) throws RemoteException;
+   public void receiveClientRemote(ClientRemote clientRemote) throws RemoteException;
 }

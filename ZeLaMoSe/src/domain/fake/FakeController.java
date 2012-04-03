@@ -2,8 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain;
+package domain.Fake;
 
+import domain.GameEngine;
+import domain.StepGenerator;
 import domain.actions.Action;
 import java.util.Observable;
 import java.util.Observer;
@@ -33,7 +35,7 @@ public class FakeController implements Observer{
                     } catch (InterruptedException ex) {
                         Logger.getLogger(FakeController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    sg.runStep();
+                    sg.niggasInParis();
                 }
             }
         }).start();
@@ -43,8 +45,8 @@ public class FakeController implements Observer{
 
     @Override
     public void update(Observable o, Object o1) {
-        for(Action a:sg.getStep().actions()){
-            ge.simulateAction(a);
+        for(Action a:sg.getStep().getActions()){
+            ge.handleAction(a);
         }
     }
     

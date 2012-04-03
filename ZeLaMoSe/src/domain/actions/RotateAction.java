@@ -13,14 +13,14 @@ public class RotateAction extends Action {
     public enum Direction {
         LEFT, RIGHT
     }
-    private Direction dir;
+    private Direction direction;
 
     public RotateAction(long timestamp, Direction dir) {
         super(ActionType.ROTATION, timestamp);
-        this.dir = dir;
+        this.direction = dir;
     }
     
     public Direction getDirection() {
-        return dir;
+        return direction;
     }
 }

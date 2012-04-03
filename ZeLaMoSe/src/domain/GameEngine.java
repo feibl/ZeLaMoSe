@@ -4,6 +4,8 @@
  */
 package domain;
 
+import domain.interfaces.BlockQueueInterface;
+import domain.interfaces.GameEngineInterface;
 import domain.actions.*;
 import domain.block.Block;
 import java.util.ArrayList;
@@ -42,7 +44,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
         return currentBlock;
     }
 
-    public void start() {
+    public void startGame() {
         nextBlock();
     }
 
@@ -64,12 +66,12 @@ public class GameEngine extends Observable implements GameEngineInterface {
     }
 
     @Override
-    public int sessionId() {
+    public int getSessionID() {
         return sessionId;
     }
 
     @Override
-    public void simulateAction(Action action) {
+    public void handleAction(Action action) {
         switch (action.getType()) {
             case MOVE:
                 handleMoveAction((MoveAction) action);
@@ -121,7 +123,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
     }
 
     private boolean checkForCollision() {
-        boolean[][] blockGrid = currentBlock.getBlockGrid();
+        boolean[][] blockGrid = currentBlock.getGrid();
         for (int x = 0; x < blockGrid.length; x++) {
             for (int y = 0; y < blockGrid.length; y++) {
                 if (blockGrid[x][y]) {
@@ -159,14 +161,14 @@ public class GameEngine extends Observable implements GameEngineInterface {
             currentBlock.setX(defaultX);
             currentBlock.setY(defaultY);
                     saveCurrenblockToGrid();
-            setLastAction(new NewblockAction(currentBlock, sessionId));
+            setLastAction(new NewBlockAction(currentBlock, sessionId));
+        }else {
+            
         }
-        //TODO
-        //what to do when gameOver is true???
     }
 
     private void saveCurrenblockToGrid() {
-        boolean[][] blockGrid = currentBlock.getBlockGrid();
+        boolean[][] blockGrid = currentBlock.getGrid();
         //Refactor find a better way to delte the old block references
         for (int x = 0; x < gridwidth; x++) {
             for (int y = 0; y < gridheight; y++) {
@@ -185,8 +187,8 @@ public class GameEngine extends Observable implements GameEngineInterface {
         }
     }
 
-    //TODO refactor method that the generate RmLineAction can remove multiple lines at once, 
-    //Maybe have to refactor the RmLineAction for this Reason
+    //TODO refactor method that the generate RemoveLineAction can remove multiple lines at once, 
+    //Maybe have to refactor the RemoveLineAction for this Reason
     private void checkForLinesToRemove() {
         boolean removeLine;
         ArrayList<Integer> linesToRemove = new ArrayList<Integer>();
@@ -302,7 +304,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
         if (linesToRemove.size() > 1) {
             System.out.println("multi lines remove: " + linesToRemove.size());
         }
-        setLastAction(new RmlineAction(0, 1, gridheight - 1));
+        setLastAction(new RemoveLineAction(0, linesToRemove));
 
 
     }

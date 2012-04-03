@@ -2,7 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain;
+package domain.Fake;
+import domain.interfaces.GameEngineInterface;
 import domain.actions.Action;
 import java.util.Observable;
 
@@ -18,13 +19,13 @@ public class MockGameEngine extends Observable implements GameEngineInterface {
   }
 
   @Override
-  public int sessionId() {
+  public int getSessionID() {
     return this.sessionId;
   }
     
   
   @Override
-  public void simulateAction(Action action) {
+  public void handleAction(Action action) {
       System.out.println("simulate action");
       lastAction = action;
   }

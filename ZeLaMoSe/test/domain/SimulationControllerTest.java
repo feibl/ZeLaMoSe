@@ -4,6 +4,7 @@
  */
 package domain;
 
+import domain.Fake.MockGameEngine;
 import domain.actions.ActionType;
 import domain.actions.Action;
 import domain.actions.RotateAction;
@@ -81,7 +82,7 @@ public class SimulationControllerTest {
 //      assertEquals(null, engine2.getLastAction());
 //      assertEquals(null, engine3.getLastAction());
       
-      //Simulation adds actions to engines
+      //Simulation adds getActions to engines
       instance.simulateStep(0);
       assertEquals(action, engine1.getLastAction());
       assertEquals(action, engine2.getLastAction());

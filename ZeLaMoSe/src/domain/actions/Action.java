@@ -15,11 +15,11 @@ public class Action implements Serializable{
     ActionType type;
     
     //The timestamp is relative to the step, here in milliseconds
-    long ts = 0;
+    long timeStamp = 0;
     
     public Action(ActionType type, java.lang.Long timestamp) {
         this.type = type;
-        this.ts = timestamp;
+        this.timeStamp = timestamp;
     }
 
     public ActionType getType() {
@@ -27,7 +27,7 @@ public class Action implements Serializable{
     }
     
     public long getTimestamp() {
-        return ts;
+        return timeStamp;
     }
     
 }

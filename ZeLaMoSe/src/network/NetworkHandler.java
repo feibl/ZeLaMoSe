@@ -4,8 +4,8 @@
  */
 package network;
 
-import domain.StepInterface;
-import domain.StepProducerInterface;
+import domain.interfaces.StepInterface;
+import domain.interfaces.StepProducerInterface;
 import java.net.InetAddress;
 import java.rmi.RemoteException;
 import java.util.List;

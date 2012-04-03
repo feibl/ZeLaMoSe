@@ -5,7 +5,7 @@
 package view;
 
 import com.jogamp.opengl.util.FPSAnimator;
-import domain.FakeController;
+import domain.Fake.FakeController;
 import domain.GameEngine;
 import domain.InputSampler;
 import domain.StepGenerator;
@@ -276,7 +276,7 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel {
         renderer.setEngine(ge);
         
         new FakeController(ge, sg);
-        ge.start();
+        ge.startGame();
         
         
         
