@@ -9,8 +9,6 @@ import domain.actions.*;
 import domain.block.Block;
 import domain.actions.RotateAction.Direction;
 import java.awt.Color;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -65,18 +63,19 @@ class GLRenderer implements GLEventListener, Observer {
 
     @Override
     public void display(GLAutoDrawable drawable) {
+
+
+
+        GL2 gl = drawable.getGL().getGL2();
+        gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+
+
+        drawBlockStack(gl);
         if (currentBlock != null) {
-
-
-            GL2 gl = drawable.getGL().getGL2();
-            gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-
-
-            drawBlockStack(gl);
             drawCurrentBlock(gl);
-
-            drawGridLines(gl);
         }
+        drawGridLines(gl);
+
     }
 
     @Override
@@ -100,7 +99,7 @@ class GLRenderer implements GLEventListener, Observer {
 // * - newline (line definition): add new line to bottom. line according to supplied definition
 // * - A new block enters the game
     private void handleAction(Action action) {
-        
+
         switch (action.getType()) {
             case ROTATION:
                 handleRotateAction(((RotateAction) action).getDirection());
@@ -117,9 +116,12 @@ class GLRenderer implements GLEventListener, Observer {
             case REMOVELINE:
                 handleRemoveLineAction((RemoveLineAction) action);
                 break;
+            case GAMEOVER:
+                handleGameOverAction();
+                break;
         }
-        if(debug){
-            System.out.println("GLREnderer: actiontype recieved "+action.getType());
+        if (debug) {
+            System.out.println("GLREnderer: actiontype recieved " + action.getType());
         }
     }
 
@@ -164,10 +166,10 @@ class GLRenderer implements GLEventListener, Observer {
         for (int a = 0; a < grid.length; a++) {
             for (int b = 0; b < grid.length; b++) {
                 if (grid[a][b]) {
-                    gl.glVertex2i(blockSize * (x + a), blockSize * (y - b+1));
+                    gl.glVertex2i(blockSize * (x + a), blockSize * (y - b + 1));
                     gl.glVertex2i(blockSize * (x + a), blockSize * (y - b));
                     gl.glVertex2i(blockSize * (x + 1 + a), blockSize * (y - b));
-                    gl.glVertex2i(blockSize * (x + 1 + a), blockSize * (y - b+1));
+                    gl.glVertex2i(blockSize * (x + 1 + a), blockSize * (y - b + 1));
                 }
             }
         }
@@ -209,7 +211,7 @@ class GLRenderer implements GLEventListener, Observer {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (currentBlock.getGrid()[i][j]) {
-                    grid[currentBlock.getX() +i][currentBlock.getY() - j] = currentBlock.getColor();
+                    grid[currentBlock.getX() + i][currentBlock.getY() - j] = currentBlock.getColor();
                 }
             }
         }
@@ -243,7 +245,7 @@ class GLRenderer implements GLEventListener, Observer {
 
             saveCurrentblockToGrid();
         }
-        currentBlock = (Block)block.clone();
+        currentBlock = (Block) block.clone();
         currentBlock.setX(defaultX);
         currentBlock.setY(defaultY);
 
@@ -270,31 +272,31 @@ class GLRenderer implements GLEventListener, Observer {
 
     private void handleRemoveLineAction(RemoveLineAction rmlineAction) {
         saveCurrentblockToGrid();
-        currentBlock=null;
+        currentBlock = null;
         printGrid();
         List<Integer> linesToRemove = rmlineAction.getLinesToRemove();
 
         for (Integer lineToRemove : linesToRemove) {
             //remove the lineToRemove line
             for (int x = 0; x < gridWidth; x++) {
-                grid[x][23-lineToRemove] = null;
+                grid[x][23 - lineToRemove] = null;
             }
 
             //move everythign downward
-            for (int y = 23-lineToRemove + 1; y <= 23; y++) {
+            for (int y = 23 - lineToRemove + 1; y <= 23; y++) {
                 for (int x = 0; x < gridWidth; x++) {
                     grid[x][y - 1] = grid[x][y];
                 }
             }
         }
-        
-        
+
+
         printGrid();
 
     }
-    
+
     public void printGrid() {
-        for (int i = gridHeight-1; i >= 0; i--) {
+        for (int i = gridHeight - 1; i >= 0; i--) {
             String lineOutput = "";
             for (int j = 0; j < gridWidth; j++) {
                 if (grid[j][i] != backGroundColor) {
@@ -306,5 +308,8 @@ class GLRenderer implements GLEventListener, Observer {
             System.out.println(lineOutput);
         }
         System.out.println("");
+    }
+
+    private void handleGameOverAction() {
     }
 }
