@@ -14,16 +14,20 @@ import sun.audio.AudioStream;
  *
  * @author Patrick Zenhäusern
  */
-public abstract class Music extends Thread {
+public class Music extends Thread {
 
-    protected File file;
-    protected AudioStream as;
-    protected AudioPlayer p;
-    protected boolean playback;
+    private File file;
+    private AudioStream as;
+    private AudioPlayer p;
+    private boolean playback;
+    private boolean doLoop;
 
-    public Music(String file) {
+    public Music(String file, boolean doLoop) {
+        this.doLoop = doLoop;
         this.file = new File(file);
-        playback = true;
+    }
+
+    private void createNewAudioStream(File file) {
         try {
             as = new AudioStream(new FileInputStream(file));
         } catch (IOException ex) {
@@ -36,7 +40,23 @@ public abstract class Music extends Thread {
         startPlayback();
     }
 
-    public abstract void startPlayback();
+    public void startPlayback() {
+        playback = true;
+        createNewAudioStream(file);
+        p.player.start(as);
+        if (doLoop) {
+            try {
+                do {
+                } while (as.available() > 0 && playback);
+                if (playback) {
+                    startPlayback();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+        }
+    }
 
     public void stopPlayback() {
         playback = false;
