@@ -5,7 +5,7 @@
 package domain.Fake;
 
 import domain.GameEngine;
-import domain.StepGenerator;
+import domain.StepGeneratorImpl;
 import domain.actions.Action;
 import java.util.Observable;
 import java.util.Observer;
@@ -19,8 +19,8 @@ import java.util.logging.Logger;
 public class FakeController implements Observer{
 
     GameEngine ge;
-    StepGenerator sg;
-    public FakeController(GameEngine ge, final StepGenerator sg) {
+    StepGeneratorImpl sg;
+    public FakeController(GameEngine ge, final StepGeneratorImpl sg) {
         this.ge = ge;
         this.sg = sg;
         
