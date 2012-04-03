@@ -6,6 +6,7 @@ package view;
 
 import domain.InputSampler;
 import java.awt.KeyboardFocusManager;
+import view.music.LoopMusic;
 import view.music.Music;
 
 /**
@@ -268,8 +269,8 @@ public class GameFieldJFrame extends javax.swing.JFrame {
 
     private static void startMusic() {
         try {
-            Music m = new Music();
-            m.init();
+            Music m = new LoopMusic("src/view/music/files/OriginalTetrisTheme.wav");
+            m.start();
    
         } catch (Exception ex) {
             ex.printStackTrace();

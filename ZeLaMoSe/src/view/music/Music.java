@@ -1,51 +1,45 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package view.music;
 
-import java.applet.*;
-import javax.swing.*;
-import java.net.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
 
-public class Music extends JApplet {
+/**
+ *
+ * @author Patrick Zenhäusern
+ */
+public abstract class Music extends Thread {
 
-    public class Sound // Holds one audio file
-    {
+    protected File file;
+    protected AudioStream as;
+    protected AudioPlayer p;
+    protected boolean playback;
 
-        private AudioClip song; // Sound player
-        private URL songPath; // Sound path
-        Sound(String filename) {
-            try {
-                songPath = new URL(getCodeBase(), filename); // Get the Sound URL
-                song = Applet.newAudioClip(songPath); // Load the Sound
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            } // Satisfy the catch
-
-
-        }
-
-        public void playSound() {
-            song.loop(); // Play 
-
-
-        }
-
-        public void stopSound() {
-            song.stop(); // Stop
-
-
-        }
-
-        public void playSoundOnce() {
-            song.play(); // Play only once
-
+    public Music(String file) {
+        this.file = new File(file);
+        playback = true;
+        try {
+            as = new AudioStream(new FileInputStream(file));
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 
     @Override
-    public void init() {
-        Sound testsong = new Sound("src/view/music/OriginalTetrisTheme.wav");
-        testsong.playSound();
+    public void run() {
+        startPlayback();
+    }
 
+    public abstract void startPlayback();
 
+    public void stopPlayback() {
+        playback = false;
+        p.player.stop(as);
     }
 }

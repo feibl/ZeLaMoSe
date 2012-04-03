@@ -432,7 +432,6 @@ public class GameEngineTest {
         gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
         gameEngine.handleAction(new HardDropAction(System.nanoTime()));
         gameEngine.print();
-        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
         addCurrentBlockToTestGrid(4, 0);
         addCurrentBlockToTestGrid(4, 1);
         addCurrentBlockToTestGrid(5, 1);
@@ -537,7 +536,6 @@ public class GameEngineTest {
         gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
         gameEngine.handleAction(new HardDropAction(System.nanoTime()));
         gameEngine.print();
-        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
         addCurrentBlockToTestGrid(4, 0);
         addCurrentBlockToTestGrid(5, 0);
         addCurrentBlockToTestGrid(5, 1);
