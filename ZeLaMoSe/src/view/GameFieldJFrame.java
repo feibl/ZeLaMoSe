@@ -17,7 +17,6 @@ public class GameFieldJFrame extends javax.swing.JFrame {
      * Creates new form frmGame
      */
     public GameFieldJFrame() {
-        initListeners();
         initComponents();
     }
 
@@ -258,10 +257,9 @@ public class GameFieldJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel pnlOtherGameField3;
     // End of variables declaration//GEN-END:variables
 
-    private void initListeners() {
-        //Hijack the keyboard manager
-        KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        manager.addKeyEventDispatcher(new InputSampler());
+    
+    public OwnGameFieldJPanel getMainPanel() {
+        return ownGameFieldJPanel1;
     }
 
 

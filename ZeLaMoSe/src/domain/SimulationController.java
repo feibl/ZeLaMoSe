@@ -43,9 +43,15 @@ public class SimulationController implements StepInterface {
    */
   public void addSession(int sessionId, String name, GameEngineInterface gameEngine) {
       assert(!gameEngines.containsKey(sessionId));
-      gameEngine.startGame();
       gameEngines.put(sessionId, gameEngine);
       sessions.put(sessionId, name);
+      //System.out.println("add session: "+name);
+  }
+  
+  public void initSimulation() {
+      for (GameEngineInterface e: gameEngines.values()) {
+          e.startGame();
+      }
   }
   
   /*
@@ -55,6 +61,7 @@ public class SimulationController implements StepInterface {
    * - Simulation ACtions
    */
   public void simulateStep(int seqNum) {
+      //System.out.println("simulateStep "+seqNum);
       boolean advance = false;
       if (seqNum % advanceStepLimit == 0) {
           advance = true;
@@ -83,12 +90,15 @@ public class SimulationController implements StepInterface {
           }
       }
       assert(stepQueue.isEmpty());
+      //System.out.println("simulate actions: "+actionList.entrySet().size());
+      if (advance) {
+          for (GameEngineInterface g: gameEngines.values()) {
+              g.handleAction(new MoveAction(0, MoveAction.Direction.DOWN, 1));
+          }
+      }
       for (Map.Entry<Action, Integer> e: actionList.entrySet()) {
           assert (gameEngines.containsKey(e.getValue()));
           GameEngineInterface g = gameEngines.get(e.getValue());
-          if (advance) {
-              g.handleAction(new MoveAction(0, MoveAction.Direction.DOWN, 1));
-          }
           g.handleAction(e.getKey());
       }
   }

@@ -80,6 +80,7 @@ public class TetrisController extends Observable implements Observer {
         }
         if (o1 == UpdateType.GAME_STARTED) {
             System.out.println("starting game");
+            simulationController.initSimulation();
             run();
         }
         
