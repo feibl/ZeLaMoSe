@@ -106,7 +106,7 @@ public class GameServerImplTest {
       ClientRemoteAdapter clientRemoteAdapter = new ClientRemoteAdapter() {
 
          @Override
-         public void notifySessionAdded(SessionInformation session) throws RemoteException {
+         public void receiveSessionAddedMessage(SessionInformation session) throws RemoteException {
             notificatedLogins.add(session.getId());
          }
       };
@@ -132,14 +132,14 @@ public class GameServerImplTest {
       gameServerImpl.createSession(PLAYER_NAME, new ClientRemoteAdapter() {
 
          @Override
-         public void notifySessionAdded(SessionInformation session) throws RemoteException {
+         public void receiveSessionAddedMessage(SessionInformation session) throws RemoteException {
             throw new RemoteException();
          }
       });
       gameServerImpl.createSession("bla", new ClientRemoteAdapter() {
 
          @Override
-         public void notifySessionRemoved(SessionInformation session) throws RemoteException {
+         public void receiveSessionRemovedMessage(SessionInformation session) throws RemoteException {
             assertTrue(false);
          }
       });
@@ -150,7 +150,7 @@ public class GameServerImplTest {
       gameServerImpl.createSession(PLAYER_NAME, new ClientRemoteAdapter() {
 
          @Override
-         public void reportServerRemote(ServerRemote remote) throws RemoteException {
+         public void receiveServerRemote(ServerRemote remote) throws RemoteException {
             throw new RemoteException();
          }
       });
@@ -163,7 +163,7 @@ public class GameServerImplTest {
          gameServerImpl.createSession("newPlayer", new ClientRemoteAdapter() {
 
             @Override
-            public void reportServerRemote(ServerRemote remote) throws RemoteException {
+            public void receiveServerRemote(ServerRemote remote) throws RemoteException {
                throw new RemoteException();
             }
          });
@@ -180,7 +180,7 @@ public class GameServerImplTest {
          gameServerImpl.createSession("newPlayer", new ClientRemoteAdapter() {
 
             @Override
-            public void reportServerRemote(ServerRemote remote) throws RemoteException {
+            public void receiveServerRemote(ServerRemote remote) throws RemoteException {
                throw new RemoteException();
             }
          });
@@ -197,7 +197,7 @@ public class GameServerImplTest {
       ClientRemoteAdapter fakeRemote = new ClientRemoteAdapter() {
 
          @Override
-         public void notifyChatMessage(ChatMessage message) throws RemoteException {
+         public void receiveChatMessage(ChatMessage message) throws RemoteException {
             if (message.getMessage().equals(MESSAGE)) {
                if (message.getSender().getId() == ID) {
                   count++;
@@ -208,7 +208,7 @@ public class GameServerImplTest {
       for (int i = 0; i < 4; i++) {
          gameServerImpl.createSession(SERVER_NAME, fakeRemote);
       }
-      gameServerImpl.postMessage(new LobbySession(new SessionInformation(ID, PLAYER_NAME), fakeRemote, gameServerImpl), MESSAGE);
+      gameServerImpl.postChatMessage(new LobbySession(new SessionInformation(ID, PLAYER_NAME), fakeRemote, gameServerImpl), MESSAGE);
       assertEquals(4, count);
    }
 }
