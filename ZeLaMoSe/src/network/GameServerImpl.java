@@ -35,7 +35,7 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
       for (int i = 0; i < sessionList.length; i++) {
          if (sessionList[i] == null) {
             LobbySession lobbySession = new LobbySession(sInfo, clientRemote, this);
-            clientRemote.reportServerRemote(lobbySession);
+            clientRemote.receiveServerRemote(lobbySession);
             notifyOthersSessionAdded(lobbySession);
             sessionList[i] = lobbySession;
             return sInfo;
@@ -105,11 +105,11 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
       }
    }
 
-   public void postMessage(Session sender, String message) {
+   public void postChatMessage(Session sender, String message) {
       for (Session s : sessionList) {
          if (s != null) {
             try {
-               s.sendMessage(sender.getSessionInformation(), message);
+               s.sendChatMessage(sender.getSessionInformation(), message);
             } catch (RemoteException ex) {
                removeSession(s);
             }

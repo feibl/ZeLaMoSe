@@ -12,12 +12,16 @@ import java.rmi.RemoteException;
  * @author Fabian Senn <fsenn@hsr.ch>
  */
 public interface Session {
+
    public SessionInformation getSessionInformation();
-   public void sendMessage(SessionInformation sender, String message) throws RemoteException;
+
+   public void sendChatMessage(SessionInformation sender, String message) throws RemoteException;
+
    public void sendStep(Step step) throws RemoteException;
+
    public void sendSessionAddedMessage(SessionInformation sessionInfo) throws RemoteException;
+
    public void sendSessionRemovedMessage(SessionInformation sessionInfo) throws RemoteException;
-   //public ClientRemote getClientRemote();
 
    public void sendStartSignal() throws RemoteException;
 }

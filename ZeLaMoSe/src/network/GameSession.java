@@ -29,13 +29,13 @@ class GameSession extends UnicastRemoteObject implements Session, ServerRemote{
    }
 
    @Override
-   public void sendMessage(SessionInformation sender, String message) throws RemoteException {
+   public void sendChatMessage(SessionInformation sender, String message) throws RemoteException {
       throw new UnsupportedOperationException("Not supported yet.");
    }
 
    @Override
    public void sendStep(Step step) throws RemoteException {
-      client.notifyStep(step);
+      client.receiveStep(step);
    }
 
    @Override
@@ -59,17 +59,17 @@ class GameSession extends UnicastRemoteObject implements Session, ServerRemote{
    }
 
    @Override
-   public void addChatMessage(String message) throws RemoteException {
+   public void receiveChatMessage(String message) throws RemoteException {
       throw new UnsupportedOperationException("Not supported yet.");
    }
 
    @Override
-   public void addStep(Step step) throws RemoteException {
+   public void receiveStep(Step step) throws RemoteException {
       gameServer.distributeStepToOthers(this, step);
    }
 
    @Override
-   public void reportClientRemote(ClientRemote clientRemote) throws RemoteException {
+   public void receiveClientRemote(ClientRemote clientRemote) throws RemoteException {
       client = clientRemote;
    }
    

@@ -21,7 +21,7 @@ public class AddStepRunnable implements Runnable {
 
    @Override
    public void run() {
-      handler.addStep(step);
+      handler.sendStep(step);
    }
    
 }

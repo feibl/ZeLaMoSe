@@ -25,27 +25,27 @@ public class LobbyHandler extends UnicastRemoteObject implements ClientRemote, H
    }
 
    @Override
-   public void notifyStep(Step step) throws RemoteException {
+   public void receiveStep(Step step) throws RemoteException {
       throw new UnsupportedOperationException("Not supported yet.");
    }
 
    @Override
-   public void notifyChatMessage(ChatMessage message) {
+   public void receiveChatMessage(ChatMessage message) {
       networkHandlerImpl.notifyChatMessageReceived(message);
    }
 
    @Override
-   public void notifySessionAdded(SessionInformation session) {
+   public void receiveSessionAddedMessage(SessionInformation session) {
       networkHandlerImpl.notifySessionAdded(session);
    }
 
    @Override
-   public void notifySessionRemoved(SessionInformation session) {
+   public void receiveSessionRemovedMessage(SessionInformation session) {
       networkHandlerImpl.notifySessionRemoved(session);
    }
 
    @Override
-   public void reportServerRemote(ServerRemote remote) {
+   public void receiveServerRemote(ServerRemote remote) {
       this.serverRemote = remote;
    }
 
@@ -58,21 +58,21 @@ public class LobbyHandler extends UnicastRemoteObject implements ClientRemote, H
    }
 
    @Override
-   public void addChatMessage(String message) {
+   public void sendChatMessage(String message) {
       try {
-         serverRemote.addChatMessage(message);
+         serverRemote.receiveChatMessage(message);
       } catch (RemoteException ex) {
          networkHandlerImpl.notifyExceptionThrown(ex);
       }
    }
 
    @Override
-   public void addStep(Step step) {
+   public void sendStep(Step step) {
       //throw Exception?
    }
 
    @Override
-   public void notifyGameStarted(ServerRemote newRemote) {
+   public void receiveStartSignal(ServerRemote newRemote) {
       GameHandler newHandler = null;
       try {
          newHandler = new GameHandler(networkHandlerImpl, newRemote);
@@ -81,7 +81,7 @@ public class LobbyHandler extends UnicastRemoteObject implements ClientRemote, H
       }
       networkHandlerImpl.setHandler(newHandler);
       try {
-         newRemote.reportClientRemote(newHandler);
+         newRemote.receiveClientRemote(newHandler);
       } catch (RemoteException ex) {
          networkHandlerImpl.notifyExceptionThrown(ex);
       }
