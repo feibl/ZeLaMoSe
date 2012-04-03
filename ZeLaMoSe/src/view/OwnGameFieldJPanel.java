@@ -8,7 +8,8 @@ import com.jogamp.opengl.util.FPSAnimator;
 import domain.Fake.FakeController;
 import domain.GameEngine;
 import domain.InputSampler;
-import domain.StepGenerator;
+import domain.StepGeneratorImpl;
+import domain.interfaces.SimulationStateInterface;
 import java.awt.KeyboardFocusManager;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
@@ -260,26 +261,36 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel {
     private javax.swing.JToggleButton tglSound;
     // End of variables declaration//GEN-END:variables
 
+    private GLRenderer renderer;
     private void initGLRenderer() {
-         InputSampler is = new InputSampler();
-        KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        manager.addKeyEventDispatcher(is);
-        
-        StepGenerator sg = new StepGenerator(is, 0);
-        
-        
-        GLRenderer renderer = new GLRenderer(360,660,30);
+       
+        renderer = new GLRenderer(360,660,30);
         glPnlGameField.addGLEventListener(renderer);
         FPSAnimator animator = new FPSAnimator(glPnlGameField, FRAME_RATE, true);
         animator.start();
+    }
+    
+    public void startFakeGame() {
+        InputSampler is = new InputSampler();
+        setInputSampler(is);
+        
+        StepGeneratorImpl sg = new StepGeneratorImpl(is);
+        sg.setSessionID(0);
+        
         GameEngine ge = new GameEngine(0);
-        renderer.setEngine(ge);
+        setSimulation(ge);
         
         new FakeController(ge, sg);
         ge.startGame();
-        
-        
-        
+    }
+    
+    public void setInputSampler(InputSampler is) {
+        KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        manager.addKeyEventDispatcher(is);
+    }
+    
+    public void setSimulation(SimulationStateInterface ge) {
+        renderer.setEngine(ge);
     }
     
     private GLCapabilities getGLCaps(){

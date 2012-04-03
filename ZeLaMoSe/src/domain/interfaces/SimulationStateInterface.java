@@ -5,11 +5,12 @@
 package domain.interfaces;
 
 import domain.actions.Action;
+import java.util.Observable;
 
 /**
  *
  * @author chrigi
  */
-public interface SimulationStateInterface {
-    public Action getSimulationState();
+abstract public class SimulationStateInterface extends Observable {
+    abstract public Action getSimulationState();
 }

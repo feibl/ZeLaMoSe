@@ -236,7 +236,9 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new GameFieldJFrame().setVisible(true);
+                GameFieldJFrame gamefield = new GameFieldJFrame();
+                gamefield.setVisible(true);
+                gamefield.ownGameFieldJPanel1.startFakeGame();
             }
         });
     }

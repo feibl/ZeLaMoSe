@@ -8,6 +8,7 @@ import domain.GameEngine;
 import domain.actions.*;
 import domain.block.Block;
 import domain.actions.RotateAction.Direction;
+import domain.interfaces.SimulationStateInterface;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,7 +28,7 @@ class GLRenderer implements GLEventListener, Observer {
     private boolean debug = true;
     private int viewPortWidth, viewPortHeight, blockSize;
     private final int gridWidth = 12, gridHeight = 24;
-    private GameEngine gameEngine;
+    private SimulationStateInterface gameEngine;
     private Block currentBlock;
     private final int defaultX = 4, defaultY = 23;
     private Color[][] grid;
@@ -83,7 +84,7 @@ class GLRenderer implements GLEventListener, Observer {
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
     }
 
-    void setEngine(GameEngine fakeGameEngine) {
+    void setEngine(SimulationStateInterface fakeGameEngine) {
         gameEngine = fakeGameEngine;
         gameEngine.addObserver(this);
 

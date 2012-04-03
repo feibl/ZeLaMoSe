@@ -7,7 +7,7 @@ package network;
 import com.jogamp.newt.event.KeyEvent;
 import domain.InputSampler;
 import domain.Step;
-import domain.StepGenerator;
+import domain.StepGeneratorImpl;
 import domain.interfaces.StepProducerInterface;
 import domain.actions.Action;
 import java.awt.event.KeyAdapter;
@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.SwingUtilities;
-import network.NetworkHandler.UpdateType;
+import domain.TetrisController.UpdateType;
 
 /**
  *
@@ -30,7 +30,7 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
    private List<SessionInformation> sessionList = new ArrayList<SessionInformation>();
    private DefaultListModel model = new DefaultListModel();
    private InputSampler inputSampler = new InputSampler();
-   private StepGenerator stepGenerator;
+   private StepGeneratorImpl stepGenerator;
 
    /**
     * Creates new form ClientJFrame
@@ -260,8 +260,8 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
                   });
                }
             });
-            stepGenerator = new StepGenerator(inputSampler, ownSession.getId());
-            stepGenerator.addObserver(this);
+            //stepGenerator = new StepGeneratorImpl(inputSampler, ownSession.getId());
+            //stepGenerator.addObserver(this);
 
             Timer timer = new Timer();
 
@@ -280,7 +280,7 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
          case STEP:
 
             StepProducerInterface stepProducer = (StepProducerInterface) o;
-            if (o instanceof StepGenerator) {
+            if (o instanceof StepGeneratorImpl) {
                networkHandler.addStep(stepProducer.getStep());
             }
             Step step = stepProducer.getStep();

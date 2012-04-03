@@ -4,13 +4,14 @@
  */
 package domain;
 
-import domain.interfaces.StepProducerInterface;
 import domain.interfaces.SimulationStateInterface;
+import domain.interfaces.StepProducerInterface;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.TimerTask;
 import java.util.Timer;
 import network.NetworkHandler;
+import network.SessionInformation;
 
 /**
  *
@@ -22,11 +23,10 @@ import network.NetworkHandler;
  */
 public class TetrisController extends Observable implements Observer {
     private Timer timer;
-    enum UpdateType {
-        GameStarted,
-        SessionAdded,
-        SessionRemoved
-    }
+      public enum UpdateType {
+
+      STEP, SESSION_ADDED, SESSION_REMOVED, CONNECTION_ESTABLISHED, EXCEPTION_THROWN
+   ,  CHAT_MESSAGE_RECEIVED, GAME_STARTED};
 
     private SimulationController simulationController;
     private NetworkHandler networkHandler;
@@ -34,10 +34,13 @@ public class TetrisController extends Observable implements Observer {
     
     private int currentStep = 0;
     private final int stepDuration = 50; //in millisecond
+    private int localSessionID = -1;
     
-    public TetrisController(SimulationController sController, NetworkHandler nH/*, StepGenerator sG*/) {
+    public TetrisController(SimulationController sController, NetworkHandler nH, StepGenerator sG) {
         simulationController = sController;
         networkHandler = nH;
+        networkHandler.addObserver(this);
+        stepGenerator = sG;
         stepGenerator.addObserver(this);
     }
     
@@ -49,28 +52,56 @@ public class TetrisController extends Observable implements Observer {
         return simulationController.getSimulation(sessionId);
     }
     
-    void startServer() {
+    public void startServer() {
         //TODO create server and connectToServer
     }
     
-    void connectToServer(String ip, int port) {
+    public void connectToServer(String ip, int port) {
         //TODO connect networkhandler to server
+        networkHandler.connectToServer(ip, "servername", "nickname");
     }
     
-    void startGame() {
-        //Trigger startGame in server
+    public void startGame() {
+        //networkHandler.startGame();
     }
 
     @Override
     public void update(Observable o, Object o1) {
-        if (o1 == NetworkHandler.UpdateType.STEP) {
+        System.out.println("update");
+        if (o1 == UpdateType.STEP) {
             System.out.println("adding step: ");
             StepProducerInterface producer = (StepProducerInterface)o;
             Step step = producer.getStep();
             simulationController.addStep(step);
+            assert(localSessionID >= 0);
+            if (step.getSessionID() == localSessionID) {
+                networkHandler.addStep(step);
+            }
         }
+        if (o1 == UpdateType.GAME_STARTED) {
+            System.out.println("starting game");
+            run();
+        }
+        
+        if (o1 == UpdateType.SESSION_ADDED) {
+            System.out.println("session added");
+        }
+        
+        if (o1 == UpdateType.SESSION_REMOVED) {
+            System.out.println("session removed");
+        }
+        if (o1 == UpdateType.CONNECTION_ESTABLISHED) {
+            System.out.println("connection established");
+            SessionInformation sessionInformation = networkHandler.getOwnSession();
+            localSessionID = sessionInformation.getId();
+            stepGenerator.setSessionID(sessionInformation.getId());
+            simulationController.addSession(localSessionID, "localSessionName", new GameEngine(localSessionID));
+        }
+        
+        
+        
     }
-    
+      
     
     /*
      * Called every 50ms
@@ -86,7 +117,7 @@ public class TetrisController extends Observable implements Observer {
     }
     
     //Start the step timer
-    public void run() { 
+    private void run() { 
         TimerTask timerTask = new TimerTask() {
                                   @Override
                                   public void run() {
