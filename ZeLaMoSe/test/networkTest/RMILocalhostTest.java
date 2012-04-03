@@ -324,6 +324,4 @@ public class RMILocalhostTest {
 
       assertEquals(3, count);
    }
-   
-   
 }

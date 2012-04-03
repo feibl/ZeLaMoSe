@@ -7,7 +7,6 @@ package network;
 import domain.Step;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,7 +34,7 @@ class GameHandler extends UnicastRemoteObject implements Handler, ClientRemote{
 
    @Override
    public void sendChatMessage(String message) {
-      throw new UnsupportedOperationException("Not supported yet.");
+      networkHandler.notifyExceptionThrown(new GameAlreadyStartedException());
    }
 
    @Override
@@ -54,27 +53,27 @@ class GameHandler extends UnicastRemoteObject implements Handler, ClientRemote{
 
    @Override
    public void receiveChatMessage(ChatMessage message) throws RemoteException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      //Do Nothing
    }
 
    @Override
    public void receiveSessionAddedMessage(SessionInformation session) throws RemoteException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      //Do Nothing
    }
 
    @Override
    public void receiveSessionRemovedMessage(SessionInformation session) throws RemoteException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      networkHandler.notifySessionRemoved(session);
    }
 
    @Override
    public void receiveServerRemote(ServerRemote remote) throws RemoteException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      //Do Nothing
    }
 
    @Override
    public void receiveStartSignal(ServerRemote remote) throws RemoteException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      //Do Nothing
    }
    
 }
