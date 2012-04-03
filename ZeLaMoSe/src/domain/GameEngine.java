@@ -15,6 +15,8 @@ import java.util.Observable;
 /**
  *
  * @author Cyrill
+ * 
+ * bei Action: wird momentan für den timestamp SESSIONID mitgegeben
  */
 public class GameEngine extends Observable implements GameEngineInterface {
 
@@ -163,7 +165,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
                     saveCurrenblockToGrid();
             setLastAction(new NewBlockAction(currentBlock, sessionId));
         }else {
-            
+            setLastAction(new GameOverAction(sessionId));
         }
     }
 
@@ -244,6 +246,8 @@ public class GameEngine extends Observable implements GameEngineInterface {
         fieldsToMove--;
         currentBlock.setY(tempY);
         moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, fieldsToMove));
+        checkForLinesToRemove();
+        nextBlock();
     }
 
     public void print() {
@@ -280,7 +284,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
             checkForLinesToRemove();
             nextBlock();
         } else {
-                    saveCurrenblockToGrid();
+            saveCurrenblockToGrid();
             setLastAction(moveAction);
         }
     }
