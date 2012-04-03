@@ -4,11 +4,15 @@
  */
 package application;
 
+import domain.Fake.FakeGameEngine;
 import domain.InputSampler;
 import domain.SimulationController;
-import domain.StepGenerator;
-import domain.TestrisController;
+import domain.StepGeneratorImpl;
+import domain.TetrisController;
+import domain.fake.FakeNetworkHandler;
+import java.awt.KeyboardFocusManager;
 import network.NetworkHandlerImpl;
+import network.SessionInformation;
 import view.OwnGameFieldJPanel;
 
 /**
@@ -17,15 +21,23 @@ import view.OwnGameFieldJPanel;
  */
 public class Tetris {
     
-    private TestrisController testrisController;
-
+    private TetrisController testrisController;
+    private InputSampler is = new InputSampler();
+    FakeNetworkHandler nH;
+    
     public Tetris() {
-        testrisController = new TestrisController(new SimulationController(), new NetworkHandlerImpl(), new StepGenerator(new InputSampler()));
+        nH = new FakeNetworkHandler();
+        nH.localSession = new SessionInformation(15, "nicky");
+        testrisController = new TetrisController(new SimulationController(), nH, new StepGeneratorImpl(is));
     }
     
     public void run() {
         OwnGameFieldJPanel panel = new OwnGameFieldJPanel();
+        panel.setInputSampler(is);
         panel.setVisible(true);
+        //nH.setConnected();
+        //panel.setSimulation(testrisController.getSession(15));
+        //nH.setGameStarted(); 
     }
     
     public static void main(String[] args) {

@@ -22,7 +22,11 @@ public class MockGameEngine extends Observable implements GameEngineInterface {
   public int getSessionID() {
     return this.sessionId;
   }
-    
+
+    @Override
+    public void startGame() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }  
   
   @Override
   public void handleAction(Action action) {

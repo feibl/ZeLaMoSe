@@ -6,6 +6,7 @@ package view;
 
 import domain.InputSampler;
 import java.awt.KeyboardFocusManager;
+import view.music.Music;
 
 /**
  *
@@ -19,6 +20,7 @@ public class GameFieldJFrame extends javax.swing.JFrame {
     public GameFieldJFrame() {
         initListeners();
         initComponents();
+        startMusic();
     }
 
     /**
@@ -234,7 +236,9 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new GameFieldJFrame().setVisible(true);
+                GameFieldJFrame gamefield = new GameFieldJFrame();
+                gamefield.setVisible(true);
+                gamefield.ownGameFieldJPanel1.startFakeGame();
             }
         });
     }
@@ -260,6 +264,17 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         //Hijack the keyboard manager
         KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(new InputSampler());
+    }
+
+    private static void startMusic() {
+        try {
+            Music m = new Music("src/view/music/files/OriginalTetrisTheme.wav",true);
+            m.start();
+   
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 
 

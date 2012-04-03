@@ -9,6 +9,7 @@ import domain.Step;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import domain.TetrisController.UpdateType;
 
 /**
  *

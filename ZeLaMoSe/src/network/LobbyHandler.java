@@ -7,7 +7,6 @@ package network;
 import domain.Step;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,42 +16,42 @@ import java.util.logging.Logger;
  */
 public class LobbyHandler extends UnicastRemoteObject implements ClientRemote, Handler {
 
-   private NetworkHandlerImpl networkHandlerImpl;
-   private ServerRemote serverRemote;
+   private NetworkHandlerImpl networkHandler;
+   private ServerRemote server;
 
    public LobbyHandler(NetworkHandlerImpl networkHandler) throws RemoteException {
-      this.networkHandlerImpl = networkHandler;
+      this.networkHandler = networkHandler;
    }
 
    @Override
    public void receiveStep(Step step) throws RemoteException {
-      throw new UnsupportedOperationException("Not supported yet.");
+      //Do Nothing
    }
 
    @Override
    public void receiveChatMessage(ChatMessage message) {
-      networkHandlerImpl.notifyChatMessageReceived(message);
+      networkHandler.notifyChatMessageReceived(message);
    }
 
    @Override
    public void receiveSessionAddedMessage(SessionInformation session) {
-      networkHandlerImpl.notifySessionAdded(session);
+      networkHandler.notifySessionAdded(session);
    }
 
    @Override
    public void receiveSessionRemovedMessage(SessionInformation session) {
-      networkHandlerImpl.notifySessionRemoved(session);
+      networkHandler.notifySessionRemoved(session);
    }
 
    @Override
    public void receiveServerRemote(ServerRemote remote) {
-      this.serverRemote = remote;
+      this.server = remote;
    }
 
    @Override
    public void disconnect() {
       try {
-         serverRemote.disconnect();
+         server.disconnect();
       } catch (RemoteException ex) {
       }
    }
@@ -60,31 +59,31 @@ public class LobbyHandler extends UnicastRemoteObject implements ClientRemote, H
    @Override
    public void sendChatMessage(String message) {
       try {
-         serverRemote.receiveChatMessage(message);
+         server.receiveChatMessage(message);
       } catch (RemoteException ex) {
-         networkHandlerImpl.notifyExceptionThrown(ex);
+         networkHandler.notifyExceptionThrown(ex);
       }
    }
 
    @Override
    public void sendStep(Step step) {
-      //throw Exception?
+      networkHandler.notifyExceptionThrown(new GameNotStartedException());
    }
 
    @Override
    public void receiveStartSignal(ServerRemote newRemote) {
       GameHandler newHandler = null;
       try {
-         newHandler = new GameHandler(networkHandlerImpl, newRemote);
+         newHandler = new GameHandler(networkHandler, newRemote);
       } catch (RemoteException ex) {
          Logger.getLogger(LobbyHandler.class.getName()).log(Level.SEVERE, null, ex);
       }
-      networkHandlerImpl.setHandler(newHandler);
+      networkHandler.setHandler(newHandler);
       try {
          newRemote.receiveClientRemote(newHandler);
       } catch (RemoteException ex) {
-         networkHandlerImpl.notifyExceptionThrown(ex);
+         networkHandler.notifyExceptionThrown(ex);
       }
-      networkHandlerImpl.notifyGameStarted();
+      networkHandler.notifyGameStarted();
    }
 }

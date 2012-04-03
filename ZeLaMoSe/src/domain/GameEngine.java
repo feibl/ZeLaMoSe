@@ -18,7 +18,7 @@ import java.util.Observable;
  * 
  * bei Action: wird momentan für den timestamp SESSIONID mitgegeben
  */
-public class GameEngine extends Observable implements GameEngineInterface {
+public class GameEngine extends GameEngineInterface {
 
     private Action lastAction;
     private int sessionId;
@@ -46,6 +46,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
         return currentBlock;
     }
 
+    @Override
     public void startGame() {
         nextBlock();
     }

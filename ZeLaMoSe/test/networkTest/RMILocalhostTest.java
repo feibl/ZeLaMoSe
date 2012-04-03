@@ -14,7 +14,7 @@ import java.util.Observer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import network.*;
-import network.NetworkHandler.UpdateType;
+import domain.TetrisController.UpdateType;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -324,6 +324,4 @@ public class RMILocalhostTest {
 
       assertEquals(3, count);
    }
-   
-   
 }
