@@ -9,6 +9,7 @@ import domain.fake.FakeNetworkHandler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 import domain.actions.InputEvent;
 import domain.interfaces.SimulationStateInterface;
 import network.SessionInformation;
@@ -48,6 +49,8 @@ public class TetrisControllerTest {
     public void testSimulation() {
         nH.setConnected();
         SimulationStateInterface gE = sC.getSimulation(sessionID);
+        GameEngine gameEngine = (GameEngine)gE;
+        assertEquals(gameEngine.getSessionID(), 3);
         
         //sG.step = new Step(0, sessionID);
         //tC.runStep();

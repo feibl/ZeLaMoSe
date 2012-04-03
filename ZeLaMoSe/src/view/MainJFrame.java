@@ -4,10 +4,7 @@
  */
 package view;
 
-import domain.InputSampler;
-import domain.SimulationController;
-import domain.StepGenerator;
-import domain.TetrisController;
+import domain.*;
 import network.NetworkHandlerImpl;
 
 /**
@@ -175,7 +172,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblCreateGameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCreateGameMouseClicked
-        tetrisController.        
+        //tetrisController.        
     }//GEN-LAST:event_lblCreateGameMouseClicked
 
     /**
@@ -214,7 +211,7 @@ public class MainJFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             
             public void run() {
-                new MainJFrame(new TetrisController(new SimulationController(), new NetworkHandlerImpl(), new StepGenerator(new InputSampler()))).setVisible(true);
+                new MainJFrame(new TetrisController(new SimulationController(), new NetworkHandlerImpl(), new StepGeneratorImpl(new InputSampler()))).setVisible(true);
             }
         });
     }
