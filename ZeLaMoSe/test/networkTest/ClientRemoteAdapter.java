@@ -18,26 +18,26 @@ import network.SessionInformation;
 public class ClientRemoteAdapter implements ClientRemote {
 
    @Override
-   public void receiveStep(Step step) throws RemoteException {
+   public void notifyStep(Step step) throws RemoteException {
    }
 
    @Override
-   public void receiveSessionAddedMessage(SessionInformation session) throws RemoteException {
+   public void notifySessionAdded(SessionInformation session) throws RemoteException {
    }
 
    @Override
-   public void receiveSessionRemovedMessage(SessionInformation session) throws RemoteException {
+   public void notifySessionRemoved(SessionInformation session) throws RemoteException {
    }
 
    @Override
-   public void receiveServerRemote(ServerRemote remote) throws RemoteException {
+   public void reportServerRemote(ServerRemote remote) throws RemoteException {
    }
 
    @Override
-   public void receiveChatMessage(ChatMessage message) throws RemoteException {
+   public void notifyChatMessage(ChatMessage message) throws RemoteException {
    }
 
    @Override
-   public void receiveStartSignal(ServerRemote remote) throws RemoteException {
+   public void notifyGameStarted(ServerRemote remote) throws RemoteException {
    }
 }
