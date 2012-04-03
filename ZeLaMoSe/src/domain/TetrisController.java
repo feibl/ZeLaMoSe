@@ -39,6 +39,7 @@ public class TetrisController extends Observable implements Observer {
     public TetrisController(SimulationController sController, NetworkHandler nH, StepGenerator sG) {
         simulationController = sController;
         networkHandler = nH;
+        networkHandler.addObserver(this);
         stepGenerator = sG;
         stepGenerator.addObserver(this);
     }
@@ -66,6 +67,7 @@ public class TetrisController extends Observable implements Observer {
 
     @Override
     public void update(Observable o, Object o1) {
+        System.out.println("update");
         if (o1 == UpdateType.STEP) {
             System.out.println("adding step: ");
             StepProducerInterface producer = (StepProducerInterface)o;
