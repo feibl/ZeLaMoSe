@@ -263,20 +263,17 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
             stepGenerator = new StepGenerator(inputSampler, ownSession.getId());
             stepGenerator.addObserver(this);
 
-            new Thread(new Runnable() {
+            Timer timer = new Timer();
+
+            TimerTask timerTask = new TimerTask() {
 
                @Override
                public void run() {
-                  while (true) {
-                     try {
-                        Thread.sleep(5000);
-                        stepGenerator.niggasInParis();
-                     } catch (InterruptedException ex) {
-                        Logger.getLogger(ClientJFrame.class.getName()).log(Level.SEVERE, null, ex);
-                     }
-                  }
+                  stepGenerator.runStep();
                }
-            }).start();
+            };
+            
+            timer.scheduleAtFixedRate(timerTask, 0, 50);
             break;
 
 
