@@ -4,8 +4,10 @@
  */
 package application;
 
+import domain.InputSampler;
 import domain.SimulationController;
-import domain.TetrisController;
+import domain.StepGenerator;
+import domain.TestrisController;
 import network.NetworkHandlerImpl;
 import view.OwnGameFieldJPanel;
 
@@ -15,11 +17,10 @@ import view.OwnGameFieldJPanel;
  */
 public class Tetris {
     
-    private TetrisController testrisController;
+    private TestrisController testrisController;
 
     public Tetris() {
-        testrisController = new TetrisController(new SimulationController(), new NetworkHandlerImpl());
-        
+        testrisController = new TestrisController(new SimulationController(), new NetworkHandlerImpl(), new StepGenerator(new InputSampler()));
     }
     
     public void run() {

@@ -5,7 +5,6 @@
 package domain;
 
 import domain.actions.InputEvent;
-import domain.actions.InputEvent;
 import java.awt.KeyEventDispatcher;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * @author Patrick Zenhäusern
  */
-public class InputSampler implements KeyEventDispatcher {
+public class InputSampler implements KeyEventDispatcher, InputSamplerInterface {
 
    private ConcurrentLinkedQueue<InputEvent> keyEventQueue;
 
