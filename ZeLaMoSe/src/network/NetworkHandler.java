@@ -18,10 +18,7 @@ import java.util.concurrent.ExecutorService;
  */
 public abstract class NetworkHandler extends Observable implements StepInterface, StepProducerInterface {
 
-  public enum UpdateType {
 
-      STEP, SESSION_ADDED, SESSION_REMOVED, CONNECTION_ESTABLISHED, EXCEPTION_THROWN
-   ,  CHAT_MESSAGE_RECEIVED, GAME_STARTED};
 
    public abstract SessionInformation getAddedSession();
 

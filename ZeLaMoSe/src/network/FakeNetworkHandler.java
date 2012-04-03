@@ -7,6 +7,7 @@ package network;
 import domain.Step;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import domain.TetrisController.UpdateType;
 
 /**
  *

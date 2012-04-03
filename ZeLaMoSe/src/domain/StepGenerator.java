@@ -64,7 +64,7 @@ public class StepGenerator extends Observable implements StepProducerInterface {
             }
         }
         setChanged();
-        notifyObservers(NetworkHandler.UpdateType.STEP);
+        notifyObservers(domain.TetrisController.UpdateType.STEP);
     }
 
     @Override
