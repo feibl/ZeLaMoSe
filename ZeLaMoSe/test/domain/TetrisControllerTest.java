@@ -5,12 +5,13 @@
 package domain;
 
 import domain.fake.FakeStepGenerator;
-import network.FakeNetworkHandler;
+import domain.fake.FakeNetworkHandler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import domain.actions.InputEvent;
 import domain.interfaces.SimulationStateInterface;
+import network.SessionInformation;
 
 /**
  *
@@ -33,8 +34,8 @@ public class TetrisControllerTest {
     public void setUp() {
         sC = new SimulationController();
         nH = new FakeNetworkHandler();
+        nH.localSession = new SessionInformation(3, "test");
         sG = new FakeStepGenerator();
-        sG.step = new Step(0, sessionID);
         tC = new TetrisController(sC, nH, sG);
     }
   
@@ -47,9 +48,8 @@ public class TetrisControllerTest {
         nH.setConnected();
         SimulationStateInterface gE = sC.getSimulation(sessionID);
         
-        
-        
-        tC.runStep();
+        //sG.step = new Step(0, sessionID);
+        //tC.runStep();
         
     } 
 }

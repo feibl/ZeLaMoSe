@@ -2,11 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package network;
+package domain.fake;
 
 import domain.Step;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import network.ChatMessage;
+import network.NetworkHandler;
+import network.SessionInformation;
 
 /**
  *
@@ -38,10 +41,12 @@ public class FakeNetworkHandler extends NetworkHandler {
     public void disconnectFromServer() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+    
+    public SessionInformation localSession;
 
     @Override
     public SessionInformation getOwnSession() {
-        return new SessionInformation(3, "test");
+        return localSession;
     }
     
     public void setConnected() {

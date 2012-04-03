@@ -265,7 +265,8 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel {
         KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(is);
         
-        StepGeneratorImpl sg = new StepGeneratorImpl(is, 0);
+        StepGeneratorImpl sg = new StepGeneratorImpl(is);
+        sg.setSessionID(0);
         
         
         GLRenderer renderer = new GLRenderer(360,660,30);

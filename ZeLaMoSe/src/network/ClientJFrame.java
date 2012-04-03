@@ -260,8 +260,8 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
                   });
                }
             });
-            stepGenerator = new StepGeneratorImpl(inputSampler, ownSession.getId());
-            stepGenerator.addObserver(this);
+            //stepGenerator = new StepGeneratorImpl(inputSampler, ownSession.getId());
+            //stepGenerator.addObserver(this);
 
             Timer timer = new Timer();
 
