@@ -10,7 +10,7 @@ package domain.actions;
  */
 public class GameOverAction extends Action {
 
-    public GameOverAction(Long timestamp) {
+    public GameOverAction(long timestamp) {
         super(ActionType.GAMEOVER,timestamp);
     }
     
