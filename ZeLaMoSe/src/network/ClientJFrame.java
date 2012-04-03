@@ -269,26 +269,11 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
 
                @Override
                public void run() {
-                  stepGenerator.niggasInParis();
+                  stepGenerator.runStep();
                }
             };
             
             timer.scheduleAtFixedRate(timerTask, 0, 50);
-
-//            new Thread(new Runnable() {
-//
-//               @Override
-//               public void run() {
-//                  while (true) {
-//                     try {
-//                        Thread.sleep(5000);
-//                        stepGenerator.niggasInParis();
-//                     } catch (InterruptedException ex) {
-//                        Logger.getLogger(ClientJFrame.class.getName()).log(Level.SEVERE, null, ex);
-//                     }
-//                  }
-//               }
-//            }).start();
             break;
 
 
