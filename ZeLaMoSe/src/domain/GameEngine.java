@@ -7,6 +7,7 @@ package domain;
 import domain.actions.*;
 import domain.block.Block;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Observable;
 
 /**
@@ -35,7 +36,13 @@ public class GameEngine extends Observable implements GameEngineInterface {
         this.sessionId = sessionId;
         grid = new Block[gridwidth][gridheight];
         queue = new BlockQueue(seed);
-        //do we need this here? how does the first block come in?
+    }
+
+    public Block getCurrentBlock() {
+        return currentBlock;
+    }
+
+    public void start() {
         nextBlock();
     }
 
@@ -44,8 +51,6 @@ public class GameEngine extends Observable implements GameEngineInterface {
         this.sessionId = sessionId;
         grid = new Block[gridwidth][gridheight];
         queue = fakeQueue;
-        //do we need this here? how does the first block come in?
-        nextBlock();
     }
 
     public Block[][] getGrid() {
@@ -54,7 +59,6 @@ public class GameEngine extends Observable implements GameEngineInterface {
 
     public void setLastAction(Action action) {
         lastAction = action;
-        saveCurrenblockToGrid();
         setChanged();
         notifyObservers();
     }
@@ -74,7 +78,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
                 handleRotateAction((RotateAction) action);
                 break;
             case HARDDROP:
-                handleHarddropAction();
+                handleHardDropAction();
                 break;
 
         }
@@ -144,6 +148,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
         if (checkForCollision()) {
             currentBlock.setX(currentBlock.getX() - offset);
         } else {
+                    saveCurrenblockToGrid();
             setLastAction(moveAction);
         }
     }
@@ -151,10 +156,11 @@ public class GameEngine extends Observable implements GameEngineInterface {
     private void nextBlock() {
         currentBlock = queue.getNextBlock();
         if (!checkForGameOver()) {
-        currentBlock.setX(defaultX);
-        currentBlock.setY(defaultY);
-        setLastAction(new NewblockAction(currentBlock, sessionId));
-        } 
+            currentBlock.setX(defaultX);
+            currentBlock.setY(defaultY);
+                    saveCurrenblockToGrid();
+            setLastAction(new NewblockAction(currentBlock, sessionId));
+        }
         //TODO
         //what to do when gameOver is true???
     }
@@ -169,6 +175,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
                 }
             }
         }
+
         for (int x = 0; x < blockGrid.length; x++) {
             for (int y = 0; y < blockGrid.length; y++) {
                 if (blockGrid[x][y]) {
@@ -178,23 +185,27 @@ public class GameEngine extends Observable implements GameEngineInterface {
         }
     }
 
-    //TODO refactor method that the generate RmlineAction can remove multiple lines at once, 
-    //Maybe have to refactor the RmlineAction for this Reason
-    private void checkForLinesToRemove(int multiLines) {
-        boolean lineToRemove = true;
-        for (int x = 0; x < gridwidth; x++) {
-            if (grid[x][gridheight - 1] == null) {
-                lineToRemove = false;
+    //TODO refactor method that the generate RmLineAction can remove multiple lines at once, 
+    //Maybe have to refactor the RmLineAction for this Reason
+    private void checkForLinesToRemove() {
+        boolean removeLine;
+        ArrayList<Integer> linesToRemove = new ArrayList<Integer>();
+        for (int y = gridheight - 1; y > 0; y--) {
+            removeLine = true;
+            for (int x = 0; x < gridwidth; x++) {
+                if (grid[x][y] == null) {
+                    removeLine = false;
+                }
+            }
+            if (removeLine) {
+                linesToRemove.add(y);
             }
         }
-        if (lineToRemove) {
-            removeLine(multiLines);
-        } else {
-            if (multiLines > 1) {
-                //TODO event for multi line remove
-                System.out.println("multi line removed: " + multiLines + " Lines");
-            }
+
+        if (linesToRemove.size() > 0) {
+            removeLines(linesToRemove);
         }
+
     }
 
     private void handleRotateAction(RotateAction action) {
@@ -204,6 +215,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
                 if (checkForCollision()) {
                     currentBlock.rotateRight();
                 } else {
+                            saveCurrenblockToGrid();
                     setLastAction(action);
                 }
                 break;
@@ -212,13 +224,14 @@ public class GameEngine extends Observable implements GameEngineInterface {
                 if (checkForCollision()) {
                     currentBlock.rotateLeft();
                 } else {
+                            saveCurrenblockToGrid();
                     setLastAction(action);
                 }
                 break;
         }
     }
 
-    private void handleHarddropAction() {
+    private void handleHardDropAction() {
         //evaluate first how many gridfields the current stone can be moved down
         int tempY = currentBlock.getY();
         int fieldsToMove = 0;
@@ -262,28 +275,35 @@ public class GameEngine extends Observable implements GameEngineInterface {
         if (checkForCollision()) {
             currentBlock.setY(currentBlock.getY() - speed);
             saveCurrenblockToGrid();
-            checkForLinesToRemove(0);
+            checkForLinesToRemove();
             nextBlock();
         } else {
+                    saveCurrenblockToGrid();
             setLastAction(moveAction);
         }
     }
 
-    private void removeLine(int numberOfRmLines) {
+    private void removeLines(ArrayList<Integer> linesToRemove) {
 
-        //remove the bottom line
-        for (int x = 0; x < gridwidth; x++) {
-            grid[x][gridheight - 1] = null;
-        }
-
-        //move everythign downward
-        for (int y = gridheight - 2; y >= 0; y--) {
+        Collections.sort(linesToRemove);
+        for (Integer lineToRemove : linesToRemove) {
+            //remove the lineToRemove line
             for (int x = 0; x < gridwidth; x++) {
-                grid[x][y + 1] = grid[x][y];
+                grid[x][lineToRemove] = null;
+            }
+
+            //move everythign downward
+            for (int y = lineToRemove - 1; y >= 0; y--) {
+                for (int x = 0; x < gridwidth; x++) {
+                    grid[x][y + 1] = grid[x][y];
+                }
             }
         }
-        setLastAction(new RmlineAction(0, 1, gridheight - 1));
-        checkForLinesToRemove(++numberOfRmLines);
+        if (linesToRemove.size() > 1) {
+            System.out.println("multi lines remove: " + linesToRemove.size());
+        }
+        setLastAction(new RmlineAction(0, linesToRemove));
+
 
     }
 }

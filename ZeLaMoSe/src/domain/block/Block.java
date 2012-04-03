@@ -5,19 +5,19 @@
 package domain.block;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Cyrill
  */
-public abstract class Block {
+public abstract class Block implements Cloneable {
 
     protected Color color;
     protected boolean[][] stoneGrid = new boolean[4][4];
     protected int rotation, x, y;
-    private ArrayList<Class> subclasses;
     protected String printLetter;
 
     public int getHeight() {
@@ -156,6 +156,14 @@ public abstract class Block {
         System.out.println("");
     }
    
+   public Object clone(){
+        try {
+            return (Block)super.clone();
+        } catch (CloneNotSupportedException ex) {
+            Logger.getLogger(Block.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+   }
    
     public static void main(String[] args) {
         Random randomGenerator = new Random(System.currentTimeMillis());

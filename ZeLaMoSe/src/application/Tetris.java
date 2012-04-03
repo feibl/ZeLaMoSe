@@ -15,7 +15,7 @@ import view.OwnGameFieldJPanel;
  */
 public class Tetris {
     
-    TestrisController testrisController;
+    private TestrisController testrisController;
 
     public Tetris() {
         testrisController = new TestrisController(new SimulationController(), new NetworkHandlerImpl());

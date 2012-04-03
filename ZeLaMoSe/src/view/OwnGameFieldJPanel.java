@@ -5,10 +5,13 @@
 package view;
 
 import com.jogamp.opengl.util.FPSAnimator;
-import domain.FakeGameEngine;
+import domain.FakeController;
+import domain.GameEngine;
+import domain.InputSampler;
+import domain.StepGenerator;
+import java.awt.KeyboardFocusManager;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
-import javax.media.opengl.awt.GLJPanel;
 
 /**
  *
@@ -258,13 +261,24 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void initGLRenderer() {
-         
+         InputSampler is = new InputSampler();
+        KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        manager.addKeyEventDispatcher(is);
+        
+        StepGenerator sg = new StepGenerator(is, 0);
+        
         
         GLRenderer renderer = new GLRenderer(360,660,30);
         glPnlGameField.addGLEventListener(renderer);
         FPSAnimator animator = new FPSAnimator(glPnlGameField, FRAME_RATE, true);
         animator.start();
-        renderer.setEngine(new FakeGameEngine());
+        GameEngine ge = new GameEngine(0);
+        renderer.setEngine(ge);
+        
+        new FakeController(ge, sg);
+        ge.start();
+        
+        
         
     }
     

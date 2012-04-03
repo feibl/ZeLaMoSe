@@ -4,12 +4,14 @@
  */
 package view;
 
-import domain.BlockQueue;
-import domain.FakeGameEngine;
+import domain.GameEngine;
 import domain.actions.*;
 import domain.block.Block;
 import domain.actions.RotateAction.Direction;
 import java.awt.Color;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import javax.media.opengl.*;
@@ -23,25 +25,19 @@ import javax.media.opengl.glu.GLU;
 class GLRenderer implements GLEventListener, Observer {
 
     private boolean debug = true;
-    
     private int viewportWidth, viewportHeight, blocksize;
     private final int gridWidth = 12, gridHeight = 24;
-    private FakeGameEngine engine;
+    private GameEngine engine;
     private Block currentBlock;
-    private BlockQueue queue = new BlockQueue();
     private final int defaultX = 4, defaultY = 23;
     private Color[][] grid;
     private Color bgColor = Color.BLACK;
     private Color garbageLineColor = new Color(139, 0, 0);
-    
 
     public GLRenderer(int width, int height, int blocksize) {
         this.viewportWidth = width;
         this.viewportHeight = height;
         this.blocksize = blocksize;
-        currentBlock = queue.getNextBlock();
-        currentBlock.setX(4);
-        currentBlock.setY(24);
         initStackGrid();
     }
 
@@ -69,21 +65,25 @@ class GLRenderer implements GLEventListener, Observer {
 
     @Override
     public void display(GLAutoDrawable drawable) {
-        GL2 gl = drawable.getGL().getGL2();
-        gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+        if (currentBlock != null) {
 
 
-        drawStackGrid(gl);
-        drawCurrentBlock(gl);
+            GL2 gl = drawable.getGL().getGL2();
+            gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
-        drawGridLines(gl);
+
+            drawStackGrid(gl);
+            drawCurrentBlock(gl);
+
+            drawGridLines(gl);
+        }
     }
 
     @Override
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
     }
 
-    void setEngine(FakeGameEngine fakeGameEngine) {
+    void setEngine(GameEngine fakeGameEngine) {
         engine = fakeGameEngine;
         engine.addObserver(this);
 
@@ -91,7 +91,7 @@ class GLRenderer implements GLEventListener, Observer {
 
     @Override
     public void update(Observable o, Object o1) {
-        actionHandling(engine.getLastAction());
+        handleActions(engine.getSimulationState());
     }
 
 //   - rotation (direction): rotate current block in direction by 90
@@ -99,18 +99,16 @@ class GLRenderer implements GLEventListener, Observer {
 // * - rmline (number of lines, offset): remove a number of lines, first with offset from bottom
 // * - newline (line definition): add new line to bottom. line according to supplied definition
 // * - A new block enters the game
-    private void actionHandling(Action action) {
+    private void handleActions(Action action) {
+        
         switch (action.getType()) {
             case ROTATION:
-                System.out.println("rotation");
                 handleRotateAction(((RotateAction) action).getDirection());
                 break;
             case MOVE:
-                System.out.println("move");
                 handleMoveAction((MoveAction) action);
                 break;
             case NEWBLOCK:
-                System.out.println("newblock");
                 HandleNewblockAction(((NewblockAction) action).getBlocktype());
                 break;
             case NEWLINE:
@@ -119,6 +117,9 @@ class GLRenderer implements GLEventListener, Observer {
             case RMLINE:
                 handleRmlineAction((RmlineAction) action);
                 break;
+        }
+        if(debug){
+            System.out.println("GLREnderer: actiontype recieved "+action.getType());
         }
     }
 
@@ -160,13 +161,13 @@ class GLRenderer implements GLEventListener, Observer {
         int x = currentBlock.getX();
         int y = currentBlock.getY();
         boolean[][] grid = currentBlock.getBlockGrid();
-        for (int a = 0; a < 4; a++) {
-            for (int b = 0; b < 4; b++) {
+        for (int a = 0; a < grid.length; a++) {
+            for (int b = 0; b < grid.length; b++) {
                 if (grid[a][b]) {
+                    gl.glVertex2i(blocksize * (x + a), blocksize * (y - b+1));
                     gl.glVertex2i(blocksize * (x + a), blocksize * (y - b));
-                    gl.glVertex2i(blocksize * (x + a), blocksize * (y - b - 1));
-                    gl.glVertex2i(blocksize * (x + 1 + a), blocksize * (y - b - 1));
                     gl.glVertex2i(blocksize * (x + 1 + a), blocksize * (y - b));
+                    gl.glVertex2i(blocksize * (x + 1 + a), blocksize * (y - b+1));
                 }
             }
         }
@@ -204,11 +205,11 @@ class GLRenderer implements GLEventListener, Observer {
 
     }
 
-    private void projectCurrentblockToGrid() {
+    private void saveCurrentblockToGrid() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (currentBlock.getBlockGrid()[i][j]) {
-                    grid[currentBlock.getX() + i][currentBlock.getY() + j] = currentBlock.getColor();
+                    grid[currentBlock.getX() +i][currentBlock.getY() - j] = currentBlock.getColor();
                 }
             }
         }
@@ -237,10 +238,15 @@ class GLRenderer implements GLEventListener, Observer {
     }
 
     private void HandleNewblockAction(Block block) {
-        projectCurrentblockToGrid();
-        currentBlock = block;
+        if ((currentBlock != null)) {
+
+
+            saveCurrentblockToGrid();
+        }
+        currentBlock = (Block)block.clone();
         currentBlock.setX(defaultX);
         currentBlock.setY(defaultY);
+
     }
 
     private void handleNewlineAction(boolean[][] line) {
@@ -263,14 +269,34 @@ class GLRenderer implements GLEventListener, Observer {
     }
 
     private void handleRmlineAction(RmlineAction rmlineAction) {
-        int numOfLines = rmlineAction.getNumlines();
-        int offset = rmlineAction.getOffset();
-        
+        saveCurrentblockToGrid();
+        currentBlock=null;
+        printGrid();
+        List<Integer> linesToRemove = rmlineAction.getLinesToRemove();
+
+        //TODO lines must be removed from top to bottom - because
+        //else the line Number in getLinesToRemove is wrong
         for (int i = 0; i < gridWidth; i++) {
-            for (int j = offset; j < gridHeight-numOfLines; j++) {
-                grid[i][j] = grid[i][j+numOfLines];
+            for(Integer j : linesToRemove) {
+                grid[i][23-j-1] = grid[i][23-j];
             }
         }
-        
+        printGrid();
+
+    }
+    
+    public void printGrid() {
+        for (int i = gridHeight-1; i >= 0; i--) {
+            String lineOutput = "";
+            for (int j = 0; j < gridWidth; j++) {
+                if (grid[j][i] != bgColor) {
+                    lineOutput += "[X]";
+                } else {
+                    lineOutput += "[ ]";
+                }
+            }
+            System.out.println(lineOutput);
+        }
+        System.out.println("");
     }
 }
