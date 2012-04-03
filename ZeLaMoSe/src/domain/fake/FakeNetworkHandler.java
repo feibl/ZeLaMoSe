@@ -55,10 +55,10 @@ public class FakeNetworkHandler extends NetworkHandler {
         notifyObservers(UpdateType.CONNECTION_ESTABLISHED);
     }
     
-//    public void startGame() {
-//        setChanged();
-//        notifyObservers(UpdateType.GAME_STARTED);
-//    }
+    public void setGameStarted() {
+        setChanged();
+        notifyObservers(UpdateType.GAME_STARTED);
+    }
 
     @Override
     public List<SessionInformation> getSessionList() {
