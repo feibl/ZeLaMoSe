@@ -10,4 +10,5 @@ package domain.interfaces;
  */
 public interface GameEngineInterface extends ActionInterface, SimulationStateInterface{
     int getSessionID();
+    void startGame();
 }

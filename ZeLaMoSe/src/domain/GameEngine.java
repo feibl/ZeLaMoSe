@@ -46,6 +46,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
         return currentBlock;
     }
 
+    @Override
     public void startGame() {
         nextBlock();
     }

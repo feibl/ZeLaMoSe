@@ -87,7 +87,7 @@ public class FakeNetworkHandler extends NetworkHandler {
 
     @Override
     public void addStep(Step step) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //do nothing
     }
 
     @Override
