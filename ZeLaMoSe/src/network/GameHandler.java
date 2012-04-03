@@ -34,46 +34,46 @@ class GameHandler extends UnicastRemoteObject implements Handler, ClientRemote{
    }
 
    @Override
-   public void addChatMessage(String message) {
+   public void sendChatMessage(String message) {
       throw new UnsupportedOperationException("Not supported yet.");
    }
 
    @Override
-   public void addStep(Step step) {
+   public void sendStep(Step step) {
       try {
-         server.addStep(step);
+         server.receiveStep(step);
       } catch (RemoteException ex) {
          networkHandler.notifyExceptionThrown(ex);
       }
    }
 
    @Override
-   public void notifyStep(Step step) throws RemoteException {
+   public void receiveStep(Step step) throws RemoteException {
       networkHandler.notifyStepReceived(step);
    }
 
    @Override
-   public void notifyChatMessage(ChatMessage message) throws RemoteException {
+   public void receiveChatMessage(ChatMessage message) throws RemoteException {
       throw new UnsupportedOperationException("Not supported yet.");
    }
 
    @Override
-   public void notifySessionAdded(SessionInformation session) throws RemoteException {
+   public void receiveSessionAddedMessage(SessionInformation session) throws RemoteException {
       throw new UnsupportedOperationException("Not supported yet.");
    }
 
    @Override
-   public void notifySessionRemoved(SessionInformation session) throws RemoteException {
+   public void receiveSessionRemovedMessage(SessionInformation session) throws RemoteException {
       throw new UnsupportedOperationException("Not supported yet.");
    }
 
    @Override
-   public void reportServerRemote(ServerRemote remote) throws RemoteException {
+   public void receiveServerRemote(ServerRemote remote) throws RemoteException {
       throw new UnsupportedOperationException("Not supported yet.");
    }
 
    @Override
-   public void notifyGameStarted(ServerRemote remote) throws RemoteException {
+   public void receiveStartSignal(ServerRemote remote) throws RemoteException {
       throw new UnsupportedOperationException("Not supported yet.");
    }
    

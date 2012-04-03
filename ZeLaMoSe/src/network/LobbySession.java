@@ -36,18 +36,18 @@ public class LobbySession extends UnicastRemoteObject implements ServerRemote, S
    }
 
    @Override
-   public void addChatMessage(String message) throws RemoteException {
-      gameServer.postMessage(this, message);
+   public void receiveChatMessage(String message) throws RemoteException {
+      gameServer.postChatMessage(this, message);
    }
 
    @Override
-   public void addStep(Step step) throws RemoteException {
+   public void receiveStep(Step step) throws RemoteException {
       throw new UnsupportedOperationException("Not supported yet.");
    }
 
    @Override
-   public void sendMessage(SessionInformation sender, String message) throws RemoteException {
-      client.notifyChatMessage(new ChatMessage(sender, message));
+   public void sendChatMessage(SessionInformation sender, String message) throws RemoteException {
+      client.receiveChatMessage(new ChatMessage(sender, message));
    }
 
    @Override
@@ -57,23 +57,23 @@ public class LobbySession extends UnicastRemoteObject implements ServerRemote, S
 
    @Override
    public void sendSessionAddedMessage(SessionInformation sessionInfo) throws RemoteException {
-      client.notifySessionAdded(sessionInfo);
+      client.receiveSessionAddedMessage(sessionInfo);
    }
 
    @Override
    public void sendSessionRemovedMessage(SessionInformation sessionInfo) throws RemoteException {
-      client.notifySessionRemoved(sessionInfo);
+      client.receiveSessionRemovedMessage(sessionInfo);
    }
 
    @Override
    public void sendStartSignal() throws RemoteException {
       GameSession newSession = new GameSession(sessionInformation, gameServer);
       gameServer.setSession(this, newSession);
-      client.notifyGameStarted(newSession);
+      client.receiveStartSignal(newSession);
    }
 
    @Override
-   public void reportClientRemote(ClientRemote clientRemote) throws RemoteException {
+   public void receiveClientRemote(ClientRemote clientRemote) throws RemoteException {
       throw new UnsupportedOperationException("Not supported yet.");
    }
 }
