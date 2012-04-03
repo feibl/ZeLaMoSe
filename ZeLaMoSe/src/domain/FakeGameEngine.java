@@ -64,7 +64,7 @@ public class FakeGameEngine extends Observable {
                     }
                 }
                 
-                addNewAction(new RmlineAction(0, 2, 1));
+                //addNewAction(new RmlineAction(0, 2, 1));
                 
             }
         }).start();

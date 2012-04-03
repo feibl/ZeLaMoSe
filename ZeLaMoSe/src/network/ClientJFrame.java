@@ -270,7 +270,7 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
                   while (true) {
                      try {
                         Thread.sleep(5000);
-                        stepGenerator.niggasInParis();
+                        stepGenerator.runStep();
                      } catch (InterruptedException ex) {
                         Logger.getLogger(ClientJFrame.class.getName()).log(Level.SEVERE, null, ex);
                      }

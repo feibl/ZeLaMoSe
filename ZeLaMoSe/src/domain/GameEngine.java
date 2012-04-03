@@ -302,7 +302,7 @@ public class GameEngine extends Observable implements GameEngineInterface {
         if (linesToRemove.size() > 1) {
             System.out.println("multi lines remove: " + linesToRemove.size());
         }
-        setLastAction(new RmlineAction(0, 1, gridheight - 1));
+        setLastAction(new RmlineAction(0, linesToRemove));
 
 
     }

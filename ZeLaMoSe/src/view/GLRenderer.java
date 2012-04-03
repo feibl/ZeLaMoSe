@@ -272,12 +272,13 @@ class GLRenderer implements GLEventListener, Observer {
         saveCurrentblockToGrid();
         currentBlock=null;
         printGrid();
-        int numOfLines = rmlineAction.getNumlines();
-        int offset = 23-rmlineAction.getOffset();
+        List<Integer> linesToRemove = rmlineAction.getLinesToRemove();
 
+        //TODO lines must be removed from top to bottom - because
+        //else the line Number in getLinesToRemove is wrong
         for (int i = 0; i < gridWidth; i++) {
-            for (int j = offset; j < gridHeight - numOfLines; j++) {
-                grid[i][j] = grid[i][j + numOfLines];
+            for(Integer j : linesToRemove) {
+                grid[i][23-j-1] = grid[i][23-j];
             }
         }
         printGrid();
