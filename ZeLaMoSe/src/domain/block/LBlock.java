@@ -4,21 +4,22 @@
  */
 package domain.block;
 
+import domain.block.wallkick.GeneralWallKick;
 import java.awt.Color;
 
 /**
  *
  * @author Patrick Zenhäusern
  */
-public class LBlock  extends Block{
+public class LBlock extends Block {
 
     public LBlock() {
-        super(new Color(255,0,0),"L");
+        super(new Color(255, 0, 0), "L", new GeneralWallKick());
     }
 
     @Override
     protected void rotation0(boolean[][] grid) {
-                grid[0][1] = true;
+        grid[0][1] = true;
         grid[1][1] = true;
         grid[2][0] = true;
         grid[2][1] = true;
@@ -26,7 +27,7 @@ public class LBlock  extends Block{
 
     @Override
     protected void rotation90(boolean[][] grid) {
-                grid[1][0] = true;
+        grid[1][0] = true;
         grid[1][1] = true;
         grid[1][2] = true;
         grid[2][2] = true;
@@ -34,7 +35,7 @@ public class LBlock  extends Block{
 
     @Override
     protected void rotation180(boolean[][] grid) {
-                grid[0][1] = true;
+        grid[0][1] = true;
         grid[0][2] = true;
         grid[1][1] = true;
         grid[2][1] = true;
@@ -42,10 +43,9 @@ public class LBlock  extends Block{
 
     @Override
     protected void rotation270(boolean[][] grid) {
-                grid[0][0] = true;
+        grid[0][0] = true;
         grid[1][0] = true;
         grid[1][1] = true;
         grid[1][2] = true;
     }
-    
 }

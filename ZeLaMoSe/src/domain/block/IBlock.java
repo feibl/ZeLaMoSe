@@ -4,6 +4,7 @@
  */
 package domain.block;
 
+import domain.block.wallkick.IWallKick;
 import java.awt.Color;
 
 /**
@@ -14,7 +15,7 @@ public class IBlock extends Block {
     
     
     public IBlock(){
-        super(new Color(100,100,100),"I");
+        super(new Color(100,100,100),"I",new IWallKick());
     }
 
     @Override

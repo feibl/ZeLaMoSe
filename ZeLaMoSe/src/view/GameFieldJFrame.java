@@ -19,7 +19,7 @@ public class GameFieldJFrame extends javax.swing.JFrame {
      */
     public GameFieldJFrame() {
         initComponents();
-        //startMusic();
+        startMusic();
     }
 
     /**

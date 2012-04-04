@@ -4,6 +4,7 @@
  */
 package domain.block;
 
+import domain.block.wallkick.GeneralWallKick;
 import java.awt.Color;
 
 /**
@@ -13,7 +14,7 @@ import java.awt.Color;
 public class TBlock extends Block {
 
     public TBlock() {
-        super(new Color(160,32,240),"T");
+        super(new Color(160,32,240),"T", new GeneralWallKick());
     }
 
     @Override

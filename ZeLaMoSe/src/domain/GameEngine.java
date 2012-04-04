@@ -220,25 +220,37 @@ public class GameEngine extends GameEngineInterface {
     }
 
     private void handleRotateAction(RotateAction action) {
-        switch (action.getDirection()) {
-            case LEFT:
-                currentBlock.rotateLeft();
-                if (checkForCollision()) {
-                    currentBlock.rotateRight();
-                } else {
-                            saveCurrenblockToGrid();
-                    setLastAction(action);
-                }
-                break;
-            case RIGHT:
-                currentBlock.rotateRight();
-                if (checkForCollision()) {
-                    currentBlock.rotateLeft();
-                } else {
-                            saveCurrenblockToGrid();
-                    setLastAction(action);
-                }
-                break;
+
+        //for mit 5 durchängen für jeden test
+        for (int i = 1; i <= 5; i++) {
+            int tmpX = currentBlock.getX();
+            int tmpY = currentBlock.getY();
+            switch (action.getDirection()) {
+                case LEFT:
+                    currentBlock.rotateLeft(i);
+                    if (checkForCollision()) {
+                        currentBlock.rotateRight(999);
+                        currentBlock.setX(tmpX);
+                        currentBlock.setY(tmpY);
+                    } else {
+                        saveCurrenblockToGrid();
+                        setLastAction(action);
+                        i = 999;
+                    }
+                    break;
+                case RIGHT:
+                    currentBlock.rotateRight(i);
+                    if (checkForCollision()) {
+                        currentBlock.rotateLeft(999);
+                        currentBlock.setX(tmpX);
+                        currentBlock.setY(tmpY);
+                    } else {
+                         saveCurrenblockToGrid();
+                        setLastAction(action);
+                         i = 999;
+                    }
+                    break;
+            }
         }
     }
 

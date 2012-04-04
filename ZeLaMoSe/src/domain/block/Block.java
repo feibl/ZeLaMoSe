@@ -4,6 +4,7 @@
  */
 package domain.block;
 
+import domain.block.wallkick.WallKick;
 import java.awt.Color;
 import java.util.Random;
 import java.util.logging.Level;
@@ -19,6 +20,8 @@ public abstract class Block implements Cloneable {
     protected boolean[][] grid = new boolean[4][4];
     protected int rotation, x, y;
     protected String printLetter;
+    protected BlockRotationState blockRotationState;
+    protected WallKick wallkick;
 
     public int getHeight() {
         int height = 0;
@@ -33,7 +36,9 @@ public abstract class Block implements Cloneable {
         return height;
     }
 
-
+    public BlockRotationState getBlockRotationState(){
+        return blockRotationState;
+    }
     public int getWidth() {
         int width = 0;
         for(int i = 0; i < grid.length ; i++){
@@ -63,10 +68,11 @@ public abstract class Block implements Cloneable {
         this.y  = y;
     }
      
-    public Block(Color c,String printLetter){
+    public Block(Color c,String printLetter, WallKick wallkick){
         color = c;
         rotation = 0; 
         this.printLetter = printLetter;
+        this.wallkick = wallkick;
         rotation0(grid);
     }
         
@@ -83,18 +89,18 @@ public abstract class Block implements Cloneable {
     }
     
 
-    public void rotateRight() {
+    public void rotateRight(int testNumber) {
         rotation = (rotation + 90) % 360;
-        handleRotation();
+        handleRotation(true,testNumber);
     }
 
-    public void rotateLeft() {
+    public void rotateLeft(int testNumber) {
         if (rotation == 0) {
             rotation = 270;
         } else {
             rotation -= 90;
         }
-        handleRotation();
+        handleRotation(false,testNumber);
     }
     
     protected abstract void rotation0 (boolean[][] grid);
@@ -106,20 +112,44 @@ public abstract class Block implements Cloneable {
         return grid;
     }
     
-     protected void handleRotation() {
+     protected void handleRotation(boolean rightRotation, int testNumber) {
         initializeGrid(grid);
         switch (rotation) {
             case 0:
+                blockRotationState = rightRotation ? BlockRotationState.r270r0 : BlockRotationState.r90r0;
                 rotation0(grid);
                 break;
             case 90:
+                blockRotationState = rightRotation ? BlockRotationState.r0r90 : BlockRotationState.r180r90;
                 rotation90(grid);
                 break;
             case 180:
+                blockRotationState = rightRotation ? BlockRotationState.r90r180 : BlockRotationState.r270r180;
                 rotation180(grid);
                 break;
             case 270:
+                blockRotationState = rightRotation ? BlockRotationState.r180r270 : BlockRotationState.r0r270;
                 rotation270(grid);
+                break;
+        }
+        
+        switch(testNumber){
+            case 1:
+                wallkick.Test1(this);
+                break;
+            case 2:
+                wallkick.Test2(this);
+                 break;
+            case 3:
+                wallkick.Test3(this);
+                 break;
+            case 4:
+                wallkick.Test4(this);
+                 break;
+            case 5:
+                wallkick.Test5(this);
+                 break;
+            default:
                 break;
         }
     
@@ -160,7 +190,7 @@ public abstract class Block implements Cloneable {
 //        Block testStone =  (BlockType.values()[randomGenerator.nextInt(BlockType.values().length)]).createBlock();
         Block testStone = new TBlock();
         for (int i = 0; i < 4; i++) {
-            testStone.rotateRight();
+            testStone.rotateRight(1);
             System.out.println("Height: " + testStone.getHeight());
             System.out.println("Width: " + testStone.getWidth());
             testStone.print();
