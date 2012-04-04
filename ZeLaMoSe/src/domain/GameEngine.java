@@ -220,11 +220,10 @@ public class GameEngine extends GameEngineInterface {
     }
 
     private void handleRotateAction(RotateAction action) {
-
+        int tmpX = currentBlock.getX();
+        int tmpY = currentBlock.getY();
         //for mit 5 durchängen für jeden test
         for (int i = 1; i <= 5; i++) {
-            int tmpX = currentBlock.getX();
-            int tmpY = currentBlock.getY();
             switch (action.getDirection()) {
                 case LEFT:
                     currentBlock.rotateLeft(i);
