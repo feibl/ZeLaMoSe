@@ -27,7 +27,10 @@ public class GameEngine extends GameEngineInterface {
     private BlockQueueInterface queue;
     private Block currentBlock;
     private boolean gameOver;
-
+    private int score;
+    private int level;
+    private int totalRemovedLines;
+    
     public boolean isGameOver() {
         return gameOver;
     }
@@ -40,6 +43,9 @@ public class GameEngine extends GameEngineInterface {
         this.sessionId = sessionId;
         grid = new Block[gridwidth][gridheight];
         queue = new BlockQueue(seed);
+        score = 0;
+        level = 1;
+        totalRemovedLines = 0;
     }
 
     public Block getCurrentBlock() {
@@ -309,8 +315,24 @@ public class GameEngine extends GameEngineInterface {
         if (linesToRemove.size() > 1) {
             System.out.println("multi lines remove: " + linesToRemove.size());
         }
+        //Calculate the score
+        switch(linesToRemove.size()){
+            case 1:
+                score += 100 * level;
+                break;
+            case 2:
+                score += 300 * level;
+                break;
+            case 3:
+                score += 500 * level;
+                break;
+            default:
+                score += 800 * level;
+                break;
+        }
+        totalRemovedLines += linesToRemove.size();
+        //Calculate the new level
+        level = totalRemovedLines / Config.levelUpMultiplier + 1;
         setLastAction(new RemoveLineAction(0, linesToRemove));
-
-
     }
 }

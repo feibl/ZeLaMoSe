@@ -13,5 +13,6 @@ public class Config {
     public final static int gridHeight = 24;
     public final static int gridBlockWidth = 4;
     public final static int gridBlockHeight = 4;
+    public final static int levelUpMultiplier = 10;
     
 }
