@@ -89,18 +89,18 @@ public abstract class Block implements Cloneable {
     }
     
 
-    public void rotateRight(int testNumber) {
+    public void rotateRight(int wallKickTestNumber) {
         rotation = (rotation + 90) % 360;
-        handleRotation(true,testNumber);
+        handleRotation(true,wallKickTestNumber);
     }
 
-    public void rotateLeft(int testNumber) {
+    public void rotateLeft(int wallKickTestNumber) {
         if (rotation == 0) {
             rotation = 270;
         } else {
             rotation -= 90;
         }
-        handleRotation(false,testNumber);
+        handleRotation(false,wallKickTestNumber);
     }
     
     protected abstract void rotation0 (boolean[][] grid);
@@ -112,7 +112,7 @@ public abstract class Block implements Cloneable {
         return grid;
     }
     
-     protected void handleRotation(boolean rightRotation, int testNumber) {
+     protected void handleRotation(boolean rightRotation, int wallKickTestNumber) {
         initializeGrid(grid);
         switch (rotation) {
             case 0:
@@ -133,10 +133,7 @@ public abstract class Block implements Cloneable {
                 break;
         }
         
-        switch(testNumber){
-            case 1:
-                wallkick.Test1(this);
-                break;
+        switch(wallKickTestNumber){
             case 2:
                 wallkick.Test2(this);
                  break;
@@ -150,6 +147,7 @@ public abstract class Block implements Cloneable {
                 wallkick.Test5(this);
                  break;
             default:
+                wallkick.Test1(this);
                 break;
         }
     

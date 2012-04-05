@@ -14,5 +14,6 @@ public class Config {
     public final static int gridBlockWidth = 4;
     public final static int gridBlockHeight = 4;
     public final static int levelUpMultiplier = 10;
+    public final static int defaultWallKickTest = 1;
     
 }

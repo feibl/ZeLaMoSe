@@ -210,9 +210,9 @@ class GLRenderer implements GLEventListener, Observer {
 
     private void handleRotateAction(Direction direction) {
         if (direction == Direction.LEFT) {
-            currentBlock.rotateLeft(999);
+            currentBlock.rotateLeft(Config.defaultWallKickTest);
         } else {
-            currentBlock.rotateRight(999);
+            currentBlock.rotateRight(Config.defaultWallKickTest);
         }
     }
 

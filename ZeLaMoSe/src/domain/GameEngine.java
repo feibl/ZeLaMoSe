@@ -220,34 +220,33 @@ public class GameEngine extends GameEngineInterface {
     }
 
     private void handleRotateAction(RotateAction action) {
-
-        //for mit 5 durchängen für jeden test
-        for (int i = 1; i <= 5; i++) {
-            int tmpX = currentBlock.getX();
-            int tmpY = currentBlock.getY();
+        int tmpX = currentBlock.getX();
+        int tmpY = currentBlock.getY();
+        //for with 5 passes, for each test
+        for (int wallKickTestNumber = 1; wallKickTestNumber <= 5; wallKickTestNumber++) {
             switch (action.getDirection()) {
                 case LEFT:
-                    currentBlock.rotateLeft(i);
+                    currentBlock.rotateLeft(wallKickTestNumber);
                     if (checkForCollision()) {
-                        currentBlock.rotateRight(999);
+                        currentBlock.rotateRight(Config.defaultWallKickTest);
                         currentBlock.setX(tmpX);
                         currentBlock.setY(tmpY);
                     } else {
                         saveCurrenblockToGrid();
                         setLastAction(action);
-                        i = 999;
+                        wallKickTestNumber = 999;
                     }
                     break;
                 case RIGHT:
-                    currentBlock.rotateRight(i);
+                    currentBlock.rotateRight(wallKickTestNumber);
                     if (checkForCollision()) {
-                        currentBlock.rotateLeft(999);
+                        currentBlock.rotateLeft(Config.defaultWallKickTest);
                         currentBlock.setX(tmpX);
                         currentBlock.setY(tmpY);
                     } else {
                          saveCurrenblockToGrid();
                         setLastAction(action);
-                         i = 999;
+                         wallKickTestNumber = 999;
                     }
                     break;
             }
