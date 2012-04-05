@@ -208,12 +208,14 @@ class GLRenderer implements GLEventListener, Observer {
         }
     }
 
-    private void handleRotateAction(Direction direction) {
-        if (direction == Direction.LEFT) {
+    private void handleRotateAction(RotateAction action) {
+        if (action.getDirection() == Direction.LEFT) {
             currentBlock.rotateLeft(Config.defaultWallKickTest);
         } else {
             currentBlock.rotateRight(Config.defaultWallKickTest);
         }
+        currentBlock.setX(currentBlock.getX()+action.getXOffset());
+        currentBlock.setY(currentBlock.getY()-action.getYOffset());
     }
 
     private void handleMoveAction(MoveAction action) {
@@ -367,7 +369,7 @@ class GLRenderer implements GLEventListener, Observer {
     private void handleAction(Action action) {
         switch (action.getType()) {
                 case ROTATION:
-                    handleRotateAction(((RotateAction) action).getDirection());
+                    handleRotateAction((RotateAction) action);
                     break;
                 case MOVE:
                     handleMoveAction((MoveAction) action);

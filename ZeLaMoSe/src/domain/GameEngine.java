@@ -15,7 +15,7 @@ import java.util.Observable;
 /**
  *
  * @author Cyrill
- * 
+ *
  * bei Action: wird momentan für den timestamp SESSIONID mitgegeben
  */
 public class GameEngine extends GameEngineInterface {
@@ -30,7 +30,7 @@ public class GameEngine extends GameEngineInterface {
     private int score;
     private int level;
     private int totalRemovedLines;
-    
+
     public boolean isGameOver() {
         return gameOver;
     }
@@ -159,7 +159,7 @@ public class GameEngine extends GameEngineInterface {
         if (checkForCollision()) {
             currentBlock.setX(currentBlock.getX() - offset);
         } else {
-                    saveCurrenblockToGrid();
+            saveCurrenblockToGrid();
             setLastAction(moveAction);
         }
     }
@@ -169,9 +169,9 @@ public class GameEngine extends GameEngineInterface {
         if (!checkForGameOver()) {
             currentBlock.setX(defaultX);
             currentBlock.setY(defaultY);
-                    saveCurrenblockToGrid();
+            saveCurrenblockToGrid();
             setLastAction(new NewBlockAction(currentBlock, sessionId));
-        }else {
+        } else {
             setLastAction(new GameOverAction(sessionId));
         }
     }
@@ -220,19 +220,25 @@ public class GameEngine extends GameEngineInterface {
     }
 
     private void handleRotateAction(RotateAction action) {
-        int tmpX = currentBlock.getX();
-        int tmpY = currentBlock.getY();
+        int originX = currentBlock.getX();
+        int originY = currentBlock.getY();
         //for with 5 passes, for each test
         for (int wallKickTestNumber = 1; wallKickTestNumber <= 5; wallKickTestNumber++) {
             switch (action.getDirection()) {
                 case LEFT:
                     currentBlock.rotateLeft(wallKickTestNumber);
                     if (checkForCollision()) {
-                        currentBlock.rotateRight(Config.defaultWallKickTest);
-                        currentBlock.setX(tmpX);
-                        currentBlock.setY(tmpY);
+                        currentBlock.rotateRight(wallKickTestNumber);
+                        currentBlock.setX(originX);
+                        currentBlock.setY(originY);
                     } else {
                         saveCurrenblockToGrid();
+                        
+                        System.out.println(wallKickTestNumber);
+                        print();
+                        
+                        action.setXOffset(currentBlock.getX()-originX);
+                        action.setYOffset(currentBlock.getY()-originY);
                         setLastAction(action);
                         wallKickTestNumber = 999;
                     }
@@ -240,13 +246,19 @@ public class GameEngine extends GameEngineInterface {
                 case RIGHT:
                     currentBlock.rotateRight(wallKickTestNumber);
                     if (checkForCollision()) {
-                        currentBlock.rotateLeft(Config.defaultWallKickTest);
-                        currentBlock.setX(tmpX);
-                        currentBlock.setY(tmpY);
+                        currentBlock.rotateLeft(wallKickTestNumber);
+                        currentBlock.setX(originX);
+                        currentBlock.setY(originY);
                     } else {
-                         saveCurrenblockToGrid();
+                        saveCurrenblockToGrid();
+                        
+                        System.out.println(wallKickTestNumber);
+                        print();
+                        
+                        action.setXOffset(currentBlock.getX()-originX);
+                        action.setYOffset(currentBlock.getY()-originY);
                         setLastAction(action);
-                         wallKickTestNumber = 999;
+                        wallKickTestNumber = 999;
                     }
                     break;
             }
@@ -284,11 +296,10 @@ public class GameEngine extends GameEngineInterface {
     }
 
     /**
-     * moves the current block downwards, the amount of gridfields moved depends on the "speed" set in the
-     * moveAction
+     * moves the current block downwards, the amount of gridfields moved depends on the "speed" set in the moveAction
      *
-     * If a collision happens the currentBlock will be moved on gridfield upwards, a new Block will be generated
-     * and it will be checked if there are lines to remove
+     * If a collision happens the currentBlock will be moved on gridfield upwards, a new Block will be generated and it
+     * will be checked if there are lines to remove
      *
      *
      * @param moveAction
@@ -327,7 +338,7 @@ public class GameEngine extends GameEngineInterface {
             System.out.println("multi lines remove: " + linesToRemove.size());
         }
         //Calculate the score
-        switch(linesToRemove.size()){
+        switch (linesToRemove.size()) {
             case 1:
                 score += 100 * level;
                 break;
