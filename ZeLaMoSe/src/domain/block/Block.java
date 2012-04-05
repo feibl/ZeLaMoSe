@@ -4,6 +4,7 @@
  */
 package domain.block;
 
+import domain.Config;
 import domain.block.wallkick.WallKick;
 import java.awt.Color;
 import java.util.Random;
@@ -17,7 +18,7 @@ import java.util.logging.Logger;
 public abstract class Block implements Cloneable {
 
     protected Color color;
-    protected boolean[][] grid = new boolean[4][4];
+    protected boolean[][] grid = new boolean[Config.gridBlockWidth][Config.gridBlockHeight];
     protected int rotation, x, y;
     protected String printLetter;
     protected BlockRotationState blockRotationState;
