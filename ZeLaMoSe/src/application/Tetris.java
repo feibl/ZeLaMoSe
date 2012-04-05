@@ -30,10 +30,11 @@ public class Tetris {
     
     public void run() {
         
-        GameFieldJFrame gamefield = new GameFieldJFrame();
+        final GameFieldJFrame gamefield = new GameFieldJFrame();
         
         //TODO use the real network handler, setup other sessions
         OwnGameFieldJPanel panel = gamefield.getMainPanel();
+
         panel.setInputSampler(is);
         nH.setConnected();
         SimulationStateInterface ge = testrisController.getSession(15);

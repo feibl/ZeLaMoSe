@@ -5,22 +5,38 @@
 package view;
 
 import domain.*;
+import domain.fake.FakeNetworkHandler;
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
+import java.rmi.registry.Registry;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import network.SessionInformation;
+import network.client.NetworkHandler;
 import network.client.NetworkHandlerImpl;
 
 /**
  *
  * @author Patrick Zenhäusern
  */
-public class MainJFrame extends javax.swing.JFrame {
-
+public class MainJFrame extends javax.swing.JFrame implements Observer {
+    
     private final TetrisController tetrisController;
+    private final NetworkHandler networkHandler;
+    private final InputSampler inputSampler;
 
     /**
      * Creates new form frmMain
      */
-    public MainJFrame(TetrisController tetrisController) {
+    public MainJFrame(TetrisController tetrisController, NetworkHandler networkHandler, InputSampler inputSampler) {
+        this.networkHandler = networkHandler;
         this.tetrisController = tetrisController;
+        this.inputSampler = inputSampler;
         initComponents();
+        
     }
 
     /**
@@ -52,6 +68,11 @@ public class MainJFrame extends javax.swing.JFrame {
         lblSinglePlayer.setText("<html><strong>SinglePlayer</strong></html>");
 
         lblStartGame.setText("Start Game");
+        lblStartGame.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblStartGameMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlSinglePlayerLayout = new javax.swing.GroupLayout(pnlSinglePlayer);
         pnlSinglePlayer.setLayout(pnlSinglePlayerLayout);
@@ -86,6 +107,11 @@ public class MainJFrame extends javax.swing.JFrame {
         });
 
         lblJoinGame.setText("Join Game");
+        lblJoinGame.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblJoinGameMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlMultiPlayerLayout = new javax.swing.GroupLayout(pnlMultiPlayer);
         pnlMultiPlayer.setLayout(pnlMultiPlayerLayout);
@@ -172,8 +198,25 @@ public class MainJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblCreateGameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCreateGameMouseClicked
-        //tetrisController.        
+        networkHandler.addObserver(this);
+        try {
+            tetrisController.startServer();
+            tetrisController.connectToServer("", tetrisController.SERVER_PORT);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex, "Exception", JOptionPane.ERROR_MESSAGE);
+            networkHandler.deleteObserver(this);
+        }
+        
     }//GEN-LAST:event_lblCreateGameMouseClicked
+    
+    private void lblStartGameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblStartGameMouseClicked
+    }//GEN-LAST:event_lblStartGameMouseClicked
+    
+    private void lblJoinGameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblJoinGameMouseClicked
+        String ip = JOptionPane.showInputDialog(null, "Eingabe der IP");
+        networkHandler.addObserver(this);
+        tetrisController.connectToServer(ip, tetrisController.SERVER_PORT);
+    }//GEN-LAST:event_lblJoinGameMouseClicked
 
     /**
      * @param args the command line arguments
@@ -211,7 +254,12 @@ public class MainJFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             
             public void run() {
-                new MainJFrame(new TetrisController(new SimulationController(), new NetworkHandlerImpl(), new StepGeneratorImpl(new InputSampler()))).setVisible(true);
+                NetworkHandler nh = new NetworkHandlerImpl();
+                SimulationController sc = new SimulationController();
+                InputSampler is = new InputSampler();
+                StepGenerator sg = new StepGeneratorImpl(is);
+                TetrisController tc = new TetrisController(sc, nh, sg);
+                new MainJFrame(tc, nh, is).setVisible(true);
             }
         });
     }
@@ -228,4 +276,25 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel pnlMultiPlayer;
     private javax.swing.JPanel pnlSinglePlayer;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update(Observable o, Object o1) {
+        switch ((TetrisController.UpdateType) o1) {
+            case CONNECTION_ESTABLISHED:
+                networkHandler.deleteObserver(this);
+                final LobbyJFrame lobby = new LobbyJFrame(networkHandler, tetrisController, inputSampler, true, this);
+                java.awt.EventQueue.invokeLater(new Runnable() {
+                    
+                    public void run() {
+                        lobby.setVisible(true);
+                        setVisible(false);
+                    }
+                });
+                break;
+            case EXCEPTION_THROWN:
+                JOptionPane.showMessageDialog(this, networkHandler.getThrownException(), "Exception", JOptionPane.ERROR_MESSAGE);
+                networkHandler.deleteObserver(this);
+                break;
+        }
+    }
 }
