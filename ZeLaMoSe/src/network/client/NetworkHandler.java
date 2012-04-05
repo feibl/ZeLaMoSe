@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package network;
+package network.client;
 
 import domain.interfaces.StepInterface;
 import domain.interfaces.StepProducerInterface;
@@ -11,6 +11,8 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Observable;
 import java.util.concurrent.ExecutorService;
+import network.ChatMessage;
+import network.SessionInformation;
 
 /**
  *

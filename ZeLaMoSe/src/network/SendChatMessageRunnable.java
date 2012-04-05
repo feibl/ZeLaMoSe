@@ -4,6 +4,8 @@
  */
 package network;
 
+import network.client.Handler;
+
 /**
  *
  * @author Fabian Senn <fsenn@hsr.ch>

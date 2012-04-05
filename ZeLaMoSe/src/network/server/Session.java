@@ -2,10 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package network;
+package network.server;
 
 import domain.Step;
 import java.rmi.RemoteException;
+import network.SessionInformation;
 
 /**
  *
@@ -13,7 +14,7 @@ import java.rmi.RemoteException;
  */
 public interface Session {
 
-   public SessionInformation getSessionInformation();
+   public SessionInformation getSessionInformation() throws RemoteException;
 
    public void sendChatMessage(SessionInformation sender, String message) throws RemoteException;
 

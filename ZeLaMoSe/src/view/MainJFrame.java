@@ -5,7 +5,7 @@
 package view;
 
 import domain.*;
-import network.NetworkHandlerImpl;
+import network.client.NetworkHandlerImpl;
 
 /**
  *

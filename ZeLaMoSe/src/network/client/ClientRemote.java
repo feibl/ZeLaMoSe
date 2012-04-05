@@ -2,12 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package network;
+package network.client;
 
 import domain.Step;
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import network.ChatMessage;
+import network.server.SessionRemote;
+import network.SessionInformation;
 
 /**
  *
@@ -23,7 +26,5 @@ public interface ClientRemote extends Remote, Serializable {
 
    public void receiveSessionRemovedMessage(SessionInformation session) throws RemoteException;
 
-   public void receiveServerRemote(ServerRemote remote) throws RemoteException;
-
-   public void receiveStartSignal(ServerRemote remote) throws RemoteException;
+   public void receiveStartSignal() throws RemoteException;
 }

@@ -17,6 +17,8 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.SwingUtilities;
 import domain.TetrisController.UpdateType;
+import network.client.NetworkHandler;
+import network.server.GameServer;
 
 /**
  *

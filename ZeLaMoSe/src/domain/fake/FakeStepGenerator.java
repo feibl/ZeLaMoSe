@@ -8,7 +8,7 @@ import domain.Step;
 import domain.StepGenerator;
 import domain.TetrisController;
 import domain.interfaces.StepProducerInterface;
-import network.NetworkHandler;
+import network.client.NetworkHandler;
 
 /**
  *

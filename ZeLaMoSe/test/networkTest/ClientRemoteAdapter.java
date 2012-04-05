@@ -7,8 +7,8 @@ package networkTest;
 import domain.Step;
 import java.rmi.RemoteException;
 import network.ChatMessage;
-import network.ClientRemote;
-import network.ServerRemote;
+import network.client.ClientRemote;
+import network.server.SessionRemote;
 import network.SessionInformation;
 
 /**
@@ -30,14 +30,10 @@ public class ClientRemoteAdapter implements ClientRemote {
    }
 
    @Override
-   public void receiveServerRemote(ServerRemote remote) throws RemoteException {
-   }
-
-   @Override
    public void receiveChatMessage(ChatMessage message) throws RemoteException {
    }
 
    @Override
-   public void receiveStartSignal(ServerRemote remote) throws RemoteException {
+   public void receiveStartSignal() throws RemoteException {
    }
 }

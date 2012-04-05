@@ -8,7 +8,7 @@ import domain.Step;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import network.ChatMessage;
-import network.NetworkHandler;
+import network.client.NetworkHandler;
 import network.SessionInformation;
 import domain.TetrisController.UpdateType;
 

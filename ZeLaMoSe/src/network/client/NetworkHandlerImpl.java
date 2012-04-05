@@ -2,14 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package network;
+package network.client;
 
-import network.NetworkHandler;
+import network.DisconnectionRunnable;
+import network.ConnectionRunnable;
+import network.client.NetworkHandler;
 import domain.Step;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import domain.TetrisController.UpdateType;
+import network.AddStepRunnable;
+import network.ChatMessage;
+import network.SendChatMessageRunnable;
+import network.SessionInformation;
 
 /**
  *
