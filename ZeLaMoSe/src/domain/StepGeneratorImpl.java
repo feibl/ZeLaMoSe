@@ -11,7 +11,7 @@ import domain.actions.MoveAction;
 import domain.actions.RotateAction;
 import java.awt.event.KeyEvent;
 import java.util.Observable;
-import network.NetworkHandler;
+import network.client.NetworkHandler;
 
 /**
  *

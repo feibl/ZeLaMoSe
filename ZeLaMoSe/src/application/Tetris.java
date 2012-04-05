@@ -7,7 +7,7 @@ package application;
 import domain.*;
 import domain.fake.FakeNetworkHandler;
 import domain.interfaces.SimulationStateInterface;
-import network.NetworkHandlerImpl;
+import network.client.NetworkHandlerImpl;
 import network.SessionInformation;
 import view.GameFieldJFrame;
 import view.OwnGameFieldJPanel;

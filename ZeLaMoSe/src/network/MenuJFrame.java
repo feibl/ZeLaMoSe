@@ -16,6 +16,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import domain.TetrisController.UpdateType;
+import network.client.NetworkHandler;
+import network.client.NetworkHandlerImpl;
+import network.server.GameServerImpl;
 
 /**
  *

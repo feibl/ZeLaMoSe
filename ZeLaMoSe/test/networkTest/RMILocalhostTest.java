@@ -15,6 +15,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import network.*;
 import domain.TetrisController.UpdateType;
+import network.client.NetworkHandlerImpl;
+import network.server.GameServerImpl;
 import org.junit.*;
 import static org.junit.Assert.*;
 

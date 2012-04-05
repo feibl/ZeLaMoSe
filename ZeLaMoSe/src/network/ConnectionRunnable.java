@@ -12,6 +12,10 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import network.client.HandlerImpl;
+import network.client.NetworkHandlerImpl;
+import network.server.GameServerRemote;
+import network.server.SessionRemote;
 
 /**
  *
@@ -39,11 +43,12 @@ public class ConnectionRunnable implements Runnable {
 
          if (lookupObject instanceof GameServerRemote) {
             GameServerRemote server = (GameServerRemote) lookupObject;
-            LobbyHandler lobbyHandler = new LobbyHandler(networkHandler);
-            networkHandler.setHandler(lobbyHandler);
-            SessionInformation ownSession = server.createSession(nickname, lobbyHandler);
+            HandlerImpl handler = new HandlerImpl(networkHandler);
+            networkHandler.setHandler(handler);
+            SessionRemote ownSession = server.createSession(nickname, handler);
             List<SessionInformation> sessionList = server.getSessionList();
-            networkHandler.notifyConnectionEstablished(ownSession, sessionList);
+            handler.setSessionRemote(ownSession);
+            networkHandler.notifyConnectionEstablished(ownSession.getSessionInformation(), sessionList);
          } else {
             throw new RemoteException();
          }

@@ -6,6 +6,7 @@ package networkTest;
 
 import domain.Step;
 import network.*;
+import network.client.NetworkHandlerImpl;
 
 /**
  *
