@@ -29,7 +29,7 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
    private GameServer gameServer;
    private NetworkHandler networkHandler;
    private SessionInformation ownSession;
-   private List<SessionInformation> sessionList = new ArrayList<SessionInformation>();
+   private Map<Integer, String> sessionList;
    private DefaultListModel model = new DefaultListModel();
    private InputSampler inputSampler = new InputSampler();
    private StepGeneratorImpl stepGenerator;
@@ -41,14 +41,14 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
       initComponents();
    }
 
-   public ClientJFrame(GameServer gameServer, NetworkHandler networkHandler, SessionInformation ownSession, List<SessionInformation> sessionList) {
+   public ClientJFrame(GameServer gameServer, NetworkHandler networkHandler, SessionInformation ownSession, Map<Integer, String> sessionList) {
       this.sessionList = sessionList;
       this.ownSession = ownSession;
       this.gameServer = gameServer;
       this.networkHandler = networkHandler;
       initComponents();
-      for (SessionInformation session : sessionList) {
-         model.addElement(session.getNickname());
+      for (String nickname : sessionList.values()) {
+         model.addElement(nickname);
       }
    }
 
@@ -300,14 +300,14 @@ public class ClientJFrame extends javax.swing.JFrame implements Observer {
       chatArea.append(message + '\n');
    }
 
-   private void updatePlayerList(final List<SessionInformation> newSessionList) {
+   private void updatePlayerList(final Map<Integer, String> newSessionList) {
       SwingUtilities.invokeLater(new Runnable() {
 
          @Override
          public void run() {
             model.clear();
-            for (SessionInformation session : newSessionList) {
-               model.addElement(session.getNickname());
+            for (String nickname : newSessionList.values()) {
+               model.addElement(nickname);
             }
          }
       });

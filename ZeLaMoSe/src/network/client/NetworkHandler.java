@@ -9,6 +9,7 @@ import domain.interfaces.StepProducerInterface;
 import java.net.InetAddress;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.concurrent.ExecutorService;
 import network.ChatMessage;
@@ -34,7 +35,7 @@ public abstract class NetworkHandler extends Observable implements StepInterface
    
    public abstract SessionInformation getOwnSession();
    
-   public abstract List<SessionInformation> getSessionList();
+   public abstract Map<Integer, String> getSessionList();
    
    public abstract void sendChatMessage(String message);
    

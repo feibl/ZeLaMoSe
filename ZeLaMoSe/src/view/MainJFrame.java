@@ -5,17 +5,13 @@
 package view;
 
 import domain.*;
-import domain.fake.FakeNetworkHandler;
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import network.SessionInformation;
 import network.client.NetworkHandler;
 import network.client.NetworkHandlerImpl;
 import network.server.GameServer;

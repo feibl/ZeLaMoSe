@@ -5,12 +5,8 @@
 package view;
 
 import domain.*;
-import domain.Fake.FakeGameEngine;
-import domain.actions.Action;
 import domain.fake.BlockingSimulationController;
 import domain.interfaces.SimulationStateInterface;
-import domain.interfaces.StepProducerInterface;
-import java.awt.event.KeyAdapter;
 import java.util.*;
 import javax.swing.SwingUtilities;
 import network.SessionInformation;
@@ -26,9 +22,11 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private NetworkHandler networkHandler;
     private TetrisController tetrisController;
     private SessionInformation ownSession;
-    private List<SessionInformation> sessionList;
+    private Map<Integer, String> sessionList;
     private GameServer gameServer;
+    private GameFieldJFrame gameField;
     private final MainJFrame menu;
+    private final boolean host;
 
     LobbyJFrame(NetworkHandler networkHandler, boolean host, GameServer gameServer, MainJFrame menu) {
         this.networkHandler = networkHandler;
@@ -36,6 +34,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         this.sessionList = networkHandler.getSessionList();
         this.ownSession = networkHandler.getOwnSession();
         this.menu = menu;
+        this.host = host;
         initComponents();
         btnStart.setVisible(host);
         networkHandler.addObserver(this);
@@ -99,6 +98,11 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         });
 
         btnSend.setText("Send");
+        btnSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendActionPerformed(evt);
+            }
+        });
 
         lblOtherPlayerName3.setText("<OtherPlayerName3>");
 
@@ -253,6 +257,8 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 .addContainerGap())
         );
 
+        btnStart.setVisible(host);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -261,7 +267,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
   }//GEN-LAST:event_btnExitActionPerformed
 
   private void txtMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMessageActionPerformed
-      // TODO add your handling code here:
+      btnSendActionPerformed(evt);
   }//GEN-LAST:event_txtMessageActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -280,6 +286,15 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
         gameServer.startGame();
     }//GEN-LAST:event_btnStartActionPerformed
+
+    private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
+        if(!txtMessage.getText().isEmpty()) {
+            txtMessage.setText("");
+            networkHandler.sendChatMessage(txtMessage.getText());
+        }
+        
+    }//GEN-LAST:event_btnSendActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnSend;
@@ -323,34 +338,21 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 break;
             case GAME_STARTED:
                 networkHandler.deleteObserver(this);
-                SimulationController sc = new BlockingSimulationController();
                 InputSampler is = new InputSampler();
-                StepGenerator sg = new StepGeneratorImpl(ownSession.getId(), is);
-                for (SessionInformation info : sessionList) {
-                    // TODO getSeed()
-                    sc.addSession(info.getId(), info.getNickname(), new GameEngine(info.getId(), 3));
-                }
-                
-                tetrisController = new TetrisController(sc, networkHandler, sg);
-                final GameFieldJFrame gamefield = new GameFieldJFrame();
-                OwnGameFieldJPanel panel = gamefield.getMainPanel();
-                
-                panel.setInputSampler(is);
-                panel.setSimulation(tetrisController.getSession(ownSession.getId()));
+                setupTetrisController(is);
+                setupGameFieldJFrame(is);
                 SwingUtilities.invokeLater(new Runnable() {
 
                     @Override
                     public void run() {
-                        gamefield.setVisible(true);
+                        gameField.setVisible(true);
                         dispose();
                         tetrisController.startGame();
                     }
                 });
                 break;
-            case STEP:
-
-                break;
             case EXCEPTION_THROWN:
+                
                 break;
         }
     }
@@ -359,7 +361,29 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         txaChat.append(message + '\n');
     }
 
-    private void updatePlayerList(final List<SessionInformation> newSessionList) {
+    private void updatePlayerList(final Map<Integer, String> newSessionList) {
         sessionList = newSessionList;
+    }
+
+    private void setupTetrisController(InputSampler is) {
+        SimulationController sc = new BlockingSimulationController();
+        StepGenerator sg = new StepGeneratorImpl(ownSession.getId(), is);
+        for (Map.Entry<Integer, String> entry : sessionList.entrySet()) {
+            // TODO getSeed()
+            sc.addSession(entry.getKey(), entry.getValue(), new GameEngine(entry.getKey(), 3));
+        }
+
+        tetrisController = new TetrisController(sc, networkHandler, sg);
+    }
+
+    private void setupGameFieldJFrame(InputSampler is) {
+        List<SimulationStateInterface> otherSimulations = new ArrayList<SimulationStateInterface>();
+        for (Integer sessionID : networkHandler.getSessionList().keySet()) {
+            if (sessionID != networkHandler.getOwnSession().getId()) {
+                otherSimulations.add(tetrisController.getSession(sessionID));
+            }
+        }
+        tetrisController.getSession(ownSession.getId());
+        gameField = new GameFieldJFrame(is, tetrisController.getSession(ownSession.getId()), otherSimulations);
     }
 }

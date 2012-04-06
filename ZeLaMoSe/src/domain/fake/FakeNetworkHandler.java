@@ -11,6 +11,7 @@ import network.ChatMessage;
 import network.client.NetworkHandler;
 import network.SessionInformation;
 import domain.TetrisController.UpdateType;
+import java.util.Map;
 
 /**
  *
@@ -61,7 +62,7 @@ public class FakeNetworkHandler extends NetworkHandler {
     }
 
     @Override
-    public List<SessionInformation> getSessionList() {
+    public Map<Integer, String> getSessionList() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

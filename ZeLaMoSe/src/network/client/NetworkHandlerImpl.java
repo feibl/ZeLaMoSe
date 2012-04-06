@@ -30,7 +30,7 @@ public class NetworkHandlerImpl extends NetworkHandler {
    private SessionInformation ownSession;
    private ChatMessage chatMessage;
    private ExecutorService threadPool;
-   private Map<Integer, SessionInformation> sessionList = new HashMap<Integer, SessionInformation>();
+   private Map<Integer, String> sessionList = new HashMap<Integer, String>();
    private Exception thrownException;
 
     @Override
@@ -94,7 +94,7 @@ public class NetworkHandlerImpl extends NetworkHandler {
 
    public void notifySessionAdded(SessionInformation addedSession) {
       lastAddedSession = addedSession;
-      sessionList.put(addedSession.getId(), addedSession);
+      sessionList.put(addedSession.getId(), addedSession.getNickname());
       setChanged();
       notifyObservers(UpdateType.SESSION_ADDED);
    }
@@ -120,15 +120,15 @@ public class NetworkHandlerImpl extends NetworkHandler {
    public void notifyConnectionEstablished(SessionInformation ownSession, List<SessionInformation> sessionList) {
       this.ownSession = ownSession;
       for(SessionInformation session: sessionList) {
-         this.sessionList.put(session.getId(), session);
+         this.sessionList.put(session.getId(), session.getNickname());
       }
       setChanged();
       notifyObservers(UpdateType.CONNECTION_ESTABLISHED);
    }
 
    @Override
-   public List<SessionInformation> getSessionList() {
-      return new ArrayList<SessionInformation>(sessionList.values());
+   public Map<Integer, String> getSessionList() {
+      return sessionList;
    }
 
    @Override

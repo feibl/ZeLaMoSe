@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import domain.TetrisController.UpdateType;
+import java.util.Map;
 import network.client.NetworkHandler;
 import network.client.NetworkHandlerImpl;
 import network.server.GameServerImpl;
@@ -174,7 +175,7 @@ public class MenuJFrame extends javax.swing.JFrame implements Observer {
       UpdateType type = (UpdateType) o1;
       switch (type) {
          case CONNECTION_ESTABLISHED:
-            List<SessionInformation> sessionList = networkHandler.getSessionList();
+            Map<Integer, String> sessionList = networkHandler.getSessionList();
             final ClientJFrame clientJFrame = new ClientJFrame(gameServerImpl, networkHandler, networkHandler.getOwnSession(), sessionList);
 
             java.awt.EventQueue.invokeLater(new Runnable() {

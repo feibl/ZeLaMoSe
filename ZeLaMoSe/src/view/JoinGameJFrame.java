@@ -23,7 +23,6 @@ public class JoinGameJFrame extends javax.swing.JFrame implements Observer {
         this.tetrisController = tetrisController;
         initComponents();
         getRootPane().setDefaultButton(btnJoin);
-        tetrisController.addObserver(this);
     }
 
     /**
@@ -116,8 +115,7 @@ public class JoinGameJFrame extends javax.swing.JFrame implements Observer {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnJoinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinActionPerformed
-        // TODO add your handling code here:
-        tetrisController.connectToServer(txtIPAddress.getText(), Registry.REGISTRY_PORT);
+        
     }//GEN-LAST:event_btnJoinActionPerformed
 
     /**
@@ -162,7 +160,6 @@ public class JoinGameJFrame extends javax.swing.JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object o1) {
-        TetrisController controller = (TetrisController)o;
         switch((TetrisController.UpdateType)o1) {
             case CONNECTION_ESTABLISHED:
                 
