@@ -28,7 +28,7 @@ import javax.media.opengl.glu.GLU;
  */
 class GLRenderer implements GLEventListener, Observer {
 
-    private boolean debug = true;
+    private boolean debug = false;
     private volatile boolean isAnimating = false;
     private ConcurrentLinkedQueue<Action> actionQueue;
     private int viewPortWidth, viewPortHeight, blockSize;

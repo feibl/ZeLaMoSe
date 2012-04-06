@@ -42,6 +42,11 @@ public class MockGameEngine extends GameEngineInterface {
   public Action getSimulationState() {
     throw new UnsupportedOperationException("Not supported yet.");
   }
+
+    @Override
+    public int getLevel() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
   
   
   

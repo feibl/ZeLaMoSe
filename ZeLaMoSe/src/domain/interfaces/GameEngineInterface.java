@@ -11,4 +11,5 @@ package domain.interfaces;
 abstract public class GameEngineInterface extends SimulationStateInterface implements ActionInterface{
     abstract public int getSessionID();
     abstract public void startGame();
+    abstract public int getLevel();
 }
