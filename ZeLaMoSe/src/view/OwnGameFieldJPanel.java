@@ -11,14 +11,17 @@ import domain.InputSampler;
 import domain.StepGeneratorImpl;
 import domain.interfaces.SimulationStateInterface;
 import java.awt.KeyboardFocusManager;
+import java.util.Observable;
+import java.util.Observer;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author Patrick Zenhäusern
  */
-public class OwnGameFieldJPanel extends javax.swing.JPanel {
+public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
     private int FRAME_RATE = 30;
 
   /**
@@ -291,11 +294,30 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel {
     
     public void setSimulation(SimulationStateInterface ge) {
         renderer.setEngine(ge);
+        gameEngine = ge;
+        gameEngine.addObserver(this);
     }
     
     private GLCapabilities getGLCaps(){
         //best GL settings
         GLProfile glp = GLProfile.getDefault();
         return new GLCapabilities(glp);
+    }
+    
+    private SimulationStateInterface gameEngine;
+     
+    @Override
+    public void update(Observable o, Object arg) {
+        final GameEngine ge = (GameEngine) o;
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                lblLevelValue.setText(Integer.toString(ge.getLevel()));
+                lblYourScoreValue.setText(Integer.toString(ge.getScore()));
+                lblNumberOfLinesValue.setText(Integer.toString(ge.getTotalRemovedLines()));
+            }
+        });
+
+
     }
 }

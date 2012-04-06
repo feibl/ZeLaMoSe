@@ -22,7 +22,8 @@ public class SimulationController implements StepInterface {
   private Map<Integer, Step> stepQueue = new HashMap<Integer, Step>();
   private Map<Integer, GameEngineInterface> gameEngines = new HashMap<Integer, GameEngineInterface>();
   private Map<Integer, String> sessions = new HashMap<Integer, String>();
-  private final int advanceStepLimit = 20; //advance by one every 20 steps
+  private final int advanceStepLimit = 21; //advance by one every 20 steps
+  private int maxLevel = 1;
   
   public SimulationController() {
     
@@ -63,7 +64,7 @@ public class SimulationController implements StepInterface {
   public void simulateStep(int seqNum) {
       //System.out.println("simulateStep "+seqNum);
       boolean advance = false;
-      if (seqNum % advanceStepLimit == 0) {
+      if (seqNum % (advanceStepLimit-maxLevel) == 0) {
           advance = true;
       }
       Map <Action, Integer> actionList = new TreeMap<Action, Integer>(new Comparator(){
@@ -96,10 +97,14 @@ public class SimulationController implements StepInterface {
               g.handleAction(new MoveAction(0, MoveAction.Direction.DOWN, 1));
           }
       }
+
       for (Map.Entry<Action, Integer> e: actionList.entrySet()) {
           assert (gameEngines.containsKey(e.getValue()));
           GameEngineInterface g = gameEngines.get(e.getValue());
           g.handleAction(e.getKey());
+          if (g.getLevel() > maxLevel && maxLevel < Config.maxLevelForSpeed) {
+                maxLevel = g.getLevel();
+            }
       }
   }
   
