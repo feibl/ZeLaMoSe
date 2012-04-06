@@ -28,8 +28,20 @@ public class GameEngine extends GameEngineInterface {
     private Block currentBlock;
     private boolean gameOver;
     private int score;
+
+    public int getLevel() {
+        return level;
+    }
+
+    public int getScore() {
+        return score;
+    }
     private int level;
     private int totalRemovedLines;
+
+    public int getTotalRemovedLines() {
+        return totalRemovedLines;
+    }
 
     public boolean isGameOver() {
         return gameOver;
