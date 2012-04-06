@@ -77,10 +77,10 @@ public class SimulationController implements StepInterface {
           }
 
       });
-
+      
       for (int session: sessions.keySet()) {
           assert(stepQueue.containsKey(session));
-          Step s = stepQueue.remove(session);      
+          Step s = stepQueue.remove(session);
           if (s.getSequenceNumber() != seqNum) {
               //throw new Exception("Invalid sequenceNumber"+s.getSequenceNumber());
               assert(false);
@@ -103,7 +103,7 @@ public class SimulationController implements StepInterface {
       }
   }
   
-  SimulationStateInterface getSimulation(int sessionId) {
+  public SimulationStateInterface getSimulation(int sessionId) {
       return gameEngines.get(sessionId);
   }
     

@@ -4,12 +4,10 @@
  */
 package view;
 
-import domain.GameEngine;
-import domain.InputSampler;
-import domain.Step;
-import domain.StepGeneratorImpl;
-import domain.TetrisController;
+import domain.*;
+import domain.Fake.FakeGameEngine;
 import domain.actions.Action;
+import domain.fake.BlockingSimulationController;
 import domain.interfaces.SimulationStateInterface;
 import domain.interfaces.StepProducerInterface;
 import java.awt.event.KeyAdapter;
@@ -17,6 +15,7 @@ import java.util.*;
 import javax.swing.SwingUtilities;
 import network.SessionInformation;
 import network.client.NetworkHandler;
+import network.server.GameServer;
 
 /**
  *
@@ -28,15 +27,14 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private TetrisController tetrisController;
     private SessionInformation ownSession;
     private List<SessionInformation> sessionList;
-    private InputSampler inputSampler;
+    private GameServer gameServer;
     private final MainJFrame menu;
 
-    LobbyJFrame(NetworkHandler networkHandler, TetrisController tetrisController, InputSampler inputSampler, boolean host, MainJFrame menu) {
-        this.tetrisController = tetrisController;
+    LobbyJFrame(NetworkHandler networkHandler, boolean host, GameServer gameServer, MainJFrame menu) {
         this.networkHandler = networkHandler;
+        this.gameServer = gameServer;
         this.sessionList = networkHandler.getSessionList();
         this.ownSession = networkHandler.getOwnSession();
-        this.inputSampler = inputSampler;
         this.menu = menu;
         initComponents();
         btnStart.setVisible(host);
@@ -280,9 +278,8 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_formWindowClosing
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-        tetrisController.startGame();
+        gameServer.startGame();
     }//GEN-LAST:event_btnStartActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnSend;
@@ -326,15 +323,27 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 break;
             case GAME_STARTED:
                 networkHandler.deleteObserver(this);
+                SimulationController sc = new BlockingSimulationController();
+                InputSampler is = new InputSampler();
+                StepGenerator sg = new StepGeneratorImpl(ownSession.getId(), is);
+                for (SessionInformation info : sessionList) {
+                    // TODO getSeed()
+                    sc.addSession(info.getId(), info.getNickname(), new GameEngine(info.getId(), 3));
+                }
+                
+                tetrisController = new TetrisController(sc, networkHandler, sg);
                 final GameFieldJFrame gamefield = new GameFieldJFrame();
                 OwnGameFieldJPanel panel = gamefield.getMainPanel();
-                panel.setInputSampler(inputSampler);
+                
+                panel.setInputSampler(is);
+                panel.setSimulation(tetrisController.getSession(ownSession.getId()));
                 SwingUtilities.invokeLater(new Runnable() {
 
                     @Override
                     public void run() {
                         gamefield.setVisible(true);
                         dispose();
+                        tetrisController.startGame();
                     }
                 });
                 break;
@@ -351,5 +360,6 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     }
 
     private void updatePlayerList(final List<SessionInformation> newSessionList) {
+        sessionList = newSessionList;
     }
 }

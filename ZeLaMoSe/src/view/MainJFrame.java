@@ -8,6 +8,7 @@ import domain.*;
 import domain.fake.FakeNetworkHandler;
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Observable;
 import java.util.Observer;
@@ -17,26 +18,24 @@ import javax.swing.JOptionPane;
 import network.SessionInformation;
 import network.client.NetworkHandler;
 import network.client.NetworkHandlerImpl;
+import network.server.GameServer;
+import network.server.GameServerImpl;
 
 /**
  *
  * @author Patrick Zenhäusern
  */
 public class MainJFrame extends javax.swing.JFrame implements Observer {
-    
-    private final TetrisController tetrisController;
-    private final NetworkHandler networkHandler;
-    private final InputSampler inputSampler;
+
+    private NetworkHandler networkHandler;
+    private GameServer gameServer;
 
     /**
      * Creates new form frmMain
      */
-    public MainJFrame(TetrisController tetrisController, NetworkHandler networkHandler, InputSampler inputSampler) {
-        this.networkHandler = networkHandler;
-        this.tetrisController = tetrisController;
-        this.inputSampler = inputSampler;
+    public MainJFrame() {
+        this.networkHandler = new NetworkHandlerImpl();
         initComponents();
-        
     }
 
     /**
@@ -200,22 +199,22 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
     private void lblCreateGameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCreateGameMouseClicked
         networkHandler.addObserver(this);
         try {
-            tetrisController.startServer();
-            tetrisController.connectToServer("", tetrisController.SERVER_PORT);
+            startServer();
+            connectToServer("", TetrisController.SERVER_PORT);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex, "Exception", JOptionPane.ERROR_MESSAGE);
             networkHandler.deleteObserver(this);
         }
-        
+
     }//GEN-LAST:event_lblCreateGameMouseClicked
-    
+
     private void lblStartGameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblStartGameMouseClicked
     }//GEN-LAST:event_lblStartGameMouseClicked
-    
+
     private void lblJoinGameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblJoinGameMouseClicked
         String ip = JOptionPane.showInputDialog(null, "Eingabe der IP");
         networkHandler.addObserver(this);
-        tetrisController.connectToServer(ip, tetrisController.SERVER_PORT);
+        connectToServer(ip, TetrisController.SERVER_PORT);
     }//GEN-LAST:event_lblJoinGameMouseClicked
 
     /**
@@ -252,14 +251,9 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
          * Create and display the form
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            
+
             public void run() {
-                NetworkHandler nh = new NetworkHandlerImpl();
-                SimulationController sc = new SimulationController();
-                InputSampler is = new InputSampler();
-                StepGenerator sg = new StepGeneratorImpl(is);
-                TetrisController tc = new TetrisController(sc, nh, sg);
-                new MainJFrame(tc, nh, is).setVisible(true);
+                new MainJFrame().setVisible(true);
             }
         });
     }
@@ -277,14 +271,28 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JPanel pnlSinglePlayer;
     // End of variables declaration//GEN-END:variables
 
+    public void startServer() throws RemoteException, MalformedURLException {
+        try {
+            LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
+        } catch (RemoteException ex) {
+        }
+        Registry registry = LocateRegistry.getRegistry();
+        gameServer = new GameServerImpl(TetrisController.SERVER_NAME, registry);
+    }
+
+    public void connectToServer(String ip, int port) {
+        //TODO Nickname zulassen
+        networkHandler.connectToServer(ip, TetrisController.SERVER_NAME, "nickname");
+    }
+
     @Override
     public void update(Observable o, Object o1) {
         switch ((TetrisController.UpdateType) o1) {
             case CONNECTION_ESTABLISHED:
                 networkHandler.deleteObserver(this);
-                final LobbyJFrame lobby = new LobbyJFrame(networkHandler, tetrisController, inputSampler, true, this);
+                final LobbyJFrame lobby = new LobbyJFrame(networkHandler, true, gameServer, this);
                 java.awt.EventQueue.invokeLater(new Runnable() {
-                    
+
                     public void run() {
                         lobby.setVisible(true);
                         setVisible(false);

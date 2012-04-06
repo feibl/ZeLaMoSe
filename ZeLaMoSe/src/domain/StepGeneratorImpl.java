@@ -31,6 +31,12 @@ public class StepGeneratorImpl extends StepGenerator {
         this.inputSampler = inputsampler;
     }
     
+    public StepGeneratorImpl(int sessionID, InputSampler inputsampler) {
+        this.sessionID = sessionID;
+        this.inputSampler = inputsampler;
+    }
+    
+    @Override
     public void setSessionID(int sessionID) {
         this.sessionID = sessionID;
     }

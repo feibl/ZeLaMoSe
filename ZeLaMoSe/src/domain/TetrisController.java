@@ -47,6 +47,7 @@ public class TetrisController extends Observable implements Observer {
     public static final String SERVER_NAME = "TetrisServer";
 
     public TetrisController(SimulationController sController, NetworkHandler nH, StepGenerator sG) {
+        localSessionID = nH.getOwnSession().getId();
         simulationController = sController;
         networkHandler = nH;
         networkHandler.addObserver(this);
@@ -76,42 +77,44 @@ public class TetrisController extends Observable implements Observer {
     }
 
     public void startGame() {
-        gameServer.startGame();
+        //gameServer.startGame();
+        simulationController.initSimulation();
+        run();
     }
 
     @Override
     public void update(Observable o, Object o1) {
         System.out.println("update");
         if (o1 == UpdateType.STEP) {
-            System.out.println("adding step: ");
             StepProducerInterface producer = (StepProducerInterface) o;
             Step step = producer.getStep();
+            System.out.println(" adding step: " + step.getSessionID() + " " + step.getSequenceNumber());                      
             simulationController.addStep(step);
-            assert (localSessionID >= 0);
             if (step.getSessionID() == localSessionID) {
+                System.out.println(" sending step");
                 networkHandler.addStep(step);
             }
         }
-        if (o1 == UpdateType.GAME_STARTED) {
-            System.out.println("starting game");
-            simulationController.initSimulation();
-            run();
-        }
-
-        if (o1 == UpdateType.SESSION_ADDED) {
-            System.out.println("session added");
-        }
-
-        if (o1 == UpdateType.SESSION_REMOVED) {
-            System.out.println("session removed");
-        }
-        if (o1 == UpdateType.CONNECTION_ESTABLISHED) {
-            System.out.println("connection established");
-            SessionInformation sessionInformation = networkHandler.getOwnSession();
-            localSessionID = sessionInformation.getId();
-            stepGenerator.setSessionID(sessionInformation.getId());
-            simulationController.addSession(localSessionID, "localSessionName", new GameEngine(localSessionID));
-        }
+//        if (o1 == UpdateType.GAME_STARTED) {
+//            System.out.println("starting game");
+//            simulationController.initSimulation();
+//            run();
+//        }
+//
+//        if (o1 == UpdateType.SESSION_ADDED) {
+//            System.out.println("session added");
+//        }
+//
+//        if (o1 == UpdateType.SESSION_REMOVED) {
+//            System.out.println("session removed");
+//        }
+//        if (o1 == UpdateType.CONNECTION_ESTABLISHED) {
+//            System.out.println("connection established");
+//            SessionInformation sessionInformation = networkHandler.getOwnSession();
+//            localSessionID = sessionInformation.getId();
+//            stepGenerator.setSessionID(sessionInformation.getId());
+//            simulationController.addSession(localSessionID, "localSessionName", new GameEngine(localSessionID));
+//        }
 
 
 
@@ -123,15 +126,30 @@ public class TetrisController extends Observable implements Observer {
      * public for testing
      */
     public void runStep() {
-        System.out.println("running step: " + currentStep + " time: " + System.nanoTime());
-        stepGenerator.niggasInParis();
+        System.out.println("running step: " + currentStep + " time: " + System.nanoTime());        
         simulationController.simulateStep(currentStep);
+        stepGenerator.niggasInParis();
+        currentStep++;
+
+    }
+    
+    public void firstStep() {
+        System.out.println("first step: " + currentStep + " time: " + System.nanoTime());        
+        stepGenerator.niggasInParis();
         currentStep++;
 
     }
 
     //Start the step timer
     private void run() {
+        TimerTask firstTimerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                firstStep();
+            }
+            
+        };
         TimerTask timerTask = new TimerTask() {
 
             @Override
@@ -140,6 +158,7 @@ public class TetrisController extends Observable implements Observer {
             }
         };
         timer = new Timer();
-        timer.scheduleAtFixedRate(timerTask, 0, stepDuration);
+        timer.schedule(firstTimerTask, 0);
+        timer.scheduleAtFixedRate(timerTask, 2000, stepDuration);
     }
 }
