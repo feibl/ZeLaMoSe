@@ -383,7 +383,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 otherSimulations.add(tetrisController.getSession(sessionID));
             }
         }
-        tetrisController.getSession(ownSession.getId());
-        gameField = new GameFieldJFrame(is, tetrisController.getSession(ownSession.getId()), otherSimulations);
+        SimulationStateInterface ownSimulation = tetrisController.getSession(ownSession.getId());
+        gameField = new GameFieldJFrame(is, ownSimulation, otherSimulations);
     }
 }

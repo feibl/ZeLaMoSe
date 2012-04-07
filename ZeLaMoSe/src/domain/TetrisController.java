@@ -6,20 +6,12 @@ package domain;
 
 import domain.interfaces.SimulationStateInterface;
 import domain.interfaces.StepProducerInterface;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.TimerTask;
 import java.util.Timer;
 import network.client.NetworkHandler;
-import network.SessionInformation;
-import network.server.GameServer;
-import network.server.GameServerImpl;
-import sun.org.mozilla.javascript.ast.CatchClause;
 
 /**
  *
@@ -45,7 +37,7 @@ public class TetrisController implements Observer {
     private StepGenerator stepGenerator;
     private int currentStep = 0;
     private final int stepDuration = 50; //in millisecond
-    private int localSessionID = -1;
+    private int localSessionID;
     
 
     public TetrisController(SimulationController sController, NetworkHandler nH, StepGenerator sG) {
@@ -56,10 +48,7 @@ public class TetrisController implements Observer {
         stepGenerator = sG;
         stepGenerator.addObserver(this);
     }
-
-//    public Map<Integer, String> getAvailableSessions() {
-//        
-//    }
+    
     public SimulationStateInterface getSession(int sessionId) {
         return simulationController.getSimulation(sessionId);
     }
@@ -71,14 +60,11 @@ public class TetrisController implements Observer {
 
     @Override
     public void update(Observable o, Object o1) {
-        System.out.println("update");
         if (o1 == UpdateType.STEP) {
             StepProducerInterface producer = (StepProducerInterface) o;
-            Step step = producer.getStep();
-            System.out.println(" adding step: " + step.getSessionID() + " " + step.getSequenceNumber());                      
+            Step step = producer.getStep();                   
             simulationController.addStep(step);
             if (step.getSessionID() == localSessionID) {
-                System.out.println(" sending step");
                 networkHandler.addStep(step);
             }
         }
