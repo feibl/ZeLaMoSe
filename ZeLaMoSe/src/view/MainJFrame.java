@@ -23,8 +23,7 @@ import network.server.GameServerImpl;
  */
 public class MainJFrame extends javax.swing.JFrame implements Observer {
 
-    private NetworkHandler networkHandler;
-    private GameServer gameServer;
+    private TetrisController tetrisController;
 
     /**
      * Creates new form frmMain
@@ -193,13 +192,13 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblCreateGameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCreateGameMouseClicked
-        networkHandler.addObserver(this);
+        tetrisController.addObserver(this);
         try {
-            startServer();
-            connectToServer("", TetrisController.SERVER_PORT);
+            tetrisController.startServer();
+            tetrisController.connectToServer("", TetrisController.SERVER_PORT);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex, "Exception", JOptionPane.ERROR_MESSAGE);
-            networkHandler.deleteObserver(this);
+            tetrisController.deleteObserver(this);
         }
 
     }//GEN-LAST:event_lblCreateGameMouseClicked
@@ -209,8 +208,8 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
 
     private void lblJoinGameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblJoinGameMouseClicked
         String ip = JOptionPane.showInputDialog(null, "Eingabe der IP");
-        networkHandler.addObserver(this);
-        connectToServer(ip, TetrisController.SERVER_PORT);
+        tetrisController.addObserver(this);
+        tetrisController.connectToServer(ip, TetrisController.SERVER_PORT);
     }//GEN-LAST:event_lblJoinGameMouseClicked
 
     /**
@@ -267,19 +266,7 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JPanel pnlSinglePlayer;
     // End of variables declaration//GEN-END:variables
 
-    public void startServer() throws RemoteException, MalformedURLException {
-        try {
-            LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
-        } catch (RemoteException ex) {
-        }
-        Registry registry = LocateRegistry.getRegistry();
-        gameServer = new GameServerImpl(TetrisController.SERVER_NAME, registry);
-    }
 
-    public void connectToServer(String ip, int port) {
-        //TODO Nickname zulassen
-        networkHandler.connectToServer(ip, TetrisController.SERVER_NAME, "nickname");
-    }
 
     @Override
     public void update(Observable o, Object o1) {

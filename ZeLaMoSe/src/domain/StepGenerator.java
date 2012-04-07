@@ -13,6 +13,7 @@ import java.util.Observable;
  */
 abstract public class StepGenerator extends Observable implements StepProducerInterface {
     abstract public void setSessionID(int sessionID);
+    abstract public InputSampler getInputSampler();
 //    
 //    @Override
 //    abstract public void niggasInParis();

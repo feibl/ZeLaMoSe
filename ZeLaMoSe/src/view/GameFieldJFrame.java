@@ -24,7 +24,7 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         startMusic();
     }
 
-    GameFieldJFrame(InputSampler is, SimulationStateInterface mainSimulation, List<SimulationStateInterface> otherSimulations) {
+    public GameFieldJFrame(InputSampler is, SimulationStateInterface mainSimulation, List<SimulationStateInterface> otherSimulations) {
         initComponents();        
         startMusic();
         ownGameFieldJPanel1.setInputSampler(is);
