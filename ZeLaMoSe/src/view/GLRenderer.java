@@ -153,10 +153,10 @@ class GLRenderer implements GLEventListener, Observer {
         gl.glBegin(GL2.GL_QUADS);
         int x = currentBlock.getX();
         int y = currentBlock.getY();
-        boolean[][] grid = currentBlock.getGrid();
+        Block[][] grid = currentBlock.getGrid();
         for (int a = 0; a < grid.length; a++) {
             for (int b = 0; b < grid.length; b++) {
-                if (grid[a][b]) {
+                if (grid[a][b] != null) {
                     gl.glVertex2i(blockSize * (x + a), blockSize * (y - b + 1));
                     gl.glVertex2i(blockSize * (x + a), blockSize * (y - b));
                     gl.glVertex2i(blockSize * (x + 1 + a), blockSize * (y - b));
@@ -201,7 +201,7 @@ class GLRenderer implements GLEventListener, Observer {
     private void saveCurrentblockToGrid() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                if (currentBlock.getGrid()[i][j]) {
+                if (currentBlock.getGrid()[i][j] != null) {
                     grid[currentBlock.getX() + i][currentBlock.getY() - j] = currentBlock.getColor();
                 }
             }

@@ -144,10 +144,10 @@ public class GameEngine extends GameEngineInterface {
     }
 
     private boolean checkForCollision() {
-        boolean[][] blockGrid = currentBlock.getGrid();
+        Block[][] blockGrid = currentBlock.getGrid();
         for (int x = 0; x < blockGrid.length; x++) {
             for (int y = 0; y < blockGrid.length; y++) {
-                if (blockGrid[x][y]) {
+                if (blockGrid[x][y] != null) {
                     try {
                         if (grid[currentBlock.getX() + x][currentBlock.getY() + y] != null && !grid[currentBlock.getX() + x][currentBlock.getY() + y].equals(currentBlock)) {
                             return true;
@@ -189,7 +189,7 @@ public class GameEngine extends GameEngineInterface {
     }
 
     private void saveCurrenblockToGrid() {
-        boolean[][] blockGrid = currentBlock.getGrid();
+        Block[][] blockGrid = currentBlock.getGrid();
         //Refactor find a better way to delte the old block references
         for (int x = 0; x < gridwidth; x++) {
             for (int y = 0; y < gridheight; y++) {
@@ -201,7 +201,7 @@ public class GameEngine extends GameEngineInterface {
 
         for (int x = 0; x < blockGrid.length; x++) {
             for (int y = 0; y < blockGrid.length; y++) {
-                if (blockGrid[x][y]) {
+                if (blockGrid[x][y] != null) {
                     grid[currentBlock.getX() + x][currentBlock.getY() + y] = currentBlock;
                 }
             }
