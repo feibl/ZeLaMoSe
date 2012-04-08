@@ -49,7 +49,7 @@ public class RMILocalhostTest {
 
    @Before
    public void setUp() throws RemoteException, MalformedURLException {
-      gameServerImpl = new GameServerImpl(SERVER_NAME, registry);
+      gameServerImpl = new GameServerImplWithoutThread(SERVER_NAME, registry);
       flag = false;
       count = 0;
    }

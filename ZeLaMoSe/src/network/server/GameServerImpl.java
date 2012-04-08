@@ -16,7 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import network.ServerFullException;
 import network.SessionInformation;
-import network.StartGameRunnable;
 
 /**
  *
@@ -24,7 +23,7 @@ import network.StartGameRunnable;
  */
 public class GameServerImpl extends UnicastRemoteObject implements GameServer, GameServerRemote {
 
-    Session[] sessionList;
+    protected Session[] sessionList;
     private static final int MAX_SESSIONS = 4;
     private static int id = 1;
 
@@ -64,7 +63,13 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
 
     @Override
     public void startGame() {
-        new Thread(new StartGameRunnable(this, sessionList)).start();
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                notifyAllGameStarted();
+            }
+        }).start();
     }
 
     public void removeSession(Session session) {
@@ -130,6 +135,19 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
             if (s != null && s != sender) {
                 try {
                     s.sendStep(step);
+                } catch (RemoteException ex) {
+                    removeSession(s);
+                }
+            }
+        }
+    }
+
+    protected void notifyAllGameStarted() {
+        for (int i = 0; i < sessionList.length; i++) {
+            Session s = sessionList[i];
+            if (s != null) {
+                try {
+                    s.sendStartSignal();
                 } catch (RemoteException ex) {
                     removeSession(s);
                 }

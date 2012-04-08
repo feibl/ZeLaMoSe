@@ -12,6 +12,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import network.SessionInformation;
 import network.client.NetworkHandler;
 import network.server.GameServer;
@@ -37,9 +38,12 @@ public class TetrisController extends Observable implements Observer {
     private int currentStep = 0;
     private final int stepDuration = 50; //in millisecond   
     private GameServer gameServer;
-    private Map<Integer, String> otherSessions;
-    private SessionInformation localSession;
-//    private int localSessionID;
+    private ConcurrentHashMap<Integer, String> sessionMap;
+    private int localSessionID;
+
+    public Object getThrownException() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 
     public enum UpdateType {
 
@@ -54,16 +58,18 @@ public class TetrisController extends Observable implements Observer {
         stepGenerator.addObserver(this);
     }
 
-    public Map<Integer, String> getOtherSessions() {
-        return otherSessions;
+    public Map<Integer, String> getSessionMap() {
+        return sessionMap;
     }
 
     public GameFieldJFrame createGameFieldFrame() {
         List<SimulationStateInterface> otherSimulations = new ArrayList<SimulationStateInterface>();
-        for (Integer sessionID : otherSessions.keySet()) {
-            otherSimulations.add(simulationController.getSimulation(sessionID));
+        for (Integer sessionID : sessionMap.keySet()) {
+            if (sessionID != localSessionID) {
+                otherSimulations.add(simulationController.getSimulation(sessionID));
+            }
         }
-        SimulationStateInterface localSimulation = simulationController.getSimulation(localSession.getId());;
+        SimulationStateInterface localSimulation = simulationController.getSimulation(localSessionID);;
         return new GameFieldJFrame(stepGenerator.getInputSampler(), localSimulation, otherSimulations);
     }
 
@@ -103,34 +109,27 @@ public class TetrisController extends Observable implements Observer {
                 StepProducerInterface producer = (StepProducerInterface) o;
                 Step step = producer.getStep();
                 simulationController.addStep(step);
-                if (step.getSessionID() == localSession.getId()) {
+                if (step.getSessionID() == localSessionID) {
                     networkHandler.addStep(step);
                 }
                 break;
             case CONNECTION_ESTABLISHED:
-                localSession = networkHandler.getOwnSession();
-                stepGenerator.setSessionID(localSession.getId());
-                otherSessions = networkHandler.getSessionList();
-                simulationController.addSession(localSession.getId(), localSession.getNickname(), new GameEngine(localSession.getId()));
-                for (Entry<Integer, String> session : networkHandler.getSessionList().entrySet()) {
-                    if (localSession.getId() != session.getKey()) {
-                        otherSessions.put(session.getKey(), session.getValue());
-                    }
-                }
-                break;
-            case SESSION_ADDED:
-                SessionInformation newSession = networkHandler.getAddedSession();
-                otherSessions.put(newSession.getId(), newSession.getNickname());
-                break;
-            case SESSION_REMOVED:
-                otherSessions.remove(networkHandler.getRemovedSession().getId());
+                localSessionID = networkHandler.getOwnSession().getId();
+                sessionMap = networkHandler.getSessionList();
+                
+                setChanged();
+                notifyObservers(UpdateType.CONNECTION_ESTABLISHED);
                 break;
             case GAME_STARTED:
-                for (Map.Entry<Integer, String> entry : otherSessions.entrySet()) {
+                stepGenerator.setSessionID(localSessionID);
+                for (Map.Entry<Integer, String> entry : sessionMap.entrySet()) {
                     // TODO getSeed()
                     simulationController.addSession(entry.getKey(), entry.getValue(), new GameEngine(entry.getKey(), 3));
                 }
-
+                
+                setChanged();
+                notifyObservers(UpdateType.GAME_STARTED);
+                
                 simulationController.initSimulation();
                 run();
                 break;

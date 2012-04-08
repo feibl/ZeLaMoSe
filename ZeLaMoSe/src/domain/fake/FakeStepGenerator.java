@@ -4,6 +4,7 @@
  */
 package domain.fake;
 
+import domain.InputSampler;
 import domain.Step;
 import domain.StepGenerator;
 import domain.TetrisController;
@@ -31,5 +32,10 @@ public class FakeStepGenerator extends StepGenerator {
     @Override
     public Step getStep() {
         return step;
+    }
+
+    @Override
+    public InputSampler getInputSampler() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

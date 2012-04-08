@@ -5,15 +5,10 @@
 package view;
 
 import domain.*;
-import domain.fake.BlockingSimulationController;
-import domain.interfaces.SimulationStateInterface;
 import java.util.*;
-import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
-import network.SessionInformation;
 import network.client.NetworkHandler;
-import network.server.GameServer;
 
 /**
  *
@@ -21,21 +16,19 @@ import network.server.GameServer;
  */
 public class LobbyJFrame extends javax.swing.JFrame implements Observer {
 
-    private NetworkHandler networkHandler;
     private TetrisController tetrisController;
     private final MainJFrame menu;
     private ListModel playerListModel;
     private final boolean host;
 
-    LobbyJFrame(NetworkHandler networkHandler, TetrisController tetrisController, boolean host, MainJFrame menu) {
-        this.networkHandler = networkHandler;
+    LobbyJFrame(TetrisController tetrisController, boolean host, MainJFrame menu) {
+//        this.networkHandler = networkHandler;
         this.tetrisController = tetrisController;
         this.menu = menu;
         this.host = host;
 
         initComponents();
         btnStart.setVisible(host);
-        networkHandler.addObserver(this);
         tetrisController.addObserver(this);
     }
 
@@ -288,7 +281,6 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
   }//GEN-LAST:event_txtMessageActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        networkHandler.deleteObserver(this);
         tetrisController.deleteObserver(this);
         tetrisController.disconnectFromServer();
         SwingUtilities.invokeLater(new Runnable() {
@@ -308,7 +300,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         if (!txtMessage.getText().isEmpty()) {
             txtMessage.setText("");
-            networkHandler.sendChatMessage(txtMessage.getText());
+//            networkHandler.sendChatMessage(txtMessage.getText());
         }
 
     }//GEN-LAST:event_btnSendActionPerformed
@@ -344,41 +336,41 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     @Override
     public void update(Observable o, Object o1) {
         TetrisController.UpdateType type = (TetrisController.UpdateType) o1;
-        if (o instanceof TetrisController) {
-            switch (type) {
-                case GAME_STARTED:
-                    tetrisController.deleteObserver(this);
-                    networkHandler.deleteObserver(this);
 
-                    final GameFieldJFrame gameField = tetrisController.createGameFieldFrame();
+        switch (type) {
+            case GAME_STARTED:
+                tetrisController.deleteObserver(this);
 
-                    SwingUtilities.invokeLater(new Runnable() {
+                final GameFieldJFrame gameField = tetrisController.createGameFieldFrame();
 
-                        @Override
-                        public void run() {
-                            gameField.setVisible(true);
-                            dispose();
-                        }
-                    });
-                    break;
-                case EXCEPTION_THROWN:
-                    break;
-            }
-        } else if (o instanceof NetworkHandler) {
-            switch (type) {
-                case CHAT_MESSAGE_RECEIVED:
-                    writeToChatArea(networkHandler.getChatMessage().toString());
-                    break;
-                case SESSION_ADDED:
-                    writeToChatArea(networkHandler.getAddedSession().getNickname() + " enters");
-//                    updatePlayerList(networkHandler.getSessionList());
-                    break;
-                case SESSION_REMOVED:
-                    writeToChatArea(networkHandler.getRemovedSession().getNickname() + " has left");
-//                    updatePlayerList(networkHandler.getSessionList());
-                    break;
-            }
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        gameField.setVisible(true);
+                        dispose();
+                    }
+                });
+                break;
+            case EXCEPTION_THROWN:
+                break;
         }
+
+//        else if (o instanceof NetworkHandler) {
+//            switch (type) {
+//                case CHAT_MESSAGE_RECEIVED:
+//                    writeToChatArea(networkHandler.getChatMessage().toString());
+//                    break;
+//                case SESSION_ADDED:
+//                    writeToChatArea(networkHandler.getAddedSession().getNickname() + " enters");
+////                    updatePlayerList(networkHandler.getSessionList());
+//                    break;
+//                case SESSION_REMOVED:
+//                    writeToChatArea(networkHandler.getRemovedSession().getNickname() + " has left");
+////                    updatePlayerList(networkHandler.getSessionList());
+//                    break;
+//            }
+//        }
     }
 
     private void writeToChatArea(String message) {

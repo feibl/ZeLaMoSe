@@ -12,6 +12,7 @@ import network.client.NetworkHandler;
 import network.SessionInformation;
 import domain.TetrisController.UpdateType;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
@@ -62,7 +63,7 @@ public class FakeNetworkHandler extends NetworkHandler {
     }
 
     @Override
-    public Map<Integer, String> getSessionList() {
+    public ConcurrentHashMap<Integer, String> getSessionList() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

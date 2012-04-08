@@ -4,18 +4,13 @@
  */
 package network.client;
 
-import network.DisconnectionRunnable;
-import network.ConnectionRunnable;
-import network.client.NetworkHandler;
 import domain.Step;
-import java.util.*;
+import domain.TetrisController.UpdateType;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import domain.TetrisController.UpdateType;
-import network.AddStepRunnable;
-import network.ChatMessage;
-import network.SendChatMessageRunnable;
-import network.SessionInformation;
+import network.*;
 
 /**
  *
@@ -30,7 +25,7 @@ public class NetworkHandlerImpl extends NetworkHandler {
    private SessionInformation ownSession;
    private ChatMessage chatMessage;
    private ExecutorService threadPool;
-   private Map<Integer, String> sessionList = new HashMap<Integer, String>();
+   private ConcurrentHashMap<Integer, String> sessionList = new ConcurrentHashMap<Integer, String>();
    private Exception thrownException;
 
     @Override
@@ -127,7 +122,7 @@ public class NetworkHandlerImpl extends NetworkHandler {
    }
 
    @Override
-   public Map<Integer, String> getSessionList() {
+   public ConcurrentHashMap<Integer, String> getSessionList() {
       return sessionList;
    }
 
