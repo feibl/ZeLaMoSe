@@ -107,10 +107,10 @@ public class GameEngineTest {
         [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
         [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
          */
-        addCurrentBlockToTestGrid(4, 1);
-        addCurrentBlockToTestGrid(5, 1);
-        addCurrentBlockToTestGrid(6, 1);
-        addCurrentBlockToTestGrid(7, 1);
+        addCurrentBlockToTestGrid(4, 22);
+        addCurrentBlockToTestGrid(5, 22);
+        addCurrentBlockToTestGrid(6, 22);
+        addCurrentBlockToTestGrid(7, 22);
         checkTestGrid();
     }
 
@@ -142,10 +142,10 @@ public class GameEngineTest {
         [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
         [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
          */
-        addCurrentBlockToTestGrid(4, 4);
-        addCurrentBlockToTestGrid(5, 4);
-        addCurrentBlockToTestGrid(6, 4);
-        addCurrentBlockToTestGrid(7, 4);
+        addCurrentBlockToTestGrid(4, 19);
+        addCurrentBlockToTestGrid(5, 19);
+        addCurrentBlockToTestGrid(6, 19);
+        addCurrentBlockToTestGrid(7, 19);
 
         gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
         gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
@@ -181,16 +181,16 @@ public class GameEngineTest {
         [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
         [ ][ ][ ][ ][I][I][I][I][ ][ ][ ][ ]
          */
-        addCurrentBlockToTestGrid(4, 23);
-        addCurrentBlockToTestGrid(5, 23);
-        addCurrentBlockToTestGrid(6, 23);
-        addCurrentBlockToTestGrid(7, 23);
+        addCurrentBlockToTestGrid(4, 0);
+        addCurrentBlockToTestGrid(5, 0);
+        addCurrentBlockToTestGrid(6, 0);
+        addCurrentBlockToTestGrid(7, 0);
 
         gameEngine.handleAction(new HardDropAction(System.nanoTime()));
-        addCurrentBlockToTestGrid(4, 0);
-        addCurrentBlockToTestGrid(4, 1);
-        addCurrentBlockToTestGrid(5, 1);
-        addCurrentBlockToTestGrid(6, 1);
+        addCurrentBlockToTestGrid(4, 23);
+        addCurrentBlockToTestGrid(4, 22);
+        addCurrentBlockToTestGrid(5, 22);
+        addCurrentBlockToTestGrid(6, 22);
 
         checkTestGrid();
     }
@@ -223,16 +223,16 @@ public class GameEngineTest {
         [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
         [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
          */
-        addCurrentBlockToTestGrid(3, 1);    
-        addCurrentBlockToTestGrid(4, 1);
-        addCurrentBlockToTestGrid(5, 1);
-        addCurrentBlockToTestGrid(6, 1);
+        addCurrentBlockToTestGrid(3, 22);    
+        addCurrentBlockToTestGrid(4, 22);
+        addCurrentBlockToTestGrid(5, 22);
+        addCurrentBlockToTestGrid(6, 22);
         gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.LEFT, 1));
         checkTestGrid();
     }
 
     @Test
-    public void rotateLeftAction() {
+    public void rotateLeftActionIBlockWallKickTest1() {
         gameEngine.print();
         //First Rotate Left
         /*Expected:
@@ -261,10 +261,10 @@ public class GameEngineTest {
         [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
         [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
          */
-        addCurrentBlockToTestGrid(5, 0);
-        addCurrentBlockToTestGrid(5, 1);
-        addCurrentBlockToTestGrid(5, 2);
-        addCurrentBlockToTestGrid(5, 3);
+        addCurrentBlockToTestGrid(5, 23);
+        addCurrentBlockToTestGrid(5, 22);
+        addCurrentBlockToTestGrid(5, 21);
+        addCurrentBlockToTestGrid(5, 20);
 
         gameEngine.handleAction(new RotateAction(System.nanoTime(), RotateAction.Direction.LEFT));
         gameEngine.print();
@@ -298,10 +298,10 @@ public class GameEngineTest {
         [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
         [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
          */
-        addCurrentBlockToTestGrid(4, 2);
-        addCurrentBlockToTestGrid(5, 2);
-        addCurrentBlockToTestGrid(6, 2);
-        addCurrentBlockToTestGrid(7, 2);
+        addCurrentBlockToTestGrid(4, 21);
+        addCurrentBlockToTestGrid(5, 21);
+        addCurrentBlockToTestGrid(6, 21);
+        addCurrentBlockToTestGrid(7, 21);
         gameEngine.handleAction(new RotateAction(System.nanoTime(), RotateAction.Direction.LEFT));
         gameEngine.print();
         checkTestGrid();
@@ -334,10 +334,10 @@ public class GameEngineTest {
         [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
         [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
          */
-        addCurrentBlockToTestGrid(6, 0);
-        addCurrentBlockToTestGrid(6, 1);
-        addCurrentBlockToTestGrid(6, 2);
-        addCurrentBlockToTestGrid(6, 3);
+        addCurrentBlockToTestGrid(6, 23);
+        addCurrentBlockToTestGrid(6, 22);
+        addCurrentBlockToTestGrid(6, 21);
+        addCurrentBlockToTestGrid(6, 20);
         gameEngine.handleAction(new RotateAction(System.nanoTime(), RotateAction.Direction.LEFT));
         gameEngine.print();
         checkTestGrid();
@@ -370,10 +370,10 @@ public class GameEngineTest {
         [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
         [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
          */
-        addCurrentBlockToTestGrid(4, 1);
-        addCurrentBlockToTestGrid(5, 1);
-        addCurrentBlockToTestGrid(6, 1);
-        addCurrentBlockToTestGrid(7, 1);
+        addCurrentBlockToTestGrid(4, 22);
+        addCurrentBlockToTestGrid(5, 22);
+        addCurrentBlockToTestGrid(6, 22);
+        addCurrentBlockToTestGrid(7, 22);
         gameEngine.handleAction(new RotateAction(System.nanoTime(), RotateAction.Direction.LEFT));
         checkTestGrid();
     }
@@ -413,29 +413,29 @@ public class GameEngineTest {
         gameEngine.handleAction(new HardDropAction(System.nanoTime()));
         gameEngine.print();
         gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
-        addCurrentBlockToTestGrid(4, 23);
-        gameEngine.handleAction(new HardDropAction(System.nanoTime()));
-        gameEngine.print();
-        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
-        addCurrentBlockToTestGrid(7, 23);
-        addCurrentBlockToTestGrid(8, 23);
-        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
-        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
-        gameEngine.handleAction(new HardDropAction(System.nanoTime()));
-        gameEngine.print();
-        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
-        addCurrentBlockToTestGrid(11, 23);
-        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
-        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
-        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
-        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
-        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
-        gameEngine.handleAction(new HardDropAction(System.nanoTime()));
-        gameEngine.print();
         addCurrentBlockToTestGrid(4, 0);
-        addCurrentBlockToTestGrid(4, 1);
-        addCurrentBlockToTestGrid(5, 1);
-        addCurrentBlockToTestGrid(6, 1);
+        gameEngine.handleAction(new HardDropAction(System.nanoTime()));
+        gameEngine.print();
+        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+        addCurrentBlockToTestGrid(7, 0);
+        addCurrentBlockToTestGrid(8, 0);
+        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
+        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
+        gameEngine.handleAction(new HardDropAction(System.nanoTime()));
+        gameEngine.print();
+        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+        addCurrentBlockToTestGrid(11, 0);
+        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
+        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
+        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
+        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
+        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
+        gameEngine.handleAction(new HardDropAction(System.nanoTime()));
+        gameEngine.print();
+        addCurrentBlockToTestGrid(4, 23);
+        addCurrentBlockToTestGrid(4, 22);
+        addCurrentBlockToTestGrid(5, 22);
+        addCurrentBlockToTestGrid(6, 22);
         checkTestGrid();
     }
 
@@ -468,8 +468,8 @@ public class GameEngineTest {
         [J][J][ ][ ][ ][ ][ ][ ][ ][ ][ ][I]
         [J][J][ ][L][L][ ][ ][ ][ ][ ][ ][I]
          */
-        addCurrentBlockToTestGrid(11, 22);
-        addCurrentBlockToTestGrid(11, 23);
+        addCurrentBlockToTestGrid(11, 1);
+        addCurrentBlockToTestGrid(11, 0);
         gameEngine.handleAction(new RotateAction(System.nanoTime(), RotateAction.Direction.LEFT));
         gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
         gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
@@ -481,7 +481,7 @@ public class GameEngineTest {
         gameEngine.print();
 
         gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
-        addCurrentBlockToTestGrid(1, 23);
+        addCurrentBlockToTestGrid(1, 0);
         gameEngine.handleAction(new RotateAction(System.nanoTime(), RotateAction.Direction.LEFT));
         gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.LEFT, 1));
         gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.LEFT, 1));
@@ -499,17 +499,17 @@ public class GameEngineTest {
         gameEngine.print();
 
         gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
-        addCurrentBlockToTestGrid(3, 23);
-        addCurrentBlockToTestGrid(4, 23);
+        addCurrentBlockToTestGrid(3, 0);
+        addCurrentBlockToTestGrid(4, 0);
         gameEngine.handleAction(new RotateAction(System.nanoTime(), RotateAction.Direction.LEFT));
         gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.LEFT, 1));
         gameEngine.handleAction(new HardDropAction(System.nanoTime()));
         gameEngine.print();
 
         gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
-        addCurrentBlockToTestGrid(0, 22);
-        addCurrentBlockToTestGrid(1, 22);
-        addCurrentBlockToTestGrid(0, 23);
+        addCurrentBlockToTestGrid(0, 1);
+        addCurrentBlockToTestGrid(1, 1);
+        addCurrentBlockToTestGrid(0, 0);
         gameEngine.handleAction(new RotateAction(System.nanoTime(), RotateAction.Direction.RIGHT));
         gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.LEFT, 1));
         gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.LEFT, 1));
@@ -536,10 +536,11 @@ public class GameEngineTest {
         gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.RIGHT, 1));
         gameEngine.handleAction(new HardDropAction(System.nanoTime()));
         gameEngine.print();
-        addCurrentBlockToTestGrid(4, 0);
-        addCurrentBlockToTestGrid(5, 0);
-        addCurrentBlockToTestGrid(5, 1);
-        addCurrentBlockToTestGrid(6, 1);
+        
+        addCurrentBlockToTestGrid(4, 23);
+        addCurrentBlockToTestGrid(5, 23);
+        addCurrentBlockToTestGrid(5, 22);
+        addCurrentBlockToTestGrid(6, 22);
         checkTestGrid();
     }
 

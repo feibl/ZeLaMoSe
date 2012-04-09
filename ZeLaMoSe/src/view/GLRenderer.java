@@ -286,7 +286,7 @@ class GLRenderer implements GLEventListener, Observer {
                 for (Integer lineToRemove : linesToRemove) {
 
                     for (int x = 0; x < Config.gridWidth; x++) {
-                        linesToRemoveMarkedGrid[x][23 - lineToRemove] = backGroundColor;
+                        linesToRemoveMarkedGrid[x][lineToRemove] = backGroundColor;
                     }
                 }
 
@@ -307,11 +307,11 @@ class GLRenderer implements GLEventListener, Observer {
                 for (Integer lineToRemove : linesToRemove) {
                     //remove the lineToRemove line
                     for (int x = 0; x < Config.gridWidth; x++) {
-                        grid[x][23 - lineToRemove] = null;
+                        grid[x][lineToRemove] = null;
                     }
 
                     //move everythign downward
-                    for (int y = 23 - lineToRemove + 1; y <= 23; y++) {
+                    for (int y = lineToRemove + 1; y <= Config.gridHeight-1; y++) {
                         for (int x = 0; x < Config.gridWidth; x++) {
                             grid[x][y - 1] = grid[x][y];
                         }

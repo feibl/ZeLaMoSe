@@ -23,7 +23,7 @@ public class GameEngine extends GameEngineInterface {
     private Action lastAction;
     private int sessionId;
     private Block[][] grid;
-    int gridwidth = 12, gridheight = 24, defaultX = 4, defaultY = 0;
+    int gridwidth = 12, gridheight = 24, defaultX = 4, defaultY = gridheight - 1;
     private BlockQueueInterface queue;
     private Block currentBlock;
     private boolean gameOver;
@@ -93,17 +93,18 @@ public class GameEngine extends GameEngineInterface {
 
     @Override
     public void handleAction(Action action) {
-        switch (action.getType()) {
-            case MOVE:
-                handleMoveAction((MoveAction) action);
-                break;
-            case ROTATION:
-                handleRotateAction((RotateAction) action);
-                break;
-            case HARDDROP:
-                handleHardDropAction();
-                break;
-
+        if (!gameOver) {
+            switch (action.getType()) {
+                case MOVE:
+                    handleMoveAction((MoveAction) action);
+                    break;
+                case ROTATION:
+                    handleRotateAction((RotateAction) action);
+                    break;
+                case HARDDROP:
+                    handleHardDropAction();
+                    break;
+            }
         }
     }
 
@@ -115,7 +116,7 @@ public class GameEngine extends GameEngineInterface {
     private boolean checkForGameOver() {
         for (int y = 0; y < currentBlock.getHeight(); y++) {
             for (int x = 0; x < currentBlock.getWidth(); x++) {
-                if (grid[defaultX + x][defaultY + y] != null) {
+                if (grid[defaultX + x][defaultY - y] != null) {
                     gameOver = true;
                     System.out.println("Game Over");
                     break;
@@ -149,7 +150,7 @@ public class GameEngine extends GameEngineInterface {
             for (int y = 0; y < blockGrid.length; y++) {
                 if (blockGrid[x][y] != null) {
                     try {
-                        if (grid[currentBlock.getX() + x][currentBlock.getY() + y] != null && !grid[currentBlock.getX() + x][currentBlock.getY() + y].equals(currentBlock)) {
+                        if (grid[currentBlock.getX() + x][currentBlock.getY() - y] != null && !grid[currentBlock.getX() + x][currentBlock.getY() - y].equals(currentBlock)) {
                             return true;
                         }
                     } catch (IndexOutOfBoundsException e) {
@@ -202,7 +203,7 @@ public class GameEngine extends GameEngineInterface {
         for (int x = 0; x < blockGrid.length; x++) {
             for (int y = 0; y < blockGrid.length; y++) {
                 if (blockGrid[x][y] != null) {
-                    grid[currentBlock.getX() + x][currentBlock.getY() + y] = currentBlock;
+                    grid[currentBlock.getX() + x][currentBlock.getY() - y] = currentBlock;
                 }
             }
         }
@@ -213,7 +214,7 @@ public class GameEngine extends GameEngineInterface {
     private void checkForLinesToRemove() {
         boolean removeLine;
         ArrayList<Integer> linesToRemove = new ArrayList<Integer>();
-        for (int y = gridheight - 1; y > 0; y--) {
+        for (int y = 0; y < gridheight; y++) {
             removeLine = true;
             for (int x = 0; x < gridwidth; x++) {
                 if (grid[x][y] == null) {
@@ -245,12 +246,12 @@ public class GameEngine extends GameEngineInterface {
                         currentBlock.setY(originY);
                     } else {
                         saveCurrenblockToGrid();
-                        
+
                         System.out.println(wallKickTestNumber);
                         print();
-                        
-                        action.setXOffset(currentBlock.getX()-originX);
-                        action.setYOffset(currentBlock.getY()-originY);
+
+                        action.setXOffset(currentBlock.getX() - originX);
+                        action.setYOffset(currentBlock.getY() - originY);
                         setLastAction(action);
                         wallKickTestNumber = 999;
                     }
@@ -263,12 +264,12 @@ public class GameEngine extends GameEngineInterface {
                         currentBlock.setY(originY);
                     } else {
                         saveCurrenblockToGrid();
-                        
+
                         System.out.println(wallKickTestNumber);
                         print();
-                        
-                        action.setXOffset(currentBlock.getX()-originX);
-                        action.setYOffset(currentBlock.getY()-originY);
+
+                        action.setXOffset(currentBlock.getX() - originX);
+                        action.setYOffset(currentBlock.getY() - originY);
                         setLastAction(action);
                         wallKickTestNumber = 999;
                     }
@@ -282,7 +283,7 @@ public class GameEngine extends GameEngineInterface {
         int tempY = currentBlock.getY();
         int fieldsToMove = 0;
         while (!checkForCollision()) {
-            currentBlock.setY(currentBlock.getY() + 1);
+            currentBlock.setY(currentBlock.getY() - 1);
             fieldsToMove++;
         }
         fieldsToMove--;
@@ -293,7 +294,7 @@ public class GameEngine extends GameEngineInterface {
     }
 
     public void print() {
-        for (int i = 0; i < gridheight; i++) {
+        for (int i = gridheight - 1; i > 0; i--) {
             String lineOutput = "";
             for (int j = 0; j < gridwidth; j++) {
                 if (grid[j][i] != null) {
@@ -308,19 +309,20 @@ public class GameEngine extends GameEngineInterface {
     }
 
     /**
-     * moves the current block downwards, the amount of gridfields moved depends on the "speed" set in the moveAction
+     * moves the current block downwards, the amount of gridfields moved depends on the "speed" set in the
+     * moveAction
      *
-     * If a collision happens the currentBlock will be moved on gridfield upwards, a new Block will be generated and it
-     * will be checked if there are lines to remove
+     * If a collision happens the currentBlock will be moved on gridfield upwards, a new Block will be generated
+     * and it will be checked if there are lines to remove
      *
      *
      * @param moveAction
      */
     private void moveDownwards(MoveAction moveAction) {
         int speed = moveAction.getSpeed();
-        currentBlock.setY(currentBlock.getY() + speed);
+        currentBlock.setY(currentBlock.getY() - speed);
         if (checkForCollision()) {
-            currentBlock.setY(currentBlock.getY() - speed);
+            currentBlock.setY(currentBlock.getY() + speed);
             saveCurrenblockToGrid();
             checkForLinesToRemove();
             nextBlock();
@@ -333,6 +335,7 @@ public class GameEngine extends GameEngineInterface {
     private void removeLines(ArrayList<Integer> linesToRemove) {
 
         Collections.sort(linesToRemove);
+        Collections.reverse(linesToRemove);
         for (Integer lineToRemove : linesToRemove) {
             //remove the lineToRemove line
             for (int x = 0; x < gridwidth; x++) {
@@ -340,9 +343,9 @@ public class GameEngine extends GameEngineInterface {
             }
 
             //move everythign downward
-            for (int y = lineToRemove - 1; y >= 0; y--) {
+            for (int y = lineToRemove + 1; y < gridheight; y++) {
                 for (int x = 0; x < gridwidth; x++) {
-                    grid[x][y + 1] = grid[x][y];
+                    grid[x][y - 1] = grid[x][y];
                 }
             }
         }
