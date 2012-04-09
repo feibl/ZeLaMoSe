@@ -153,10 +153,10 @@ class GLRenderer implements GLEventListener, Observer {
         gl.glBegin(GL2.GL_QUADS);
         int x = currentBlock.getX();
         int y = currentBlock.getY();
-        boolean[][] grid = currentBlock.getGrid();
+        Block[][] grid = currentBlock.getGrid();
         for (int a = 0; a < grid.length; a++) {
             for (int b = 0; b < grid.length; b++) {
-                if (grid[a][b]) {
+                if (grid[a][b] != null) {
                     gl.glVertex2i(blockSize * (x + a), blockSize * (y - b + 1));
                     gl.glVertex2i(blockSize * (x + a), blockSize * (y - b));
                     gl.glVertex2i(blockSize * (x + 1 + a), blockSize * (y - b));
@@ -201,7 +201,7 @@ class GLRenderer implements GLEventListener, Observer {
     private void saveCurrentblockToGrid() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                if (currentBlock.getGrid()[i][j]) {
+                if (currentBlock.getGrid()[i][j] != null) {
                     grid[currentBlock.getX() + i][currentBlock.getY() - j] = currentBlock.getColor();
                 }
             }
@@ -286,7 +286,7 @@ class GLRenderer implements GLEventListener, Observer {
                 for (Integer lineToRemove : linesToRemove) {
 
                     for (int x = 0; x < Config.gridWidth; x++) {
-                        linesToRemoveMarkedGrid[x][23 - lineToRemove] = backGroundColor;
+                        linesToRemoveMarkedGrid[x][lineToRemove] = backGroundColor;
                     }
                 }
 
@@ -307,11 +307,11 @@ class GLRenderer implements GLEventListener, Observer {
                 for (Integer lineToRemove : linesToRemove) {
                     //remove the lineToRemove line
                     for (int x = 0; x < Config.gridWidth; x++) {
-                        grid[x][23 - lineToRemove] = null;
+                        grid[x][lineToRemove] = null;
                     }
 
                     //move everythign downward
-                    for (int y = 23 - lineToRemove + 1; y <= 23; y++) {
+                    for (int y = lineToRemove + 1; y <= Config.gridHeight-1; y++) {
                         for (int x = 0; x < Config.gridWidth; x++) {
                             grid[x][y - 1] = grid[x][y];
                         }

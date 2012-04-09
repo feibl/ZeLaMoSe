@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public abstract class Block implements Cloneable {
 
     protected Color color;
-    protected boolean[][] grid = new boolean[Config.gridBlockWidth][Config.gridBlockHeight];
+    protected Block[][] grid = new Block[Config.gridBlockWidth][Config.gridBlockHeight];
     protected int rotation, x, y;
     protected String printLetter;
     protected BlockRotationState blockRotationState;
@@ -28,7 +28,7 @@ public abstract class Block implements Cloneable {
         int height = 0;
         for(int i = 0; i < grid.length ; i++){
             for (int j = 0; j < grid.length; j++) {
-                if (grid[j][i]){
+                if (grid[j][i] != null){
                     height++;
                     break;
                 }
@@ -44,7 +44,7 @@ public abstract class Block implements Cloneable {
         int width = 0;
         for(int i = 0; i < grid.length ; i++){
             for (int j = 0; j < grid.length; j++) {
-                if (grid[i][j]){
+                if (grid[i][j] != null){
                     width++;
                     break;
                 }
@@ -77,10 +77,10 @@ public abstract class Block implements Cloneable {
         rotation0(grid);
     }
         
-    protected void initializeGrid(boolean[][] grid) {
+    protected void initializeGrid(Block[][] grid) {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                grid[i][j] = false;
+                grid[i][j] = null;
             }
         }
     }
@@ -104,12 +104,12 @@ public abstract class Block implements Cloneable {
         handleRotation(false,wallKickTestNumber);
     }
     
-    protected abstract void rotation0 (boolean[][] grid);
-    protected abstract void rotation90 (boolean[][] grid);
-    protected abstract void rotation180 (boolean[][] grid);
-    protected abstract void rotation270 (boolean[][] grid);
+    protected abstract void rotation0 (Block[][] grid);
+    protected abstract void rotation90 (Block[][] grid);
+    protected abstract void rotation180 (Block[][] grid);
+    protected abstract void rotation270 (Block[][] grid);
     
-    public boolean[][] getGrid() {
+    public Block[][] getGrid() {
         return grid;
     }
     
@@ -164,7 +164,7 @@ public abstract class Block implements Cloneable {
         for (int i = 0; i < 4; i++) {
             String lineOutput = "";
             for (int j = 0; j < 4; j++) {
-                if (grid[j][i]) {
+                if (grid[j][i] != null) {
                     lineOutput += "["+printLetter+"]";
                 } else {
                     lineOutput += "[ ]";
@@ -186,12 +186,9 @@ public abstract class Block implements Cloneable {
    
     public static void main(String[] args) {
         Random randomGenerator = new Random(System.currentTimeMillis());
-//        Block testStone =  (BlockType.values()[randomGenerator.nextInt(BlockType.values().length)]).createBlock();
-        Block testStone = new TBlock();
+        Block testStone =  (BlockType.values()[randomGenerator.nextInt(BlockType.values().length)]).createBlock();
         for (int i = 0; i < 4; i++) {
             testStone.rotateRight(1);
-            System.out.println("Height: " + testStone.getHeight());
-            System.out.println("Width: " + testStone.getWidth());
             testStone.print();
         }
 
