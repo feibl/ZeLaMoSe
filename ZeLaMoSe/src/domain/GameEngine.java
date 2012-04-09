@@ -246,10 +246,6 @@ public class GameEngine extends GameEngineInterface {
                         currentBlock.setY(originY);
                     } else {
                         saveCurrenblockToGrid();
-
-                        System.out.println(wallKickTestNumber);
-                        print();
-
                         action.setXOffset(currentBlock.getX() - originX);
                         action.setYOffset(currentBlock.getY() - originY);
                         setLastAction(action);
@@ -264,10 +260,6 @@ public class GameEngine extends GameEngineInterface {
                         currentBlock.setY(originY);
                     } else {
                         saveCurrenblockToGrid();
-
-                        System.out.println(wallKickTestNumber);
-                        print();
-
                         action.setXOffset(currentBlock.getX() - originX);
                         action.setYOffset(currentBlock.getY() - originY);
                         setLastAction(action);
@@ -294,7 +286,7 @@ public class GameEngine extends GameEngineInterface {
     }
 
     public void print() {
-        for (int i = gridheight - 1; i > 0; i--) {
+        for (int i = gridheight - 1; i >= 0; i--) {
             String lineOutput = "";
             for (int j = 0; j < gridwidth; j++) {
                 if (grid[j][i] != null) {
