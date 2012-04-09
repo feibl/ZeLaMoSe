@@ -116,7 +116,7 @@ public class TetrisController extends Observable implements Observer {
             case CONNECTION_ESTABLISHED:
                 localSessionID = networkHandler.getOwnSession().getId();
                 sessionMap = networkHandler.getSessionList();
-                
+                                
                 setChanged();
                 notifyObservers(UpdateType.CONNECTION_ESTABLISHED);
                 break;

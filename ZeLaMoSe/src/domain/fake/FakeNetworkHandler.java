@@ -5,13 +5,11 @@
 package domain.fake;
 
 import domain.Step;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import network.ChatMessage;
 import network.client.NetworkHandler;
 import network.SessionInformation;
 import domain.TetrisController.UpdateType;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -45,7 +43,13 @@ public class FakeNetworkHandler extends NetworkHandler {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
-    public SessionInformation localSession;
+    private SessionInformation localSession;
+    private ConcurrentHashMap<Integer, String> sessionMap = new ConcurrentHashMap<Integer, String>();
+
+    public FakeNetworkHandler(SessionInformation localSession) {
+        this.localSession = localSession;
+        sessionMap.put(localSession.getId(), localSession.getNickname());
+    }
 
     @Override
     public SessionInformation getOwnSession() {
@@ -64,7 +68,7 @@ public class FakeNetworkHandler extends NetworkHandler {
 
     @Override
     public ConcurrentHashMap<Integer, String> getSessionList() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return sessionMap;
     }
 
     @Override

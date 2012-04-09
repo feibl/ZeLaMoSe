@@ -4,11 +4,13 @@
  */
 package view;
 
-import domain.*;
+import domain.InputSampler;
+import domain.StepGeneratorImpl;
+import domain.TetrisController;
+import domain.fake.BlockingSimulationController;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JOptionPane;
-import network.client.NetworkHandler;
 import network.client.NetworkHandlerImpl;
 
 /**
@@ -243,7 +245,7 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
             
             public void run() {
                 InputSampler is = new InputSampler();
-                new MainJFrame(new TetrisController(new SimulationController(), new NetworkHandlerImpl(), new StepGeneratorImpl(is))).setVisible(true);
+                new MainJFrame(new TetrisController(new BlockingSimulationController(), new NetworkHandlerImpl(), new StepGeneratorImpl(is))).setVisible(true);
             }
         });
     }
