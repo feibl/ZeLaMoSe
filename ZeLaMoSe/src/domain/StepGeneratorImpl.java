@@ -16,32 +16,42 @@ import network.client.NetworkHandler;
 /**
  *
  * @author Patrick Zenhäusern
- * 
- * 
+ *
+ *
  */
 public class StepGeneratorImpl extends StepGenerator {
-    
 
-   private InputSampler inputSampler;
-   private Step step;
-   private int counter = 0;
-   private int sessionID;
+    private InputSampler inputSampler;
+    private Step step;
+    private int counter = 0;
+    private int sessionID;
 
     public StepGeneratorImpl(InputSampler inputsampler) {
         this.inputSampler = inputsampler;
     }
-    
+
+    public StepGeneratorImpl(int sessionID, InputSampler inputsampler) {
+        this.sessionID = sessionID;
+        this.inputSampler = inputsampler;
+    }
+
+    @Override
     public void setSessionID(int sessionID) {
         this.sessionID = sessionID;
     }
-    
+
     @Override
-    public void niggasInParis(){
-        step = new Step(counter++,sessionID);
+    public InputSampler getInputSampler() {
+        return inputSampler;
+    }
+
+    @Override
+    public void niggasInParis() {
+        step = new Step(counter++, sessionID);
         long currentTime = System.nanoTime();
-        for(InputEvent ie : inputSampler.getAndRemoveAll()){
-            long relativeTime = (currentTime-ie.getAbsoluteTimeStamp());
-            switch(ie.getKeyEvent()){
+        for (InputEvent ie : inputSampler.getAndRemoveAll()) {
+            long relativeTime = (currentTime - ie.getAbsoluteTimeStamp());
+            switch (ie.getKeyEvent()) {
                 case KeyEvent.VK_LEFT:
                     step.addAction(new MoveAction(relativeTime, MoveAction.Direction.LEFT, 1));
                     break;
@@ -71,6 +81,4 @@ public class StepGeneratorImpl extends StepGenerator {
     public Step getStep() {
         return step;
     }
-
-
 }

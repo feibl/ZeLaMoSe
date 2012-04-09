@@ -12,8 +12,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import network.*;
 import network.client.HandlerImpl;
 import network.client.NetworkHandlerImpl;

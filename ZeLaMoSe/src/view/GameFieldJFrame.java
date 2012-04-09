@@ -5,7 +5,9 @@
 package view;
 
 import domain.InputSampler;
+import domain.interfaces.SimulationStateInterface;
 import java.awt.KeyboardFocusManager;
+import java.util.List;
 import view.music.Music;
 
 /**
@@ -20,6 +22,14 @@ public class GameFieldJFrame extends javax.swing.JFrame {
     public GameFieldJFrame() {
         initComponents();
         startMusic();
+    }
+
+    public GameFieldJFrame(InputSampler is, SimulationStateInterface mainSimulation, List<SimulationStateInterface> otherSimulations) {
+        initComponents();        
+        startMusic();
+        ownGameFieldJPanel1.setInputSampler(is);
+        ownGameFieldJPanel1.setSimulation(mainSimulation);
+        //TODO set Simulation on other Panels
     }
 
     /**
