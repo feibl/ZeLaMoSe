@@ -133,7 +133,6 @@ public abstract class Block implements Cloneable {
                 rotation270(grid);
                 break;
         }
-        
         switch(wallKickTestNumber){
             case 2:
                 wallkick.Test2(this);
