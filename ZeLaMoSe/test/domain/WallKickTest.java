@@ -11,14 +11,15 @@ import domain.block.OBlock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.TestName;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  *
  * @author Patrick Zenhäusern
  */
+ @Ignore
 public abstract class WallKickTest {
     /*
      * To change this template, choose Tools | Templates and open the template in the editor.
