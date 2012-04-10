@@ -15,7 +15,7 @@ public class IBlock extends Block {
     
     
     public IBlock(){
-        super(new Color(100,100,100),"I",new IWallKick());
+        super(new Color(0,255,255),"I",new IWallKick());
     }
 
     @Override

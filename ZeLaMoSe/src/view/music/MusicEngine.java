@@ -45,6 +45,10 @@ public class MusicEngine {
 
     }
 
+    public void stopBGMusic() {
+        background.stop();
+    }
+
     public void playRotateSound() {
         try {
             rotate = new OggClip(new FileInputStream("src/view/music/files/rotation.ogg"));

@@ -14,7 +14,7 @@ import java.awt.Color;
 public class TBlock extends Block {
 
     public TBlock() {
-        super(new Color(160,32,240),"T", new GeneralWallKick());
+        super(new Color(153,0,255),"T", new GeneralWallKick());
     }
 
     @Override
