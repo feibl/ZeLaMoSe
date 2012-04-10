@@ -43,7 +43,6 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
         lblTimeValue = new javax.swing.JLabel();
         lblTime = new javax.swing.JLabel();
         glPnlGameField = new javax.media.opengl.awt.GLJPanel(getGLCaps());
-        pnlNextPiece = new javax.swing.JPanel();
         lblNextPiece = new javax.swing.JLabel();
         lblYourScoreValue = new javax.swing.JLabel();
         tglSound = new javax.swing.JToggleButton();
@@ -61,6 +60,7 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
         lblLevel = new javax.swing.JLabel();
         lblNumberOfLines = new javax.swing.JLabel();
         lblNumberOfLinesValue = new javax.swing.JLabel();
+        glPnlNextBlock = new javax.media.opengl.awt.GLJPanel(getGLCaps());
 
         lblTimeValue.setText("<TimeValue>");
 
@@ -82,19 +82,6 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
         glPnlGameFieldLayout.setVerticalGroup(
             glPnlGameFieldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 660, Short.MAX_VALUE)
-        );
-
-        pnlNextPiece.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-
-        javax.swing.GroupLayout pnlNextPieceLayout = new javax.swing.GroupLayout(pnlNextPiece);
-        pnlNextPiece.setLayout(pnlNextPieceLayout);
-        pnlNextPieceLayout.setHorizontalGroup(
-            pnlNextPieceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 140, Short.MAX_VALUE)
-        );
-        pnlNextPieceLayout.setVerticalGroup(
-            pnlNextPieceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 131, Short.MAX_VALUE)
         );
 
         lblNextPiece.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -152,6 +139,21 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
 
         lblNumberOfLinesValue.setText("<NumberOfLinesValue>");
 
+        glPnlNextBlock.setMaximumSize(new java.awt.Dimension(160, 160));
+        glPnlNextBlock.setMinimumSize(new java.awt.Dimension(160, 160));
+        glPnlNextBlock.setPreferredSize(new java.awt.Dimension(160, 160));
+
+        javax.swing.GroupLayout glPnlNextBlockLayout = new javax.swing.GroupLayout(glPnlNextBlock);
+        glPnlNextBlock.setLayout(glPnlNextBlockLayout);
+        glPnlNextBlockLayout.setHorizontalGroup(
+            glPnlNextBlockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 160, Short.MAX_VALUE)
+        );
+        glPnlNextBlockLayout.setVerticalGroup(
+            glPnlNextBlockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 160, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -165,27 +167,31 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(glPnlGameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblYourScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblYourScoreValue)
-                    .addComponent(lblOtherScores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblOtherPlayerName1)
-                    .addComponent(lblOtherPlayerName2)
-                    .addComponent(lblOtherPlayerName3)
-                    .addComponent(lblLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblLevelValue)
-                    .addComponent(lblNumberOfLines, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNumberOfLinesValue)
-                    .addComponent(lblTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTimeValue)
-                    .addComponent(lblNextPiece, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlNextPiece, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(8, 8, 8)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblOtherScoreValue1)
-                    .addComponent(lblOtherScoreValue2)
-                    .addComponent(lblOtherScoreValue3)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblYourScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblYourScoreValue)
+                            .addComponent(lblOtherScores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblOtherPlayerName1)
+                            .addComponent(lblOtherPlayerName2)
+                            .addComponent(lblOtherPlayerName3)
+                            .addComponent(lblLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblLevelValue)
+                            .addComponent(lblNumberOfLines, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblNumberOfLinesValue)
+                            .addComponent(lblTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTimeValue)
+                            .addComponent(lblNextPiece, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(8, 8, 8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblOtherScoreValue1)
+                            .addComponent(lblOtherScoreValue2)
+                            .addComponent(lblOtherScoreValue3)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(glPnlNextBlock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(158, 158, 158)
                 .addComponent(lblZeLaMoSe))
@@ -227,8 +233,8 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
                         .addComponent(lblTimeValue)
                         .addGap(14, 14, 14)
                         .addComponent(lblNextPiece, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(22, 22, 22)
-                        .addComponent(pnlNextPiece, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(glPnlNextBlock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(139, 139, 139)
                         .addComponent(lblOtherScoreValue1)
@@ -242,6 +248,7 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.media.opengl.awt.GLJPanel glPnlGameField;
+    private javax.media.opengl.awt.GLJPanel glPnlNextBlock;
     private javax.swing.JLabel lblLevel;
     private javax.swing.JLabel lblLevelValue;
     private javax.swing.JLabel lblNextPiece;
@@ -260,19 +267,17 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
     private javax.swing.JLabel lblYourScore;
     private javax.swing.JLabel lblYourScoreValue;
     private javax.swing.JLabel lblZeLaMoSe;
-    private javax.swing.JPanel pnlNextPiece;
     private javax.swing.JToggleButton tglSound;
     // End of variables declaration//GEN-END:variables
     private GLRenderer renderer;
     private SimulationStateInterface gameEngine;
 
-    public void initGLRenderer(SimulationStateInterface gameEngine) {
+    public void initRenderer(SimulationStateInterface gameEngine) {
         this.gameEngine = gameEngine;
         gameEngine.addObserver(this);
-        renderer = new GLRenderer(Config.ownGameFieldBlockSize, true, gameEngine);
-        glPnlGameField.addGLEventListener(renderer);
-        FPSAnimator animator = new FPSAnimator(glPnlGameField, Config.frameRate, true);
-        animator.start();
+        initOwnGameFieldRenderer();
+        initNextBlockRenderer();
+        
     }
 
     public void startFakeGame() {
@@ -283,8 +288,8 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
         StepGeneratorImpl sg = new StepGeneratorImpl(is);
         sg.setSessionID(0);
 
-        GameEngine ge = new GameEngine(0);
-        initGLRenderer(ge);
+        GameEngine ge = new GameEngine(0,0);
+        initRenderer(ge);
         new FakeController(ge, sg);
         ge.startGame();
     }
@@ -316,5 +321,19 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
         });
 
 
+    }
+
+    private void initOwnGameFieldRenderer() {
+        renderer = new GLRenderer(Config.ownGameFieldBlockSize, true, gameEngine);
+        glPnlGameField.addGLEventListener(renderer);
+        FPSAnimator ownGameFieldAnimator = new FPSAnimator(glPnlGameField, Config.frameRate, true);
+        ownGameFieldAnimator.start();
+    }
+
+    private void initNextBlockRenderer() {
+        
+        glPnlNextBlock.addGLEventListener(new NexBlockRenderer(gameEngine));
+        FPSAnimator ownGameFieldAnimator = new FPSAnimator(glPnlNextBlock, Config.frameRate, true);
+        ownGameFieldAnimator.start();
     }
 }

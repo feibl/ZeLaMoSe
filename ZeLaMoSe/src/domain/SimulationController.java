@@ -9,10 +9,7 @@ import domain.interfaces.GameEngineInterface;
 import domain.interfaces.SimulationStateInterface;
 import domain.actions.Action;
 import domain.actions.MoveAction;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  *
@@ -23,6 +20,7 @@ public class SimulationController implements StepInterface {
   private Map<Integer, GameEngineInterface> gameEngines = new HashMap<Integer, GameEngineInterface>();
   private Map<Integer, String> sessions = new HashMap<Integer, String>();
   private int maxLevel = 1;
+  public boolean autoadvance = true;
   
   public SimulationController() {
     
@@ -38,7 +36,7 @@ public class SimulationController implements StepInterface {
           System.out.println("step queue already contains a step from this session");
           assert(false);
       }
-      System.out.println("addStep: "+step + " id: " + step.getSessionID() + " sequence: "+step.getSequenceNumber());
+//      System.out.println("addStep: "+step + " id: " + step.getSessionID() + " sequence: "+step.getSequenceNumber());
       stepQueue.put(step.getSessionID(), step);
   }
   
@@ -49,14 +47,34 @@ public class SimulationController implements StepInterface {
       assert(!gameEngines.containsKey(sessionId));
       gameEngines.put(sessionId, gameEngine);
       sessions.put(sessionId, name);
-      System.out.println("add session: "+name);
+//      System.out.println("add session: "+name);
   }
   
   public void initSimulation() {
-      System.out.println("init simulation");
+//      System.out.println("init simulation");
       for (GameEngineInterface e: gameEngines.values()) {
           e.startGame();
       }
+  }
+  
+  
+  
+  /*
+   * This is just a workaround because the map doesn't seem to sort as expected, at least not with the entry set.
+   */
+  ArrayList < Map.Entry<Action, Integer>> sortEntrySet( Set< Map.Entry<Action, Integer> > set) {
+      ArrayList< Map.Entry<Action, Integer>> sortedList = new ArrayList< Map.Entry<Action, Integer>>();
+      for (Map.Entry<Action, Integer> e: set) {
+          int i = 0;
+          for(Map.Entry<Action, Integer> e1: sortedList) {
+              if (e.getKey().getTimestamp() < e1.getKey().getTimestamp()) {
+                  break;
+              }
+              i++;
+          }
+          sortedList.add(i, e);
+      }
+      return sortedList; 
   }
   
   /*
@@ -68,7 +86,7 @@ public class SimulationController implements StepInterface {
   public void simulateStep(int seqNum) {
       System.out.println("----------- simulateStep "+seqNum+" -----------");
       boolean advance = false;
-      if (seqNum % (Config.advanceStepLimit-maxLevel) == 0) {
+      if (autoadvance && (seqNum % (Config.advanceStepLimit-maxLevel) == 0)) {
           advance = true;
       }
       Map <Action, Integer> actionList = new TreeMap<Action, Integer>(new Comparator(){
@@ -78,7 +96,7 @@ public class SimulationController implements StepInterface {
               if (((Action)t).getTimestamp() < ((Action)t1).getTimestamp()) {
                   return -1;
               }
-              return 1;
+              return -1;
           }
 
       });
@@ -86,7 +104,7 @@ public class SimulationController implements StepInterface {
       for (int session: sessions.keySet()) {
           assert(stepQueue.containsKey(session));
           Step s = stepQueue.remove(session);
-          System.out.println("step: "+s+" session: "+session);
+          //System.out.println("step: "+s+" session: "+session);
           if (s == null) {
               System.out.println("tried to simulate step, but not all steps are available. Session "+session+ " is missing");
               assert(false);
@@ -98,19 +116,21 @@ public class SimulationController implements StepInterface {
           assert(s.getSessionID() == session);
           for (Action a: s.getActions()) {
               actionList.put(a, session);
+//              System.out.println("adding actions: " + a + " for session "+ session);
           }
       }
       assert(stepQueue.isEmpty());
-      //System.out.println("simulate actions: "+actionList.entrySet().size());
+//      System.out.println("simulate actions: "+actionList.entrySet().size());
       if (advance) {
           for (GameEngineInterface g: gameEngines.values()) {
               g.handleAction(new MoveAction(0, MoveAction.Direction.DOWN, 1));
           }
       }
-
-      for (Map.Entry<Action, Integer> e: actionList.entrySet()) {
+      for (Map.Entry<Action, Integer> e: sortEntrySet(actionList.entrySet())) {
+          System.out.println("--Simulating action with timestamp: "+e.getKey().getTimestamp()+" sessionid " +e.getValue());
           assert (gameEngines.containsKey(e.getValue()));
           GameEngineInterface g = gameEngines.get(e.getValue());
+          assert (g.getSessionID() == e.getValue());
           g.handleAction(e.getKey());
           if (g.getLevel() > maxLevel && maxLevel < Config.maxLevelForSpeed) {
                 maxLevel = g.getLevel();

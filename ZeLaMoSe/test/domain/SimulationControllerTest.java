@@ -4,10 +4,15 @@
  */
 package domain;
 
+import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
 import domain.Fake.MockGameEngine;
 import domain.actions.ActionType;
 import domain.actions.Action;
+import domain.actions.MoveAction;
 import domain.actions.RotateAction;
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -31,6 +36,7 @@ public class SimulationControllerTest {
   @Before
   public void setUp() {
       instance = new SimulationController();
+      instance.autoadvance = false;
       engine1 = new MockGameEngine(sessionId);
       instance.addSession(sessionId, name, engine1);
       engine2 = new MockGameEngine(sessionId2);
@@ -46,14 +52,14 @@ public class SimulationControllerTest {
   @Test
   public void testGetSimulation() {
       System.out.println("getSimulation");
-      assertEquals(instance.getSimulation(0), null);
+      //assertEquals(instance.getSimulation(0), null);
       assertEquals(instance.getSimulation(sessionId), engine1);
       assertEquals(instance.getSimulation(sessionId2), engine2);
       assertEquals(instance.getSimulation(sessionId3), engine3);
   }
   
-  Step createStep(int id, Action action) {
-      Step step = new Step(0, id);
+  Step createStep(int id, Action action, int seq) {
+      Step step = new Step(seq, id);
       
       step.addAction(action);
       return step;
@@ -67,20 +73,20 @@ public class SimulationControllerTest {
       System.out.println("addStep");
       
       Action action = new RotateAction(10, RotateAction.Direction.LEFT);
-      instance.addStep(createStep(sessionId, action));
-      instance.addStep(createStep(sessionId2, action));
-      instance.addStep(createStep(sessionId3, action));
+      instance.addStep(createStep(sessionId, action, 0));
+      instance.addStep(createStep(sessionId2, action, 0));
+      instance.addStep(createStep(sessionId3, action, 0));
       
       //Nothin simulated so far
-      assertEquals(null, engine1.getLastAction());
-      assertEquals(null, engine2.getLastAction());
-      assertEquals(null, engine3.getLastAction());
+      assertNull(engine1.getLastAction());
+      assertNull(engine2.getLastAction());
+      assertNull(engine3.getLastAction());
       
-      //Wrong step simulation doesn't trigger simulation
+//      //Wrong step simulation doesn't trigger simulation
 //      instance.simulateStep(1);
-//      assertEquals(null, engine1.getLastAction());
-//      assertEquals(null, engine2.getLastAction());
-//      assertEquals(null, engine3.getLastAction());
+//      assertNull(engine1.getLastAction());
+//      assertNull(engine2.getLastAction());
+//      assertNull(engine3.getLastAction());
       
       //Simulation adds getActions to engines
       instance.simulateStep(0);
@@ -89,8 +95,76 @@ public class SimulationControllerTest {
       assertEquals(action, engine3.getLastAction());
   }
   
+  class Tester implements Observer {
+        public Action lastAction;
+        public ArrayList <Action>expected; 
+        public ArrayList <MockGameEngine>expectedEngine; 
+        Tester() {
+        }
+        
+        @Override
+        public void update(Observable o, Object o1) {                    
+            MockGameEngine g = (MockGameEngine)o;
+            System.out.println("############UPDATE#########"+g);
+            lastAction = g.getSimulationState();
+            assertTrue(!expected.isEmpty());
+            
+            if (g != expectedEngine.get(0)) {
+                System.out.println("error: " +expected);
+                System.out.println("error: " +expectedEngine);
+            }
+            
+            assertEquals(g, expectedEngine.remove(0));
+            
+            Action e = expected.remove(0);
+            
+            assertEquals(e, lastAction);
+            System.out.println("got action");
+        }
+    }
+  
   @Test
   public void testActionSorting() {
-      System.out.println("addStep");
+      System.out.println("testActionSorting");
+      Tester t = new Tester();
+      engine1.addObserver(t);
+      engine2.addObserver(t);
+      engine3.addObserver(t);
+      
+      for (int i = 0; i < 8; i++) {
+      
+        Action action1 = new RotateAction(10, RotateAction.Direction.LEFT);
+        Action action2 = new RotateAction(30, RotateAction.Direction.RIGHT);
+        Action action3 = new MoveAction(20, MoveAction.Direction.LEFT, 1);
+        
+        t.expected = new ArrayList<Action>();
+        t.expectedEngine = new ArrayList<MockGameEngine>();
+        
+        t.expected.add(action1);
+        t.expectedEngine.add(engine1);
+        
+        t.expected.add(action3);
+        t.expectedEngine.add(engine3);
+        
+        t.expected.add(action2);
+        t.expectedEngine.add(engine2);
+        
+        instance.addStep(createStep(sessionId, action1, i));
+        instance.addStep(createStep(sessionId2, action2, i));
+        instance.addStep(createStep(sessionId3, action3, i));
+        if (i == 0) {
+            assertNull(engine1.getLastAction());
+            assertNull(engine2.getLastAction());
+            assertNull(engine3.getLastAction());
+        }
+          System.out.println("starting simulation LJDSFFDFSDSDSLKJFSLKJDS");
+        instance.simulateStep(i);
+        System.out.println("ending simulation LJDSFFDFSDSDSLKJFSLKJDS");
+        assertEquals(action1, engine1.getLastAction());
+        assertEquals(action2, engine2.getLastAction());
+        assertEquals(action3, engine3.getLastAction());
+        
+        assertEquals(0, t.expected.size());
+    }
   }
 }

@@ -17,12 +17,6 @@ public class BlockQueue implements BlockQueueInterface {
     
     private Random randomGenerator;
 
-    /**
-     * initialise blockqueue with current SystemTime as Seed 
-     */
-    public BlockQueue() {
-        randomGenerator = new Random(System.currentTimeMillis());
-    }
     
     /**
      * initalise blockqueue with given seed to make sure it's always the order

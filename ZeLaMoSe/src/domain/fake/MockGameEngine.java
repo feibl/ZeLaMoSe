@@ -12,7 +12,7 @@ import java.util.Observable;
  * @author chrigi
  */
 public class MockGameEngine extends GameEngineInterface {
-  private Action lastAction;
+  private Action lastAction  = null;
   private int sessionId;
   public MockGameEngine(int sessionId) {
       this.sessionId = sessionId;
@@ -30,8 +30,10 @@ public class MockGameEngine extends GameEngineInterface {
   
   @Override
   public void handleAction(Action action) {
-      System.out.println("simulate action");
+//      System.out.println("simulate action");
       lastAction = action;
+      setChanged();
+      notifyObservers();
   }
   
   public Action getLastAction() {
@@ -40,14 +42,21 @@ public class MockGameEngine extends GameEngineInterface {
 
   @Override
   public Action getSimulationState() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    //do nothing
+      return lastAction;
   }
 
     @Override
     public int getLevel() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //do nothing
+        return 0;
+    }
+
+    @Override
+    public String toString() {
+        return new String("MockGameEndine " + sessionId);
     }
   
-  
+    
   
 }

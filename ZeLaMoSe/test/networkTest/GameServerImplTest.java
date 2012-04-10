@@ -5,6 +5,7 @@
 package networkTest;
 
 import java.net.MalformedURLException;
+import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -21,7 +22,7 @@ import network.server.GameServerImpl;
 import network.server.SessionImpl;
 import static org.junit.Assert.*;
 import org.junit.*;
-
+import java.io.*;
 /**
  *
  * @author Fabian Senn <fsenn@hsr.ch>
@@ -37,6 +38,10 @@ public class GameServerImplTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+        System.setProperty("java.security.policy","rmi.policy");
+        if (System.getSecurityManager() == null) {
+            System.setSecurityManager(new RMISecurityManager());
+        }
         registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
     }
 
@@ -57,8 +62,8 @@ public class GameServerImplTest {
 
     @Test
     public void testCreateSession() throws RemoteException {
-       // SessionInformation sessionInfo = gameServerImpl.createSession(PLAYER_NAME, new HandlerImpl(new NetworkHandlerImpl())).getSessionInformation();
-       // assertArrayEquals(new Object[]{PLAYER_NAME, 1}, new Object[]{sessionInfo.getNickname(), sessionInfo.getId()});
+        // SessionInformation sessionInfo = gameServerImpl.createSession(PLAYER_NAME, new HandlerImpl(new NetworkHandlerImpl())).getSessionInformation();
+        // assertArrayEquals(new Object[]{PLAYER_NAME, 1}, new Object[]{sessionInfo.getNickname(), sessionInfo.getId()});
     }
 
     @Test

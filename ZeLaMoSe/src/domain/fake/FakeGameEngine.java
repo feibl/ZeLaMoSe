@@ -20,7 +20,7 @@ public class FakeGameEngine extends Observable {
 
     int FAKE_ACTIONS_TO_GENERATE = 2;
     ArrayList<Action> actionHistory = new ArrayList<Action>();
-    BlockQueue queue = new BlockQueue();
+    BlockQueue queue = new BlockQueue(0);
 
     public FakeGameEngine() {
         new Thread(new Runnable() {
