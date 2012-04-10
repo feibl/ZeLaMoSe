@@ -15,5 +15,6 @@ public class Config {
     public final static int gridBlockHeight = 4;
     public final static int levelUpMultiplier = 10;
     public final static int defaultWallKickTest = 1;
-    public final static int maxLevelForSpeed = 15;    
+    public final static int maxLevelForSpeed = 15;  
+    public final static int advanceStepLimit = 21;
 }

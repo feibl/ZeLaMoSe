@@ -21,7 +21,7 @@ public class MusicEngine {
     public MusicEngine() {
         try {
             background = new OggClip(new FileInputStream("src/view/music/files/BackgroundThemeA.ogg"));
-            background.setGain(0.8f);
+            background.setGain(0.6f);
         } catch (IOException ex) {
             Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
         }

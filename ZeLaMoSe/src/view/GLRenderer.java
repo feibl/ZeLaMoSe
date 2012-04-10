@@ -39,15 +39,19 @@ class GLRenderer implements GLEventListener, Observer {
     private Color backGroundColor = Color.BLACK;
     private Color garbageLineColor = new Color(139, 0, 0);
     private MusicEngine musicEngine;
+    private boolean useSound;
 
-    public GLRenderer(int width, int height, int blocksize) {
+    public GLRenderer(int width, int height, int blocksize, boolean useSound) {
         this.viewPortWidth = width;
         this.viewPortHeight = height;
         this.blockSize = blocksize;
         actionQueue = new ConcurrentLinkedQueue<Action>();
         initStackGrid();
-        musicEngine = new MusicEngine();
-        musicEngine.startBGMusic();
+        this.useSound = useSound;
+        if (useSound) {
+            musicEngine = new MusicEngine();
+            musicEngine.startBGMusic();
+        }
     }
 
     @Override
@@ -110,10 +114,10 @@ class GLRenderer implements GLEventListener, Observer {
         if (isAnimating) {
             actionQueue.add(action);
             if (debug) {
-                System.out.println("GLREnderer: actiontype " + action.getType()+" stored in queue");
+                System.out.println("GLREnderer: actiontype " + action.getType() + " stored in queue");
             }
         } else {
-            
+
             handleAction(action);
         }
 
@@ -212,15 +216,17 @@ class GLRenderer implements GLEventListener, Observer {
     }
 
     private void handleRotateAction(RotateAction action) {
-        musicEngine.playRotateSound();
-        
+        if (useSound) {
+            musicEngine.playRotateSound();
+        }
+
         if (action.getDirection() == Direction.LEFT) {
             currentBlock.rotateLeft(Config.defaultWallKickTest);
         } else {
             currentBlock.rotateRight(Config.defaultWallKickTest);
         }
-        currentBlock.setX(currentBlock.getX()+action.getXOffset());
-        currentBlock.setY(currentBlock.getY()-action.getYOffset());
+        currentBlock.setX(currentBlock.getX() + action.getXOffset());
+        currentBlock.setY(currentBlock.getY() - action.getYOffset());
     }
 
     private void handleMoveAction(MoveAction action) {
@@ -316,7 +322,7 @@ class GLRenderer implements GLEventListener, Observer {
                     }
 
                     //move everythign downward
-                    for (int y = lineToRemove + 1; y <= Config.gridHeight-1; y++) {
+                    for (int y = lineToRemove + 1; y <= Config.gridHeight - 1; y++) {
                         for (int x = 0; x < Config.gridWidth; x++) {
                             grid[x][y - 1] = grid[x][y];
                         }
@@ -373,28 +379,28 @@ class GLRenderer implements GLEventListener, Observer {
 
     private void handleAction(Action action) {
         switch (action.getType()) {
-                case ROTATION:
-                    handleRotateAction((RotateAction) action);
-                    break;
-                case MOVE:
-                    handleMoveAction((MoveAction) action);
-                    break;
-                case NEWBLOCK:
-                    handleNewBlockAction(((NewBlockAction) action).getBlocktype());
-                    break;
-                case NEWLINE:
-                    handleNewLineAction(((NewLineAction) action).getLine());
-                    break;
-                case REMOVELINE:
-                    isAnimating = true;
-                    handleRemoveLineAction((RemoveLineAction) action);
-                    break;
-                case GAMEOVER:
-                    handleGameOverAction();
-                    break;
-            }
-            if (debug) {
-                System.out.println("GLREnderer: actiontype " + action.getType()+" processed");
-            }
+            case ROTATION:
+                handleRotateAction((RotateAction) action);
+                break;
+            case MOVE:
+                handleMoveAction((MoveAction) action);
+                break;
+            case NEWBLOCK:
+                handleNewBlockAction(((NewBlockAction) action).getBlocktype());
+                break;
+            case NEWLINE:
+                handleNewLineAction(((NewLineAction) action).getLine());
+                break;
+            case REMOVELINE:
+                isAnimating = true;
+                handleRemoveLineAction((RemoveLineAction) action);
+                break;
+            case GAMEOVER:
+                handleGameOverAction();
+                break;
+        }
+        if (debug) {
+            System.out.println("GLREnderer: actiontype " + action.getType() + " processed");
+        }
     }
 }
