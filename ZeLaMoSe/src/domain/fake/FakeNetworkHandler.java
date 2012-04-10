@@ -112,7 +112,7 @@ public class FakeNetworkHandler extends NetworkHandler {
 
     @Override
     public void niggasInParis() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //do nothing
     }
     
 }

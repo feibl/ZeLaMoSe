@@ -12,7 +12,7 @@ import java.util.Observable;
  * @author chrigi
  */
 public class MockGameEngine extends GameEngineInterface {
-  private Action lastAction;
+  private Action lastAction  = null;
   private int sessionId;
   public MockGameEngine(int sessionId) {
       this.sessionId = sessionId;
@@ -40,12 +40,14 @@ public class MockGameEngine extends GameEngineInterface {
 
   @Override
   public Action getSimulationState() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    //do nothing
+      return null;
   }
 
     @Override
     public int getLevel() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //do nothing
+        return 0;
     }
   
   

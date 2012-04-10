@@ -7,6 +7,7 @@ package domain;
 import domain.Fake.MockGameEngine;
 import domain.actions.ActionType;
 import domain.actions.Action;
+import domain.actions.MoveAction;
 import domain.actions.RotateAction;
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -46,14 +47,14 @@ public class SimulationControllerTest {
   @Test
   public void testGetSimulation() {
       System.out.println("getSimulation");
-      assertEquals(instance.getSimulation(0), null);
+      //assertEquals(instance.getSimulation(0), null);
       assertEquals(instance.getSimulation(sessionId), engine1);
       assertEquals(instance.getSimulation(sessionId2), engine2);
       assertEquals(instance.getSimulation(sessionId3), engine3);
   }
   
-  Step createStep(int id, Action action) {
-      Step step = new Step(0, id);
+  Step createStep(int id, Action action, int seq) {
+      Step step = new Step(seq, id);
       
       step.addAction(action);
       return step;
@@ -67,20 +68,20 @@ public class SimulationControllerTest {
       System.out.println("addStep");
       
       Action action = new RotateAction(10, RotateAction.Direction.LEFT);
-      instance.addStep(createStep(sessionId, action));
-      instance.addStep(createStep(sessionId2, action));
-      instance.addStep(createStep(sessionId3, action));
+      instance.addStep(createStep(sessionId, action, 0));
+      instance.addStep(createStep(sessionId2, action, 0));
+      instance.addStep(createStep(sessionId3, action, 0));
       
       //Nothin simulated so far
-      assertEquals(null, engine1.getLastAction());
-      assertEquals(null, engine2.getLastAction());
-      assertEquals(null, engine3.getLastAction());
+      assertNull(engine1.getLastAction());
+      assertNull(engine2.getLastAction());
+      assertNull(engine3.getLastAction());
       
-      //Wrong step simulation doesn't trigger simulation
+//      //Wrong step simulation doesn't trigger simulation
 //      instance.simulateStep(1);
-//      assertEquals(null, engine1.getLastAction());
-//      assertEquals(null, engine2.getLastAction());
-//      assertEquals(null, engine3.getLastAction());
+//      assertNull(engine1.getLastAction());
+//      assertNull(engine2.getLastAction());
+//      assertNull(engine3.getLastAction());
       
       //Simulation adds getActions to engines
       instance.simulateStep(0);
@@ -89,8 +90,28 @@ public class SimulationControllerTest {
       assertEquals(action, engine3.getLastAction());
   }
   
+  
   @Test
   public void testActionSorting() {
-      System.out.println("addStep");
+      System.out.println("testActionSorting");
+      
+      for (int i = 0; i < 8; i++) {
+      
+        Action action1 = new RotateAction(10, RotateAction.Direction.LEFT);
+        Action action2 = new RotateAction(30, RotateAction.Direction.RIGHT);
+        Action action3 = new MoveAction(20, MoveAction.Direction.LEFT, 1);
+        instance.addStep(createStep(sessionId, action1, i));
+        instance.addStep(createStep(sessionId2, action2, i));
+        instance.addStep(createStep(sessionId3, action3, i));
+        if (i == 0) {
+            assertNull(engine1.getLastAction());
+            assertNull(engine2.getLastAction());
+            assertNull(engine3.getLastAction());
+        }
+        instance.simulateStep(i);
+        assertEquals(action1, engine1.getLastAction());
+        assertEquals(action2, engine2.getLastAction());
+        assertEquals(action3, engine3.getLastAction());
+    }
   }
 }
