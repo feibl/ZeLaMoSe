@@ -41,7 +41,7 @@ class GLRenderer implements GLEventListener, Observer {
     private MusicEngine musicEngine;
     private boolean useSound;
 
-    public GLRenderer(int width, int height, int blocksize, boolean useSound) {
+    public GLRenderer(int width, int height, int blocksize, boolean useSound, SimulationStateInterface gameEngine) {
         this.viewPortWidth = width;
         this.viewPortHeight = height;
         this.blockSize = blocksize;
@@ -50,8 +50,10 @@ class GLRenderer implements GLEventListener, Observer {
         this.useSound = useSound;
         if (useSound) {
             musicEngine = new MusicEngine();
-            musicEngine.startBGMusic();
+            musicEngine.startBGMusic(false);
         }
+        this.gameEngine = gameEngine;
+        gameEngine.addObserver(this);
     }
 
     @Override
@@ -92,12 +94,6 @@ class GLRenderer implements GLEventListener, Observer {
 
     @Override
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-    }
-
-    void setEngine(SimulationStateInterface fakeGameEngine) {
-        gameEngine = fakeGameEngine;
-        gameEngine.addObserver(this);
-
     }
 
     @Override
@@ -230,14 +226,21 @@ class GLRenderer implements GLEventListener, Observer {
     }
 
     private void handleMoveAction(MoveAction action) {
+
         switch (action.getDirection()) {
             case DOWN:
                 currentBlock.setY(currentBlock.getY() - action.getSpeed());
                 break;
             case LEFT:
+                if (useSound) {
+                    musicEngine.playMoveSound();
+                }
                 currentBlock.setX(currentBlock.getX() - action.getSpeed());
                 break;
             case RIGHT:
+                if (useSound) {
+                    musicEngine.playMoveSound();
+                }
                 currentBlock.setX(currentBlock.getX() + action.getSpeed());
                 break;
         }
@@ -245,6 +248,9 @@ class GLRenderer implements GLEventListener, Observer {
 
     private void handleNewBlockAction(Block block) {
         if ((currentBlock != null)) {
+            if (useSound) {
+                musicEngine.playDropSound();
+            }
             saveCurrentblockToGrid();
         }
         currentBlock = (Block) block.clone();
@@ -293,7 +299,13 @@ class GLRenderer implements GLEventListener, Observer {
                 Color[][] originalGrid = getGridCopy();
 
                 List<Integer> linesToRemove = rmlineAction.getLinesToRemove();
-
+                if (useSound) {
+                    if (linesToRemove.size() == 4) {
+                        musicEngine.playLine4Sound();
+                    } else {
+                        musicEngine.playLineSound();
+                    }
+                }
                 for (Integer lineToRemove : linesToRemove) {
 
                     for (int x = 0; x < Config.gridWidth; x++) {
@@ -360,6 +372,10 @@ class GLRenderer implements GLEventListener, Observer {
 
             @Override
             public void run() {
+                if (useSound) {
+                    musicEngine.startBGMusic(true);
+                    musicEngine.playGameOverSound();
+                }
                 boolean[][] filler = new boolean[Config.gridWidth][1];
 
                 for (int j = 0; j < Config.gridWidth; j++) {
