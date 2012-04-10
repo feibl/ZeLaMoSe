@@ -220,7 +220,7 @@ class GLRenderer implements GLEventListener, Observer {
             currentBlock.rotateRight(Config.defaultWallKickTest);
         }
         currentBlock.setX(currentBlock.getX() + action.getXOffset());
-        currentBlock.setY(currentBlock.getY() - action.getYOffset());
+        currentBlock.setY(currentBlock.getY() + action.getYOffset());
     }
 
     private void handleMoveAction(MoveAction action) {
