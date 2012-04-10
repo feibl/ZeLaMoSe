@@ -5,7 +5,6 @@
 package view;
 
 import domain.Config;
-import domain.GameEngine;
 import domain.actions.*;
 import domain.block.Block;
 import domain.actions.RotateAction.Direction;
@@ -21,6 +20,7 @@ import java.util.logging.Logger;
 import javax.media.opengl.*;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
+import view.music.MusicEngine;
 
 /**
  *
@@ -28,7 +28,7 @@ import javax.media.opengl.glu.GLU;
  */
 class GLRenderer implements GLEventListener, Observer {
 
-    private boolean debug = true;
+    private boolean debug = false;
     private volatile boolean isAnimating = false;
     private ConcurrentLinkedQueue<Action> actionQueue;
     private int viewPortWidth, viewPortHeight, blockSize;
@@ -38,6 +38,7 @@ class GLRenderer implements GLEventListener, Observer {
     private volatile Color[][] grid;
     private Color backGroundColor = Color.BLACK;
     private Color garbageLineColor = new Color(139, 0, 0);
+    private MusicEngine musicEngine;
 
     public GLRenderer(int width, int height, int blocksize) {
         this.viewPortWidth = width;
@@ -45,6 +46,8 @@ class GLRenderer implements GLEventListener, Observer {
         this.blockSize = blocksize;
         actionQueue = new ConcurrentLinkedQueue<Action>();
         initStackGrid();
+        musicEngine = new MusicEngine();
+        musicEngine.startBGMusic();
     }
 
     @Override
@@ -209,6 +212,8 @@ class GLRenderer implements GLEventListener, Observer {
     }
 
     private void handleRotateAction(RotateAction action) {
+        musicEngine.playRotateSound();
+        
         if (action.getDirection() == Direction.LEFT) {
             currentBlock.rotateLeft(Config.defaultWallKickTest);
         } else {
