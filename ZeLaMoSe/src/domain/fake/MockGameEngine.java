@@ -30,8 +30,10 @@ public class MockGameEngine extends GameEngineInterface {
   
   @Override
   public void handleAction(Action action) {
-      System.out.println("simulate action");
+//      System.out.println("simulate action");
       lastAction = action;
+      setChanged();
+      notifyObservers();
   }
   
   public Action getLastAction() {
@@ -41,7 +43,7 @@ public class MockGameEngine extends GameEngineInterface {
   @Override
   public Action getSimulationState() {
     //do nothing
-      return null;
+      return lastAction;
   }
 
     @Override
@@ -49,7 +51,12 @@ public class MockGameEngine extends GameEngineInterface {
         //do nothing
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return new String("MockGameEndine " + sessionId);
+    }
   
-  
+    
   
 }
