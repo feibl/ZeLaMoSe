@@ -50,7 +50,7 @@ class GLRenderer implements GLEventListener, Observer {
         this.useSound = useSound;
         if (useSound) {
             musicEngine = new MusicEngine();
-            musicEngine.startBGMusic();
+            musicEngine.startBGMusic(false);
         }
         this.gameEngine = gameEngine;
         gameEngine.addObserver(this);
@@ -95,7 +95,6 @@ class GLRenderer implements GLEventListener, Observer {
     @Override
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
     }
-
 
     @Override
     public void update(Observable o, Object o1) {
@@ -227,17 +226,21 @@ class GLRenderer implements GLEventListener, Observer {
     }
 
     private void handleMoveAction(MoveAction action) {
-        if (useSound) {
-            musicEngine.playMoveSound();
-        }
+
         switch (action.getDirection()) {
             case DOWN:
                 currentBlock.setY(currentBlock.getY() - action.getSpeed());
                 break;
             case LEFT:
+                if (useSound) {
+                    musicEngine.playMoveSound();
+                }
                 currentBlock.setX(currentBlock.getX() - action.getSpeed());
                 break;
             case RIGHT:
+                if (useSound) {
+                    musicEngine.playMoveSound();
+                }
                 currentBlock.setX(currentBlock.getX() + action.getSpeed());
                 break;
         }
@@ -302,7 +305,6 @@ class GLRenderer implements GLEventListener, Observer {
                     } else {
                         musicEngine.playLineSound();
                     }
-
                 }
                 for (Integer lineToRemove : linesToRemove) {
 
@@ -371,9 +373,8 @@ class GLRenderer implements GLEventListener, Observer {
             @Override
             public void run() {
                 if (useSound) {
-
+                    musicEngine.startBGMusic(true);
                     musicEngine.playGameOverSound();
-
                 }
                 boolean[][] filler = new boolean[Config.gridWidth][1];
 

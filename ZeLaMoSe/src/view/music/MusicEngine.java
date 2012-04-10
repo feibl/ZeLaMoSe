@@ -29,11 +29,16 @@ public class MusicEngine {
     public MusicEngine() {
     }
 
-    public void startBGMusic() {
+    public void startBGMusic(boolean end) {
         try {
-            background = new OggClip(new FileInputStream("src/view/music/files/BackgroundThemeA.ogg"));
-            background.setGain(0.75f);
-            background.loop();
+
+            if (end) {
+                background.stop();
+            } else {
+                            background = new OggClip(new FileInputStream("src/view/music/files/BackgroundThemeA.ogg"));
+            background.setGain(0.70f);
+                background.loop();
+            }
         } catch (IOException ex) {
             Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -98,6 +103,7 @@ public class MusicEngine {
     public void playMoveSound() {
         try {
             move = new OggClip(new FileInputStream("src/view/music/files/move.ogg"));
+            move.setGain(0.80f);
             move.play();
         } catch (IOException ex) {
             Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
@@ -112,5 +118,9 @@ public class MusicEngine {
             Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    public void stopLobbySound() {
+        lobby.stop();
     }
 }

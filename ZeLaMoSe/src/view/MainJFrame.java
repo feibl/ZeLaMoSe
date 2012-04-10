@@ -12,6 +12,7 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JOptionPane;
 import network.client.NetworkHandlerImpl;
+import view.music.MusicEngine;
 
 /**
  *
