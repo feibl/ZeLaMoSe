@@ -18,13 +18,11 @@ import network.SessionInformation;
  */
 public class HandlerImpl extends UnicastRemoteObject implements Handler, ClientRemote {
 
-    private boolean gameStarted;
     private NetworkHandlerImpl networkHandler;
     private SessionRemote sessionRemote;
 
     public HandlerImpl(NetworkHandlerImpl networkHandler) throws RemoteException {
         this.networkHandler = networkHandler;
-        gameStarted = false;
                 System.setProperty("java.security.policy","rmi.policy");
 		if (System.getSecurityManager() == null)
 				System.setSecurityManager(new RMISecurityManager());
