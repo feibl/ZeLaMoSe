@@ -124,7 +124,7 @@ public class TetrisController extends Observable implements Observer {
                 setChanged();
                 notifyObservers(UpdateType.CONNECTION_ESTABLISHED);
                 break;
-            case GAME_STARTED:
+            case INIT_SIGNAL:
                 System.out.println("game started");
                 assert(localSessionID >= 0);
                 stepGenerator.setSessionID(localSessionID);
@@ -135,7 +135,10 @@ public class TetrisController extends Observable implements Observer {
                 
                 setChanged();
                 notifyObservers(UpdateType.GAME_STARTED);
+                networkHandler.sendReadySignal();
                 
+                break;
+             case GAME_STARTED:  
                 simulationController.initSimulation();
                 if (autorun) {
                     run();
