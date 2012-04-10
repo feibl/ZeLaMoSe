@@ -14,7 +14,7 @@ import java.awt.Color;
 public class LBlock extends Block {
 
     public LBlock() {
-        super(new Color(255, 0, 0), "L", new GeneralWallKick());
+        super(new Color(255, 170, 0), "L", new GeneralWallKick());
     }
 
     @Override

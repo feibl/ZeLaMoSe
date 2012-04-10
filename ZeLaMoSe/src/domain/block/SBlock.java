@@ -14,7 +14,7 @@ import java.awt.Color;
 public class SBlock extends Block {
 
     public SBlock() {
-        super(new Color(0,255,0),"S", new GeneralWallKick());
+        super(new Color(0,139,0),"S", new GeneralWallKick());
     }
 
     @Override
