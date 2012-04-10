@@ -26,7 +26,7 @@ public class GameFieldJFrame extends javax.swing.JFrame {
     public GameFieldJFrame(InputSampler is, SimulationStateInterface mainSimulation, List<SimulationStateInterface> otherSimulations) {
         initComponents();
         ownGameFieldJPanel1.setInputSampler(is);
-        ownGameFieldJPanel1.initGLRenderer(mainSimulation);
+        ownGameFieldJPanel1.initRenderer(mainSimulation);
         //TODO set Simulation on other Panels
 
         

@@ -10,13 +10,11 @@ import domain.actions.*;
 import domain.block.Block;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Observable;
 
 /**
  *
  * @author Cyrill
  *
- * bei Action: wird momentan für den timestamp SESSIONID mitgegeben
  */
 public class GameEngine extends GameEngineInterface {
 
@@ -28,6 +26,11 @@ public class GameEngine extends GameEngineInterface {
     private Block currentBlock;
     private boolean gameOver;
     private int score;
+    private Block nextBlock;
+
+    public Block getNextBlock() {
+        return (Block)nextBlock.clone();
+    }
 
     public int getLevel() {
         return level;
@@ -45,10 +48,6 @@ public class GameEngine extends GameEngineInterface {
 
     public boolean isGameOver() {
         return gameOver;
-    }
-
-    public GameEngine(int sessionId) {
-        this(sessionId, System.nanoTime());
     }
 
     public GameEngine(int sessionId, long seed) {
@@ -178,7 +177,13 @@ public class GameEngine extends GameEngineInterface {
     }
 
     private void nextBlock() {
-        currentBlock = queue.getNextBlock();
+        if (nextBlock == null) {
+            currentBlock = queue.getNextBlock();
+        } else {
+            currentBlock = nextBlock;
+        }
+        nextBlock = queue.getNextBlock();
+        
         if (!checkForGameOver()) {
             currentBlock.setX(defaultX);
             currentBlock.setY(defaultY);
@@ -301,11 +306,10 @@ public class GameEngine extends GameEngineInterface {
     }
 
     /**
-     * moves the current block downwards, the amount of gridfields moved depends on the "speed" set in the
-     * moveAction
+     * moves the current block downwards, the amount of gridfields moved depends on the "speed" set in the moveAction
      *
-     * If a collision happens the currentBlock will be moved on gridfield upwards, a new Block will be generated
-     * and it will be checked if there are lines to remove
+     * If a collision happens the currentBlock will be moved on gridfield upwards, a new Block will be generated and it
+     * will be checked if there are lines to remove
      *
      *
      * @param moveAction
