@@ -25,4 +25,6 @@ public interface SessionRemote extends Remote, Serializable {
     public void receiveStep(Step step) throws RemoteException;
 
     public SessionInformation getSessionInformation() throws RemoteException;
+
+    public void receiveReadySignal() throws RemoteException;
 }

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import network.ServerFullException;
@@ -29,6 +30,7 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
     protected Session[] sessionList;
     private static final int MAX_SESSIONS = 4;
     private static int id = 1;
+    private AtomicInteger readyCount = new AtomicInteger(0);
     protected ExecutorService threadPool;
 
     public GameServerImpl(String serverName, Registry registry) throws RemoteException, MalformedURLException {
@@ -150,7 +152,7 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
     @Override
     public void startGame() {
         this.threadPool = Executors.newFixedThreadPool(getSessionList().size());
-        notifyAllGameStarted();
+        notifyAllInitSignal();
     }
 
     protected void notifyAllGameStarted() {
@@ -164,6 +166,33 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
                     public void run() {
                         try {
                             s.sendStartSignal();
+                        } catch (RemoteException ex) {
+                            removeSession(s);
+                        }
+                    }
+                });
+
+            }
+        }
+    }
+
+    public void notifyReadySignalReceived(Session session) {
+        if (getSessionList().size() == readyCount.incrementAndGet()) {
+            notifyAllGameStarted();
+        }
+    }
+
+    protected void notifyAllInitSignal() {
+        for (int i = 0; i < sessionList.length; i++) {
+            final Session s = sessionList[i];
+            if (s != null) {
+
+                threadPool.execute(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        try {
+                            s.sendInitSignal();
                         } catch (RemoteException ex) {
                             removeSession(s);
                         }

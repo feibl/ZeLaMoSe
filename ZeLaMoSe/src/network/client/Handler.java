@@ -12,8 +12,14 @@ import network.server.SessionRemote;
  * @author Fabian Senn <fsenn@hsr.ch>
  */
 public interface Handler {
-  public void disconnect();
-   public void sendChatMessage(String message);
-   public void sendStep(Step step);
-   public void setSessionRemote(SessionRemote sessionRemote);
+
+    public void disconnect();
+
+    public void sendChatMessage(String message);
+
+    public void sendStep(Step step);
+
+    public void setSessionRemote(SessionRemote sessionRemote);
+
+    public void sendReadySignal();
 }

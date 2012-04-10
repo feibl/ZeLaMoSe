@@ -27,4 +27,6 @@ public interface ClientRemote extends Remote, Serializable {
    public void receiveSessionRemovedMessage(SessionInformation session) throws RemoteException;
 
    public void receiveStartSignal() throws RemoteException;
+
+    public void receiveInitSignal() throws RemoteException;
 }

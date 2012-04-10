@@ -23,9 +23,10 @@ public class HandlerImpl extends UnicastRemoteObject implements Handler, ClientR
 
     public HandlerImpl(NetworkHandlerImpl networkHandler) throws RemoteException {
         this.networkHandler = networkHandler;
-                System.setProperty("java.security.policy","rmi.policy");
-		if (System.getSecurityManager() == null)
-				System.setSecurityManager(new RMISecurityManager());
+        System.setProperty("java.security.policy", "rmi.policy");
+        if (System.getSecurityManager() == null) {
+            System.setSecurityManager(new RMISecurityManager());
+        }
     }
 
     @Override
@@ -48,10 +49,10 @@ public class HandlerImpl extends UnicastRemoteObject implements Handler, ClientR
     @Override
     public void sendStep(Step step) {
         try {
-         sessionRemote.receiveStep(step);
-      } catch (RemoteException ex) {
-         networkHandler.notifyExceptionThrown(ex);
-      }
+            sessionRemote.receiveStep(step);
+        } catch (RemoteException ex) {
+            networkHandler.notifyExceptionThrown(ex);
+        }
     }
 
     @Override
@@ -82,5 +83,19 @@ public class HandlerImpl extends UnicastRemoteObject implements Handler, ClientR
     @Override
     public void setSessionRemote(SessionRemote sessionRemote) {
         this.sessionRemote = sessionRemote;
+    }
+
+    @Override
+    public void sendReadySignal() {
+        try {
+            sessionRemote.receiveReadySignal();
+        } catch (RemoteException ex) {
+            networkHandler.notifyExceptionThrown(ex);
+        }
+    }
+
+    @Override
+    public void receiveInitSignal() throws RemoteException {
+        networkHandler.notifyInit();
     }
 }

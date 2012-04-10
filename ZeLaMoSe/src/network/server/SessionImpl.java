@@ -70,5 +70,15 @@ public class SessionImpl extends UnicastRemoteObject implements SessionRemote, S
     public void sendStartSignal() throws RemoteException {
         client.receiveStartSignal();
     }
+
+    @Override
+    public void receiveReadySignal() throws RemoteException {
+        gameServer.notifyReadySignalReceived(this);
+    }
+
+    @Override
+    public void sendInitSignal() throws RemoteException {
+        client.receiveInitSignal();
+    }
     
 }

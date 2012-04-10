@@ -238,7 +238,28 @@ public class RMILocalhostTest {
     }
 
     @Test
+    public void testInitSignal() {
+        Observer observer = new Observer() {
+
+            @Override
+            public void update(Observable o, Object o1) {
+                if ((UpdateType) o1 == UpdateType.INIT_SIGNAL) {
+                    count++;
+                }
+            }
+        };
+        for (int i = 0; i < MAX_SESSIONS; i++) {
+            NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
+            handler.addObserver(observer);
+            handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + i);
+        }
+        gameServerImpl.startGame();
+        assertEquals(MAX_SESSIONS, count);
+    }
+
+    @Test
     public void testStartSignal() {
+        List<NetworkHandlerImpl> handlers = new ArrayList<NetworkHandlerImpl>();
         Observer observer = new Observer() {
 
             @Override
@@ -250,10 +271,16 @@ public class RMILocalhostTest {
         };
         for (int i = 0; i < MAX_SESSIONS; i++) {
             NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
+            handlers.add(handler);
             handler.addObserver(observer);
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + i);
         }
         gameServerImpl.startGame();
+        
+        for(NetworkHandlerImpl handler: handlers) {
+            handler.sendReadySignal();
+        }
+        
         assertEquals(MAX_SESSIONS, count);
     }
 
@@ -280,6 +307,10 @@ public class RMILocalhostTest {
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + " 1");
         }
         gameServerImpl.startGame();
+        sender.sendReadySignal();
+        for (NetworkHandlerImpl nh : otherPlayers) {
+            nh.sendReadySignal();
+        }
         sender.addStep(new Step(1, 3));
 
         for (NetworkHandlerImpl nh : otherPlayers) {
@@ -374,7 +405,7 @@ public class RMILocalhostTest {
         NetworkHandlerImpl sender = new NetworkHandlerImplWithoutThreads();
         sender.connectToServer(IP, SERVER_NAME, SENDER);
         for (int i = 0; i < MAX_SESSIONS - 1; i++) {
-            NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads(){
+            NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads() {
 
                 //Sleep of 30 ms for faking network-Delay
                 @Override
@@ -386,7 +417,6 @@ public class RMILocalhostTest {
                     }
                     super.notifyStepReceived(step);
                 }
-                
             };
             otherPlayers.add(handler);
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + " 1");

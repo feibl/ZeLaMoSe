@@ -36,4 +36,8 @@ public class ClientRemoteAdapter implements ClientRemote {
    @Override
    public void receiveStartSignal() throws RemoteException {
    }
+
+    @Override
+    public void receiveInitSignal() throws RemoteException {
+    }
 }

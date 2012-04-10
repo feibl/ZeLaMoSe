@@ -149,6 +149,11 @@ public class NetworkHandlerImpl extends NetworkHandler {
     public Exception getThrownException() {
         return thrownException;
     }
+    
+    public void notifyInit() {
+        setChanged();
+        notifyObservers(UpdateType.INIT_SIGNAL);
+    }
 
     public void notifyGameStarted() {
         setChanged();
@@ -158,5 +163,10 @@ public class NetworkHandlerImpl extends NetworkHandler {
     @Override
     public ExecutorService getThreadPool() {
         return threadPool;
+    }
+
+    @Override
+    public void sendReadySignal() {
+        handler.sendReadySignal();
     }
 }
