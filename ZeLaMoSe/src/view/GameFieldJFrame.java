@@ -84,9 +84,9 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         lblOtherPlayerName3.setText("<OtherPlayerName3>");
 
         gLPnlEnemyArea1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        gLPnlEnemyArea1.setMaximumSize(new java.awt.Dimension(120, 240));
-        gLPnlEnemyArea1.setMinimumSize(new java.awt.Dimension(120, 240));
-        gLPnlEnemyArea1.setPreferredSize(new java.awt.Dimension(120, 240));
+        gLPnlEnemyArea1.setMaximumSize(new java.awt.Dimension(120, 220));
+        gLPnlEnemyArea1.setMinimumSize(new java.awt.Dimension(120, 220));
+        gLPnlEnemyArea1.setPreferredSize(new java.awt.Dimension(120, 220));
 
         javax.swing.GroupLayout gLPnlEnemyArea1Layout = new javax.swing.GroupLayout(gLPnlEnemyArea1);
         gLPnlEnemyArea1.setLayout(gLPnlEnemyArea1Layout);
@@ -96,12 +96,13 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         );
         gLPnlEnemyArea1Layout.setVerticalGroup(
             gLPnlEnemyArea1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 236, Short.MAX_VALUE)
+            .addGap(0, 216, Short.MAX_VALUE)
         );
 
         gLPnlEnemyArea2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        gLPnlEnemyArea2.setMaximumSize(new java.awt.Dimension(120, 240));
-        gLPnlEnemyArea2.setMinimumSize(new java.awt.Dimension(120, 240));
+        gLPnlEnemyArea2.setMaximumSize(new java.awt.Dimension(120, 220));
+        gLPnlEnemyArea2.setMinimumSize(new java.awt.Dimension(120, 220));
+        gLPnlEnemyArea2.setPreferredSize(new java.awt.Dimension(120, 220));
 
         javax.swing.GroupLayout gLPnlEnemyArea2Layout = new javax.swing.GroupLayout(gLPnlEnemyArea2);
         gLPnlEnemyArea2.setLayout(gLPnlEnemyArea2Layout);
@@ -111,12 +112,13 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         );
         gLPnlEnemyArea2Layout.setVerticalGroup(
             gLPnlEnemyArea2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 236, Short.MAX_VALUE)
+            .addGap(0, 216, Short.MAX_VALUE)
         );
 
         gLPnlEnemyArea3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        gLPnlEnemyArea3.setMaximumSize(new java.awt.Dimension(120, 240));
-        gLPnlEnemyArea3.setMinimumSize(new java.awt.Dimension(120, 240));
+        gLPnlEnemyArea3.setMaximumSize(new java.awt.Dimension(120, 220));
+        gLPnlEnemyArea3.setMinimumSize(new java.awt.Dimension(120, 220));
+        gLPnlEnemyArea3.setPreferredSize(new java.awt.Dimension(120, 220));
 
         javax.swing.GroupLayout gLPnlEnemyArea3Layout = new javax.swing.GroupLayout(gLPnlEnemyArea3);
         gLPnlEnemyArea3.setLayout(gLPnlEnemyArea3Layout);
@@ -126,7 +128,7 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         );
         gLPnlEnemyArea3Layout.setVerticalGroup(
             gLPnlEnemyArea3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 236, Short.MAX_VALUE)
+            .addGap(0, 216, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -284,21 +286,21 @@ public class GameFieldJFrame extends javax.swing.JFrame {
     }
 
     private void initEnemyArea1(SimulationStateInterface gameEngine) {
-        GLRenderer rendererEnemyArea1 = new GLRenderer(120, 240, Config.EnemyGameFieldBlockSize, false,gameEngine);
+        GLRenderer rendererEnemyArea1 = new GLRenderer(120, 220, Config.EnemyGameFieldBlockSize, false,gameEngine);
         gLPnlEnemyArea1.addGLEventListener(rendererEnemyArea1);
         FPSAnimator animator1 = new FPSAnimator(gLPnlEnemyArea1, Config.frameRate, true);
         animator1.start();
     }
 
     private void initEnemyArea2(SimulationStateInterface gameEngine) {
-        GLRenderer rendererEnemyArea2 = new GLRenderer(120, 240, Config.EnemyGameFieldBlockSize, false,gameEngine);
+        GLRenderer rendererEnemyArea2 = new GLRenderer(120, 220, Config.EnemyGameFieldBlockSize, false,gameEngine);
         gLPnlEnemyArea1.addGLEventListener(rendererEnemyArea2);
         FPSAnimator animator2 = new FPSAnimator(gLPnlEnemyArea1, Config.frameRate, true);
         animator2.start();
     }
 
     private void initEnemyArea3(SimulationStateInterface gameEngine) {
-        GLRenderer rendererEnemyArea3 = new GLRenderer(120, 240, Config.EnemyGameFieldBlockSize, false, gameEngine);
+        GLRenderer rendererEnemyArea3 = new GLRenderer(120, 220, Config.EnemyGameFieldBlockSize, false, gameEngine);
         gLPnlEnemyArea1.addGLEventListener(rendererEnemyArea3);
         FPSAnimator animator3 = new FPSAnimator(gLPnlEnemyArea1, Config.frameRate, true);
         animator3.start();
