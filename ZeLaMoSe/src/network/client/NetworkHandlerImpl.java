@@ -8,6 +8,7 @@ import domain.Step;
 import domain.TetrisController.UpdateType;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import network.*;
@@ -18,142 +19,144 @@ import network.*;
  */
 public class NetworkHandlerImpl extends NetworkHandler {
 
-   private Handler handler;
-   private Step lastStep;
-   private SessionInformation lastAddedSession;
-   private SessionInformation lastRemovedSession;
-   private SessionInformation ownSession;
-   private ChatMessage chatMessage;
-   private ExecutorService threadPool;
-   private ConcurrentHashMap<Integer, String> sessionList = new ConcurrentHashMap<Integer, String>();
-   private Exception thrownException;
+    private Handler handler;
+    private ConcurrentLinkedQueue<Step> stepQueue = new ConcurrentLinkedQueue<Step>();
+    private Step lastStep;
+    private SessionInformation lastAddedSession;
+    private SessionInformation lastRemovedSession;
+    private SessionInformation ownSession;
+    private ChatMessage chatMessage;
+    private ExecutorService threadPool;
+    private ConcurrentHashMap<Integer, String> sessionList = new ConcurrentHashMap<Integer, String>();
+    private Exception thrownException;
 
     @Override
     public void niggasInParis() {
-        //call notify observers from here => hand all data over to TetrisController for the nex simulation step
+        while (!stepQueue.isEmpty()) {
+            lastStep = stepQueue.poll();
+            setChanged();
+            notifyObservers(UpdateType.STEP);
+        }
+    }
+
+    public void setHandler(Handler handler) {
+        this.handler = handler;
+    }
+
+    public Handler getHandler() {
+        return handler;
+    }
+
+    public NetworkHandlerImpl() {
+        threadPool = Executors.newFixedThreadPool(1);
+    }
+
+    @Override
+    public SessionInformation getAddedSession() {
+        return lastAddedSession;
+    }
+
+    @Override
+    public int getRandomGeneratorSeed() {
         throw new UnsupportedOperationException("Not supported yet.");
-    }  
-   
-   public void setHandler(Handler handler) {
-      this.handler = handler;
-   }
+    }
 
-   public Handler getHandler() {
-      return handler;
-   }
+    @Override
+    public SessionInformation getRemovedSession() {
+        return lastRemovedSession;
+    }
 
-   public NetworkHandlerImpl() {
-      threadPool = Executors.newFixedThreadPool(1);
-   }
+    @Override
+    public void connectToServer(final String ip, final String serverName, final String nickname) {
+        threadPool.submit(new ConnectionRunnable(this, ip, serverName, nickname));
+    }
 
-   @Override
-   public SessionInformation getAddedSession() {
-      return lastAddedSession;
-   }
+    @Override
+    public void addStep(Step step) {
+        threadPool.execute(new AddStepRunnable(step, handler));
+    }
 
-   @Override
-   public int getRandomGeneratorSeed() {
-      throw new UnsupportedOperationException("Not supported yet.");
-   }
+    @Override
+    public Step getStep() {
+        return lastStep;
+    }
 
-   @Override
-   public SessionInformation getRemovedSession() {
-      return lastRemovedSession;
-   }
+    @Override
+    public void disconnectFromServer() {
+        threadPool.execute(new DisconnectionRunnable(handler));
+    }
 
-   @Override
-   public void connectToServer(final String ip, final String serverName, final String nickname) {
-      threadPool.submit(new ConnectionRunnable(this, ip, serverName, nickname));
-   }
+    public void notifyStepReceived(Step step) {
+        stepQueue.add(step);
+    }
 
-   @Override
-   public void addStep(Step step) {
-      threadPool.execute(new AddStepRunnable(step, handler));
-   }
+    public void notifySessionAdded(SessionInformation addedSession) {
+        lastAddedSession = addedSession;
+        sessionList.put(addedSession.getId(), addedSession.getNickname());
+        setChanged();
+        notifyObservers(UpdateType.SESSION_ADDED);
+    }
 
-   @Override
-   public Step getStep() {
-      return lastStep;
-   }
+    public void notifySessionRemoved(SessionInformation removedSession) {
+        lastRemovedSession = removedSession;
+        sessionList.remove(new Integer(removedSession.getId()));
+        setChanged();
+        notifyObservers(UpdateType.SESSION_REMOVED);
+    }
 
-   @Override
-   public void disconnectFromServer() {
-      threadPool.execute(new DisconnectionRunnable(handler));
-   }
+    public void notifyExceptionThrown(Exception ex) {
+        thrownException = ex;
+        setChanged();
+        notifyObservers(UpdateType.EXCEPTION_THROWN);
+    }
 
-   public void notifyStepReceived(Step step) {
-      lastStep = step;
-      setChanged();
-      notifyObservers(UpdateType.STEP);
-   }
+    @Override
+    public SessionInformation getOwnSession() {
+        return ownSession;
+    }
 
-   public void notifySessionAdded(SessionInformation addedSession) {
-      lastAddedSession = addedSession;
-      sessionList.put(addedSession.getId(), addedSession.getNickname());
-      setChanged();
-      notifyObservers(UpdateType.SESSION_ADDED);
-   }
+    public void notifyConnectionEstablished(SessionInformation ownSession, List<SessionInformation> sessionList) {
+        this.ownSession = ownSession;
+        for (SessionInformation session : sessionList) {
+            this.sessionList.put(session.getId(), session.getNickname());
+        }
+        setChanged();
+        notifyObservers(UpdateType.CONNECTION_ESTABLISHED);
+    }
 
-   public void notifySessionRemoved(SessionInformation removedSession) {
-      lastRemovedSession = removedSession;
-      sessionList.remove(new Integer(removedSession.getId()));
-      setChanged();
-      notifyObservers(UpdateType.SESSION_REMOVED);
-   }
+    @Override
+    public ConcurrentHashMap<Integer, String> getSessionList() {
+        return sessionList;
+    }
 
-   public void notifyExceptionThrown(Exception ex) {
-      thrownException = ex;
-      setChanged();
-      notifyObservers(UpdateType.EXCEPTION_THROWN);
-   }
+    @Override
+    public void sendChatMessage(final String message) {
+        threadPool.execute(new SendChatMessageRunnable(message, handler));
+    }
 
-   @Override
-   public SessionInformation getOwnSession() {
-      return ownSession;
-   }
+    void notifyChatMessageReceived(ChatMessage message) {
+        this.chatMessage = message;
+        setChanged();
+        notifyObservers(UpdateType.CHAT_MESSAGE_RECEIVED);
+    }
 
-   public void notifyConnectionEstablished(SessionInformation ownSession, List<SessionInformation> sessionList) {
-      this.ownSession = ownSession;
-      for(SessionInformation session: sessionList) {
-         this.sessionList.put(session.getId(), session.getNickname());
-      }
-      setChanged();
-      notifyObservers(UpdateType.CONNECTION_ESTABLISHED);
-   }
+    @Override
+    public ChatMessage getChatMessage() {
+        return chatMessage;
+    }
 
-   @Override
-   public ConcurrentHashMap<Integer, String> getSessionList() {
-      return sessionList;
-   }
+    @Override
+    public Exception getThrownException() {
+        return thrownException;
+    }
 
-   @Override
-   public void sendChatMessage(final String message) {
-      threadPool.execute(new SendChatMessageRunnable(message, handler));    
-   }
+    public void notifyGameStarted() {
+        setChanged();
+        notifyObservers(UpdateType.GAME_STARTED);
+    }
 
-   void notifyChatMessageReceived(ChatMessage message) {
-      this.chatMessage = message;
-      setChanged();
-      notifyObservers(UpdateType.CHAT_MESSAGE_RECEIVED);
-   }
-
-   @Override
-   public ChatMessage getChatMessage() {
-      return chatMessage;
-   }
-
-   @Override
-   public Exception getThrownException() {
-      return thrownException;
-   }
-
-   void notifyGameStarted() {
-      setChanged();
-      notifyObservers(UpdateType.GAME_STARTED);
-   }
-
-   @Override
-   public ExecutorService getThreadPool() {
-      return threadPool;
-   }
+    @Override
+    public ExecutorService getThreadPool() {
+        return threadPool;
+    }
 }
