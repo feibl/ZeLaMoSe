@@ -230,6 +230,9 @@ class GLRenderer implements GLEventListener, Observer {
     }
 
     private void handleMoveAction(MoveAction action) {
+        if (useSound) {
+            musicEngine.playMoveSound();
+        }
         switch (action.getDirection()) {
             case DOWN:
                 currentBlock.setY(currentBlock.getY() - action.getSpeed());
@@ -245,6 +248,9 @@ class GLRenderer implements GLEventListener, Observer {
 
     private void handleNewBlockAction(Block block) {
         if ((currentBlock != null)) {
+            if (useSound) {
+                musicEngine.playDropSound();
+            }
             saveCurrentblockToGrid();
         }
         currentBlock = (Block) block.clone();
@@ -293,7 +299,14 @@ class GLRenderer implements GLEventListener, Observer {
                 Color[][] originalGrid = getGridCopy();
 
                 List<Integer> linesToRemove = rmlineAction.getLinesToRemove();
+                if (useSound) {
+                    if (linesToRemove.size() == 4) {
+                        musicEngine.playLine4Sound();
+                    } else {
+                        musicEngine.playLineSound();
+                    }
 
+                }
                 for (Integer lineToRemove : linesToRemove) {
 
                     for (int x = 0; x < Config.gridWidth; x++) {
@@ -360,6 +373,11 @@ class GLRenderer implements GLEventListener, Observer {
 
             @Override
             public void run() {
+                if (useSound) {
+
+                    musicEngine.playGameOverSound();
+
+                }
                 boolean[][] filler = new boolean[Config.gridWidth][1];
 
                 for (int j = 0; j < Config.gridWidth; j++) {
