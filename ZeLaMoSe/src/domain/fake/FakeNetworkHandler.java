@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author chrigi
  */
 public class FakeNetworkHandler extends NetworkHandler {
-
+    public Step lastStep;
     @Override
     public SessionInformation getAddedSession() {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -93,7 +93,7 @@ public class FakeNetworkHandler extends NetworkHandler {
 
     @Override
     public void addStep(Step step) {
-        //do nothing
+        lastStep = step;
     }
 
     @Override

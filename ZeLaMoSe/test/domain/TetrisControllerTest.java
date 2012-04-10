@@ -9,7 +9,9 @@ import domain.fake.FakeNetworkHandler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 import domain.actions.MoveAction;
+import domain.interfaces.SimulationStateInterface;
 import network.SessionInformation;
 
 
@@ -33,9 +35,10 @@ public class TetrisControllerTest {
     @Before
     public void setUp() {
         sC = new SimulationController();
-        nH = new FakeNetworkHandler(new SessionInformation(3, "test"));
+        nH = new FakeNetworkHandler(new SessionInformation(sessionID, "test"));
         sG = new FakeStepGenerator();
         tC = new TetrisController(sC, nH, sG);
+        tC.autorun = false;
     }
   
     @After
@@ -53,13 +56,29 @@ public class TetrisControllerTest {
   
     @Test
     public void testSimulation() {
-//        nH.setConnected();
-//        SimulationStateInterface gE = sC.getSimulation(sessionID);
-//        GameEngine gameEngine = (GameEngine)gE;
-//        assertEquals(gameEngine.getSessionID(), 3);
-//        gameEngine.print();
-//        sG.step = createStep(0);
-//        tC.runStep();
-//        gameEngine.print();
+        assertTrue(nH.getSessionList().containsKey(sessionID));
+        assertNotNull(nH.getSessionList().get(sessionID));
+        nH.setConnected();
+        nH.setGameStarted();
+        SimulationStateInterface gE = sC.getSimulation(sessionID);
+        assertNotNull(gE);
+        GameEngine gameEngine = (GameEngine)gE;
+        assertEquals(gameEngine.getSessionID(), sessionID);
+        gameEngine.print();
+        
+        for (int i = 0; i < 10; i++) {
+//            System.out.println(i+"############################################");
+            sG.step = createStep(i);
+            assertEquals(sG.step.getSequenceNumber(), i);
+            tC.runStep();
+            assertEquals(nH.lastStep, sG.step);
+        }
+
+        gameEngine.print();
+    }
+    
+    @Test
+    public void testSimulation2() {
+        
     } 
 }
