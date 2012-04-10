@@ -105,12 +105,13 @@ public class TetrisController extends Observable implements Observer {
 
     @Override
     public void update(Observable o, Object o1) {
+        assert(o != null);
+        assert(o1 != null);
         switch ((UpdateType) o1) {
             case STEP:
                 StepProducerInterface producer = (StepProducerInterface) o;
                 Step step = producer.getStep();
                 assert(step != null);
-                System.out.println("outpukj "+step.getSequenceNumber());
                 simulationController.addStep(step);
                 if (step.getSessionID() == localSessionID) {
                     networkHandler.addStep(step);

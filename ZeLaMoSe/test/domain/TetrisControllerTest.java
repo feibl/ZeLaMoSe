@@ -45,8 +45,8 @@ public class TetrisControllerTest {
     public void tearDown() {
     }
     
-    Step createStep(int i) {
-        Step s = new Step(i, sessionID);
+    Step createStep(int i, int session) {
+        Step s = new Step(i, session);
         s.addAction(new MoveAction(10, MoveAction.Direction.LEFT, 1));
         s.addAction(new MoveAction(20, MoveAction.Direction.LEFT, 1));
         s.addAction(new MoveAction(30, MoveAction.Direction.LEFT, 1));
@@ -68,7 +68,7 @@ public class TetrisControllerTest {
         
         for (int i = 0; i < 10; i++) {
 //            System.out.println(i+"############################################");
-            sG.step = createStep(i);
+            sG.step = createStep(i, sessionID);
             assertEquals(sG.step.getSequenceNumber(), i);
             tC.runStep();
             assertEquals(nH.lastStep, sG.step);
@@ -78,7 +78,28 @@ public class TetrisControllerTest {
     }
     
     @Test
-    public void testSimulation2() {
+    public void testSimulationWithMultipleSessions() {
+        nH.setConnected();
+        nH.getSessionList().put(4, "session4");
+        nH.getSessionList().put(5, "session5");
+        nH.getSessionList().put(6, "session6");
+        nH.setGameStarted();
+        
+        for (int i = 0; i < 10; i++) {
+            sG.step = createStep(i, sessionID);
+            tC.runStep();
+            //assertEquals(nH.lastStep, sG.step);
+            nH.addRemoteStep(createStep(i, 4));
+            nH.addRemoteStep(createStep(i, 5));
+            nH.addRemoteStep(createStep(i, 6));
+        }
+        
+        GameEngine gE = (GameEngine)sC.getSimulation(sessionID);
+        assertNotNull(gE);
+        gE.print();
+        ((GameEngine)sC.getSimulation(4)).print();
+        ((GameEngine)sC.getSimulation(5)).print();
+        ((GameEngine)sC.getSimulation(6)).print();
         
     } 
 }

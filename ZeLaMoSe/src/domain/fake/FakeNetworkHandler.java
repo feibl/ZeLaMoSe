@@ -43,6 +43,8 @@ public class FakeNetworkHandler extends NetworkHandler {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
+    public ConcurrentHashMap<Integer, Step> stepMap = new ConcurrentHashMap<Integer, Step>();
+    
     private SessionInformation localSession;
     private ConcurrentHashMap<Integer, String> sessionMap = new ConcurrentHashMap<Integer, String>();
 
@@ -95,10 +97,17 @@ public class FakeNetworkHandler extends NetworkHandler {
     public void addStep(Step step) {
         lastStep = step;
     }
+    
+    private Step remoteStep;
+    public void addRemoteStep(Step step) {
+        remoteStep = step;
+        setChanged();
+        notifyObservers(UpdateType.STEP);
+    }
 
     @Override
     public Step getStep() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return remoteStep;
     }
 
     @Override
