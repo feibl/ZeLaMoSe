@@ -5,6 +5,7 @@
 package view;
 
 import domain.InputSampler;
+import domain.SimulationController;
 import domain.StepGeneratorImpl;
 import domain.TetrisController;
 import domain.fake.BlockingSimulationController;
@@ -246,7 +247,7 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
             
             public void run() {
                 InputSampler is = new InputSampler();
-                new MainJFrame(new TetrisController(new BlockingSimulationController(), new NetworkHandlerImpl(), new StepGeneratorImpl(is))).setVisible(true);
+                new MainJFrame(new TetrisController(new SimulationController(), new NetworkHandlerImpl(), new StepGeneratorImpl(is))).setVisible(true);
             }
         });
     }
