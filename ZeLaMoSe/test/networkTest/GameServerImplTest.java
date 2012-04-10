@@ -20,7 +20,7 @@ import network.server.GameServerImpl;
 import network.server.SessionImpl;
 import static org.junit.Assert.*;
 import org.junit.*;
-
+import java.io.*;
 /**
  *
  * @author Fabian Senn <fsenn@hsr.ch>
@@ -36,6 +36,7 @@ public class GameServerImplTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+        System.setProperty("java.security.policy","rmi.policy");
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new RMISecurityManager());
         }
