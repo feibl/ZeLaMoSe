@@ -13,6 +13,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import network.ServerFullException;
@@ -27,12 +29,14 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
     protected Session[] sessionList;
     private static final int MAX_SESSIONS = 4;
     private static int id = 1;
+    protected ExecutorService threadPool;
 
     public GameServerImpl(String serverName, Registry registry) throws RemoteException, MalformedURLException {
         sessionList = new Session[MAX_SESSIONS];
-        System.setProperty("java.security.policy","rmi.policy");
-		if (System.getSecurityManager() == null)
-				System.setSecurityManager(new RMISecurityManager());
+        System.setProperty("java.security.policy", "rmi.policy");
+        if (System.getSecurityManager() == null) {
+            System.setSecurityManager(new RMISecurityManager());
+        }
         registry.rebind(serverName, this);
     }
 
@@ -63,17 +67,6 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
             }
         }
         return returnList;
-    }
-
-    @Override
-    public void startGame() {
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                notifyAllGameStarted();
-            }
-        }).start();
     }
 
     public void removeSession(Session session) {
@@ -134,27 +127,49 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
         }
     }
 
-    void distributeStepToOthers(Session sender, Step step) {
-        for (Session s : sessionList) {
+    protected void distributeStepToOthers(Session sender, Step step) {
+        final Step stepFinal = step;
+        for (final Session s : sessionList) {
             if (s != null && s != sender) {
-                try {
-                    s.sendStep(step);
-                } catch (RemoteException ex) {
-                    removeSession(s);
-                }
+                threadPool.execute(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        try {
+                            s.sendStep(stepFinal);
+                        } catch (RemoteException ex) {
+                            removeSession(s);
+                        }
+                    }
+                });
+
             }
         }
     }
 
+    @Override
+    public void startGame() {
+        this.threadPool = Executors.newFixedThreadPool(getSessionList().size());
+        notifyAllGameStarted();
+    }
+
     protected void notifyAllGameStarted() {
         for (int i = 0; i < sessionList.length; i++) {
-            Session s = sessionList[i];
+            final Session s = sessionList[i];
             if (s != null) {
-                try {
-                    s.sendStartSignal();
-                } catch (RemoteException ex) {
-                    removeSession(s);
-                }
+
+                threadPool.execute(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        try {
+                            s.sendStartSignal();
+                        } catch (RemoteException ex) {
+                            removeSession(s);
+                        }
+                    }
+                });
+
             }
         }
     }

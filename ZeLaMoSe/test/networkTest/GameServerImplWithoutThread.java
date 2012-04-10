@@ -4,11 +4,13 @@
  */
 package networkTest;
 
+import domain.Step;
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import network.StartGameRunnable;
 import network.server.GameServerImpl;
+import network.server.Session;
 
 /**
  *
@@ -24,6 +26,32 @@ public class GameServerImplWithoutThread extends GameServerImpl {
     public void startGame() {
         notifyAllGameStarted();
     }
-    
-    
+
+    @Override
+    protected void distributeStepToOthers(Session sender, Step step) {
+        final Step stepFinal = step;
+        for (final Session s : sessionList) {
+            if (s != null && s != sender) {
+                try {
+                    s.sendStep(stepFinal);
+                } catch (RemoteException ex) {
+                    removeSession(s);
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void notifyAllGameStarted() {
+        for (int i = 0; i < sessionList.length; i++) {
+            final Session s = sessionList[i];
+            if (s != null) {
+                try {
+                    s.sendStartSignal();
+                } catch (RemoteException ex) {
+                    removeSession(s);
+                }
+            }
+        }
+    }
 }
