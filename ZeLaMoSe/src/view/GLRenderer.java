@@ -41,7 +41,7 @@ class GLRenderer implements GLEventListener, Observer {
     private MusicEngine musicEngine;
     private boolean useSound;
 
-    public GLRenderer(int width, int height, int blocksize, boolean useSound) {
+    public GLRenderer(int width, int height, int blocksize, boolean useSound, SimulationStateInterface gameEngine) {
         this.viewPortWidth = width;
         this.viewPortHeight = height;
         this.blockSize = blocksize;
@@ -52,6 +52,8 @@ class GLRenderer implements GLEventListener, Observer {
             musicEngine = new MusicEngine();
             musicEngine.startBGMusic();
         }
+        this.gameEngine = gameEngine;
+        gameEngine.addObserver(this);
     }
 
     @Override
@@ -94,11 +96,6 @@ class GLRenderer implements GLEventListener, Observer {
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
     }
 
-    void setEngine(SimulationStateInterface fakeGameEngine) {
-        gameEngine = fakeGameEngine;
-        gameEngine.addObserver(this);
-
-    }
 
     @Override
     public void update(Observable o, Object o1) {

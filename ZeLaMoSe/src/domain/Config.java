@@ -17,4 +17,7 @@ public class Config {
     public final static int defaultWallKickTest = 1;
     public final static int maxLevelForSpeed = 15;  
     public final static int advanceStepLimit = 21;
+    public final static int frameRate = 30;
+    public final static int ownGameFieldBlockSize = 30;
+    public final static int EnemyGameFieldBlockSize = 10;
 }
