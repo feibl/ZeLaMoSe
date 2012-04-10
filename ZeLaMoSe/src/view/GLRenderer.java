@@ -41,19 +41,21 @@ class GLRenderer implements GLEventListener, Observer {
     private MusicEngine musicEngine;
     private boolean useSound;
 
-    public GLRenderer(int width, int height, int blocksize, boolean useSound, SimulationStateInterface gameEngine) {
-        this.viewPortWidth = width;
-        this.viewPortHeight = height;
+    public GLRenderer(int blocksize, boolean useSound, SimulationStateInterface gameEngine) {
+        this.viewPortWidth = Config.gridWidth * blocksize;
+        this.viewPortHeight = (Config.gridHeight - 2) * blocksize;
         this.blockSize = blocksize;
         actionQueue = new ConcurrentLinkedQueue<Action>();
         initStackGrid();
         this.useSound = useSound;
         if (useSound) {
             musicEngine = new MusicEngine();
-            musicEngine.startBGMusic();
+            musicEngine.startBGMusic(false);
         }
-        this.gameEngine = gameEngine;
-        gameEngine.addObserver(this);
+        if (gameEngine != null) {
+            this.gameEngine = gameEngine;
+            gameEngine.addObserver(this);
+        }
     }
 
     @Override
@@ -96,17 +98,11 @@ class GLRenderer implements GLEventListener, Observer {
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
     }
 
-
     @Override
     public void update(Observable o, Object o1) {
         processAction(gameEngine.getSimulationState());
     }
 
-//   - rotation (direction): rotate current block in direction by 90
-// * - move (direction, speed): move block in direction (left, right, down) with speed (number of grids) 
-// * - rmline (number of lines, offset): remove a number of lines, first with offset from bottom
-// * - newline (line definition): add new line to bottom. line according to supplied definition
-// * - A new block enters the game
     private void processAction(Action action) {
         if (isAnimating) {
             actionQueue.add(action);
@@ -126,9 +122,9 @@ class GLRenderer implements GLEventListener, Observer {
         float red, green, blue;
         ////////////////////
         //drawing the grid
-        red = 0.2f;
-        green = 0.2f;
-        blue = 0.2f;
+        red = 0.0f;
+        green = 0.0f;
+        blue = 0.0f;
 
         gl.glColor3f(red, green, blue);
 
@@ -152,7 +148,8 @@ class GLRenderer implements GLEventListener, Observer {
     private void drawCurrentBlock(GL2 gl) {
         Color blockColor = currentBlock.getColor();
 
-        gl.glColor3f(blockColor.getRed(), blockColor.getGreen(), blockColor.getBlue());
+
+        gl.glColor3f(convertRgbToGlColor(blockColor.getRed()), convertRgbToGlColor(blockColor.getGreen()), convertRgbToGlColor(blockColor.getBlue()));
 
         gl.glBegin(GL2.GL_QUADS);
         int x = currentBlock.getX();
@@ -186,7 +183,7 @@ class GLRenderer implements GLEventListener, Observer {
             for (int j = 0; j < Config.gridHeight; j++) {
 
                 Color colorField = grid[i][j];
-                gl.glColor3f(colorField.getRed(), colorField.getGreen(), colorField.getBlue());
+                gl.glColor3f(convertRgbToGlColor(colorField.getRed()), convertRgbToGlColor(colorField.getGreen()), convertRgbToGlColor(colorField.getBlue()));
 
                 gl.glBegin(GL2.GL_QUADS);
 
@@ -223,21 +220,25 @@ class GLRenderer implements GLEventListener, Observer {
             currentBlock.rotateRight(Config.defaultWallKickTest);
         }
         currentBlock.setX(currentBlock.getX() + action.getXOffset());
-        currentBlock.setY(currentBlock.getY() - action.getYOffset());
+        currentBlock.setY(currentBlock.getY() + action.getYOffset());
     }
 
     private void handleMoveAction(MoveAction action) {
-        if (useSound) {
-            musicEngine.playMoveSound();
-        }
+
         switch (action.getDirection()) {
             case DOWN:
                 currentBlock.setY(currentBlock.getY() - action.getSpeed());
                 break;
             case LEFT:
+                if (useSound) {
+                    musicEngine.playMoveSound();
+                }
                 currentBlock.setX(currentBlock.getX() - action.getSpeed());
                 break;
             case RIGHT:
+                if (useSound) {
+                    musicEngine.playMoveSound();
+                }
                 currentBlock.setX(currentBlock.getX() + action.getSpeed());
                 break;
         }
@@ -302,7 +303,6 @@ class GLRenderer implements GLEventListener, Observer {
                     } else {
                         musicEngine.playLineSound();
                     }
-
                 }
                 for (Integer lineToRemove : linesToRemove) {
 
@@ -366,14 +366,14 @@ class GLRenderer implements GLEventListener, Observer {
     private void handleGameOverAction() {
         gameEngine.deleteObserver(this);
         currentBlock = null;
+
         new Thread(new Runnable() {
 
             @Override
             public void run() {
                 if (useSound) {
-
+                    musicEngine.stopBGMusic();
                     musicEngine.playGameOverSound();
-
                 }
                 boolean[][] filler = new boolean[Config.gridWidth][1];
 
@@ -417,5 +417,15 @@ class GLRenderer implements GLEventListener, Observer {
         if (debug) {
             System.out.println("GLREnderer: actiontype " + action.getType() + " processed");
         }
+    }
+
+    /**
+     * Converts an RGB Color To openGL Color scala which has a Range from 0.0 to 1.0
+     *
+     * @param rgbColor
+     * @return
+     */
+    private float convertRgbToGlColor(int rgbColor) {
+        return (float) rgbColor / 255f;
     }
 }

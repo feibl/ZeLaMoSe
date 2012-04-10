@@ -31,6 +31,7 @@ public class TetrisController extends Observable implements Observer {
 
     public final static int SERVER_PORT = Registry.REGISTRY_PORT;
     public static final String SERVER_NAME = "TetrisServer";
+    public boolean autorun = true;
     private Timer timer;
     private SimulationController simulationController;
     private NetworkHandler networkHandler;
@@ -39,7 +40,7 @@ public class TetrisController extends Observable implements Observer {
     private final int stepDuration = 50; //in millisecond   
     private GameServer gameServer;
     private ConcurrentHashMap<Integer, String> sessionMap;
-    private int localSessionID;
+    private int localSessionID = -1;
 
     public Object getThrownException() {
         throw new UnsupportedOperationException("Not yet implemented");
@@ -104,10 +105,13 @@ public class TetrisController extends Observable implements Observer {
 
     @Override
     public void update(Observable o, Object o1) {
+        assert(o != null);
+        assert(o1 != null);
         switch ((UpdateType) o1) {
             case STEP:
                 StepProducerInterface producer = (StepProducerInterface) o;
                 Step step = producer.getStep();
+                assert(step != null);
                 simulationController.addStep(step);
                 if (step.getSessionID() == localSessionID) {
                     networkHandler.addStep(step);
@@ -121,6 +125,8 @@ public class TetrisController extends Observable implements Observer {
                 notifyObservers(UpdateType.CONNECTION_ESTABLISHED);
                 break;
             case GAME_STARTED:
+                System.out.println("game started");
+                assert(localSessionID >= 0);
                 stepGenerator.setSessionID(localSessionID);
                 for (Map.Entry<Integer, String> entry : sessionMap.entrySet()) {
                     // TODO getSeed()
@@ -131,7 +137,9 @@ public class TetrisController extends Observable implements Observer {
                 notifyObservers(UpdateType.GAME_STARTED);
                 
                 simulationController.initSimulation();
-                run();
+                if (autorun) {
+                    run();
+                }
                 break;
         }
     }
@@ -143,14 +151,9 @@ public class TetrisController extends Observable implements Observer {
      */
     public void runStep() {
         System.out.println("running step: " + currentStep + " time: " + System.nanoTime());
-        simulationController.simulateStep(currentStep);
-        stepGenerator.niggasInParis();
-        currentStep++;
-
-    }
-
-    public void runFirstStep() {
-        System.out.println("first step: " + currentStep + " time: " + System.nanoTime());
+        if (currentStep > 0) { //on the first step we don't have all steps available so we wait for the others and don't simulate yet
+            simulationController.simulateStep(currentStep-1); //Simulate previous step
+        }
         stepGenerator.niggasInParis();
         currentStep++;
 
@@ -158,13 +161,6 @@ public class TetrisController extends Observable implements Observer {
 
     //Start the step timer
     private void run() {
-        TimerTask firstStepTask = new TimerTask() {
-
-            @Override
-            public void run() {
-                runFirstStep();
-            }
-        };
         TimerTask stepTask = new TimerTask() {
 
             @Override
@@ -173,7 +169,6 @@ public class TetrisController extends Observable implements Observer {
             }
         };
         timer = new Timer();
-        timer.schedule(firstStepTask, 0);
-        timer.scheduleAtFixedRate(stepTask, stepDuration, stepDuration);
+        timer.scheduleAtFixedRate(stepTask, 0, stepDuration);
     }
 }

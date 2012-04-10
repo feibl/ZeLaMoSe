@@ -29,15 +29,23 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         ownGameFieldJPanel1.initGLRenderer(mainSimulation);
         //TODO set Simulation on other Panels
 
+        
         if (!otherSimulations.isEmpty()) {
             initEnemyArea1(otherSimulations.remove(0));
+        } else {
+            initEnemyArea1(null);
+        }
 
-            if (!otherSimulations.isEmpty()) {
-                initEnemyArea2(otherSimulations.remove(0));
-                if (!otherSimulations.isEmpty()) {
-                    initEnemyArea3(otherSimulations.remove(0));
-                }
-            }
+        if (!otherSimulations.isEmpty()) {
+            initEnemyArea2(otherSimulations.remove(0));
+        } else {
+            initEnemyArea2(null);
+        }
+        
+        if (!otherSimulations.isEmpty()) {
+            initEnemyArea3(otherSimulations.remove(0));
+        } else {
+            initEnemyArea3(null);
         }
     }
 
@@ -286,23 +294,23 @@ public class GameFieldJFrame extends javax.swing.JFrame {
     }
 
     private void initEnemyArea1(SimulationStateInterface gameEngine) {
-        GLRenderer rendererEnemyArea1 = new GLRenderer(120, 220, Config.EnemyGameFieldBlockSize, false,gameEngine);
+        GLRenderer rendererEnemyArea1 = new GLRenderer(Config.EnemyGameFieldBlockSize, false, gameEngine);
         gLPnlEnemyArea1.addGLEventListener(rendererEnemyArea1);
         FPSAnimator animator1 = new FPSAnimator(gLPnlEnemyArea1, Config.frameRate, true);
         animator1.start();
     }
 
     private void initEnemyArea2(SimulationStateInterface gameEngine) {
-        GLRenderer rendererEnemyArea2 = new GLRenderer(120, 220, Config.EnemyGameFieldBlockSize, false,gameEngine);
-        gLPnlEnemyArea1.addGLEventListener(rendererEnemyArea2);
-        FPSAnimator animator2 = new FPSAnimator(gLPnlEnemyArea1, Config.frameRate, true);
+        GLRenderer rendererEnemyArea2 = new GLRenderer(Config.EnemyGameFieldBlockSize, false, gameEngine);
+        gLPnlEnemyArea2.addGLEventListener(rendererEnemyArea2);
+        FPSAnimator animator2 = new FPSAnimator(gLPnlEnemyArea2, Config.frameRate, true);
         animator2.start();
     }
 
     private void initEnemyArea3(SimulationStateInterface gameEngine) {
-        GLRenderer rendererEnemyArea3 = new GLRenderer(120, 220, Config.EnemyGameFieldBlockSize, false, gameEngine);
-        gLPnlEnemyArea1.addGLEventListener(rendererEnemyArea3);
-        FPSAnimator animator3 = new FPSAnimator(gLPnlEnemyArea1, Config.frameRate, true);
+        GLRenderer rendererEnemyArea3 = new GLRenderer(Config.EnemyGameFieldBlockSize, false, gameEngine);
+        gLPnlEnemyArea3.addGLEventListener(rendererEnemyArea3);
+        FPSAnimator animator3 = new FPSAnimator(gLPnlEnemyArea3, Config.frameRate, true);
         animator3.start();
     }
 }

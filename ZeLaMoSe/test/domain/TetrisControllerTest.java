@@ -9,7 +9,9 @@ import domain.fake.FakeNetworkHandler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 import domain.actions.MoveAction;
+import domain.interfaces.SimulationStateInterface;
 import network.SessionInformation;
 
 
@@ -33,17 +35,18 @@ public class TetrisControllerTest {
     @Before
     public void setUp() {
         sC = new SimulationController();
-        nH = new FakeNetworkHandler(new SessionInformation(3, "test"));
+        nH = new FakeNetworkHandler(new SessionInformation(sessionID, "test"));
         sG = new FakeStepGenerator();
         tC = new TetrisController(sC, nH, sG);
+        tC.autorun = false;
     }
   
     @After
     public void tearDown() {
     }
     
-    Step createStep(int i) {
-        Step s = new Step(i, sessionID);
+    Step createStep(int i, int session) {
+        Step s = new Step(i, session);
         s.addAction(new MoveAction(10, MoveAction.Direction.LEFT, 1));
         s.addAction(new MoveAction(20, MoveAction.Direction.LEFT, 1));
         s.addAction(new MoveAction(30, MoveAction.Direction.LEFT, 1));
@@ -53,13 +56,50 @@ public class TetrisControllerTest {
   
     @Test
     public void testSimulation() {
-//        nH.setConnected();
-//        SimulationStateInterface gE = sC.getSimulation(sessionID);
-//        GameEngine gameEngine = (GameEngine)gE;
-//        assertEquals(gameEngine.getSessionID(), 3);
-//        gameEngine.print();
-//        sG.step = createStep(0);
-//        tC.runStep();
-//        gameEngine.print();
+        assertTrue(nH.getSessionList().containsKey(sessionID));
+        assertNotNull(nH.getSessionList().get(sessionID));
+        nH.setConnected();
+        nH.setGameStarted();
+        SimulationStateInterface gE = sC.getSimulation(sessionID);
+        assertNotNull(gE);
+        GameEngine gameEngine = (GameEngine)gE;
+        assertEquals(gameEngine.getSessionID(), sessionID);
+        gameEngine.print();
+        
+        for (int i = 0; i < 10; i++) {
+//            System.out.println(i+"############################################");
+            sG.step = createStep(i, sessionID);
+            assertEquals(sG.step.getSequenceNumber(), i);
+            tC.runStep();
+            assertEquals(nH.lastStep, sG.step);
+        }
+
+        gameEngine.print();
+    }
+    
+    @Test
+    public void testSimulationWithMultipleSessions() {
+        nH.setConnected();
+        nH.getSessionList().put(4, "session4");
+        nH.getSessionList().put(5, "session5");
+        nH.getSessionList().put(6, "session6");
+        nH.setGameStarted();
+        
+        for (int i = 0; i < 10; i++) {
+            sG.step = createStep(i, sessionID);
+            tC.runStep();
+            //assertEquals(nH.lastStep, sG.step);
+            nH.addRemoteStep(createStep(i, 4));
+            nH.addRemoteStep(createStep(i, 5));
+            nH.addRemoteStep(createStep(i, 6));
+        }
+        
+        GameEngine gE = (GameEngine)sC.getSimulation(sessionID);
+        assertNotNull(gE);
+        gE.print();
+        ((GameEngine)sC.getSimulation(4)).print();
+        ((GameEngine)sC.getSimulation(5)).print();
+        ((GameEngine)sC.getSimulation(6)).print();
+        
     } 
 }

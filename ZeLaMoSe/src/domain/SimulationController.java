@@ -30,11 +30,15 @@ public class SimulationController implements StepInterface {
 
   @Override
   public void addStep(Step step) {
-      if (stepQueue.containsKey(step.getSessionID())) {
-          //throw new Exception("session");
+      if (!sessions.containsKey(step.getSessionID())) {
+          System.out.println("this session is not part of the simulation");
           assert(false);
       }
-
+      if (stepQueue.containsKey(step.getSessionID())) {
+          System.out.println("step queue already contains a step from this session");
+          assert(false);
+      }
+      System.out.println("addStep: "+step + " id: " + step.getSessionID() + " sequence: "+step.getSequenceNumber());
       stepQueue.put(step.getSessionID(), step);
   }
   
@@ -45,10 +49,11 @@ public class SimulationController implements StepInterface {
       assert(!gameEngines.containsKey(sessionId));
       gameEngines.put(sessionId, gameEngine);
       sessions.put(sessionId, name);
-      //System.out.println("add session: "+name);
+      System.out.println("add session: "+name);
   }
   
   public void initSimulation() {
+      System.out.println("init simulation");
       for (GameEngineInterface e: gameEngines.values()) {
           e.startGame();
       }
@@ -61,7 +66,7 @@ public class SimulationController implements StepInterface {
    * - Simulation ACtions
    */
   public void simulateStep(int seqNum) {
-      //System.out.println("simulateStep "+seqNum);
+      System.out.println("----------- simulateStep "+seqNum+" -----------");
       boolean advance = false;
       if (seqNum % (Config.advanceStepLimit-maxLevel) == 0) {
           advance = true;
@@ -81,6 +86,11 @@ public class SimulationController implements StepInterface {
       for (int session: sessions.keySet()) {
           assert(stepQueue.containsKey(session));
           Step s = stepQueue.remove(session);
+          System.out.println("step: "+s+" session: "+session);
+          if (s == null) {
+              System.out.println("tried to simulate step, but not all steps are available. Session "+session+ " is missing");
+              assert(false);
+          }
           if (s.getSequenceNumber() != seqNum) {
               //throw new Exception("Invalid sequenceNumber"+s.getSequenceNumber());
               assert(false);
@@ -105,9 +115,13 @@ public class SimulationController implements StepInterface {
                 maxLevel = g.getLevel();
             }
       }
+      assert(stepQueue.isEmpty());
+      System.out.println("----------------------");
   }
   
   public SimulationStateInterface getSimulation(int sessionId) {
+      assert(gameEngines.containsKey(sessionId));
+      System.out.println("contains key: "+gameEngines.containsKey(sessionId));
       return gameEngines.get(sessionId);
   }
     
