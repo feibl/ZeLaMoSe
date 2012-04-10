@@ -5,6 +5,7 @@
 package network.client;
 
 import domain.Step;
+import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import network.ChatMessage;
@@ -24,6 +25,9 @@ public class HandlerImpl extends UnicastRemoteObject implements Handler, ClientR
     public HandlerImpl(NetworkHandlerImpl networkHandler) throws RemoteException {
         this.networkHandler = networkHandler;
         gameStarted = false;
+                System.setProperty("java.security.policy","rmi.policy");
+		if (System.getSecurityManager() == null)
+				System.setSecurityManager(new RMISecurityManager());
     }
 
     @Override

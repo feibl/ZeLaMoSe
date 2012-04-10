@@ -3,10 +3,13 @@
  * and open the template in the editor.
  */
 package view;
+import domain.InputSampler;
+import domain.interfaces.SimulationStateInterface;
+import java.util.List;
 
 /**
  *
- * @author Patrick Zenhäusern
+ * @author Patrick Zenh√§usern
  */
 public class GameFieldJFrame extends javax.swing.JFrame {
 
@@ -15,6 +18,13 @@ public class GameFieldJFrame extends javax.swing.JFrame {
      */
     public GameFieldJFrame() {
         initComponents();
+    }
+
+    public GameFieldJFrame(InputSampler is, SimulationStateInterface mainSimulation, List<SimulationStateInterface> otherSimulations) {
+        initComponents();        
+        ownGameFieldJPanel1.setInputSampler(is);
+        ownGameFieldJPanel1.setSimulation(mainSimulation);
+        //TODO set Simulation on other Panels
     }
 
     /**

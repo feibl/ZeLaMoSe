@@ -104,6 +104,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Start Game"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblStartGameMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -162,6 +165,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Join Game"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblJoinGameMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

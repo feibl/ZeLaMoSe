@@ -7,6 +7,7 @@ package network.server;
 import network.client.ClientRemote;
 import domain.Step;
 import java.net.MalformedURLException;
+import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
@@ -23,12 +24,15 @@ import network.SessionInformation;
  */
 public class GameServerImpl extends UnicastRemoteObject implements GameServer, GameServerRemote {
 
-    Session[] sessionList;
+    protected Session[] sessionList;
     private static final int MAX_SESSIONS = 4;
     private static int id = 1;
 
     public GameServerImpl(String serverName, Registry registry) throws RemoteException, MalformedURLException {
         sessionList = new Session[MAX_SESSIONS];
+        System.setProperty("java.security.policy","rmi.policy");
+		if (System.getSecurityManager() == null)
+				System.setSecurityManager(new RMISecurityManager());
         registry.rebind(serverName, this);
     }
 
@@ -63,16 +67,13 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
 
     @Override
     public void startGame() {
-        for (int i = 0; i < sessionList.length; i++) {
-            Session s = sessionList[i];
-            if (s != null) {
-                try {
-                    s.sendStartSignal();
-                } catch (RemoteException ex) {
-                    removeSession(s);
-                }
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                notifyAllGameStarted();
             }
-        }
+        }).start();
     }
 
     public void removeSession(Session session) {
@@ -138,6 +139,19 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
             if (s != null && s != sender) {
                 try {
                     s.sendStep(step);
+                } catch (RemoteException ex) {
+                    removeSession(s);
+                }
+            }
+        }
+    }
+
+    protected void notifyAllGameStarted() {
+        for (int i = 0; i < sessionList.length; i++) {
+            Session s = sessionList[i];
+            if (s != null) {
+                try {
+                    s.sendStartSignal();
                 } catch (RemoteException ex) {
                     removeSession(s);
                 }

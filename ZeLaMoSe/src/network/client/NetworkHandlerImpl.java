@@ -4,18 +4,13 @@
  */
 package network.client;
 
-import network.DisconnectionRunnable;
-import network.ConnectionRunnable;
-import network.client.NetworkHandler;
 import domain.Step;
-import java.util.*;
+import domain.TetrisController.UpdateType;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import domain.TetrisController.UpdateType;
-import network.AddStepRunnable;
-import network.ChatMessage;
-import network.SendChatMessageRunnable;
-import network.SessionInformation;
+import network.*;
 
 /**
  *
@@ -30,7 +25,7 @@ public class NetworkHandlerImpl extends NetworkHandler {
    private SessionInformation ownSession;
    private ChatMessage chatMessage;
    private ExecutorService threadPool;
-   private Map<Integer, SessionInformation> sessionList = new HashMap<Integer, SessionInformation>();
+   private ConcurrentHashMap<Integer, String> sessionList = new ConcurrentHashMap<Integer, String>();
    private Exception thrownException;
 
     @Override
@@ -94,7 +89,7 @@ public class NetworkHandlerImpl extends NetworkHandler {
 
    public void notifySessionAdded(SessionInformation addedSession) {
       lastAddedSession = addedSession;
-      sessionList.put(addedSession.getId(), addedSession);
+      sessionList.put(addedSession.getId(), addedSession.getNickname());
       setChanged();
       notifyObservers(UpdateType.SESSION_ADDED);
    }
@@ -120,15 +115,15 @@ public class NetworkHandlerImpl extends NetworkHandler {
    public void notifyConnectionEstablished(SessionInformation ownSession, List<SessionInformation> sessionList) {
       this.ownSession = ownSession;
       for(SessionInformation session: sessionList) {
-         this.sessionList.put(session.getId(), session);
+         this.sessionList.put(session.getId(), session.getNickname());
       }
       setChanged();
       notifyObservers(UpdateType.CONNECTION_ESTABLISHED);
    }
 
    @Override
-   public List<SessionInformation> getSessionList() {
-      return new ArrayList<SessionInformation>(sessionList.values());
+   public ConcurrentHashMap<Integer, String> getSessionList() {
+      return sessionList;
    }
 
    @Override
