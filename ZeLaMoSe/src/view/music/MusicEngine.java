@@ -27,114 +27,90 @@ public class MusicEngine {
     private OggClip pause;
 
     public MusicEngine() {
-        try {
-            background = new OggClip(new FileInputStream("src/view/music/files/BackgroundThemeA.ogg"));
-            background.setGain(0.75f);
-        } catch (IOException ex) {
-            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            rotate = new OggClip(new FileInputStream("src/view/music/files/rotation.ogg"));
-        } catch (IOException ex) {
-            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            line4 = new OggClip(new FileInputStream("src/view/music/files/4line.ogg"));
-        } catch (IOException ex) {
-            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            drop = new OggClip(new FileInputStream("src/view/music/files/drop.ogg"));
-        } catch (IOException ex) {
-            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            gameover = new OggClip(new FileInputStream("src/view/music/files/gameover.ogg"));
-        } catch (IOException ex) {
-            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            line = new OggClip(new FileInputStream("src/view/music/files/line.ogg"));
-        } catch (IOException ex) {
-            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            lobby = new OggClip(new FileInputStream("src/view/music/files/lobby.ogg"));
-        } catch (IOException ex) {
-            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            move = new OggClip(new FileInputStream("src/view/music/files/move.ogg"));
-        } catch (IOException ex) {
-            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            pause = new OggClip(new FileInputStream("src/view/music/files/pause.ogg"));
-        } catch (IOException ex) {
-            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
     }
 
     public void startBGMusic() {
-        if (background != null) {
+        try {
+            background = new OggClip(new FileInputStream("src/view/music/files/BackgroundThemeA.ogg"));
+            background.setGain(0.75f);
             background.loop();
+        } catch (IOException ex) {
+            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     public void playRotateSound() {
-
-        if (rotate != null) {
+        try {
+            rotate = new OggClip(new FileInputStream("src/view/music/files/rotation.ogg"));
             rotate.play();
+        } catch (IOException ex) {
+            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void playLine4Sound() {
-
-        if (line4 != null) {
+        try {
+            line4 = new OggClip(new FileInputStream("src/view/music/files/4line.ogg"));
             line4.play();
+        } catch (IOException ex) {
+            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     public void playDropSound() {
-
-        if (drop != null) {
+        try {
+            drop = new OggClip(new FileInputStream("src/view/music/files/drop.ogg"));
             drop.play();
+        } catch (IOException ex) {
+            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void playGameOverSound() {
-
-        if (gameover != null) {
+        try {
+            gameover = new OggClip(new FileInputStream("src/view/music/files/gameover.ogg"));
             gameover.play();
+        } catch (IOException ex) {
+            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void playLineSound() {
-
-        if (line != null) {
+        try {
+            line = new OggClip(new FileInputStream("src/view/music/files/line.ogg"));
             line.play();
+        } catch (IOException ex) {
+            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void playLobbySound() {
-
-        if (lobby != null) {
+        try {
+            lobby = new OggClip(new FileInputStream("src/view/music/files/lobby.ogg"));
             lobby.loop();
+        } catch (IOException ex) {
+            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void playMoveSound() {
-
-        if (move != null) {
+        try {
+            move = new OggClip(new FileInputStream("src/view/music/files/move.ogg"));
             move.play();
+        } catch (IOException ex) {
+            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void playPauseSound() {
-
-        if (pause != null) {
+        try {
+            pause = new OggClip(new FileInputStream("src/view/music/files/pause.ogg"));
             pause.play();
+        } catch (IOException ex) {
+            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 }
