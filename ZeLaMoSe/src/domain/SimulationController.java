@@ -95,6 +95,7 @@ public class SimulationController implements StepInterface {
               //throw new Exception("Invalid sequenceNumber"+s.getSequenceNumber());
               assert(false);
           }
+          assert(s.getSessionID() == session);
           for (Action a: s.getActions()) {
               actionList.put(a, session);
           }

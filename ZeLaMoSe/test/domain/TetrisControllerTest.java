@@ -4,6 +4,7 @@
  */
 package domain;
 
+import domain.actions.Action;
 import domain.fake.FakeStepGenerator;
 import domain.fake.FakeNetworkHandler;
 import org.junit.After;
@@ -12,6 +13,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import domain.actions.MoveAction;
 import domain.interfaces.SimulationStateInterface;
+import java.util.Observable;
+import java.util.Observer;
 import network.SessionInformation;
 
 
@@ -77,6 +80,20 @@ public class TetrisControllerTest {
         gameEngine.print();
     }
     
+    class Tester implements Observer {
+        GameEngine ge;
+        Tester(GameEngine g) {
+            g.addObserver(this);
+            ge = g;
+        }
+
+        @Override
+        public void update(Observable o, Object o1) {
+            assertEquals(o, ge);
+            //Action s = ge.getSimulationState();
+        }
+    }
+    
     @Test
     public void testSimulationWithMultipleSessions() {
         nH.setConnected();
@@ -85,6 +102,15 @@ public class TetrisControllerTest {
         nH.getSessionList().put(6, "session6");
         nH.setGameStarted();
         
+        GameEngine gE1 = (GameEngine)sC.getSimulation(sessionID);
+        new Tester(gE1);
+        GameEngine gE2 = (GameEngine)sC.getSimulation(4);
+        new Tester(gE2);
+        GameEngine gE3 = (GameEngine)sC.getSimulation(5);
+        new Tester(gE3);
+        GameEngine gE4 = (GameEngine)sC.getSimulation(6);
+        new Tester(gE4);
+        
         for (int i = 0; i < 10; i++) {
             sG.step = createStep(i, sessionID);
             tC.runStep();
@@ -92,14 +118,14 @@ public class TetrisControllerTest {
             nH.addRemoteStep(createStep(i, 4));
             nH.addRemoteStep(createStep(i, 5));
             nH.addRemoteStep(createStep(i, 6));
+            if (i > 0) { //Start of simulations
+                
+            }
         }
         
         GameEngine gE = (GameEngine)sC.getSimulation(sessionID);
         assertNotNull(gE);
-        gE.print();
-        ((GameEngine)sC.getSimulation(4)).print();
-        ((GameEngine)sC.getSimulation(5)).print();
-        ((GameEngine)sC.getSimulation(6)).print();
+
         
     } 
 }
