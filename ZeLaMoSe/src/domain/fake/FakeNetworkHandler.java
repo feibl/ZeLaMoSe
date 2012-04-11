@@ -119,5 +119,10 @@ public class FakeNetworkHandler extends NetworkHandler {
     public void sendReadySignal() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public long getBlockQueueSeed() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
 }

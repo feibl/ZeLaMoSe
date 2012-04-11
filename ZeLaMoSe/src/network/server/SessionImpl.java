@@ -77,8 +77,8 @@ public class SessionImpl extends UnicastRemoteObject implements SessionRemote, S
     }
 
     @Override
-    public void sendInitSignal() throws RemoteException {
-        client.receiveInitSignal();
+    public void sendInitSignal(long blockQueueSeed) throws RemoteException {
+        client.receiveInitSignal(blockQueueSeed);
     }
     
 }

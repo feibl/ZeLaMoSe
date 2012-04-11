@@ -26,5 +26,5 @@ public interface Session {
 
    public void sendStartSignal() throws RemoteException;
 
-    public void sendInitSignal() throws RemoteException;
+    public void sendInitSignal(long blockQueueSeed) throws RemoteException;
 }

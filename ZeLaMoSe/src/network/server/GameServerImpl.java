@@ -13,6 +13,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -152,7 +153,8 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
     @Override
     public void startGame() {
         this.threadPool = Executors.newFixedThreadPool(getSessionList().size());
-        notifyAllInitSignal();
+        long blockQueueSeed = new Random().nextLong();
+        notifyAllInitSignal(blockQueueSeed);
     }
 
     protected void notifyAllGameStarted() {
@@ -182,7 +184,7 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
         }
     }
 
-    protected void notifyAllInitSignal() {
+    protected void notifyAllInitSignal(final long blockQueueSeed) {
         for (int i = 0; i < sessionList.length; i++) {
             final Session s = sessionList[i];
             if (s != null) {
@@ -192,7 +194,7 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
                     @Override
                     public void run() {
                         try {
-                            s.sendInitSignal();
+                            s.sendInitSignal(blockQueueSeed);
                         } catch (RemoteException ex) {
                             removeSession(s);
                         }

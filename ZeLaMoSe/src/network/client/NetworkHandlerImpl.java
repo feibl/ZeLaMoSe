@@ -29,6 +29,7 @@ public class NetworkHandlerImpl extends NetworkHandler {
     private ExecutorService threadPool;
     private ConcurrentHashMap<Integer, String> sessionList = new ConcurrentHashMap<Integer, String>();
     private Exception thrownException;
+    private long blockQueueSeed;
 
     @Override
     public void niggasInParis() {
@@ -150,7 +151,8 @@ public class NetworkHandlerImpl extends NetworkHandler {
         return thrownException;
     }
     
-    public void notifyInit() {
+    public void notifyInit(long blockQueueSeed) {
+        this.blockQueueSeed = blockQueueSeed;
         setChanged();
         notifyObservers(UpdateType.INIT_SIGNAL);
     }
@@ -168,5 +170,10 @@ public class NetworkHandlerImpl extends NetworkHandler {
     @Override
     public void sendReadySignal() {
         handler.sendReadySignal();
+    }
+
+    @Override
+    public long getBlockQueueSeed() {
+        return blockQueueSeed;
     }
 }

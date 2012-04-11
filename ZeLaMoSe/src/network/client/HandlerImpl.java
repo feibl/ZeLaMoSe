@@ -95,7 +95,7 @@ public class HandlerImpl extends UnicastRemoteObject implements Handler, ClientR
     }
 
     @Override
-    public void receiveInitSignal() throws RemoteException {
-        networkHandler.notifyInit();
+    public void receiveInitSignal(long blockQueueSeed) throws RemoteException {
+        networkHandler.notifyInit(blockQueueSeed);
     }
 }

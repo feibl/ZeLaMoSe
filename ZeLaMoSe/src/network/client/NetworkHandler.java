@@ -42,5 +42,7 @@ public abstract class NetworkHandler extends Observable implements StepInterface
    
    public abstract ExecutorService getThreadPool();
    
+   public abstract long getBlockQueueSeed();
+   
    public abstract void sendReadySignal();
 }

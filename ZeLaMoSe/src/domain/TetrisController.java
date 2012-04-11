@@ -128,9 +128,10 @@ public class TetrisController extends Observable implements Observer {
                 System.out.println("game started");
                 assert(localSessionID >= 0);
                 stepGenerator.setSessionID(localSessionID);
+                long seed = networkHandler.getBlockQueueSeed();
                 for (Map.Entry<Integer, String> entry : sessionMap.entrySet()) {
                     // TODO getSeed()
-                    simulationController.addSession(entry.getKey(), entry.getValue(), new GameEngine(entry.getKey(), 3));
+                    simulationController.addSession(entry.getKey(), entry.getValue(), new GameEngine(entry.getKey(), seed));
                 }
                 
                 setChanged();
