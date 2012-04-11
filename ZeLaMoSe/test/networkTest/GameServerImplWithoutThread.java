@@ -8,14 +8,15 @@ import domain.Step;
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
-import network.StartGameRunnable;
 import network.server.GameServerImpl;
 import network.server.Session;
+import org.junit.Ignore;
 
 /**
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
+@Ignore
 public class GameServerImplWithoutThread extends GameServerImpl {
 
     public GameServerImplWithoutThread(String serverName, Registry registry) throws RemoteException, MalformedURLException {

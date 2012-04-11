@@ -7,11 +7,13 @@ package networkTest;
 import domain.Step;
 import network.*;
 import network.client.NetworkHandlerImpl;
+import org.junit.Ignore;
 
 /**
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
+@Ignore
 public class NetworkHandlerImplWithoutThreads extends NetworkHandlerImpl{
 
    @Override

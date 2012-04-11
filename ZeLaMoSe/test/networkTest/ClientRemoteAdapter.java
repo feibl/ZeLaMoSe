@@ -10,11 +10,13 @@ import network.ChatMessage;
 import network.client.ClientRemote;
 import network.server.SessionRemote;
 import network.SessionInformation;
+import org.junit.Ignore;
 
 /**
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
+@Ignore
 public class ClientRemoteAdapter implements ClientRemote {
 
    @Override
