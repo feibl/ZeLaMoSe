@@ -17,27 +17,27 @@ import network.SessionInformation;
  */
 public class ClientRemoteAdapter implements ClientRemote {
 
-   @Override
-   public void receiveStep(Step step) throws RemoteException {
-   }
-
-   @Override
-   public void receiveSessionAddedMessage(SessionInformation session) throws RemoteException {
-   }
-
-   @Override
-   public void receiveSessionRemovedMessage(SessionInformation session) throws RemoteException {
-   }
-
-   @Override
-   public void receiveChatMessage(ChatMessage message) throws RemoteException {
-   }
-
-   @Override
-   public void receiveStartSignal() throws RemoteException {
-   }
+    @Override
+    public void receiveStep(Step step) throws RemoteException {
+    }
 
     @Override
-    public void receiveInitSignal() throws RemoteException {
+    public void receiveSessionAddedMessage(SessionInformation session) throws RemoteException {
+    }
+
+    @Override
+    public void receiveSessionRemovedMessage(SessionInformation session) throws RemoteException {
+    }
+
+    @Override
+    public void receiveChatMessage(ChatMessage message) throws RemoteException {
+    }
+
+    @Override
+    public void receiveStartSignal() throws RemoteException {
+    }
+
+    @Override
+    public void receiveInitSignal(long blockQueueSeed) throws RemoteException {
     }
 }

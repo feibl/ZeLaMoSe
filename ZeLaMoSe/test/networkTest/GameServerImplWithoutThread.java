@@ -24,7 +24,7 @@ public class GameServerImplWithoutThread extends GameServerImpl {
 
     @Override
     public void startGame() {
-        notifyAllInitSignal();
+        notifyAllInitSignal(3);
     }
 
     @Override
@@ -56,12 +56,12 @@ public class GameServerImplWithoutThread extends GameServerImpl {
     }
 
     @Override
-    protected void notifyAllInitSignal() {
+    protected void notifyAllInitSignal(long blockQueueSeed) {
         for (int i = 0; i < sessionList.length; i++) {
             final Session s = sessionList[i];
             if (s != null) {
                 try {
-                    s.sendInitSignal();
+                    s.sendInitSignal(blockQueueSeed);
                 } catch (RemoteException ex) {
                     removeSession(s);
                 }
