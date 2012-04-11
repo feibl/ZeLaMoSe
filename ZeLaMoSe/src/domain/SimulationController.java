@@ -17,9 +17,9 @@ import java.util.*;
  */
 public class SimulationController implements StepInterface {
   private Map<Integer, Step> stepQueue = new HashMap<Integer, Step>();
-  private Map<Integer, GameEngineInterface> gameEngines = new HashMap<Integer, GameEngineInterface>();
-  private Map<Integer, String> sessions = new HashMap<Integer, String>();
-  private int maxLevel = 1;
+  protected Map<Integer, GameEngineInterface> gameEngines = new HashMap<Integer, GameEngineInterface>();
+  protected Map<Integer, String> sessions = new HashMap<Integer, String>();
+  protected int maxLevel = 1;
   public boolean autoadvance = true;
   
   public SimulationController() {
@@ -62,7 +62,7 @@ public class SimulationController implements StepInterface {
   /*
    * This is just a workaround because the map doesn't seem to sort as expected, at least not with the entry set.
    */
-  ArrayList < Map.Entry<Action, Integer>> sortEntrySet( Set< Map.Entry<Action, Integer> > set) {
+  protected ArrayList < Map.Entry<Action, Integer>> sortEntrySet( Set< Map.Entry<Action, Integer> > set) {
       ArrayList< Map.Entry<Action, Integer>> sortedList = new ArrayList< Map.Entry<Action, Integer>>();
       for (Map.Entry<Action, Integer> e: set) {
           int i = 0;

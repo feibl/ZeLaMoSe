@@ -4,6 +4,7 @@
  */
 package domain.fake;
 
+import domain.Config;
 import domain.SimulationController;
 import domain.Step;
 import domain.actions.Action;
@@ -23,34 +24,13 @@ import java.util.logging.Logger;
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
-public class BlockingSimulationController extends SimulationController implements StepInterface{
+public class BlockingSimulationController extends SimulationController implements StepInterface {
 
     private ArrayBlockingQueue<Step> stepQueue = new ArrayBlockingQueue<Step>(4);
-    private Map<Integer, GameEngineInterface> gameEngines = new HashMap<Integer, GameEngineInterface>();
-    private Map<Integer, String> sessions = new HashMap<Integer, String>();
-    private final int advanceStepLimit = 20; //advance by one every 20 steps
 
     @Override
     public void addStep(Step step) {
         stepQueue.add(step);
-    }
-
-    /*
-     * Register session
-     */
-    @Override
-    public void addSession(int sessionId, String name, GameEngineInterface gameEngine) {
-        assert (!gameEngines.containsKey(sessionId));
-        gameEngines.put(sessionId, gameEngine);
-        sessions.put(sessionId, name);
-        //System.out.println("add session: "+name);
-    }
-
-    @Override
-    public void initSimulation() {
-        for (GameEngineInterface e : gameEngines.values()) {
-            e.startGame();
-        }
     }
 
     /*
@@ -60,7 +40,7 @@ public class BlockingSimulationController extends SimulationController implement
     public void simulateStep(int seqNum) {
         //System.out.println("simulateStep "+seqNum);
         boolean advance = false;
-        if (seqNum % advanceStepLimit == 0) {
+        if (autoadvance && (seqNum % (Config.advanceStepLimit - maxLevel) == 0)) {
             advance = true;
         }
         Map<Action, Integer> actionList = new TreeMap<Action, Integer>(new Comparator() {
@@ -70,7 +50,7 @@ public class BlockingSimulationController extends SimulationController implement
                 if (((Action) t).getTimestamp() < ((Action) t1).getTimestamp()) {
                     return -1;
                 }
-                return 1;
+                return -1;
             }
         });
 
@@ -94,15 +74,15 @@ public class BlockingSimulationController extends SimulationController implement
                 g.handleAction(new MoveAction(0, MoveAction.Direction.DOWN, 1));
             }
         }
-        for (Map.Entry<Action, Integer> e : actionList.entrySet()) {
+        for (Map.Entry<Action, Integer> e : sortEntrySet(actionList.entrySet())) {
+            System.out.println("--Simulating action with timestamp: " + e.getKey().getTimestamp() + " sessionid " + e.getValue());
             assert (gameEngines.containsKey(e.getValue()));
             GameEngineInterface g = gameEngines.get(e.getValue());
+            assert (g.getSessionID() == e.getValue());
             g.handleAction(e.getKey());
+            if (g.getLevel() > maxLevel && maxLevel < Config.maxLevelForSpeed) {
+                maxLevel = g.getLevel();
+            }
         }
-    }
-
-    @Override
-    public SimulationStateInterface getSimulation(int sessionId) {
-        return gameEngines.get(sessionId);
     }
 }
