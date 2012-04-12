@@ -7,10 +7,14 @@ package network.client;
 import domain.Step;
 import domain.TetrisController.UpdateType;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import network.*;
 
 /**
@@ -20,7 +24,7 @@ import network.*;
 public class NetworkHandlerImpl extends NetworkHandler {
 
     private Handler handler;
-    private ConcurrentLinkedQueue<Step> stepQueue = new ConcurrentLinkedQueue<Step>();
+    private BlockingQueue<Step> stepQueue = new LinkedBlockingQueue<Step>();
     private Step lastStep;
     private SessionInformation lastAddedSession;
     private SessionInformation lastRemovedSession;
@@ -33,10 +37,12 @@ public class NetworkHandlerImpl extends NetworkHandler {
 
     @Override
     public void niggasInParis() {
-        while (!stepQueue.isEmpty()) {
-            lastStep = stepQueue.poll();
+        try {
+            lastStep = stepQueue.take();
             setChanged();
             notifyObservers(UpdateType.STEP);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(NetworkHandlerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -150,7 +156,7 @@ public class NetworkHandlerImpl extends NetworkHandler {
     public Exception getThrownException() {
         return thrownException;
     }
-    
+
     public void notifyInit(long blockQueueSeed) {
         this.blockQueueSeed = blockQueueSeed;
         setChanged();

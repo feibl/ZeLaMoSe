@@ -48,8 +48,8 @@ public class TetrisController extends Observable implements Observer {
 
     public enum UpdateType {
 
-        STEP, SESSION_ADDED, SESSION_REMOVED, CONNECTION_ESTABLISHED, EXCEPTION_THROWN, CHAT_MESSAGE_RECEIVED, GAME_STARTED
-    ,   INIT_SIGNAL};
+        STEP, SESSION_ADDED, SESSION_REMOVED, CONNECTION_ESTABLISHED, EXCEPTION_THROWN, CHAT_MESSAGE_RECEIVED, GAME_STARTED, INIT_SIGNAL
+    };
 
     public TetrisController(SimulationController sController, NetworkHandler nH, StepGenerator sG) {
         simulationController = sController;
@@ -105,13 +105,13 @@ public class TetrisController extends Observable implements Observer {
 
     @Override
     public void update(Observable o, Object o1) {
-        assert(o != null);
-        assert(o1 != null);
+        assert (o != null);
+        assert (o1 != null);
         switch ((UpdateType) o1) {
             case STEP:
                 StepProducerInterface producer = (StepProducerInterface) o;
                 Step step = producer.getStep();
-                assert(step != null);
+                assert (step != null);
                 simulationController.addStep(step);
                 if (step.getSessionID() == localSessionID) {
                     networkHandler.addStep(step);
@@ -120,26 +120,26 @@ public class TetrisController extends Observable implements Observer {
             case CONNECTION_ESTABLISHED:
                 localSessionID = networkHandler.getOwnSession().getId();
                 sessionMap = networkHandler.getSessionList();
-                                
+
                 setChanged();
                 notifyObservers(UpdateType.CONNECTION_ESTABLISHED);
                 break;
             case INIT_SIGNAL:
                 System.out.println("game started");
-                assert(localSessionID >= 0);
+                assert (localSessionID >= 0);
                 stepGenerator.setSessionID(localSessionID);
                 long seed = networkHandler.getBlockQueueSeed();
                 for (Map.Entry<Integer, String> entry : sessionMap.entrySet()) {
                     // TODO getSeed()
                     simulationController.addSession(entry.getKey(), entry.getValue(), new GameEngine(entry.getKey(), seed));
                 }
-                
+
                 setChanged();
                 notifyObservers(UpdateType.GAME_STARTED);
                 networkHandler.sendReadySignal();
-                
+
                 break;
-             case GAME_STARTED:  
+            case GAME_STARTED:
                 simulationController.initSimulation();
                 if (autorun) {
                     run();
@@ -155,13 +155,14 @@ public class TetrisController extends Observable implements Observer {
      */
     public void runStep() {
         System.out.println("running step: " + currentStep + " time: " + System.nanoTime());
-        networkHandler.niggasInParis();
         if (currentStep > 0) { //on the first step we don't have all steps available so we wait for the others and don't simulate yet
-            simulationController.simulateStep(currentStep-1); //Simulate previous step
+            for (int i = 0; i < sessionMap.size() - 1; i++) {
+                networkHandler.niggasInParis();
+            }
+            simulationController.simulateStep(currentStep - 1); //Simulate previous step
         }
         stepGenerator.niggasInParis();
         currentStep++;
-
     }
 
     //Start the step timer
