@@ -57,6 +57,7 @@ public class TetrisController extends Observable implements Observer {
         networkHandler.addObserver(this);
         stepGenerator = sG;
         stepGenerator.addObserver(this);
+        timer = new Timer();
     }
 
     public Map<Integer, String> getSessionMap() {
@@ -174,7 +175,6 @@ public class TetrisController extends Observable implements Observer {
                 runStep();
             }
         };
-        timer = new Timer();
         timer.scheduleAtFixedRate(stepTask, 0, stepDuration);
     }
 }
