@@ -42,14 +42,14 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
         jLabel1 = new javax.swing.JLabel();
         pnlSinglePlayer = new javax.swing.JPanel();
         lblSinglePlayer = new javax.swing.JLabel();
-        lblStartGame = new javax.swing.JLabel();
+        btnStartGame = new javax.swing.JButton();
         pnlMultiPlayer = new javax.swing.JPanel();
         lblMultiPlayer = new javax.swing.JLabel();
-        lblCreateGame = new javax.swing.JLabel();
-        lblJoinGame = new javax.swing.JLabel();
+        btnCreateGame = new javax.swing.JButton();
+        btnJoinGame = new javax.swing.JButton();
         pnlControl = new javax.swing.JPanel();
-        lblHelp = new javax.swing.JLabel();
-        lblExit = new javax.swing.JLabel();
+        btnHelp = new javax.swing.JButton();
+        btnExit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -59,10 +59,12 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
 
         lblSinglePlayer.setText("<html><strong>SinglePlayer</strong></html>");
 
-        lblStartGame.setText("Start Game");
-        lblStartGame.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblStartGameMouseClicked(evt);
+        btnStartGame.setText("Start Game");
+        btnStartGame.setMaximumSize(new java.awt.Dimension(95, 23));
+        btnStartGame.setMinimumSize(new java.awt.Dimension(95, 23));
+        btnStartGame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStartGameActionPerformed(evt);
             }
         });
 
@@ -71,37 +73,44 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
         pnlSinglePlayerLayout.setHorizontalGroup(
             pnlSinglePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlSinglePlayerLayout.createSequentialGroup()
-                .addGap(112, 112, 112)
                 .addGroup(pnlSinglePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblStartGame)
-                    .addComponent(lblSinglePlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(140, Short.MAX_VALUE))
+                    .addGroup(pnlSinglePlayerLayout.createSequentialGroup()
+                        .addGap(115, 115, 115)
+                        .addComponent(btnStartGame, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlSinglePlayerLayout.createSequentialGroup()
+                        .addGap(130, 130, 130)
+                        .addComponent(lblSinglePlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(126, Short.MAX_VALUE))
         );
         pnlSinglePlayerLayout.setVerticalGroup(
             pnlSinglePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlSinglePlayerLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSinglePlayerLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblSinglePlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblStartGame)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnStartGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
         );
 
         pnlMultiPlayer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
         lblMultiPlayer.setText("<html><strong>MultiPlayer</strong></html>");
 
-        lblCreateGame.setText("Create Game");
-        lblCreateGame.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblCreateGameMouseClicked(evt);
+        btnCreateGame.setText("Create Game");
+        btnCreateGame.setPreferredSize(new java.awt.Dimension(87, 23));
+        btnCreateGame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateGameActionPerformed(evt);
             }
         });
 
-        lblJoinGame.setText("Join Game");
-        lblJoinGame.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblJoinGameMouseClicked(evt);
+        btnJoinGame.setText("Join Game");
+        btnJoinGame.setMaximumSize(new java.awt.Dimension(95, 23));
+        btnJoinGame.setMinimumSize(new java.awt.Dimension(95, 23));
+        btnJoinGame.setPreferredSize(new java.awt.Dimension(87, 23));
+        btnJoinGame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnJoinGameActionPerformed(evt);
             }
         });
 
@@ -110,49 +119,53 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
         pnlMultiPlayerLayout.setHorizontalGroup(
             pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMultiPlayerLayout.createSequentialGroup()
-                .addGap(113, 113, 113)
                 .addGroup(pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblMultiPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblJoinGame)
-                    .addComponent(lblCreateGame))
+                    .addGroup(pnlMultiPlayerLayout.createSequentialGroup()
+                        .addGap(111, 111, 111)
+                        .addGroup(pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnCreateGame, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                            .addComponent(btnJoinGame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(pnlMultiPlayerLayout.createSequentialGroup()
+                        .addGap(127, 127, 127)
+                        .addComponent(lblMultiPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlMultiPlayerLayout.setVerticalGroup(
             pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMultiPlayerLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(16, 16, 16)
                 .addComponent(lblMultiPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblCreateGame)
-                .addGap(18, 18, 18)
-                .addComponent(lblJoinGame)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCreateGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addComponent(btnJoinGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4))
         );
 
         pnlControl.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
-        lblHelp.setText("Help");
+        btnHelp.setText("Help");
 
-        lblExit.setText("Exit");
+        btnExit.setText("Exit");
 
         javax.swing.GroupLayout pnlControlLayout = new javax.swing.GroupLayout(pnlControl);
         pnlControl.setLayout(pnlControlLayout);
         pnlControlLayout.setHorizontalGroup(
             pnlControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlControlLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(lblHelp)
+                .addContainerGap()
+                .addComponent(btnHelp)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblExit)
-                .addGap(20, 20, 20))
+                .addComponent(btnExit)
+                .addContainerGap())
         );
         pnlControlLayout.setVerticalGroup(
             pnlControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlControlLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(25, 25, 25)
                 .addGroup(pnlControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblHelp)
-                    .addComponent(lblExit))
+                    .addComponent(btnHelp)
+                    .addComponent(btnExit))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
 
@@ -165,11 +178,11 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(51, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(pnlMultiPlayer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlControl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlSinglePlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(37, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pnlMultiPlayer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlSinglePlayer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlControl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(42, 42, 42))
         );
         layout.setVerticalGroup(
@@ -183,14 +196,18 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
                 .addComponent(pnlMultiPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(pnlControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void lblCreateGameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCreateGameMouseClicked
-        tetrisController.addObserver(this);
+    private void btnStartGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartGameActionPerformed
+
+    }//GEN-LAST:event_btnStartGameActionPerformed
+
+    private void btnCreateGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateGameActionPerformed
+               tetrisController.addObserver(this);
         try {
             tetrisController.startServer();
             tetrisController.connectToServer("", TetrisController.SERVER_PORT, "nickname");
@@ -198,18 +215,14 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
             JOptionPane.showMessageDialog(this, ex, "Exception", JOptionPane.ERROR_MESSAGE);
             tetrisController.deleteObserver(this);
         }
-        
-    }//GEN-LAST:event_lblCreateGameMouseClicked
-    
-    private void lblStartGameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblStartGameMouseClicked
-    }//GEN-LAST:event_lblStartGameMouseClicked
-    
-    private void lblJoinGameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblJoinGameMouseClicked
+    }//GEN-LAST:event_btnCreateGameActionPerformed
+
+    private void btnJoinGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinGameActionPerformed
         String ip = JOptionPane.showInputDialog(null, "Eingabe der IP");
         tetrisController.addObserver(this);
         tetrisController.connectToServer(ip, TetrisController.SERVER_PORT, "nickname");
-    }//GEN-LAST:event_lblJoinGameMouseClicked
-
+    }//GEN-LAST:event_btnJoinGameActionPerformed
+        
     /**
      * @param args the command line arguments
      */
@@ -252,14 +265,14 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCreateGame;
+    private javax.swing.JButton btnExit;
+    private javax.swing.JButton btnHelp;
+    private javax.swing.JButton btnJoinGame;
+    private javax.swing.JButton btnStartGame;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel lblCreateGame;
-    private javax.swing.JLabel lblExit;
-    private javax.swing.JLabel lblHelp;
-    private javax.swing.JLabel lblJoinGame;
     private javax.swing.JLabel lblMultiPlayer;
     private javax.swing.JLabel lblSinglePlayer;
-    private javax.swing.JLabel lblStartGame;
     private javax.swing.JPanel pnlControl;
     private javax.swing.JPanel pnlMultiPlayer;
     private javax.swing.JPanel pnlSinglePlayer;
