@@ -181,7 +181,7 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
         getContentPane().add(lblSinglePlayer);
         lblSinglePlayer.setBounds(40, 60, 70, 14);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Patrick Zenhäusern\\Desktop\\tetris_one_crop_desired_aspect_ratio_resolution_got_here_desktop_1680x1050_wallpaper-113603.jpeg")); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/image/tetrisbg.jpeg"))); // NOI18N
         getContentPane().add(jLabel2);
         jLabel2.setBounds(0, 0, 420, 390);
 
