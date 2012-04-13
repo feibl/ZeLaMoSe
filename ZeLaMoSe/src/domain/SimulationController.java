@@ -96,7 +96,7 @@ public class SimulationController implements StepInterface {
               if (((Action)t).getTimestamp() < ((Action)t1).getTimestamp()) {
                   return -1;
               }
-              return -1;
+              return 1;
           }
 
       });
