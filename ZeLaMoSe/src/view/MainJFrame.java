@@ -22,13 +22,15 @@ import view.music.MusicEngine;
 public class MainJFrame extends javax.swing.JFrame implements Observer {
     
     private TetrisController tetrisController;
-
+    private MusicEngine musicEngine;
     /**
      * Creates new form frmMain
      */
     public MainJFrame(TetrisController tetrisController) {
         this.tetrisController = tetrisController;
         initComponents();
+        musicEngine = new MusicEngine();
+
     }
 
     /**
@@ -264,6 +266,17 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JPanel pnlMultiPlayer;
     private javax.swing.JPanel pnlSinglePlayer;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void setVisible(boolean b) {
+        super.setVisible(b);
+        if (!b) {
+           musicEngine.stopNiggasInParis();
+    }else{
+                           musicEngine.startNiggasInParis(false);
+        }
+
+    }
 
     @Override
     public void update(Observable o, Object o1) {

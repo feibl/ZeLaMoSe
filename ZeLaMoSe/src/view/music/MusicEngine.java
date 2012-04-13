@@ -25,6 +25,7 @@ public class MusicEngine {
     private OggClip lobby;
     private OggClip move;
     private OggClip pause;
+    private OggClip niggasinparis;
 
     public MusicEngine() {
     }
@@ -48,7 +49,26 @@ public class MusicEngine {
     public void stopBGMusic() {
         background.stop();
     }
+    
+    public void startNiggasInParis(boolean end) {
+        try {
 
+            if (end) {
+                niggasinparis.stop();
+            } else {
+                            niggasinparis = new OggClip(new FileInputStream("src/view/music/files/Niggas_In_Paris.ogg"));
+                niggasinparis.loop();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void stopNiggasInParis() {
+        niggasinparis.stop();
+    }
+    
     public void playRotateSound() {
         try {
             rotate = new OggClip(new FileInputStream("src/view/music/files/rotation.ogg"));
