@@ -12,8 +12,8 @@ import java.rmi.registry.Registry;
 import java.util.Observable;
 import java.util.Observer;
 import domain.TetrisController.UpdateType;
-import java.util.ArrayList;
-import java.util.List;
+import java.rmi.RMISecurityManager;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import network.SessionInformation;
@@ -42,6 +42,10 @@ public class RMILocalhostTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+        System.setProperty("java.security.policy", "rmi.policy");
+        if (System.getSecurityManager() == null) {
+            System.setSecurityManager(new RMISecurityManager());
+        }
         registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
     }
 
@@ -119,9 +123,7 @@ public class RMILocalhostTest {
             @Override
             public void update(Observable o, Object o1) {
                 if ((UpdateType) o1 == UpdateType.EXCEPTION_THROWN) {
-//               if (handler.getThrownException().getMessage().equals(new ServerFullException().getMessage())) {
                     flag = true;
-//               }
                 }
             }
         });
@@ -159,15 +161,15 @@ public class RMILocalhostTest {
                 }
             }
         };
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < MAX_SESSIONS; i++) {
             NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
             handler.addObserver(observer);
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME);
         }
-        assertEquals(4, count);
+        assertEquals(MAX_SESSIONS, count);
     }
 
-    public void testServerFull() {
+    public void testMaxNumberOfPlayers() {
         Observer observer = new Observer() {
 
             @Override
@@ -177,12 +179,12 @@ public class RMILocalhostTest {
                 }
             }
         };
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < MAX_SESSIONS + 1; i++) {
             NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
             handler.addObserver(observer);
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME);
         }
-        assertEquals(4, count);
+        assertEquals(MAX_SESSIONS, count);
     }
 
     @Test
@@ -204,7 +206,7 @@ public class RMILocalhostTest {
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME);
         }
         handlers[0].disconnectFromServer();
-        assertEquals(3, count);
+        assertEquals(MAX_SESSIONS - 1, count);
     }
 
     @Test
@@ -234,7 +236,7 @@ public class RMILocalhostTest {
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + " 1");
         }
         sender.sendChatMessage(MESSAGE);
-        assertEquals(4, count);
+        assertEquals(MAX_SESSIONS, count);
     }
 
     @Test
@@ -276,11 +278,11 @@ public class RMILocalhostTest {
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + i);
         }
         gameServerImpl.startGame();
-        
-        for(NetworkHandlerImpl handler: handlers) {
+
+        for (NetworkHandlerImpl handler : handlers) {
             handler.sendReadySignal();
         }
-        
+
         assertEquals(MAX_SESSIONS, count);
     }
 
@@ -316,13 +318,15 @@ public class RMILocalhostTest {
         for (NetworkHandlerImpl nh : otherPlayers) {
             nh.niggasInParis();
         }
-        assertEquals(3, count);
+        assertEquals(MAX_SESSIONS - 1, count);
     }
 
     @Test
     public void testSerialStep() {
         final String P1_NAME = "Caesar";
         final String P2_NAME = "Brutus";
+        final int NBR_OF_STEPS = 50;
+
         final NetworkHandlerImpl p1 = new NetworkHandlerImplWithoutThreads();
         p1.connectToServer(IP, SERVER_NAME, P1_NAME);
         final SessionInformation p1Info = p1.getOwnSession();
@@ -330,48 +334,44 @@ public class RMILocalhostTest {
         final NetworkHandlerImpl p2 = new NetworkHandlerImplWithoutThreads();
         p2.connectToServer(IP, SERVER_NAME, P2_NAME);
         final SessionInformation p2Info = p2.getOwnSession();
-        final int NBR_OF_STEPS = 50;
 
-        Observer observer = new Observer() {
+        final Map<Integer, Step> p1Steps = new HashMap<Integer, Step>();
+        final Map<Integer, Step> p2Steps = new HashMap<Integer, Step>();
+
+        p1.addObserver(new Observer() {
+
+            @Override
+            public void update(Observable o, Object o1) {
+                if ((UpdateType) o1 == UpdateType.STEP) {
+                    p1Steps.put(p1.getStep().getSequenceNumber(), p1.getStep());
+                }
+            }
+        });
+
+        p2.addObserver(new Observer() {
 
             int sequNr = 0;
 
             @Override
             public void update(Observable o, Object o1) {
                 if ((UpdateType) o1 == UpdateType.STEP) {
-                    Step step = p1.getStep();
-                    assertEquals(step.getSequenceNumber(), sequNr++);
-                    assertEquals(step.getSessionID(), p2Info.getId());
+                    p2Steps.put(p2.getStep().getSequenceNumber(), p2.getStep());
                 }
             }
-        };
-
-        Observer p2_observer = new Observer() {
-
-            int sequNr = 0;
-
-            @Override
-            public void update(Observable o, Object o1) {
-                if ((UpdateType) o1 == UpdateType.STEP) {
-                    Step step = p2.getStep();
-                    assertEquals(step.getSequenceNumber(), sequNr++);
-                    assertEquals(step.getSessionID(), p1Info.getId());
-                }
-            }
-        };
-
-        p1.addObserver(observer);
-
-        p2.addObserver(p2_observer);
-
-        gameServerImpl.startGame();
+        });
 
         for (int i = 0; i < NBR_OF_STEPS; i++) {
             p1.addStep(new Step(i, p1Info.getId()));
             p2.addStep(new Step(i, p2Info.getId()));
+            p1.niggasInParis();
+            p2.niggasInParis();
         }
-        p1.niggasInParis();
-        p2.niggasInParis();
+        assertEquals(50, p1Steps.size());
+        assertEquals(50, p2Steps.size());
+        for(int i = 0; i < 50; i++) {
+            assertEquals(i, p1Steps.get(i).getSequenceNumber());
+            assertEquals(i, p2Steps.get(i).getSequenceNumber());
+        }
     }
 
     @Test
