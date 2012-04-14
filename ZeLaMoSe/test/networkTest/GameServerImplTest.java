@@ -4,6 +4,7 @@
  */
 package networkTest;
 
+import domain.Config;
 import java.net.MalformedURLException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
@@ -38,7 +39,8 @@ public class GameServerImplTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        System.setProperty("java.security.policy","rmi.policy");
+        File policy= Config.convertRMI(GameServerImpl.class);
+        System.setProperty("java.security.policy", policy.getAbsolutePath() );
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new RMISecurityManager());
         }
