@@ -36,7 +36,7 @@ public class MusicEngine {
             if (end) {
                 background.stop();
             } else {
-                            background = new OggClip(new FileInputStream("src/view/music/files/BackgroundThemeA.ogg"));
+                            background = new OggClip(MusicEngine.class.getResourceAsStream("/view/music/files/BackgroundThemeA.ogg"));
             background.setGain(0.70f);
                 background.loop();
             }
@@ -56,7 +56,7 @@ public class MusicEngine {
             if (end) {
                 niggasinparis.stop();
             } else {
-                            niggasinparis = new OggClip(new FileInputStream("src/view/music/files/Niggas_In_Paris.ogg"));
+                            niggasinparis = new OggClip(MusicEngine.class.getResourceAsStream("/view/music/files/Niggas_In_Paris.ogg"));
                 niggasinparis.loop();
             }
         } catch (IOException ex) {
@@ -71,7 +71,7 @@ public class MusicEngine {
     
     public void playRotateSound() {
         try {
-            rotate = new OggClip(new FileInputStream("src/view/music/files/rotation.ogg"));
+            rotate = new OggClip(MusicEngine.class.getResourceAsStream("/view/music/files/rotation.ogg"));
             rotate.play();
         } catch (IOException ex) {
             Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
@@ -80,7 +80,7 @@ public class MusicEngine {
 
     public void playLine4Sound() {
         try {
-            line4 = new OggClip(new FileInputStream("src/view/music/files/4line.ogg"));
+            line4 = new OggClip(MusicEngine.class.getResourceAsStream("/view/music/files/4line.ogg"));
             line4.play();
         } catch (IOException ex) {
             Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
@@ -90,7 +90,7 @@ public class MusicEngine {
 
     public void playDropSound() {
         try {
-            drop = new OggClip(new FileInputStream("src/view/music/files/drop.ogg"));
+            drop = new OggClip(MusicEngine.class.getResourceAsStream("/view/music/files/drop.ogg"));
             drop.play();
         } catch (IOException ex) {
             Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
@@ -99,7 +99,7 @@ public class MusicEngine {
 
     public void playGameOverSound() {
         try {
-            gameover = new OggClip(new FileInputStream("src/view/music/files/gameover.ogg"));
+            gameover = new OggClip(MusicEngine.class.getResourceAsStream("/view/music/files/gameover.ogg"));
             gameover.play();
         } catch (IOException ex) {
             Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
@@ -108,7 +108,7 @@ public class MusicEngine {
 
     public void playLineSound() {
         try {
-            line = new OggClip(new FileInputStream("src/view/music/files/line.ogg"));
+            line = new OggClip(MusicEngine.class.getResourceAsStream("/view/music/files/line.ogg"));
             line.play();
         } catch (IOException ex) {
             Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
@@ -117,7 +117,7 @@ public class MusicEngine {
 
     public void playLobbySound() {
         try {
-            lobby = new OggClip(new FileInputStream("src/view/music/files/lobby.ogg"));
+            lobby = new OggClip(MusicEngine.class.getResourceAsStream("/view/music/files/lobby.ogg"));
             lobby.loop();
         } catch (IOException ex) {
             Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
@@ -126,7 +126,7 @@ public class MusicEngine {
 
     public void playMoveSound() {
         try {
-            move = new OggClip(new FileInputStream("src/view/music/files/move.ogg"));
+            move = new OggClip(MusicEngine.class.getResourceAsStream("/view/music/files/move.ogg"));
             move.setGain(0.80f);
             move.play();
         } catch (IOException ex) {
@@ -136,7 +136,7 @@ public class MusicEngine {
 
     public void playPauseSound() {
         try {
-            pause = new OggClip(new FileInputStream("src/view/music/files/pause.ogg"));
+            pause = new OggClip(MusicEngine.class.getResourceAsStream("/view/music/files/pause.ogg"));
             pause.play();
         } catch (IOException ex) {
             Logger.getLogger(MusicEngine.class.getName()).log(Level.SEVERE, null, ex);
