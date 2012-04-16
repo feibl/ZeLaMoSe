@@ -4,6 +4,7 @@
  */
 package networkTest;
 
+import domain.TetrisController;
 import java.net.MalformedURLException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
@@ -23,6 +24,8 @@ import network.server.SessionImpl;
 import static org.junit.Assert.*;
 import org.junit.*;
 import java.io.*;
+import network.server.SessionRemote;
+
 /**
  *
  * @author Fabian Senn <fsenn@hsr.ch>
@@ -32,17 +35,12 @@ public class GameServerImplTest {
     GameServerImpl gameServerImpl;
     private final String SERVER_NAME = "Tetris-Server";
     private final String PLAYER_NAME = "TestPlayer";
-    private static Registry registry;
     private static boolean flag;
-    private static int count;
+    private static int count1;
+    private static int count2;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        System.setProperty("java.security.policy","rmi.policy");
-        if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new RMISecurityManager());
-        }
-        registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
     }
 
     @AfterClass
@@ -51,9 +49,10 @@ public class GameServerImplTest {
 
     @Before
     public void setUp() throws RemoteException, MalformedURLException {
-        gameServerImpl = new GameServerImpl(SERVER_NAME, registry);
+        gameServerImpl = new GameServerImpl();
         flag = false;
-        count = 0;
+        count1 = 0;
+        count2 = 0;
     }
 
     @After
@@ -62,8 +61,8 @@ public class GameServerImplTest {
 
     @Test
     public void testCreateSession() throws RemoteException {
-        // SessionInformation sessionInfo = gameServerImpl.createSession(PLAYER_NAME, new HandlerImpl(new NetworkHandlerImpl())).getSessionInformation();
-        // assertArrayEquals(new Object[]{PLAYER_NAME, 1}, new Object[]{sessionInfo.getNickname(), sessionInfo.getId()});
+        SessionInformation sessionInfo = gameServerImpl.createSession(PLAYER_NAME, new HandlerImpl(new NetworkHandlerImpl())).getSessionInformation();
+        assertEquals(new SessionInformation(1, PLAYER_NAME), sessionInfo);
     }
 
     @Test
@@ -73,12 +72,15 @@ public class GameServerImplTest {
 
             @Override
             public void update(Observable o, Object o1) {
-                assertEquals(hostNetworkHandler.getAddedSession().getNickname(), PLAYER_NAME);
+                if (o1 == TetrisController.UpdateType.SESSION_ADDED) {
+                    flag = true;
+                }
             }
         });
 
         gameServerImpl.createSession("Host", new HandlerImpl(hostNetworkHandler));
         gameServerImpl.createSession(PLAYER_NAME, new HandlerImpl(new NetworkHandlerImpl()));
+        assertTrue(flag);
     }
 
     @Test
@@ -89,14 +91,15 @@ public class GameServerImplTest {
 
             @Override
             public void update(Observable o, Object o1) {
-                flag = true;
+                if (o1 == TetrisController.UpdateType.SESSION_ADDED) {
+                    flag = true;
+                }
             }
         };
 
         newPlayerNetworkHandler.addObserver(observer);
+        gameServerImpl.createSession(PLAYER_NAME, new HandlerImpl(newPlayerNetworkHandler));
 
-        gameServerImpl.createSession("Host", new HandlerImpl(new NetworkHandlerImpl()));
-        gameServerImpl.createSession(PLAYER_NAME, new HandlerImpl(new NetworkHandlerImpl()));
         assertFalse(flag);
     }
 
@@ -135,7 +138,7 @@ public class GameServerImplTest {
     }
 
     @Test
-    public void testRemoteExceptionWhileSessionAddedNotification() throws RemoteException {
+    public void testDeleteUnreachableSession() throws RemoteException {
         gameServerImpl.createSession(PLAYER_NAME, new ClientRemoteAdapter() {
 
             @Override
@@ -143,13 +146,39 @@ public class GameServerImplTest {
                 throw new RemoteException();
             }
         });
-        gameServerImpl.createSession("bla", new ClientRemoteAdapter() {
+
+        gameServerImpl.createSession("bla", new HandlerImpl(new NetworkHandlerImpl()));
+        assertEquals(1, gameServerImpl.getSessionList().size());
+    }
+
+    @Test
+    public void testExceptionWhileSessionRemovedNotification() throws RemoteException {
+        gameServerImpl.createSession(PLAYER_NAME, new ClientRemoteAdapter() {
 
             @Override
             public void receiveSessionRemovedMessage(SessionInformation session) throws RemoteException {
-                assertTrue(false);
+                throw new RemoteException();
             }
         });
+        gameServerImpl.createSession(PLAYER_NAME, new ClientRemoteAdapter() {
+
+            @Override
+            public void receiveSessionAddedMessage(SessionInformation session) throws RemoteException {
+                throw new RemoteException();
+            }
+        });
+        gameServerImpl.createSession("bla", new HandlerImpl(new NetworkHandlerImpl()));
+        assertEquals(1, gameServerImpl.getSessionList().size());
+    }
+    
+    @Test
+    public void testRemoveSession() throws RemoteException {
+        SessionRemote session = gameServerImpl.createSession(PLAYER_NAME, new HandlerImpl(new NetworkHandlerImpl()));
+        for(int i = 0; i < 3; i++) {
+            gameServerImpl.createSession("Player" + i, new HandlerImpl(new NetworkHandlerImpl()));
+        }
+        session.disconnect();
+        assertEquals(3, gameServerImpl.getSessionList().size());
     }
 
     @Test
@@ -162,7 +191,7 @@ public class GameServerImplTest {
             public void receiveChatMessage(ChatMessage message) throws RemoteException {
                 if (message.getMessage().equals(MESSAGE)) {
                     if (message.getSender().getId() == ID) {
-                        count++;
+                        count1++;
                     }
                 }
             }
@@ -171,6 +200,6 @@ public class GameServerImplTest {
             gameServerImpl.createSession(SERVER_NAME, fakeRemote);
         }
         gameServerImpl.postChatMessage(new SessionImpl(new SessionInformation(ID, PLAYER_NAME), fakeRemote, gameServerImpl), MESSAGE);
-        assertEquals(4, count);
+        assertEquals(4, count1);
     }
 }
