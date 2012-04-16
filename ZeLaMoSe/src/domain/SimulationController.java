@@ -84,7 +84,7 @@ public class SimulationController implements StepInterface {
    * - Simulation ACtions
    */
   public void simulateStep(int seqNum) {
-      System.out.println("----------- simulateStep "+seqNum+" -----------");
+      //System.out.println("----------- simulateStep "+seqNum+" -----------");
       boolean advance = false;
       if (autoadvance && (seqNum % (Config.advanceStepLimit-maxLevel) == 0)) {
           advance = true;
@@ -137,7 +137,7 @@ public class SimulationController implements StepInterface {
             }
       }
       assert(stepQueue.isEmpty());
-      System.out.println("----------------------");
+      //System.out.println("----------------------");
   }
   
   public SimulationStateInterface getSimulation(int sessionId) {

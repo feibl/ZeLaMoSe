@@ -154,7 +154,7 @@ public class TetrisController extends Observable implements Observer {
      * public for testing
      */
     public void runStep() {
-        System.out.println("running step: " + currentStep + " time: " + System.nanoTime());
+       // System.out.println("running step: " + currentStep + " time: " + System.nanoTime());
         if (currentStep > 0) { //on the first step we don't have all steps available so we wait for the others and don't simulate yet
             for (int i = 0; i < sessionMap.size() - 1; i++) {
                 networkHandler.niggasInParis();
