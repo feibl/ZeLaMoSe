@@ -6,15 +6,22 @@ package view;
 
 import com.jogamp.opengl.util.FPSAnimator;
 import domain.Config;
+import domain.GameEngine;
 import domain.InputSampler;
 import domain.interfaces.SimulationStateInterface;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  *
  * @author Patrick Zenh√§usern
  */
-public class GameFieldJFrame extends javax.swing.JFrame {
+public class GameFieldJFrame extends javax.swing.JFrame implements Observer {
+
+    private SimulationStateInterface enemyEngine1;
+    private SimulationStateInterface enemyEngine2;
+    private SimulationStateInterface enemyEngine3;
 
     /**
      * Creates new form frmGame
@@ -29,21 +36,26 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         ownGameFieldJPanel1.initRenderer(mainSimulation);
         //TODO set Simulation on other Panels
 
-        
         if (!otherSimulations.isEmpty()) {
-            initEnemyArea1(otherSimulations.remove(0));
+            enemyEngine1 = otherSimulations.remove(0);
+            enemyEngine1.addObserver(this);
+            initEnemyArea1(enemyEngine1);
         } else {
             initEnemyArea1(null);
         }
 
         if (!otherSimulations.isEmpty()) {
-            initEnemyArea2(otherSimulations.remove(0));
+            enemyEngine2 = otherSimulations.remove(0);
+            enemyEngine2.addObserver(this);
+            initEnemyArea2(enemyEngine2);
         } else {
             initEnemyArea2(null);
         }
-        
+
         if (!otherSimulations.isEmpty()) {
-            initEnemyArea3(otherSimulations.remove(0));
+            enemyEngine3 = otherSimulations.remove(0);
+            enemyEngine3.addObserver(this);
+            initEnemyArea3(enemyEngine3);
         } else {
             initEnemyArea3(null);
         }
@@ -312,5 +324,18 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         gLPnlEnemyArea3.addGLEventListener(rendererEnemyArea3);
         FPSAnimator animator3 = new FPSAnimator(gLPnlEnemyArea3, Config.frameRate, true);
         animator3.start();
+    }
+
+    @Override
+    public void update(Observable observable, Object object) {
+        GameEngine ObservableEngine = (GameEngine) observable;
+        if (ObservableEngine == enemyEngine1) {
+            lblOtherScoreValue1.setText(Integer.toString(ObservableEngine.getScore()));
+        } else if (ObservableEngine == enemyEngine2) {
+            lblOtherScoreValue2.setText(Integer.toString(ObservableEngine.getScore()));
+        } else if (ObservableEngine == enemyEngine3) {
+            lblOtherScoreValue3.setText(Integer.toString(ObservableEngine.getScore()));
+        }
+
     }
 }
