@@ -21,6 +21,7 @@ import javax.media.opengl.*;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 import view.music.MusicEngine;
+import view.music.NullObjectMusicEngine;
 
 /**
  *
@@ -39,7 +40,6 @@ class GLRenderer implements GLEventListener, Observer {
     private Color backGroundColor = Color.BLACK;
     private Color garbageLineColor = new Color(139, 0, 0);
     private MusicEngine musicEngine;
-    private boolean useSound;
 
     public GLRenderer(int blocksize, boolean useSound, SimulationStateInterface gameEngine) {
         this.viewPortWidth = Config.gridWidth * blocksize;
@@ -47,11 +47,15 @@ class GLRenderer implements GLEventListener, Observer {
         this.blockSize = blocksize;
         actionQueue = new ConcurrentLinkedQueue<Action>();
         initStackGrid();
-        this.useSound = useSound;
         if (useSound) {
-            musicEngine = new MusicEngine();
-            musicEngine.startBGMusic(false);
+//            musicEngine = new MusicEngine();
+            //TODO write new MusicEngine with lower memory consumption
+            musicEngine = new NullObjectMusicEngine();
+        } else {
+            musicEngine = new NullObjectMusicEngine();
         }
+        musicEngine.startBGMusic(false);
+
         if (gameEngine != null) {
             this.gameEngine = gameEngine;
             gameEngine.addObserver(this);
@@ -210,9 +214,7 @@ class GLRenderer implements GLEventListener, Observer {
     }
 
     private void handleRotateAction(RotateAction action) {
-        if (useSound) {
-            musicEngine.playRotateSound();
-        }
+        musicEngine.playRotateSound();
 
         if (action.getDirection() == Direction.LEFT) {
             currentBlock.rotateLeft(Config.defaultWallKickTest);
@@ -230,15 +232,11 @@ class GLRenderer implements GLEventListener, Observer {
                 currentBlock.setY(currentBlock.getY() - action.getSpeed());
                 break;
             case LEFT:
-                if (useSound) {
-                    musicEngine.playMoveSound();
-                }
+                musicEngine.playMoveSound();
                 currentBlock.setX(currentBlock.getX() - action.getSpeed());
                 break;
             case RIGHT:
-                if (useSound) {
-                    musicEngine.playMoveSound();
-                }
+                musicEngine.playMoveSound();
                 currentBlock.setX(currentBlock.getX() + action.getSpeed());
                 break;
         }
@@ -246,9 +244,7 @@ class GLRenderer implements GLEventListener, Observer {
 
     private void handleNewBlockAction(Block block) {
         if ((currentBlock != null)) {
-            if (useSound) {
-                musicEngine.playDropSound();
-            }
+            musicEngine.playDropSound();
             saveCurrentblockToGrid();
         }
         currentBlock = (Block) block.clone();
@@ -297,12 +293,10 @@ class GLRenderer implements GLEventListener, Observer {
                 Color[][] originalGrid = getGridCopy();
 
                 List<Integer> linesToRemove = rmlineAction.getLinesToRemove();
-                if (useSound) {
-                    if (linesToRemove.size() == 4) {
-                        musicEngine.playLine4Sound();
-                    } else {
-                        musicEngine.playLineSound();
-                    }
+                if (linesToRemove.size() == 4) {
+                    musicEngine.playLine4Sound();
+                } else {
+                    musicEngine.playLineSound();
                 }
                 for (Integer lineToRemove : linesToRemove) {
 
@@ -371,10 +365,8 @@ class GLRenderer implements GLEventListener, Observer {
 
             @Override
             public void run() {
-                if (useSound) {
-                    musicEngine.stopBGMusic();
-                    musicEngine.playGameOverSound();
-                }
+                musicEngine.stopBGMusic();
+                musicEngine.playGameOverSound();
                 boolean[][] filler = new boolean[Config.gridWidth][1];
 
                 for (int j = 0; j < Config.gridWidth; j++) {

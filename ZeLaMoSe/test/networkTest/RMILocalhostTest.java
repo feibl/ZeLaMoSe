@@ -4,6 +4,7 @@
  */
 package networkTest;
 
+import domain.Config;
 import domain.Step;
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
@@ -12,6 +13,7 @@ import java.rmi.registry.Registry;
 import java.util.Observable;
 import java.util.Observer;
 import domain.TetrisController.UpdateType;
+import java.io.File;
 import java.rmi.RMISecurityManager;
 import java.util.*;
 import java.util.logging.Level;
@@ -42,7 +44,8 @@ public class RMILocalhostTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        System.setProperty("java.security.policy", "rmi.policy");
+        File policy= Config.convertRMI(GameServerImpl.class);
+        System.setProperty("java.security.policy", policy.getAbsolutePath() );
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new RMISecurityManager());
         }

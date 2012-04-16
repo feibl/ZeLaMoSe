@@ -40,41 +40,79 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
                                       <Component id="gLPnlEnemyArea2" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="lblOtherPlayerName2" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="lblOtherScoreValue2" alignment="0" min="-2" pref="107" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="lblOtherPlayerName2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lblOtherScoreValue2" alignment="0" min="-2" pref="107" max="-2" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <EmptySpace max="32767" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                                                      <Component id="lblOtherNumberOfBlock2" alignment="0" max="32767" attributes="0"/>
+                                                      <Component id="lblOtherLevel2" alignment="1" min="-2" pref="170" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <Component id="lblOtherNumbersOfLines2" alignment="1" min="-2" pref="170" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
                                       </Group>
                                   </Group>
                                   <Group type="102" attributes="0">
                                       <Component id="gLPnlEnemyArea1" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="lblOtherPlayerName1" max="32767" attributes="0"/>
-                                          <Component id="lblOtherScoreValue1" max="32767" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                  <Component id="lblOtherPlayerName1" max="32767" attributes="0"/>
+                                                  <Component id="lblOtherScoreValue1" max="32767" attributes="0"/>
+                                                  <Component id="lblOtherNumberOfBlock1" alignment="0" max="32767" attributes="0"/>
+                                                  <Component id="lblOtherLevel1" alignment="1" pref="170" max="32767" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="lblOtherNumbersOfLines1" min="-2" pref="170" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
                                   </Group>
                                   <Component id="jSeparator4" alignment="0" min="-2" pref="266" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="6" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
+                                      <Component id="lblEnemyArea" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Component id="jSeparator2" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="gLPnlEnemyArea3" min="-2" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="lblEnemyArea" min="-2" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="gLPnlEnemyArea3" min="-2" max="-2" attributes="0"/>
+                                          <Group type="102" attributes="0">
                                               <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                                   <Component id="lblOtherPlayerName3" alignment="0" max="32767" attributes="0"/>
                                                   <Component id="lblOtherScoreValue3" alignment="0" min="-2" pref="107" max="-2" attributes="0"/>
                                               </Group>
+                                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <EmptySpace max="32767" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                                                      <Component id="lblOtherNumberOfBlock3" alignment="0" max="32767" attributes="0"/>
+                                                      <Component id="lblOtherLevel3" alignment="1" min="-2" pref="170" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <Component id="lblOtherNumbersOfLines3" alignment="1" min="-2" pref="170" max="-2" attributes="0"/>
+                                              </Group>
                                           </Group>
                                       </Group>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
-                                  <Component id="jSeparator2" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
@@ -96,6 +134,12 @@
                       <Component id="lblOtherPlayerName1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblOtherScoreValue1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblOtherNumberOfBlock1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                      <Component id="lblOtherLevel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblOtherNumbersOfLines1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="gLPnlEnemyArea1" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -107,6 +151,12 @@
                       <Component id="lblOtherPlayerName2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="lblOtherScoreValue2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                      <Component id="lblOtherNumberOfBlock2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                      <Component id="lblOtherLevel2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblOtherNumbersOfLines2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="gLPnlEnemyArea2" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -118,6 +168,12 @@
                       <Component id="lblOtherPlayerName3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="lblOtherScoreValue3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="lblOtherNumberOfBlock3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                      <Component id="lblOtherLevel3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblOtherNumbersOfLines3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="gLPnlEnemyArea3" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -275,5 +331,50 @@
         </DimensionLayout>
       </Layout>
     </Container>
+    <Component class="javax.swing.JLabel" name="lblOtherNumberOfBlock1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&lt;OtherNumberOfBlock1&gt;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblOtherLevel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&lt;OtherLevel1&gt;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblOtherNumbersOfLines1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&lt;OtherNumbersOfLines1&gt;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblOtherNumberOfBlock2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&lt;OtherNumberOfBlock1&gt;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblOtherLevel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&lt;OtherLevel1&gt;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblOtherNumbersOfLines2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&lt;OtherNumbersOfLines1&gt;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblOtherNumberOfBlock3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&lt;OtherNumberOfBlock1&gt;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblOtherLevel3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&lt;OtherLevel1&gt;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblOtherNumbersOfLines3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&lt;OtherNumbersOfLines1&gt;"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

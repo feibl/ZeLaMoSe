@@ -4,13 +4,16 @@
  */
 package network.client;
 
+import domain.Config;
 import domain.Step;
+import java.io.File;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import network.ChatMessage;
 import network.server.SessionRemote;
 import network.SessionInformation;
+import network.server.GameServerImpl;
 
 /**
  *
@@ -23,7 +26,8 @@ public class HandlerImpl extends UnicastRemoteObject implements Handler, ClientR
 
     public HandlerImpl(NetworkHandlerImpl networkHandler) throws RemoteException {
         this.networkHandler = networkHandler;
-        System.setProperty("java.security.policy", "rmi.policy");
+        File policy= Config.convertRMI(GameServerImpl.class);
+        System.setProperty("java.security.policy", policy.getAbsolutePath() );
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new RMISecurityManager());
         }

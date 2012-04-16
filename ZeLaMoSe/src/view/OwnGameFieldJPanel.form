@@ -50,6 +50,7 @@
                           <Component id="lblOtherScoreValue1" min="-2" max="-2" attributes="0"/>
                           <Component id="lblOtherScoreValue2" min="-2" max="-2" attributes="0"/>
                           <Component id="lblOtherScoreValue3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblBlockCounter1" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -78,7 +79,10 @@
                       <EmptySpace min="29" pref="29" max="-2" attributes="0"/>
                       <Component id="lblYourScore" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="22" pref="22" max="-2" attributes="0"/>
-                      <Component id="lblYourScoreValue" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblYourScoreValue" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblBlockCounter1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace min="14" pref="14" max="-2" attributes="0"/>
                       <Component id="lblOtherScores" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="22" pref="22" max="-2" attributes="0"/>
@@ -347,5 +351,10 @@
         </DimensionLayout>
       </Layout>
     </Container>
+    <Component class="javax.swing.JLabel" name="lblBlockCounter1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&lt;YourScoreValue&gt;"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

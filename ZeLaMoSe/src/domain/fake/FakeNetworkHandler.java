@@ -65,6 +65,8 @@ public class FakeNetworkHandler extends NetworkHandler {
     
     public void setGameStarted() {
         setChanged();
+        notifyObservers(UpdateType.INIT_SIGNAL);
+        setChanged();
         notifyObservers(UpdateType.GAME_STARTED);
     }
 
@@ -117,12 +119,12 @@ public class FakeNetworkHandler extends NetworkHandler {
 
     @Override
     public void sendReadySignal() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //do nothing
     }
 
     @Override
     public long getBlockQueueSeed() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return 1;
     }
     
 }

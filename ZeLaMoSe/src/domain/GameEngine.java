@@ -27,6 +27,7 @@ public class GameEngine extends GameEngineInterface {
     private boolean gameOver;
     private int score;
     private Block nextBlock;
+    private int blockCounter = 0;
 
     public Block getNextBlock() {
         return (Block)nextBlock.clone();
@@ -189,6 +190,7 @@ public class GameEngine extends GameEngineInterface {
             currentBlock.setY(defaultY);
             saveCurrenblockToGrid();
             setLastAction(new NewBlockAction(currentBlock, sessionId));
+            ++blockCounter;
         } else {
             setLastAction(new GameOverAction(sessionId));
         }
@@ -367,5 +369,9 @@ public class GameEngine extends GameEngineInterface {
         //Calculate the new level
         level = totalRemovedLines / Config.levelUpMultiplier + 1;
         setLastAction(new RemoveLineAction(0, linesToRemove));
+    }
+
+    public int getBlockCounter() {
+        return blockCounter;
     }
 }

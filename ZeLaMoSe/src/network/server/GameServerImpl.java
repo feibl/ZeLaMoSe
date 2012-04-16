@@ -4,8 +4,10 @@
  */
 package network.server;
 
+import domain.Config;
 import network.client.ClientRemote;
 import domain.Step;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
@@ -35,8 +37,11 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
     protected ExecutorService threadPool;
 
     public GameServerImpl(String serverName, Registry registry) throws RemoteException, MalformedURLException {
+    
         sessionList = new Session[MAX_SESSIONS];
-        System.setProperty("java.security.policy", "rmi.policy");
+                //GameServerImpl.class.getClass().getResource("/rmi.policy").getFile()
+        File policy= Config.convertRMI(GameServerImpl.class);
+        System.setProperty("java.security.policy", policy.getAbsolutePath() );
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new RMISecurityManager());
         }
@@ -47,6 +52,7 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
        sessionList = new Session[MAX_SESSIONS]; 
     }
 
+        
     @Override
     public SessionRemote createSession(String nickname, ClientRemote clientRemote) throws RemoteException, ServerFullException {
         SessionInformation sInfo = new SessionInformation(id++, nickname);
