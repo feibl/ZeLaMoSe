@@ -39,23 +39,37 @@
                           <Component id="lblOtherPlayerName3" min="-2" max="-2" attributes="0"/>
                           <Component id="lblLevel" min="-2" max="-2" attributes="0"/>
                           <Component id="lblLevelValue" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblNumberOfLines" min="-2" pref="90" max="-2" attributes="0"/>
-                          <Component id="lblNumberOfLinesValue" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblTime" min="-2" max="-2" attributes="0"/>
                           <Component id="lblTimeValue" min="-2" max="-2" attributes="0"/>
                           <Component id="lblNextPiece" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="8" pref="8" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="lblOtherScoreValue1" min="-2" max="-2" attributes="0"/>
                           <Component id="lblOtherScoreValue2" min="-2" max="-2" attributes="0"/>
                           <Component id="lblOtherScoreValue3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblBlockCounter1" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="glPnlNextBlock" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="lblNumberOfLinesValue" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="lblNumberOfLines" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblBlockCounter1" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblNumberOfLines1" min="-2" pref="132" max="-2" attributes="0"/>
+                          <Component id="lblTime" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
           </Group>
@@ -79,10 +93,7 @@
                       <EmptySpace min="29" pref="29" max="-2" attributes="0"/>
                       <Component id="lblYourScore" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="22" pref="22" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblYourScoreValue" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblBlockCounter1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="lblYourScoreValue" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="14" pref="14" max="-2" attributes="0"/>
                       <Component id="lblOtherScores" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="22" pref="22" max="-2" attributes="0"/>
@@ -95,13 +106,17 @@
                       <Component id="lblLevel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
                       <Component id="lblLevelValue" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="24" pref="24" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="lblNumberOfLines" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="20" pref="20" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="lblNumberOfLinesValue" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="14" pref="14" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblNumberOfLines1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                      <Component id="lblBlockCounter1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblTime" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="22" pref="22" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblTimeValue" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="14" pref="14" max="-2" attributes="0"/>
                       <Component id="lblNextPiece" min="-2" max="-2" attributes="0"/>
@@ -353,7 +368,18 @@
     </Container>
     <Component class="javax.swing.JLabel" name="lblBlockCounter1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&lt;YourScoreValue&gt;"/>
+        <Property name="text" type="java.lang.String" value="&lt;YourBlocksValue&gt;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblNumberOfLines1">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="Number of Blocks"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
+            <BevelBorder/>
+          </Border>
+        </Property>
       </Properties>
     </Component>
   </SubComponents>
