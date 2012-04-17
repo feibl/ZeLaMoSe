@@ -30,6 +30,7 @@ public class GameEngine extends GameEngineInterface {
     private int score;
     private Block nextBlock;
     private int blockCounter = 0;
+    private long seed;
     private SimulationController simulationController;
 
     public Block getNextBlock() {
@@ -61,6 +62,7 @@ public class GameEngine extends GameEngineInterface {
         score = 0;
         level = 1;
         totalRemovedLines = 0;
+        this.seed = seed;
     }
 
     public Block getCurrentBlock() {
@@ -384,7 +386,7 @@ public class GameEngine extends GameEngineInterface {
 
     private void createNewLineAction(int numberOfLines) {
         Block[][] garbageLines = new Block[Config.gridWidth][numberOfLines];
-        Random random = new Random(System.currentTimeMillis());
+        Random random = new Random(seed);
         int emptyXPosition = random.nextInt(12);
         GarbageBlock garbageBlock = new GarbageBlock();
         for (int x = 0; x < Config.gridWidth; ++x) {
