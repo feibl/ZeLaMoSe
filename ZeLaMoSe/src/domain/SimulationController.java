@@ -126,8 +126,8 @@ public class SimulationController implements StepInterface {
 //              System.out.println("adding actions: " + a + " for session "+ session);
           }
       }
-      if (stepQueue.isEmpty()) {
-          throw new IllegalStateException("No steps available");
+      if (!stepQueue.isEmpty()) {
+          throw new IllegalStateException("Step Queue not empty");
       }
 //      System.out.println("simulate actions: "+actionList.entrySet().size());
       if (advance) {
