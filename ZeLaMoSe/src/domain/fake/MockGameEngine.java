@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.Fake;
+package domain.fake;
+import domain.SimulationController;
 import domain.interfaces.GameEngineInterface;
 import domain.actions.Action;
-import java.util.Observable;
 
 /**
  *
@@ -25,7 +25,7 @@ public class MockGameEngine extends GameEngineInterface {
 
     @Override
     public void startGame() {
-        throw new UnsupportedOperationException("Not supported yet.");
+      
     }  
   
   @Override
@@ -55,6 +55,11 @@ public class MockGameEngine extends GameEngineInterface {
     @Override
     public String toString() {
         return new String("MockGameEndine " + sessionId);
+    }
+
+    @Override
+    public void setSimulationController(SimulationController simulationController) {
+       
     }
   
     

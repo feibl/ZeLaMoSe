@@ -8,6 +8,7 @@ import domain.Config;
 import domain.actions.*;
 import domain.block.Block;
 import domain.actions.RotateAction.Direction;
+import domain.block.GarbageBlock;
 import domain.interfaces.SimulationStateInterface;
 import java.awt.Color;
 import java.util.Arrays;
@@ -253,20 +254,20 @@ class GLRenderer implements GLEventListener, Observer {
 
     }
 
-    private void handleNewLineAction(boolean[][] line) {
+    private void handleNewLineAction(Block[][] lines) {
 
-        for (int i = 0; i < Config.gridWidth; i++) {
-            for (int j = Config.gridHeight - 1 - line[0].length; j >= 0; j--) {
-                grid[i][j + line[0].length] = grid[i][j];
+        for (int x = 0; x < Config.gridWidth; x++) {
+            for (int y = Config.gridHeight - 1 - lines[0].length; y >= 0; y--) {
+                grid[x][y + lines[0].length] = grid[x][y];
             }
         }
 
-        for (int i = 0; i < line.length; i++) {
-            for (int j = 0; j < line[i].length; j++) {
-                if (line[i][j]) {
-                    grid[i][j] = garbageLineColor;
+        for (int x = 0; x < lines.length; x++) {
+            for (int y = 0; y < lines[x].length; y++) {
+                if (lines[x][y]!=null) {
+                    grid[x][y] = lines[x][y].getColor();
                 } else {
-                    grid[i][j] = backGroundColor;
+                    grid[x][y] = backGroundColor;
                 }
             }
         }
@@ -367,10 +368,10 @@ class GLRenderer implements GLEventListener, Observer {
             public void run() {
                 musicEngine.stopBGMusic();
                 musicEngine.playGameOverSound();
-                boolean[][] filler = new boolean[Config.gridWidth][1];
+                Block[][] filler = new Block[Config.gridWidth][1];
 
                 for (int j = 0; j < Config.gridWidth; j++) {
-                    filler[j][0] = true;
+                    filler[j][0] = new GarbageBlock();
                 }
                 for (int i = 0; i < Config.gridHeight; i++) {
                     try {
@@ -396,7 +397,7 @@ class GLRenderer implements GLEventListener, Observer {
                 handleNewBlockAction(((NewBlockAction) action).getBlocktype());
                 break;
             case NEWLINE:
-                handleNewLineAction(((NewLineAction) action).getLine());
+                handleNewLineAction(((NewLineAction) action).getLines());
                 break;
             case REMOVELINE:
                 isAnimating = true;

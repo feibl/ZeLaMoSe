@@ -4,6 +4,8 @@
  */
 package domain.interfaces;
 
+import domain.SimulationController;
+
 /**
  *
  * @author chrigi
@@ -12,4 +14,5 @@ abstract public class GameEngineInterface extends SimulationStateInterface imple
     abstract public int getSessionID();
     abstract public void startGame();
     abstract public int getLevel();
+    abstract public void setSimulationController(SimulationController simulationController);
 }

@@ -4,20 +4,23 @@
  */
 package domain.actions;
 
+import domain.block.Block;
+
 /**
  *
  * @author chrigi
  */
 public class NewLineAction extends Action{
-    boolean[][] line;
+    Block[][] lines;
 
-    public NewLineAction(long timestamp, boolean[][] line) {
+    public NewLineAction(long timestamp, Block[][] line) {
         super(ActionType.NEWLINE, timestamp);
-        this.line = line;
+        this.lines = line;
     }
+
     
-    public boolean[][] getLine() {
-        return line;
+    public Block[][] getLines() {
+        return lines;
     }
     
 }
