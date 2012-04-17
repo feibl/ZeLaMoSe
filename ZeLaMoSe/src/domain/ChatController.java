@@ -4,9 +4,13 @@
  */
 package domain;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ConcurrentHashMap;
+import network.ChatMessage;
+import network.SessionInformation;
 import network.client.NetworkHandler;
 
 /**
@@ -16,10 +20,57 @@ import network.client.NetworkHandler;
 public class ChatController extends Observable implements Observer {
 
     private NetworkHandler nH;
-    private ConcurrentHashMap<Integer, String> sessionMap;
+
+    public ChatController(NetworkHandler nH) {
+        this.nH = nH;
+        nH.addObserver(this);
+    }
+
+    public ConcurrentHashMap<Integer, String> getSessionList() {
+        return nH.getSessionList();
+    }
+    
+    public void tearDown() {
+        nH.deleteObserver(this);
+    }
+
+    public String getOwnIpAddress() throws UnknownHostException {
+        InetAddress in = InetAddress.getLocalHost();
+        InetAddress ip = InetAddress.getByName(in.getHostName());
+        return ip.getHostAddress();
+    }
+
+    public ChatMessage getChatMessage() {
+        return nH.getChatMessage();
+    }
+
+    public SessionInformation getAddedSession() {
+        return nH.getAddedSession();
+    }
+
+    public SessionInformation getRemovedSession() {
+        return nH.getRemovedSession();
+    }
+    
+    public void sendChatMessage(String message) {
+        nH.sendChatMessage(message);
+    }
 
     @Override
     public void update(Observable o, Object o1) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        switch ((TetrisController.UpdateType) o1) {
+            case CHAT_MESSAGE_RECEIVED:
+                setChanged();
+                notifyObservers(o1);
+                break;
+            case SESSION_ADDED:
+                setChanged();
+                notifyObservers(o1);
+                break;
+            case SESSION_REMOVED:
+                setChanged();
+                notifyObservers(o1);
+                break;
+        }
     }
 }

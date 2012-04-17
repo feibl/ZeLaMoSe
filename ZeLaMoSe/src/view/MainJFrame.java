@@ -4,14 +4,12 @@
  */
 package view;
 
-import domain.InputSampler;
-import domain.SimulationController;
-import domain.StepGeneratorImpl;
-import domain.TetrisController;
+import domain.*;
 import domain.fake.BlockingSimulationController;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JOptionPane;
+import network.client.NetworkHandler;
 import network.client.NetworkHandlerImpl;
 import view.music.MusicEngine;
 
@@ -23,11 +21,13 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
     
     private TetrisController tetrisController;
     private MusicEngine musicEngine;
+    private NetworkHandler networkHandler;
     /**
      * Creates new form frmMain
      */
-    public MainJFrame(TetrisController tetrisController) {
+    public MainJFrame(TetrisController tetrisController, NetworkHandler networkHandler) {
         this.tetrisController = tetrisController;
+        this.networkHandler = networkHandler;
         initComponents();
         musicEngine = new MusicEngine();
 
@@ -64,7 +64,7 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
 
         jLabel1.setText("<html><h1>~ZeLaMoSe - Tetris~</h1></html>");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(78, 19, 254, 49);
+        jLabel1.setBounds(78, 19, 244, 53);
 
         pnlSinglePlayer.setOpaque(false);
         pnlSinglePlayer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -96,7 +96,7 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
         );
 
         getContentPane().add(pnlSinglePlayer);
-        pnlSinglePlayer.setBounds(37, 74, 338, 72);
+        pnlSinglePlayer.setBounds(37, 74, 338, 80);
 
         pnlMultiPlayer.setOpaque(false);
         pnlMultiPlayer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -126,7 +126,7 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
             .addGroup(pnlMultiPlayerLayout.createSequentialGroup()
                 .addGap(111, 111, 111)
                 .addGroup(pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnCreateGame, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                    .addComponent(btnCreateGame, javax.swing.GroupLayout.PREFERRED_SIZE, 95, Short.MAX_VALUE)
                     .addComponent(btnJoinGame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(132, Short.MAX_VALUE))
         );
@@ -157,7 +157,7 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
             .addGroup(pnlControlLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnHelp)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 212, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 237, Short.MAX_VALUE)
                 .addComponent(btnExit)
                 .addContainerGap())
         );
@@ -172,16 +172,16 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
         );
 
         getContentPane().add(pnlControl);
-        pnlControl.setBounds(37, 283, 338, 82);
+        pnlControl.setBounds(37, 283, 338, 90);
 
         lblMultiPlayer.setBackground(new java.awt.Color(217, 19, 19));
         lblMultiPlayer.setText("<html><strong>MultiPlayer</strong></html>");
         getContentPane().add(lblMultiPlayer);
-        lblMultiPlayer.setBounds(40, 150, 64, 14);
+        lblMultiPlayer.setBounds(40, 150, 82, 21);
 
         lblSinglePlayer.setText("<html><strong>SinglePlayer</strong></html>");
         getContentPane().add(lblSinglePlayer);
-        lblSinglePlayer.setBounds(40, 60, 70, 14);
+        lblSinglePlayer.setBounds(40, 60, 90, 21);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/image/tetrisbg.jpeg"))); // NOI18N
         getContentPane().add(jLabel2);
@@ -248,7 +248,8 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
             
             public void run() {
                 InputSampler is = new InputSampler();
-                new MainJFrame(new TetrisController(new SimulationController(), new NetworkHandlerImpl(), new StepGeneratorImpl(is))).setVisible(true);
+                NetworkHandler nh = new NetworkHandlerImpl();
+                new MainJFrame(new TetrisController(new SimulationController(), nh, new StepGeneratorImpl(is)), nh).setVisible(true);
             }
         });
     }
@@ -283,7 +284,7 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
         switch ((TetrisController.UpdateType) o1) {
             case CONNECTION_ESTABLISHED:
                 tetrisController.deleteObserver(this);
-                final LobbyJFrame lobby = new LobbyJFrame(tetrisController, true, this);
+                final LobbyJFrame lobby = new LobbyJFrame(tetrisController, new ChatController(networkHandler), true, this);
                 java.awt.EventQueue.invokeLater(new Runnable() {
                     
                     public void run() {
