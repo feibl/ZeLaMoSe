@@ -34,10 +34,10 @@ public class SimulationController implements StepInterface {
       if (!sessions.containsKey(step.getSessionID())) {
           throw new IllegalStateException("this session is not part of the simulation");
       }
-//      if (stepQueue.containsKey(step.getSessionID())) {
-//          System.out.println("step queue already contains a step from this session");
-//          assert(false);
-//      }
+      if (stepQueue.containsKey(step.getSessionID())) {
+          //TODO support multiple steps per session
+          //throw new IllegalStateException("step queue already contains a step from this session");
+      }
 //      System.out.println("addStep: "+step + " id: " + step.getSessionID() + " sequence: "+step.getSequenceNumber());
       stepQueue.put(step.getSessionID(), step);
   }
