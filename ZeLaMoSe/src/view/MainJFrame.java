@@ -4,10 +4,7 @@
  */
 package view;
 
-import domain.InputSampler;
-import domain.SimulationController;
-import domain.StepGeneratorImpl;
-import domain.TetrisController;
+import domain.*;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
