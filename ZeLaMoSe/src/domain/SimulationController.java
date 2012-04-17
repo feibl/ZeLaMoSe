@@ -9,6 +9,7 @@ import domain.interfaces.GameEngineInterface;
 import domain.interfaces.SimulationStateInterface;
 import domain.actions.Action;
 import domain.actions.MoveAction;
+import domain.actions.NewLineAction;
 import java.util.*;
 
 /**
@@ -21,6 +22,8 @@ public class SimulationController implements StepInterface {
   protected Map<Integer, String> sessions = new HashMap<Integer, String>();
   protected int maxLevel = 1;
   public boolean autoadvance = true;
+  private Map<Integer, NewLineAction> newLineActionQueue = new HashMap<Integer, NewLineAction>();
+  
   
   public SimulationController() {
     
@@ -48,6 +51,7 @@ public class SimulationController implements StepInterface {
       gameEngines.put(sessionId, gameEngine);
       sessions.put(sessionId, name);
 //      System.out.println("add session: "+name);
+      gameEngine.setSimulationController(this);
   }
   
   public void initSimulation() {
@@ -126,6 +130,17 @@ public class SimulationController implements StepInterface {
               g.handleAction(new MoveAction(0, MoveAction.Direction.DOWN, 1));
           }
       }
+      
+      for(Map.Entry<Integer,NewLineAction> entry: newLineActionQueue.entrySet()){
+          for(int session:  sessions.keySet()){
+              if(session!=entry.getKey()){
+                  actionList.put(entry.getValue(), session);
+              }
+          }
+          newLineActionQueue.remove(entry.getKey());
+      }
+      
+      
       for (Map.Entry<Action, Integer> e: sortEntrySet(actionList.entrySet())) {
           System.out.println("--Simulating action with timestamp: "+e.getKey().getTimestamp()+" sessionid " +e.getValue());
           assert (gameEngines.containsKey(e.getValue()));
@@ -145,5 +160,8 @@ public class SimulationController implements StepInterface {
       System.out.println("contains key: "+gameEngines.containsKey(sessionId));
       return gameEngines.get(sessionId);
   }
-    
+  
+  public void addNewLineAction(Integer sessionFrom, NewLineAction action){
+      newLineActionQueue.put(sessionFrom, action);
+  }
 }

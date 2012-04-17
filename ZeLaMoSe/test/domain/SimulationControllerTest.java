@@ -4,12 +4,10 @@
  */
 package domain;
 
-import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
-import domain.Fake.MockGameEngine;
-import domain.actions.ActionType;
 import domain.actions.Action;
 import domain.actions.MoveAction;
 import domain.actions.RotateAction;
+import domain.fake.MockGameEngine;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
