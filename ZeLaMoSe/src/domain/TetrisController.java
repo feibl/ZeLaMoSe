@@ -126,8 +126,6 @@ public class TetrisController extends Observable implements Observer {
                 notifyObservers(UpdateType.CONNECTION_ESTABLISHED);
                 break;
             case INIT_SIGNAL:
-                System.out.println("game started");
-                assert (localSessionID >= 0);
                 stepGenerator.setSessionID(localSessionID);
                 long seed = networkHandler.getBlockQueueSeed();
                 for (Map.Entry<Integer, String> entry : sessionMap.entrySet()) {
@@ -135,7 +133,7 @@ public class TetrisController extends Observable implements Observer {
                 }
 
                 setChanged();
-                notifyObservers(UpdateType.GAME_STARTED);
+                notifyObservers(UpdateType.INIT_SIGNAL);
                 networkHandler.sendReadySignal();
 
                 break;
@@ -158,6 +156,7 @@ public class TetrisController extends Observable implements Observer {
         if (currentStep > 0) { //on the first step we don't have all steps available so we wait for the others and don't simulate yet
             for (int i = 0; i < sessionMap.size() - 1; i++) {
                 networkHandler.niggasInParis();
+                
             }
             simulationController.simulateStep(currentStep - 1); //Simulate previous step
         }
