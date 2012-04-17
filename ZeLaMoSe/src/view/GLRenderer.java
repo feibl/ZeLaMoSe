@@ -39,7 +39,6 @@ class GLRenderer implements GLEventListener, Observer {
     private final int defaultX = 4, defaultY = 23;
     private volatile Color[][] grid;
     private Color backGroundColor = Color.BLACK;
-    private Color garbageLineColor = new Color(139, 0, 0);
     private MusicEngine musicEngine;
 
     public GLRenderer(int blocksize, boolean useSound, SimulationStateInterface gameEngine) {
@@ -48,19 +47,27 @@ class GLRenderer implements GLEventListener, Observer {
         this.blockSize = blocksize;
         actionQueue = new ConcurrentLinkedQueue<Action>();
         initStackGrid();
-        if (useSound) {
-//            musicEngine = new MusicEngine();
-            //TODO write new MusicEngine with lower memory consumption
-            musicEngine = new NullObjectMusicEngine();
-        } else {
-            musicEngine = new NullObjectMusicEngine();
-        }
-        musicEngine.startBGMusic(false);
+        initSoundEngine(useSound);
 
         if (gameEngine != null) {
             this.gameEngine = gameEngine;
             gameEngine.addObserver(this);
         }
+    }
+
+    public void initSoundEngine(boolean useSound) {
+        if (useSound) {
+//            musicEngine = new MusicEngine();
+            //TODO write new MusicEngine with lower memory consumption
+            musicEngine = new MusicEngine();
+        } else {
+            if (musicEngine != null) {
+                musicEngine.stopBGMusic();
+                
+            }
+            musicEngine = new NullObjectMusicEngine();
+        }
+        musicEngine.startBGMusic(false);
     }
 
     @Override
@@ -264,7 +271,7 @@ class GLRenderer implements GLEventListener, Observer {
 
         for (int x = 0; x < lines.length; x++) {
             for (int y = 0; y < lines[x].length; y++) {
-                if (lines[x][y]!=null) {
+                if (lines[x][y] != null) {
                     grid[x][y] = lines[x][y].getColor();
                 } else {
                     grid[x][y] = backGroundColor;

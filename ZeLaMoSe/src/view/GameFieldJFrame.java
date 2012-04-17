@@ -41,6 +41,7 @@ public class GameFieldJFrame extends javax.swing.JFrame implements Observer {
             enemyEngine1 = otherSimulations.remove(0);
             enemyEngine1.addObserver(this);
             initEnemyArea1(enemyEngine1);
+            lblOtherPlayerName1.setText(((GameEngine)enemyEngine1).getNickName());
         } else {
             initEnemyArea1(null);
         }
@@ -49,6 +50,7 @@ public class GameFieldJFrame extends javax.swing.JFrame implements Observer {
             enemyEngine2 = otherSimulations.remove(0);
             enemyEngine2.addObserver(this);
             initEnemyArea2(enemyEngine2);
+            lblOtherPlayerName2.setText(((GameEngine)enemyEngine2).getNickName());
         } else {
             initEnemyArea2(null);
         }
@@ -57,6 +59,7 @@ public class GameFieldJFrame extends javax.swing.JFrame implements Observer {
             enemyEngine3 = otherSimulations.remove(0);
             enemyEngine3.addObserver(this);
             initEnemyArea3(enemyEngine3);
+            lblOtherPlayerName3.setText(((GameEngine)enemyEngine3).getNickName());
         } else {
             initEnemyArea3(null);
         }
@@ -184,7 +187,7 @@ public class GameFieldJFrame extends javax.swing.JFrame implements Observer {
         lblOtherNumbersOfLines1.setText("<OtherNumbersOfLines1>");
 
         lblNumberOfLines.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblNumberOfLines.setText("Number of Lines");
+        lblNumberOfLines.setText("Lines");
         lblNumberOfLines.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         lblEnemyScore1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -196,11 +199,11 @@ public class GameFieldJFrame extends javax.swing.JFrame implements Observer {
         lblEnemyLevel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         lblNumberOfBlocks1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblNumberOfBlocks1.setText("Number of Lines");
+        lblNumberOfBlocks1.setText("Blocks");
         lblNumberOfBlocks1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         lblNumberOfBlocks2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblNumberOfBlocks2.setText("Number of Lines");
+        lblNumberOfBlocks2.setText("Blocks");
         lblNumberOfBlocks2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         lblEnemyLevel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -212,7 +215,7 @@ public class GameFieldJFrame extends javax.swing.JFrame implements Observer {
         lblEnemyScore2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         lblNumberOfLines1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblNumberOfLines1.setText("Number of Lines");
+        lblNumberOfLines1.setText("Lines");
         lblNumberOfLines1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         lblOtherNumberOfBlocks2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -228,7 +231,7 @@ public class GameFieldJFrame extends javax.swing.JFrame implements Observer {
         lblOtherScoreValue2.setText("<OtherScoreValue1>");
 
         lblNumberOfBlocks3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblNumberOfBlocks3.setText("Number of Lines");
+        lblNumberOfBlocks3.setText("Blocks");
         lblNumberOfBlocks3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         lblEnemyLevel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -240,7 +243,7 @@ public class GameFieldJFrame extends javax.swing.JFrame implements Observer {
         lblEnemyScore3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         lblNumberOfLines2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblNumberOfLines2.setText("Number of Lines");
+        lblNumberOfLines2.setText("Lines");
         lblNumberOfLines2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         lblOtherNumberOfBlocks3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -413,48 +416,6 @@ public class GameFieldJFrame extends javax.swing.JFrame implements Observer {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /*
-         * Set the Nimbus look and feel
-         */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GameFieldJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GameFieldJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GameFieldJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GameFieldJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /*
-         * Create and display the form
-         */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                GameFieldJFrame gamefield = new GameFieldJFrame();
-                gamefield.setVisible(true);
-                gamefield.ownGameFieldJPanel1.startFakeGame();
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.media.opengl.awt.GLJPanel gLPnlEnemyArea1;
     private javax.media.opengl.awt.GLJPanel gLPnlEnemyArea2;

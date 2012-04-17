@@ -25,6 +25,7 @@ public class Config {
     public final static int frameRate = 30;
     public final static int ownGameFieldBlockSize = 30;
     public final static int EnemyGameFieldBlockSize = 10;
+    
 
     public static File convertRMI(Class c) {
         File tf = null;
