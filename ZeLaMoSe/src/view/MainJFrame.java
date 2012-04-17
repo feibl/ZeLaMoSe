@@ -8,11 +8,14 @@ import domain.InputSampler;
 import domain.SimulationController;
 import domain.StepGeneratorImpl;
 import domain.TetrisController;
-import domain.fake.BlockingSimulationController;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import network.client.NetworkHandlerImpl;
+import util.NameGenerator;
 import view.music.MusicEngine;
 
 /**
@@ -23,13 +26,21 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
     
     private TetrisController tetrisController;
     private MusicEngine musicEngine;
+    private NameGenerator nameGenerator;
     /**
      * Creates new form frmMain
      */
     public MainJFrame(TetrisController tetrisController) {
         this.tetrisController = tetrisController;
-        initComponents();
-        musicEngine = new MusicEngine();
+        
+       
+        try {
+            nameGenerator = new NameGenerator("/util/syllables.txt");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+                initComponents();
+                 musicEngine = new MusicEngine();
 
     }
 
@@ -47,6 +58,8 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
         pnlMultiPlayer = new javax.swing.JPanel();
         btnCreateGame = new javax.swing.JButton();
         btnJoinGame = new javax.swing.JButton();
+        lblNickName = new javax.swing.JLabel();
+        txtNickname = new javax.swing.JTextField();
         pnlControl = new javax.swing.JPanel();
         btnHelp = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
@@ -119,25 +132,42 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
             }
         });
 
+        lblNickName.setText("Nickname:");
+
+        txtNickname.setText(nameGenerator.compose(2));
+        txtNickname.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNicknameActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlMultiPlayerLayout = new javax.swing.GroupLayout(pnlMultiPlayer);
         pnlMultiPlayer.setLayout(pnlMultiPlayerLayout);
         pnlMultiPlayerLayout.setHorizontalGroup(
             pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMultiPlayerLayout.createSequentialGroup()
-                .addGap(111, 111, 111)
+                .addGap(23, 23, 23)
                 .addGroup(pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnCreateGame, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
-                    .addComponent(btnJoinGame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(132, Short.MAX_VALUE))
+                    .addComponent(lblNickName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addGroup(pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnJoinGame, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                    .addComponent(txtNickname))
+                .addGap(46, 46, 46))
         );
         pnlMultiPlayerLayout.setVerticalGroup(
             pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMultiPlayerLayout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(btnCreateGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                .addComponent(btnJoinGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4))
+                .addContainerGap()
+                .addGroup(pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNickName)
+                    .addComponent(txtNickname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addGroup(pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCreateGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnJoinGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22))
         );
 
         getContentPane().add(pnlMultiPlayer);
@@ -198,7 +228,7 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
                tetrisController.addObserver(this);
         try {
             tetrisController.startServer();
-            tetrisController.connectToServer("", TetrisController.SERVER_PORT, "nickname");
+            tetrisController.connectToServer("", TetrisController.SERVER_PORT, txtNickname.getText());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex, "Exception", JOptionPane.ERROR_MESSAGE);
             tetrisController.deleteObserver(this);
@@ -208,8 +238,12 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
     private void btnJoinGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinGameActionPerformed
         String ip = JOptionPane.showInputDialog(null, "Eingabe der IP");
         tetrisController.addObserver(this);
-        tetrisController.connectToServer(ip, TetrisController.SERVER_PORT, "nickname");
+        tetrisController.connectToServer(ip, TetrisController.SERVER_PORT,  txtNickname.getText());
     }//GEN-LAST:event_btnJoinGameActionPerformed
+
+    private void txtNicknameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNicknameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNicknameActionPerformed
         
     /**
      * @param args the command line arguments
@@ -261,10 +295,12 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel lblMultiPlayer;
+    private javax.swing.JLabel lblNickName;
     private javax.swing.JLabel lblSinglePlayer;
     private javax.swing.JPanel pnlControl;
     private javax.swing.JPanel pnlMultiPlayer;
     private javax.swing.JPanel pnlSinglePlayer;
+    private javax.swing.JTextField txtNickname;
     // End of variables declaration//GEN-END:variables
 
     @Override
