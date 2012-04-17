@@ -6,10 +6,8 @@ package view;
 
 import com.jogamp.opengl.util.FPSAnimator;
 import domain.Config;
-import domain.fake.FakeController;
 import domain.GameEngine;
 import domain.InputSampler;
-import domain.StepGeneratorImpl;
 import domain.interfaces.SimulationStateInterface;
 import java.awt.KeyboardFocusManager;
 import java.util.Observable;
@@ -24,6 +22,7 @@ import javax.swing.SwingUtilities;
  */
 public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
 
+    private boolean useSound = false;
     /**
      * Creates new form pnlGameField
      */
@@ -95,7 +94,14 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
 
         lblYourScoreValue.setText("<YourScoreValue>");
 
+        tglSound.setSelected(true);
         tglSound.setText("Sound on");
+        tglSound.setFocusable(false);
+        tglSound.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tglSoundActionPerformed(evt);
+            }
+        });
 
         lblPlayerName.setText("<PlayerName>");
 
@@ -170,9 +176,6 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
                 .addGap(580, 580, 580)
                 .addComponent(tglSound))
             .addGroup(layout.createSequentialGroup()
-                .addGap(195, 195, 195)
-                .addComponent(lblPlayerName))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(glPnlGameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,6 +216,9 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
             .addGroup(layout.createSequentialGroup()
                 .addGap(158, 158, 158)
                 .addComponent(lblZeLaMoSe))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(127, 127, 127)
+                .addComponent(lblPlayerName, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -268,6 +274,19 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
                 .addComponent(lblZeLaMoSe))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tglSoundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tglSoundActionPerformed
+        
+        if(useSound){
+            tglSound.setText("Sound On");
+        } else {
+            tglSound.setText("Sound Off");
+        }
+        
+        renderer.initSoundEngine(useSound);
+        useSound = !useSound;
+    }//GEN-LAST:event_tglSoundActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.media.opengl.awt.GLJPanel glPnlGameField;
     private javax.media.opengl.awt.GLJPanel glPnlNextBlock;
@@ -294,28 +313,14 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
     private javax.swing.JToggleButton tglSound;
     // End of variables declaration//GEN-END:variables
     private GLRenderer renderer;
-    private SimulationStateInterface gameEngine;
+    private GameEngine gameEngine;
 
     public void initRenderer(SimulationStateInterface gameEngine) {
-        this.gameEngine = gameEngine;
+        this.gameEngine = (GameEngine)gameEngine;
         gameEngine.addObserver(this);
         initOwnGameFieldRenderer();
         initNextBlockRenderer();
         
-    }
-
-    public void startFakeGame() {
-        
-        InputSampler is = new InputSampler();
-        setInputSampler(is);
-
-        StepGeneratorImpl sg = new StepGeneratorImpl(is);
-        sg.setSessionID(0);
-
-        GameEngine ge = new GameEngine(0,0);
-        initRenderer(ge);
-        new FakeController(ge, sg);
-        ge.startGame();
     }
 
     public void setInputSampler(InputSampler is) {
@@ -353,6 +358,12 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
         glPnlGameField.addGLEventListener(renderer);
         FPSAnimator ownGameFieldAnimator = new FPSAnimator(glPnlGameField, Config.frameRate, true);
         ownGameFieldAnimator.start();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+               lblPlayerName.setText(gameEngine.getNickName());
+            }
+        });
     }
 
     private void initNextBlockRenderer() {

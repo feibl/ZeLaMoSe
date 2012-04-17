@@ -53,6 +53,8 @@ public class SimulationController implements StepInterface {
       sessions.put(sessionId, name);
 //      System.out.println("add session: "+name);
       gameEngine.setSimulationController(this);
+      ((GameEngine)gameEngine).setNickName(name);
+      
   }
   
   public void initSimulation() {
@@ -116,7 +118,7 @@ public class SimulationController implements StepInterface {
               throw new IllegalStateException("tried to simulate step, but not all steps are available. Session "+session+ " is missing");
           }
           if (s.getSequenceNumber() != seqNum) {
-              throw new IllegalStateException("Invalid sequenceNumber"+s.getSequenceNumber());
+                 throw new IllegalStateException("Invalid sequenceNumber"+s.getSequenceNumber());
           }
           if (s.getSessionID() != session) {
               throw new IllegalStateException("Invalid session "+s.getSessionID());

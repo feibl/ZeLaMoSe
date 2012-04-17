@@ -32,6 +32,7 @@ public class GameEngine extends GameEngineInterface {
     private int blockCounter = 0;
     private SimulationController simulationController;
     private Random randomNewLineGenerator;
+    private String nickName="";
 
     public Block getNextBlock() {
         return (Block) nextBlock.clone();
@@ -426,4 +427,13 @@ public class GameEngine extends GameEngineInterface {
     public void setSimulationController(SimulationController simulationController) {
         this.simulationController = simulationController;
     }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+    
 }
