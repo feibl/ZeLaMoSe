@@ -25,7 +25,7 @@ public class MockGameEngine extends GameEngineInterface {
 
     @Override
     public void startGame() {
-        throw new UnsupportedOperationException("Not supported yet.");
+      
     }  
   
   @Override
@@ -59,7 +59,7 @@ public class MockGameEngine extends GameEngineInterface {
 
     @Override
     public void setSimulationController(SimulationController simulationController) {
-        throw new UnsupportedOperationException("Not supported yet.");
+       
     }
   
     
