@@ -32,10 +32,10 @@ public class SimulationController implements StepInterface {
           System.out.println("this session is not part of the simulation");
           assert(false);
       }
-      if (stepQueue.containsKey(step.getSessionID())) {
-          System.out.println("step queue already contains a step from this session");
-          assert(false);
-      }
+//      if (stepQueue.containsKey(step.getSessionID())) {
+//          System.out.println("step queue already contains a step from this session");
+//          assert(false);
+//      }
 //      System.out.println("addStep: "+step + " id: " + step.getSessionID() + " sequence: "+step.getSequenceNumber());
       stepQueue.put(step.getSessionID(), step);
   }
