@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public enum BlockType {
     I(IBlock.class), J(JBlock.class), L(LBlock.class), 
     O(OBlock.class), S(SBlock.class), T(TBlock.class), 
-    Z(ZBlock.class);
+    Z(ZBlock.class), GARBAGE(GarbageBlock.class);
     
     private final Class className;
 

@@ -8,8 +8,10 @@ import domain.interfaces.BlockQueueInterface;
 import domain.interfaces.GameEngineInterface;
 import domain.actions.*;
 import domain.block.Block;
+import domain.block.GarbageBlock;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 /**
  *
@@ -27,9 +29,11 @@ public class GameEngine extends GameEngineInterface {
     private boolean gameOver;
     private int score;
     private Block nextBlock;
+    private int blockCounter = 0;
+    private SimulationController simulationController;
 
     public Block getNextBlock() {
-        return (Block)nextBlock.clone();
+        return (Block) nextBlock.clone();
     }
 
     public int getLevel() {
@@ -102,6 +106,9 @@ public class GameEngine extends GameEngineInterface {
                     break;
                 case HARDDROP:
                     handleHardDropAction();
+                    break;
+                case NEWLINE:
+                    handleNewLineAction((NewLineAction) action);
                     break;
             }
         }
@@ -183,12 +190,13 @@ public class GameEngine extends GameEngineInterface {
             currentBlock = nextBlock;
         }
         nextBlock = queue.getNextBlock();
-        
+
         if (!checkForGameOver()) {
             currentBlock.setX(defaultX);
             currentBlock.setY(defaultY);
             saveCurrenblockToGrid();
             setLastAction(new NewBlockAction(currentBlock, sessionId));
+            ++blockCounter;
         } else {
             setLastAction(new GameOverAction(sessionId));
         }
@@ -214,8 +222,6 @@ public class GameEngine extends GameEngineInterface {
         }
     }
 
-    //TODO refactor method that the generate RemoveLineAction can remove multiple lines at once, 
-    //Maybe have to refactor the RemoveLineAction for this Reason
     private void checkForLinesToRemove() {
         boolean removeLine;
         ArrayList<Integer> linesToRemove = new ArrayList<Integer>();
@@ -233,6 +239,9 @@ public class GameEngine extends GameEngineInterface {
 
         if (linesToRemove.size() > 0) {
             removeLines(linesToRemove);
+        }
+        if (linesToRemove.size() > 1) {
+            createNewLineAction(linesToRemove.size() - 1);
         }
 
     }
@@ -367,5 +376,52 @@ public class GameEngine extends GameEngineInterface {
         //Calculate the new level
         level = totalRemovedLines / Config.levelUpMultiplier + 1;
         setLastAction(new RemoveLineAction(0, linesToRemove));
+    }
+
+    public int getBlockCounter() {
+        return blockCounter;
+    }
+
+    private void createNewLineAction(int numberOfLines) {
+        Block[][] garbageLines = new Block[Config.gridWidth][numberOfLines];
+        Random random = new Random(System.currentTimeMillis());
+        int emptyXPosition = random.nextInt(12);
+        GarbageBlock garbageBlock = new GarbageBlock();
+        for (int x = 0; x < Config.gridWidth; ++x) {
+            if (x == emptyXPosition) {
+                continue;
+            }
+            for (int y = 0; y < numberOfLines; ++y) {
+                garbageLines[x][y] = garbageBlock;
+            }
+        }
+        if (simulationController != null) {
+            simulationController.addNewLineAction(sessionId, new NewLineAction(0, garbageLines));
+        }
+    }
+
+    private void handleNewLineAction(NewLineAction action) {
+        int numberOfLines = action.getLines()[0].length;
+        for (int x = 0; x < Config.gridWidth; x++) {
+            for (int y = Config.gridHeight - 1 - numberOfLines; y >= 0; y--) {
+                grid[x][y + numberOfLines] = grid[x][y];
+            }
+        }
+
+        for (int x = 0; x < Config.gridWidth; x++) {
+            for (int y = 0; y < numberOfLines; y++) {
+                if (action.getLines()[x][y] != null) {
+                    grid[x][y] = action.getLines()[x][y];
+                } else {
+                    grid[x][y] = null;
+                }
+            }
+        }
+        setLastAction(action);
+    }
+
+    @Override
+    public void setSimulationController(SimulationController simulationController) {
+        this.simulationController = simulationController;
     }
 }

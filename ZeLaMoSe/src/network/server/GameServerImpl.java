@@ -47,6 +47,10 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
         }
         registry.rebind(serverName, this);
     }
+    
+    public GameServerImpl() throws RemoteException {
+       sessionList = new Session[MAX_SESSIONS]; 
+    }
 
         
     @Override
