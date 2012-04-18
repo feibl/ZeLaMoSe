@@ -8,13 +8,13 @@ import domain.*;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import network.client.NetworkHandler;
 import network.client.NetworkHandlerImpl;
 import util.NameGenerator;
 import view.music.MusicEngine;
+import view.music.MusicFile;
+import view.music.OnMusicEngine;
 
 /**
  *
@@ -40,7 +40,7 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
             ex.printStackTrace();
         }
         initComponents();
-        musicEngine = new MusicEngine();  
+        musicEngine = new OnMusicEngine(MusicFile.mainBackgroundMusic);  
     }
 
     /**
@@ -307,9 +307,9 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
     public void setVisible(boolean b) {
         super.setVisible(b);
         if (!b) {
-           musicEngine.stopNiggasInParis();
-    }else{
-                           musicEngine.startNiggasInParis(false);
+            musicEngine.stopMusic();
+        } else {
+            musicEngine.playMusic(true,0.8f);
         }
 
     }

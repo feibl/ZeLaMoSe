@@ -11,10 +11,7 @@ import domain.actions.RotateAction.Direction;
 import domain.block.GarbageBlock;
 import domain.interfaces.SimulationStateInterface;
 import java.awt.Color;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +19,9 @@ import javax.media.opengl.*;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 import view.music.MusicEngine;
-import view.music.NullObjectMusicEngine;
+import view.music.MusicFile;
+import view.music.OnMusicEngine;
+import view.music.OffMusicEngine;
 
 /**
  *
@@ -39,7 +38,7 @@ class GLRenderer implements GLEventListener, Observer {
     private final int defaultX = 4, defaultY = 23;
     private volatile Color[][] grid;
     private Color backGroundColor = Color.BLACK;
-    private MusicEngine musicEngine;
+    private MusicEngine backGroundMusic, rotateSound, moveSound, dropSound, lineRemovedSound, fourLineRemovedSound, gameOverSound;
 
     public GLRenderer(int blocksize, boolean useSound, SimulationStateInterface gameEngine) {
         this.viewPortWidth = Config.gridWidth * blocksize;
@@ -57,17 +56,26 @@ class GLRenderer implements GLEventListener, Observer {
 
     public void initSoundEngine(boolean useSound) {
         if (useSound) {
-//            musicEngine = new MusicEngine();
-            //TODO write new MusicEngine with lower memory consumption
-            musicEngine = new MusicEngine();
+            backGroundMusic = new OnMusicEngine(MusicFile.gameBackgroundMusic);
+            rotateSound = new OnMusicEngine(MusicFile.rotateSound);
+            moveSound = new OnMusicEngine(MusicFile.moveSound);
+            dropSound = new OnMusicEngine(MusicFile.dropSound);
+            lineRemovedSound = new OnMusicEngine(MusicFile.lineRemovedSound);
+            fourLineRemovedSound = new OnMusicEngine(MusicFile.fourLineRemovedSound);
+            gameOverSound = new OnMusicEngine(MusicFile.gameOverSound);
         } else {
-            if (musicEngine != null) {
-                musicEngine.stopBGMusic();
-                
+            if (backGroundMusic != null) {
+                backGroundMusic.stopMusic();
             }
-            musicEngine = new NullObjectMusicEngine();
+            backGroundMusic = new OffMusicEngine();
+            rotateSound = new OffMusicEngine();
+            moveSound = new OffMusicEngine();
+            dropSound = new OffMusicEngine();
+            lineRemovedSound = new OffMusicEngine();
+            fourLineRemovedSound = new OffMusicEngine();
+            gameOverSound = new OffMusicEngine();
         }
-        musicEngine.startBGMusic(false);
+        backGroundMusic.playMusic(true, 0.75f);
     }
 
     @Override
@@ -222,7 +230,7 @@ class GLRenderer implements GLEventListener, Observer {
     }
 
     private void handleRotateAction(RotateAction action) {
-        musicEngine.playRotateSound();
+        rotateSound.playMusic(false);
 
         if (action.getDirection() == Direction.LEFT) {
             currentBlock.rotateLeft(Config.defaultWallKickTest);
@@ -240,11 +248,11 @@ class GLRenderer implements GLEventListener, Observer {
                 currentBlock.setY(currentBlock.getY() - action.getSpeed());
                 break;
             case LEFT:
-                musicEngine.playMoveSound();
+                moveSound.playMusic(false);
                 currentBlock.setX(currentBlock.getX() - action.getSpeed());
                 break;
             case RIGHT:
-                musicEngine.playMoveSound();
+                moveSound.playMusic(false);
                 currentBlock.setX(currentBlock.getX() + action.getSpeed());
                 break;
         }
@@ -252,7 +260,7 @@ class GLRenderer implements GLEventListener, Observer {
 
     private void handleNewBlockAction(Block block) {
         if ((currentBlock != null)) {
-            musicEngine.playDropSound();
+            dropSound.playMusic(false);
             saveCurrentblockToGrid();
         }
         currentBlock = (Block) block.clone();
@@ -302,9 +310,9 @@ class GLRenderer implements GLEventListener, Observer {
 
                 List<Integer> linesToRemove = rmlineAction.getLinesToRemove();
                 if (linesToRemove.size() == 4) {
-                    musicEngine.playLine4Sound();
+                    fourLineRemovedSound.playMusic(false);
                 } else {
-                    musicEngine.playLineSound();
+                    lineRemovedSound.playMusic(false);
                 }
                 for (Integer lineToRemove : linesToRemove) {
 
@@ -373,8 +381,8 @@ class GLRenderer implements GLEventListener, Observer {
 
             @Override
             public void run() {
-                musicEngine.stopBGMusic();
-                musicEngine.playGameOverSound();
+                backGroundMusic.stopMusic();
+                gameOverSound.playMusic(false);
                 Block[][] filler = new Block[Config.gridWidth][1];
 
                 for (int j = 0; j < Config.gridWidth; j++) {
