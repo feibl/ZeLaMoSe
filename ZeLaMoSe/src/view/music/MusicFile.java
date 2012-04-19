@@ -4,25 +4,27 @@
  */
 package view.music;
 
+import domain.Config;
+
 /**
  *
  * @author Patrick Zenhäusern
  */
 public enum MusicFile {
-    gameBackgroundMusic("/view/music/files/BackgroundThemeA.ogg"),
-    mainBackgroundMusic("/view/music/files/Niggas_In_Paris.ogg"),
-    lobbyBackgroundMusic("/view/music/files/lobby.ogg"),
-    rotateSound("/view/music/files/rotation.ogg"),
-    fourLineRemovedSound("/view/music/files/4line.ogg"),
-    lineRemovedSound("/view/music/files/line.ogg"),
-    dropSound("/view/music/files/drop.ogg"),
-    gameOverSound("/view/music/files/gameover.ogg"),
-    moveSound("/view/music/files/move.ogg")
+    gameBackgroundMusic("BackgroundThemeA.ogg"),
+    mainBackgroundMusic("Niggas_In_Paris.ogg"),
+    lobbyBackgroundMusic("lobby.ogg"),
+    rotateSound("rotation.ogg"),
+    fourLineRemovedSound("4line.ogg"),
+    lineRemovedSound("line.ogg"),
+    dropSound("drop.ogg"),
+    gameOverSound("gameover.ogg"),
+    moveSound("move.ogg")
      ;
     
     private String musicFile;
     private MusicFile(String musicFile) {
-        this.musicFile = musicFile;
+        this.musicFile = Config.basicPathToMusicFiles + musicFile;
     }
     
     public String getMusicFile(){

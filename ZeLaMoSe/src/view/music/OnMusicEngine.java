@@ -11,7 +11,9 @@ import org.newdawn.easyogg.OggClip;
  *
  * @author Cyrill
  */
-public class OnMusicEngine extends MusicEngine{
+public class OnMusicEngine extends MusicEngine {
+
+    private boolean fileExists = true;
 
     public OnMusicEngine(MusicFile musicFile) {
         this.musicFile = musicFile;
@@ -29,7 +31,6 @@ public class OnMusicEngine extends MusicEngine{
         }
     }
 
-    
     @Override
     public void stopMusic() {
         if (musicClip != null) {
@@ -39,14 +40,19 @@ public class OnMusicEngine extends MusicEngine{
 
     @Override
     protected OggClip initMusicClip(MusicFile musicFile) {
-         try {
+        //If we already tested before that the file is inexistent there's no need to do it again
+        if (!fileExists) {
+            return null;
+        }
+        try {
             musicClip = new OggClip(OnMusicEngine.class.getResourceAsStream(musicFile.getMusicFile()));
         } catch (IOException exception) {
             musicClip = null;
+            fileExists = false;
             System.out.println("Music file: " + musicFile.toString() + " (" + musicFile.getMusicFile() + ") was not found!");
-        }finally {
-             return musicClip;
-         }
-        
+        } finally {
+            return musicClip;
+        }
+
     }
 }
