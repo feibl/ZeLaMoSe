@@ -5,15 +5,12 @@
 package view;
 
 import domain.*;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
-import network.client.NetworkHandler;
 import view.music.MusicEngine;
+import view.music.MusicFile;
+import view.music.OnMusicEngine;
 
 /**
  *
@@ -39,14 +36,14 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         tetrisController.addObserver(this);
         chatController.addObserver(this);
         
-        musicEngine = new MusicEngine();
-        musicEngine.playLobbySound();
+        musicEngine = new OnMusicEngine(MusicFile.lobbyBackgroundMusic);
+        musicEngine.playMusic(true);
     }
 
     @Override
     public void dispose() {
         super.dispose();
-        musicEngine.stopLobbySound();
+        musicEngine.stopMusic();
     }
 
     /**
@@ -158,7 +155,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         );
         pnlClockLayout.setVerticalGroup(
             pnlClockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 109, Short.MAX_VALUE)
+            .addGap(0, 113, Short.MAX_VALUE)
         );
 
         lblTimeHere.setText("Time you're here:");
