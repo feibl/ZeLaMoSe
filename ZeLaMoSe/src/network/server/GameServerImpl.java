@@ -54,7 +54,7 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
 
         
     @Override
-    public SessionRemote createSession(String nickname, ClientRemote clientRemote) throws RemoteException, ServerFullException {
+    public synchronized SessionRemote createSession(String nickname, ClientRemote clientRemote) throws RemoteException, ServerFullException {
         SessionInformation sInfo = new SessionInformation(id++, nickname);
         for (int i = 0; i < sessionList.length; i++) {
             if (sessionList[i] == null) {
