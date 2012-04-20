@@ -20,12 +20,13 @@ import view.music.OnMusicEngine;
  *
  * @author Patrick Zenhäusern
  */
-public class MainJFrame extends javax.swing.JFrame implements Observer {
-    
+public class MainJFrame extends javax.swing.JFrame {
+
     private TetrisController tetrisController;
     private MusicEngine musicEngine;
     private NetworkHandler networkHandler;
     private NameGenerator nameGenerator;
+
     /**
      * Creates new form frmMain
      */
@@ -33,14 +34,14 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
         this.tetrisController = tetrisController;
 
         this.networkHandler = networkHandler;
-           
+
         try {
             nameGenerator = new NameGenerator("/util/syllables.txt");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
         initComponents();
-        musicEngine = new OnMusicEngine(MusicFile.mainBackgroundMusic);  
+        musicEngine = new OnMusicEngine(MusicFile.mainBackgroundMusic);
     }
 
     /**
@@ -220,30 +221,65 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnStartGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartGameActionPerformed
-
     }//GEN-LAST:event_btnStartGameActionPerformed
 
     private void btnCreateGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateGameActionPerformed
-               tetrisController.addObserver(this);
+        Observer observer = new Observer() {
+
+            @Override
+            public void update(Observable o, Object o1) {
+                switch ((TetrisController.UpdateType) o1) {
+                    case CONNECTION_ESTABLISHED:
+                        tetrisController.deleteObserver(this);
+                        StringBuilder addresses = new StringBuilder();
+                        for(String addr: tetrisController.getServerAddresses()) {
+                            addresses.append(addr + " ");
+                        }
+                        
+                        showLobby(true, addresses.toString());
+                        break;
+                    case EXCEPTION_THROWN:
+                        JOptionPane.showMessageDialog(MainJFrame.this, tetrisController.getThrownException(), "Exception", JOptionPane.ERROR_MESSAGE);
+                        tetrisController.deleteObserver(this);
+                        break;
+                }
+            }
+        };
+        tetrisController.addObserver(observer);
         try {
             tetrisController.startServer();
             tetrisController.connectToServer("", TetrisController.SERVER_PORT, txtNickname.getText());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex, "Exception", JOptionPane.ERROR_MESSAGE);
-            tetrisController.deleteObserver(this);
+            tetrisController.deleteObserver(observer);
         }
     }//GEN-LAST:event_btnCreateGameActionPerformed
 
     private void btnJoinGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinGameActionPerformed
-        String ip = JOptionPane.showInputDialog(null, "Eingabe der IP");
-        tetrisController.addObserver(this);
-        tetrisController.connectToServer(ip, TetrisController.SERVER_PORT,  txtNickname.getText());
+        final String ip = JOptionPane.showInputDialog(null, "Eingabe der IP");
+        tetrisController.addObserver(new Observer() {
+
+            @Override
+            public void update(Observable o, Object o1) {
+                switch ((TetrisController.UpdateType) o1) {
+                    case CONNECTION_ESTABLISHED:
+                        tetrisController.deleteObserver(this);
+                        showLobby(false, ip);
+                        break;
+                    case EXCEPTION_THROWN:
+                        JOptionPane.showMessageDialog(MainJFrame.this, tetrisController.getThrownException(), "Exception", JOptionPane.ERROR_MESSAGE);
+                        tetrisController.deleteObserver(this);
+                        break;
+                }
+            }
+        });       
+        tetrisController.connectToServer(ip, TetrisController.SERVER_PORT, txtNickname.getText());
     }//GEN-LAST:event_btnJoinGameActionPerformed
 
     private void txtNicknameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNicknameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNicknameActionPerformed
-        
+
     /**
      * @param args the command line arguments
      */
@@ -278,7 +314,7 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
          * Create and display the form
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            
+
             public void run() {
                 InputSampler is = new InputSampler();
                 NetworkHandler nh = new NetworkHandlerImpl();
@@ -309,29 +345,19 @@ public class MainJFrame extends javax.swing.JFrame implements Observer {
         if (!b) {
             musicEngine.stopMusic();
         } else {
-            musicEngine.playMusic(true,0.8f);
+            musicEngine.playMusic(true, 0.8f);
         }
 
     }
 
-    @Override
-    public void update(Observable o, Object o1) {
-        switch ((TetrisController.UpdateType) o1) {
-            case CONNECTION_ESTABLISHED:
-                tetrisController.deleteObserver(this);
-                final LobbyJFrame lobby = new LobbyJFrame(tetrisController, new ChatController(networkHandler), true, this);
-                java.awt.EventQueue.invokeLater(new Runnable() {
-                    
-                    public void run() {
-                        lobby.setVisible(true);
-                        setVisible(false);
-                    }
-                });
-                break;
-            case EXCEPTION_THROWN:
-                JOptionPane.showMessageDialog(this, tetrisController.getThrownException(), "Exception", JOptionPane.ERROR_MESSAGE);
-                tetrisController.deleteObserver(this);
-                break;
-        }
+    private void showLobby(boolean host, String serverAddress) {
+        final LobbyJFrame lobby = new LobbyJFrame(tetrisController, new ChatController(networkHandler), serverAddress, host, this);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                lobby.setVisible(true);
+                setVisible(false);
+            }
+        });
     }
 }

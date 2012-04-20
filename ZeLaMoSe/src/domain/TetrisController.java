@@ -6,13 +6,15 @@ package domain;
 
 import domain.interfaces.SimulationStateInterface;
 import domain.interfaces.StepProducerInterface;
-import java.net.MalformedURLException;
+import java.net.*;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import network.SessionInformation;
 import network.client.NetworkHandler;
 import network.server.GameServer;
@@ -77,6 +79,30 @@ public class TetrisController extends Observable implements Observer {
 
     public SimulationStateInterface getSession(int sessionId) {
         return simulationController.getSimulation(sessionId);
+    }
+
+    public ArrayList<String> getServerAddresses() {
+        ArrayList<String> returnValue = new ArrayList<String>();
+
+        Enumeration<NetworkInterface> niList;
+        try {
+            niList = NetworkInterface.getNetworkInterfaces();
+            for (NetworkInterface iface : Collections.list(niList)) {
+                if (!iface.isLoopback() && iface.isUp()) {
+                    for (InetAddress addr : Collections.list(iface.getInetAddresses())) {
+                        if (addr instanceof Inet4Address) {
+                            returnValue.add(addr.getHostAddress());
+                        }
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+        }
+
+        if (returnValue.isEmpty()) {
+            returnValue.add("localhost");
+        }
+        return returnValue;
     }
 
     public void startServer() throws RemoteException, MalformedURLException {
@@ -155,11 +181,11 @@ public class TetrisController extends Observable implements Observer {
      * public for testing
      */
     public void runStep() {
-       // System.out.println("running step: " + currentStep + " time: " + System.nanoTime());
+        // System.out.println("running step: " + currentStep + " time: " + System.nanoTime());
         if (currentStep > 0) { //on the first step we don't have all steps available so we wait for the others and don't simulate yet
             for (int i = 0; i < sessionMap.size() - 1; i++) {
                 networkHandler.niggasInParis();
-                
+
             }
             simulationController.simulateStep(currentStep - 1); //Simulate previous step
         }
