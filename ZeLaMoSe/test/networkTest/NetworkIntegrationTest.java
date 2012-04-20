@@ -130,23 +130,15 @@ public class NetworkIntegrationTest {
             }
 
             public Long call() {
-                for (int i = 0; i < 10; i++) {
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(NetworkIntegrationTest.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    if (count == MAX_SESSIONS - 1) {
-                        return new Long(t);
-                    }
+                for (NetworkHandler handler : otherPlayers) {
+                    handler.niggasInParis();
                 }
-                System.out.println("never got an update");
-                return new Long(-1);
+                return new Long(t);
             }
         };
 
         MyCallable myCallable = new MyCallable();
-        for(NetworkHandler handler: otherPlayers) {
+        for (NetworkHandler handler : otherPlayers) {
             handler.addObserver(myCallable);
         }
 
@@ -158,14 +150,16 @@ public class NetworkIntegrationTest {
 
 
         long timeAfter = -1;
+
         try {
-            timeAfter = future.get().longValue();
+            timeAfter = future.get(500, TimeUnit.MILLISECONDS).longValue();
         } catch (InterruptedException ex) {
             Logger.getLogger(NetworkIntegrationTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ExecutionException ex) {
             Logger.getLogger(NetworkIntegrationTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TimeoutException ex) {
+            future.cancel(true);
         }
-
 
         assertTrue(timeAfter >= 0);
         System.out.println(timeAfter - timeBefore);
