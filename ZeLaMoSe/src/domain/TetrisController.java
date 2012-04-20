@@ -41,11 +41,16 @@ public class TetrisController extends Observable implements Observer {
     private int currentStep = 0;
     private final int stepDuration = 50; //in millisecond   
     private GameServer gameServer;
+    private String serverIP = "";
     private ConcurrentHashMap<Integer, String> sessionMap;
     private int localSessionID = -1;
 
     public Object getThrownException() {
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public String getServerIP() {
+        return serverIP;
     }
 
     public enum UpdateType {
@@ -81,9 +86,7 @@ public class TetrisController extends Observable implements Observer {
         return simulationController.getSimulation(sessionId);
     }
 
-    public ArrayList<String> getServerAddresses() {
-        ArrayList<String> returnValue = new ArrayList<String>();
-
+    private String getLocalIP() {
         Enumeration<NetworkInterface> niList;
         try {
             niList = NetworkInterface.getNetworkInterfaces();
@@ -91,18 +94,15 @@ public class TetrisController extends Observable implements Observer {
                 if (!iface.isLoopback() && iface.isUp()) {
                     for (InetAddress addr : Collections.list(iface.getInetAddresses())) {
                         if (addr instanceof Inet4Address) {
-                            returnValue.add(addr.getHostAddress());
+                            return addr.getHostAddress();
                         }
                     }
                 }
             }
         } catch (SocketException ex) {
         }
-
-        if (returnValue.isEmpty()) {
-            returnValue.add("localhost");
-        }
-        return returnValue;
+        
+        return "localhost";
     }
 
     public void startServer() throws RemoteException, MalformedURLException {
@@ -112,10 +112,14 @@ public class TetrisController extends Observable implements Observer {
         }
         Registry registry = LocateRegistry.getRegistry();
         gameServer = new GameServerImpl(TetrisController.SERVER_NAME, registry);
+        
+        serverIP = getLocalIP();
     }
 
     public void connectToServer(String ip, int port, String nickname) {
         networkHandler.connectToServer(ip, TetrisController.SERVER_NAME, nickname);
+        
+        serverIP = ip;
     }
 
     public void disconnectFromServer() {

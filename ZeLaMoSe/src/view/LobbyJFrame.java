@@ -25,7 +25,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private MusicEngine musicEngine;
     private final ChatController chatController;
 
-    LobbyJFrame(TetrisController tetrisController, ChatController chatController, String serverAddress, boolean host, MainJFrame menu) {
+    LobbyJFrame(TetrisController tetrisController, ChatController chatController, boolean host, MainJFrame menu) {
         this.tetrisController = tetrisController;
         this.menu = menu;
         this.host = host;
@@ -33,7 +33,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
 
         initComponents();
         btnStart.setVisible(host);
-        lblServerIPValue.setText(serverAddress);
+        lblServerIPValue.setText(tetrisController.getServerIP());
         tetrisController.addObserver(this);
         chatController.addObserver(this);
         

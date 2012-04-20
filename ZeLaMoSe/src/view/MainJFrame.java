@@ -230,13 +230,8 @@ public class MainJFrame extends javax.swing.JFrame {
             public void update(Observable o, Object o1) {
                 switch ((TetrisController.UpdateType) o1) {
                     case CONNECTION_ESTABLISHED:
-                        tetrisController.deleteObserver(this);
-                        StringBuilder addresses = new StringBuilder();
-                        for(String addr: tetrisController.getServerAddresses()) {
-                            addresses.append(addr + " ");
-                        }
-                        
-                        showLobby(true, addresses.toString());
+                        tetrisController.deleteObserver(this);                
+                        showLobby(true);
                         break;
                     case EXCEPTION_THROWN:
                         JOptionPane.showMessageDialog(MainJFrame.this, tetrisController.getThrownException(), "Exception", JOptionPane.ERROR_MESSAGE);
@@ -248,7 +243,7 @@ public class MainJFrame extends javax.swing.JFrame {
         tetrisController.addObserver(observer);
         try {
             tetrisController.startServer();
-            tetrisController.connectToServer("", TetrisController.SERVER_PORT, txtNickname.getText());
+            tetrisController.connectToServer(tetrisController.getServerIP(), TetrisController.SERVER_PORT, txtNickname.getText());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex, "Exception", JOptionPane.ERROR_MESSAGE);
             tetrisController.deleteObserver(observer);
@@ -264,7 +259,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 switch ((TetrisController.UpdateType) o1) {
                     case CONNECTION_ESTABLISHED:
                         tetrisController.deleteObserver(this);
-                        showLobby(false, ip);
+                        showLobby(false);
                         break;
                     case EXCEPTION_THROWN:
                         JOptionPane.showMessageDialog(MainJFrame.this, tetrisController.getThrownException(), "Exception", JOptionPane.ERROR_MESSAGE);
@@ -350,8 +345,8 @@ public class MainJFrame extends javax.swing.JFrame {
 
     }
 
-    private void showLobby(boolean host, String serverAddress) {
-        final LobbyJFrame lobby = new LobbyJFrame(tetrisController, new ChatController(networkHandler), serverAddress, host, this);
+    private void showLobby(boolean host) {
+        final LobbyJFrame lobby = new LobbyJFrame(tetrisController, new ChatController(networkHandler), host, this);
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
