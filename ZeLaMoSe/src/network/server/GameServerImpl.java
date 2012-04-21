@@ -131,15 +131,6 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
         }
     }
 
-    public void setSession(Session oldSession, Session newSession) {
-        for (int i = 0; i < sessionList.length; i++) {
-            Session s = sessionList[i];
-            if (s != null && s == oldSession) {
-                sessionList[i] = newSession;
-            }
-        }
-    }
-
     protected void distributeStepToOthers(Session sender, Step step) {
         final Step stepFinal = step;
         for (final Session s : sessionList) {
