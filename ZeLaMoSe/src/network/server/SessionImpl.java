@@ -38,11 +38,16 @@ public class SessionImpl extends UnicastRemoteObject implements SessionRemote, S
 
     @Override
     public void receiveStep(Step step) throws RemoteException {
-        gameServer.distributeStepToOthers(this, step);
+        gameServer.addStep(this, step);
     }
 
     @Override
-    public SessionInformation getSessionInformation() throws RemoteException {
+    public SessionInformation getRemoteSessionInformation() throws RemoteException {
+        return getRemoteSessionInformation();
+    }
+    
+        @Override
+    public SessionInformation getSessionInformation() {
         return sessionInformation;
     }
 

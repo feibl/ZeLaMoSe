@@ -14,7 +14,7 @@ import network.SessionInformation;
  */
 public interface Session {
 
-   public SessionInformation getSessionInformation() throws RemoteException;
+   public SessionInformation getSessionInformation();
 
    public void sendChatMessage(SessionInformation sender, String message) throws RemoteException;
 
