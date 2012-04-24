@@ -11,7 +11,7 @@ import java.util.*;
 
 /**
  *
- * @author chrigi
+ * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public class SimulationController implements StepInterface {
 

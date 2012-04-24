@@ -8,13 +8,13 @@ import domain.*;
 import java.util.*;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
-import view.music.MusicEngine;
+import view.music.MusicEngineAbstract;
 import view.music.MusicFile;
 import view.music.OnMusicEngine;
 
 /**
  *
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class LobbyJFrame extends javax.swing.JFrame implements Observer {
 
@@ -22,7 +22,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private final MainJFrame menu;
     private ListModel playerListModel;
     private final boolean host;
-    private MusicEngine musicEngine;
+    private MusicEngineAbstract musicEngine;
     private final ChatController chatController;
 
     LobbyJFrame(TetrisController tetrisController, ChatController chatController, boolean host, MainJFrame menu, boolean isSinglePlayer) {

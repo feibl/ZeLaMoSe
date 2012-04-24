@@ -10,34 +10,34 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JOptionPane;
+import network.client.NetworkHandlerAbstract;
 import network.client.NetworkHandler;
-import network.client.NetworkHandlerImpl;
 import util.NameGenerator;
-import view.music.MusicEngine;
+import view.music.MusicEngineAbstract;
 import view.music.MusicFile;
 import view.music.OnMusicEngine;
 
 /**
  *
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class MainJFrame extends javax.swing.JFrame {
 
     private TetrisController tetrisController;
-    private MusicEngine musicEngine;
-    private NetworkHandler networkHandler;
+    private MusicEngineAbstract musicEngine;
+    private NetworkHandlerAbstract networkHandler;
     private NameGenerator nameGenerator;
 
     /**
      * Creates new form frmMain
      */
-    public MainJFrame(TetrisController tetrisController, NetworkHandler networkHandler) {
+    public MainJFrame(TetrisController tetrisController, NetworkHandlerAbstract networkHandler) {
         this.tetrisController = tetrisController;
 
         this.networkHandler = networkHandler;
 
         try {
-            nameGenerator = new NameGenerator("/util/syllables.txt");
+            nameGenerator = new NameGenerator("/resource/util/syllables.txt");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -318,7 +318,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
             public void run() {
                 InputSampler is = new InputSampler();
-                NetworkHandler nh = new NetworkHandlerImpl();
+                NetworkHandlerAbstract nh = new NetworkHandler();
                 new MainJFrame(new TetrisController(new SimulationController(), nh, new StepGenerator(is)), nh).setVisible(true);
             }
         });

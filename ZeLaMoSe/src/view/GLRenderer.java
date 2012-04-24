@@ -5,27 +5,33 @@
 package view;
 
 import domain.Config;
-import domain.actions.*;
-import domain.block.BlockAbstract;
-import domain.actions.RotateAction.Direction;
-import domain.block.GarbageBlock;
 import domain.SimulationStateAbstract;
+import domain.actions.*;
+import domain.actions.RotateAction.Direction;
+import domain.block.BlockAbstract;
+import domain.block.GarbageBlock;
 import java.awt.Color;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.media.opengl.*;
+import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLEventListener;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
-import view.music.MusicEngine;
+import view.music.MusicEngineAbstract;
 import view.music.MusicFile;
-import view.music.OnMusicEngine;
 import view.music.OffMusicEngine;
+import view.music.OnMusicEngine;
 
 /**
  *
- * @author Cyrill
+ * @author Cyrill Lam <clam@hsr.ch>
  */
 class GLRenderer implements GLEventListener, Observer {
 
@@ -38,7 +44,7 @@ class GLRenderer implements GLEventListener, Observer {
     private final int defaultX = 4, defaultY = 23;
     private volatile Color[][] grid;
     private Color backGroundColor = Color.BLACK;
-    private MusicEngine backGroundMusic, rotateSound, moveSound, dropSound, lineRemovedSound, fourLineRemovedSound, gameOverSound;
+    private MusicEngineAbstract backGroundMusic, rotateSound, moveSound, dropSound, lineRemovedSound, fourLineRemovedSound, gameOverSound;
 
     public GLRenderer(int blocksize, boolean useSound, SimulationStateAbstract gameEngine) {
         this.viewPortWidth = Config.gridWidth * blocksize;

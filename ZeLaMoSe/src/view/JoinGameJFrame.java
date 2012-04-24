@@ -9,7 +9,7 @@ import java.rmi.registry.Registry;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JOptionPane;
-import network.client.NetworkHandler;
+import network.client.NetworkHandlerAbstract;
 
 /**
  *

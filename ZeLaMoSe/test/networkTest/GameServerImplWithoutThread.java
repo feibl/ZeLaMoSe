@@ -11,8 +11,8 @@ import java.rmi.registry.Registry;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import network.server.GameServerImpl;
-import network.server.Session;
+import network.server.GameServer;
+import network.server.SessionInterface;
 import org.junit.Ignore;
 
 /**
@@ -20,7 +20,7 @@ import org.junit.Ignore;
  * @author Fabian Senn <fsenn@hsr.ch>
  */
 @Ignore
-public class GameServerImplWithoutThread extends GameServerImpl {
+public class GameServerImplWithoutThread extends GameServer {
 
     public GameServerImplWithoutThread(String serverName, Registry registry) throws RemoteException, MalformedURLException {
         super(serverName, registry);
@@ -32,7 +32,7 @@ public class GameServerImplWithoutThread extends GameServerImpl {
     }
 
     @Override
-    protected void sendInitSignal(Session s, long blockQueueSeed) {
+    protected void sendInitSignal(SessionInterface s, long blockQueueSeed) {
         try {
             s.sendInitSignal(blockQueueSeed);
         } catch (RemoteException ex) {
@@ -41,7 +41,7 @@ public class GameServerImplWithoutThread extends GameServerImpl {
     }
 
     @Override
-    protected void sendStartSignal(Session s) {
+    protected void sendStartSignal(SessionInterface s) {
         try {
             s.sendStartSignal();
         } catch (RemoteException ex) {
@@ -50,7 +50,7 @@ public class GameServerImplWithoutThread extends GameServerImpl {
     }
 
     @Override
-    protected void sendSteps(Session s, Collection<Step> removedSteps) {
+    protected void sendSteps(SessionInterface s, Collection<Step> removedSteps) {
         try {
             s.sendSteps(removedSteps);
         } catch (RemoteException ex) {

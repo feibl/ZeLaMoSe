@@ -10,9 +10,9 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import network.client.NetworkHandler;
+import network.client.NetworkHandlerAbstract;
+import network.server.GameServerInterface;
 import network.server.GameServer;
-import network.server.GameServerImpl;
 import view.GameFieldJFrame;
 
 /**
@@ -21,7 +21,7 @@ import view.GameFieldJFrame;
  * thread (timer)
  *
  *
- * @author chrigi
+ * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public class TetrisController extends Observable implements Observer {
 
@@ -30,10 +30,10 @@ public class TetrisController extends Observable implements Observer {
     public boolean autorun = true;
     private Timer timer;
     private SimulationController simulationController;
-    private NetworkHandler networkHandler;
+    private NetworkHandlerAbstract networkHandler;
     private StepGeneratorAbstract stepGenerator;
     private int currentStep = 0;
-    private GameServer gameServer;
+    private GameServerInterface gameServer;
     private String serverIP = "";
     private ConcurrentHashMap<Integer, String> sessionMap;
     private int localSessionID = -1;
@@ -51,7 +51,7 @@ public class TetrisController extends Observable implements Observer {
         STEP, SESSION_ADDED, SESSION_REMOVED, CONNECTION_ESTABLISHED, EXCEPTION_THROWN, CHAT_MESSAGE_RECEIVED, GAME_STARTED, INIT_SIGNAL
     };
 
-    public TetrisController(SimulationController sController, NetworkHandler nH, StepGeneratorAbstract sG) {
+    public TetrisController(SimulationController sController, NetworkHandlerAbstract nH, StepGeneratorAbstract sG) {
         simulationController = sController;
         networkHandler = nH;
         networkHandler.addObserver(this);
@@ -104,7 +104,7 @@ public class TetrisController extends Observable implements Observer {
         } catch (RemoteException ex) {
         }
         Registry registry = LocateRegistry.getRegistry();
-        gameServer = new GameServerImpl(TetrisController.SERVER_NAME, registry);
+        gameServer = new GameServer(TetrisController.SERVER_NAME, registry);
 
         serverIP = getLocalIP();
     }

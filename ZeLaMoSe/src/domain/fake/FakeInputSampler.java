@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  *
- * @author chrigi
+ * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public class FakeInputSampler implements InputSamplerInterface{
     public Collection<InputEvent> inputEvents = new ConcurrentLinkedQueue<InputEvent>();

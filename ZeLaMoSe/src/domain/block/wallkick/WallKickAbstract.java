@@ -9,7 +9,7 @@ import domain.block.BlockAbstract;
 
 /**
  *
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public abstract class WallKickAbstract {
 

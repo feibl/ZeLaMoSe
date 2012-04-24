@@ -6,7 +6,7 @@ package domain.block;
 
 /**
  *
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public enum BlockRotationState {
     r0r90,r90r180,r180r270,

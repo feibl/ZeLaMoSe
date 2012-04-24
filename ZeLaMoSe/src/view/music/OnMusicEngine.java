@@ -9,9 +9,9 @@ import org.newdawn.easyogg.OggClip;
 
 /**
  *
- * @author Cyrill
+ * @author Cyrill Lam <clam@hsr.ch>
  */
-public class OnMusicEngine extends MusicEngine {
+public class OnMusicEngine extends MusicEngineAbstract {
 
     private boolean fileExists = true;
 

@@ -6,7 +6,7 @@ package domain;
 
 /**
  *
- * @author chrigi
+ * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public interface StepProducerInterface {
   

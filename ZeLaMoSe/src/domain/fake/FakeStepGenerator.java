@@ -8,12 +8,10 @@ import domain.InputSampler;
 import domain.Step;
 import domain.StepGeneratorAbstract;
 import domain.TetrisController;
-import domain.StepProducerInterface;
-import network.client.NetworkHandler;
 
 /**
  *
- * @author chrigi
+ * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public class FakeStepGenerator extends StepGeneratorAbstract {
     public Step step;

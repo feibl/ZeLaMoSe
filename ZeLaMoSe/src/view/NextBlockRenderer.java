@@ -19,7 +19,7 @@ import javax.media.opengl.glu.GLU;
 
 /**
  *
- * @author Cyrill
+ * @author Cyrill Lam <clam@hsr.ch>
  */
 class NextBlockRenderer implements GLEventListener, Observer {
     

@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * This class is the "KeyListener" of the GUIs he gets the events and notifys the StepGenerator
  *
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class InputSampler implements KeyEventDispatcher, InputSamplerInterface {
 

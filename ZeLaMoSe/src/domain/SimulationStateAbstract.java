@@ -9,7 +9,7 @@ import java.util.Observable;
 
 /**
  *
- * @author chrigi
+ * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 abstract public class SimulationStateAbstract extends Observable {
     abstract public Action getSimulationState();

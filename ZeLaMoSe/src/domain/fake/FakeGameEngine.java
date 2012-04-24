@@ -9,12 +9,12 @@ import domain.actions.Action;
 
 /**
  *
- * @author chrigi
+ * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
-public class MockGameEngine extends GameEngineAbstract {
+public class FakeGameEngine extends GameEngineAbstract {
   private Action lastAction  = null;
   private int sessionId;
-  public MockGameEngine(int sessionId) {
+  public FakeGameEngine(int sessionId) {
       this.sessionId = sessionId;
   }
 

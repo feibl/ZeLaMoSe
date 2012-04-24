@@ -9,7 +9,7 @@ import java.awt.Color;
 
 /**
  *
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class LBlock extends BlockAbstract {
 

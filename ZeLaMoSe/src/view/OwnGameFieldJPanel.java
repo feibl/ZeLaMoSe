@@ -18,7 +18,7 @@ import javax.swing.SwingUtilities;
 
 /**
  *
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
 

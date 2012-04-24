@@ -4,7 +4,7 @@
  */
 package network;
 
-import network.client.Handler;
+import network.client.HandlerInterface;
 
 /**
  *
@@ -12,9 +12,9 @@ import network.client.Handler;
  */
 public class SendChatMessageRunnable implements Runnable {
    private final String message;
-   private final Handler handler;
+   private final HandlerInterface handler;
 
-   public SendChatMessageRunnable(String Message, Handler handler) {
+   public SendChatMessageRunnable(String Message, HandlerInterface handler) {
       this.message = Message;
       this.handler = handler;
    }

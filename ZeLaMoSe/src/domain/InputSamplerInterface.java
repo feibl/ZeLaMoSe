@@ -9,7 +9,7 @@ import java.util.Collection;
 
 /**
  *
- * @author chrigi
+ * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public interface InputSamplerInterface {
     public Collection<InputEvent> getAndRemoveAll();

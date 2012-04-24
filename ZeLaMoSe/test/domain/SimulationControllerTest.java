@@ -7,7 +7,7 @@ package domain;
 import domain.actions.Action;
 import domain.actions.MoveAction;
 import domain.actions.RotateAction;
-import domain.fake.MockGameEngine;
+import domain.fake.FakeGameEngine;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author chrigi
+ * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public class SimulationControllerTest {
   int sessionId = 666;
@@ -24,9 +24,9 @@ public class SimulationControllerTest {
   int sessionId3 = 668;
   String name = "name";
   SimulationController instance;
-  MockGameEngine engine1;
-  MockGameEngine engine2;
-  MockGameEngine engine3;
+  FakeGameEngine engine1;
+  FakeGameEngine engine2;
+  FakeGameEngine engine3;
 
   public SimulationControllerTest() {
   }
@@ -35,11 +35,11 @@ public class SimulationControllerTest {
   public void setUp() {
       instance = new SimulationController();
       instance.autoadvance = false;
-      engine1 = new MockGameEngine(sessionId);
+      engine1 = new FakeGameEngine(sessionId);
       instance.addSession(sessionId, name, engine1);
-      engine2 = new MockGameEngine(sessionId2);
+      engine2 = new FakeGameEngine(sessionId2);
       instance.addSession(sessionId2, name, engine2);
-      engine3 = new MockGameEngine(sessionId3);
+      engine3 = new FakeGameEngine(sessionId3);
       instance.addSession(sessionId3, name, engine3);
   }
   
@@ -96,13 +96,13 @@ public class SimulationControllerTest {
   class Tester implements Observer {
         public Action lastAction;
         public ArrayList <Action>expected; 
-        public ArrayList <MockGameEngine>expectedEngine; 
+        public ArrayList <FakeGameEngine>expectedEngine; 
         Tester() {
         }
         
         @Override
         public void update(Observable o, Object o1) {                    
-            MockGameEngine g = (MockGameEngine)o;
+            FakeGameEngine g = (FakeGameEngine)o;
             System.out.println("############UPDATE#########"+g);
             lastAction = g.getSimulationState();
             assertTrue(!expected.isEmpty());
@@ -136,7 +136,7 @@ public class SimulationControllerTest {
         Action action3 = new MoveAction(20, MoveAction.Direction.LEFT, 1);
         
         t.expected = new ArrayList<Action>();
-        t.expectedEngine = new ArrayList<MockGameEngine>();
+        t.expectedEngine = new ArrayList<FakeGameEngine>();
         
         t.expected.add(action1);
         t.expectedEngine.add(engine1);

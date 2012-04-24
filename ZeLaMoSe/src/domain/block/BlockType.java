@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public enum BlockType {
     I(IBlock.class), J(JBlock.class), L(LBlock.class), 

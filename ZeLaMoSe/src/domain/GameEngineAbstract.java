@@ -8,7 +8,7 @@ import domain.actions.ActionInterface;
 
 /**
  *
- * @author chrigi
+ * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 abstract public class GameEngineAbstract extends SimulationStateAbstract implements ActionInterface{
     abstract public int getSessionID();

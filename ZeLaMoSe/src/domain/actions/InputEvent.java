@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
 
 /**
  * Class which holds only a Key_Event (which user pressed) and the absolute timestamp
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class InputEvent {
     private int keyEvent;

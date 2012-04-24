@@ -8,7 +8,7 @@ import domain.block.BlockAbstract;
 
 /**
  *
- * @author chrigi
+ * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public class GarbageLineAction extends Action{
     BlockAbstract[][] lines;

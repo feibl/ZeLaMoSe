@@ -8,7 +8,7 @@ import domain.block.BlockAbstract;
 
 /**
  *
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class GeneralWallKick extends WallKickAbstract {
     

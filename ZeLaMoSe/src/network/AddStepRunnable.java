@@ -5,7 +5,7 @@
 package network;
 
 import domain.Step;
-import network.client.Handler;
+import network.client.HandlerInterface;
 
 
 /**
@@ -14,9 +14,9 @@ import network.client.Handler;
  */
 public class AddStepRunnable implements Runnable {
    private final Step step;
-   private final Handler handler;
+   private final HandlerInterface handler;
 
-   public AddStepRunnable(Step step, Handler handler) {
+   public AddStepRunnable(Step step, HandlerInterface handler) {
       this.step = step;
       this.handler = handler;
    }

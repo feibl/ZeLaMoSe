@@ -4,18 +4,15 @@
  */
 package network;
 
-import com.jogamp.common.util.RunnableTask;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import network.client.HandlerImpl;
-import network.client.NetworkHandlerImpl;
-import network.server.GameServerRemote;
-import network.server.SessionRemote;
+import network.client.Handler;
+import network.client.NetworkHandler;
+import network.server.GameServerRemoteInterface;
+import network.server.SessionRemoteInterface;
 
 /**
  *
@@ -23,12 +20,12 @@ import network.server.SessionRemote;
  */
 public class ConnectionRunnable implements Runnable {
 
-   private NetworkHandlerImpl networkHandler;
+   private NetworkHandler networkHandler;
    private String ip;
    private String serverName;
    private String nickname;
 
-   public ConnectionRunnable(NetworkHandlerImpl networkHandler, String ip, String serverName, String nickname) {
+   public ConnectionRunnable(NetworkHandler networkHandler, String ip, String serverName, String nickname) {
       this.networkHandler = networkHandler;
       this.ip = ip;
       this.serverName = serverName;
@@ -41,11 +38,11 @@ public class ConnectionRunnable implements Runnable {
          //Invoke this in a Thread with Callback Function
          Object lookupObject = Naming.lookup("rmi://" + ip + '/' + serverName);
 
-         if (lookupObject instanceof GameServerRemote) {
-            GameServerRemote server = (GameServerRemote) lookupObject;
-            HandlerImpl handler = new HandlerImpl(networkHandler);
+         if (lookupObject instanceof GameServerRemoteInterface) {
+            GameServerRemoteInterface server = (GameServerRemoteInterface) lookupObject;
+            Handler handler = new Handler(networkHandler);
             networkHandler.setHandler(handler);
-            SessionRemote ownSession = server.createSession(nickname, handler);
+            SessionRemoteInterface ownSession = server.createSession(nickname, handler);
             List<SessionInformation> sessionList = server.getSessionList();
             handler.setSessionRemote(ownSession);
             networkHandler.notifyConnectionEstablished(ownSession.getRemoteSessionInformation(), sessionList);

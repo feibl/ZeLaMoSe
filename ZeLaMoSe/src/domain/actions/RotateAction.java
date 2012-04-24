@@ -6,7 +6,7 @@ package domain.actions;
 
 /**
  *
- * @author chrigi
+ * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public class RotateAction extends Action {
     private int XOffset, YOffset;

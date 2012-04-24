@@ -4,45 +4,181 @@
  */
 package network.client;
 
-import domain.StepInterface;
-import domain.StepProducerInterface;
-import java.util.Observable;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import network.ChatMessage;
-import network.SessionInformation;
+import domain.Step;
+import domain.TetrisController.UpdateType;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.*;
+import network.*;
 
 /**
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
-public abstract class NetworkHandler extends Observable implements StepInterface, StepProducerInterface {
+public class NetworkHandler extends NetworkHandlerAbstract {
 
+    private HandlerInterface handler;
+    private BlockingQueue<Collection<Step>> stepQueue = new LinkedBlockingQueue<Collection<Step>>();
+    private Step lastStep;
+    private SessionInformation lastAddedSession;
+    private SessionInformation lastRemovedSession;
+    private SessionInformation ownSession;
+    private ChatMessage chatMessage;
+    private ExecutorService threadPool;
+    private ConcurrentHashMap<Integer, String> sessionList = new ConcurrentHashMap<Integer, String>();
+    private Exception thrownException;
+    private long blockQueueSeed;
 
+    @Override
+    public void processStep() {
+        try {
+            Collection<Step> steps = stepQueue.take();
+            if (steps != null) {
+                for (Step step : steps) {
+                    lastStep = step;
+                    setChanged();
+                    notifyObservers(UpdateType.STEP);
+                }
+            }
+        } catch (InterruptedException ex) {
+            throw new IllegalStateException("take from step queue was interrupted");
+        }
+    }
 
-   public abstract SessionInformation getAddedSession();
+    public void setHandler(HandlerInterface handler) {
+        this.handler = handler;
+    }
 
-   public abstract int getRandomGeneratorSeed();
+    public HandlerInterface getHandler() {
+        return handler;
+    }
 
-   public abstract SessionInformation getRemovedSession();
+    public NetworkHandler() {
+        threadPool = Executors.newFixedThreadPool(1);
+    }
 
-   public abstract void connectToServer(String ip, String serverName, String nickname);
+    @Override
+    public SessionInformation getAddedSession() {
+        return lastAddedSession;
+    }
 
-   public abstract void disconnectFromServer();
-   
-   public abstract SessionInformation getOwnSession();
-   
-   public abstract ConcurrentHashMap<Integer, String> getSessionList();
-   
-   public abstract void sendChatMessage(String message);
-   
-   public abstract ChatMessage getChatMessage();
-   
-   public abstract Exception getThrownException();
-   
-   public abstract ExecutorService getThreadPool();
-   
-   public abstract long getBlockQueueSeed();
-   
-   public abstract void sendReadySignal();
+    @Override
+    public int getRandomGeneratorSeed() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public SessionInformation getRemovedSession() {
+        return lastRemovedSession;
+    }
+
+    @Override
+    public void connectToServer(final String ip, final String serverName, final String nickname) {
+        threadPool.submit(new ConnectionRunnable(this, ip, serverName, nickname));
+    }
+
+    @Override
+    public void addStep(Step step) {
+        threadPool.execute(new AddStepRunnable(step, handler));
+    }
+
+    @Override
+    public Step getStep() {
+        return lastStep;
+    }
+
+    @Override
+    public void disconnectFromServer() {
+        threadPool.execute(new DisconnectionRunnable(handler));
+    }
+
+    public void notifyStepsReceived(Collection<Step> steps) {
+        stepQueue.add(steps);
+    }
+
+    public void notifySessionAdded(SessionInformation addedSession) {
+        lastAddedSession = addedSession;
+        sessionList.put(addedSession.getId(), addedSession.getNickname());
+        setChanged();
+        notifyObservers(UpdateType.SESSION_ADDED);
+    }
+
+    public void notifySessionRemoved(SessionInformation removedSession) {
+        lastRemovedSession = removedSession;
+        sessionList.remove(new Integer(removedSession.getId()));
+        setChanged();
+        notifyObservers(UpdateType.SESSION_REMOVED);
+    }
+
+    public void notifyExceptionThrown(Exception ex) {
+        thrownException = ex;
+        setChanged();
+        notifyObservers(UpdateType.EXCEPTION_THROWN);
+    }
+
+    @Override
+    public SessionInformation getOwnSession() {
+        return ownSession;
+    }
+
+    public void notifyConnectionEstablished(SessionInformation ownSession, List<SessionInformation> sessionList) {
+        this.ownSession = ownSession;
+        for (SessionInformation session : sessionList) {
+            this.sessionList.put(session.getId(), session.getNickname());
+        }
+        setChanged();
+        notifyObservers(UpdateType.CONNECTION_ESTABLISHED);
+    }
+
+    @Override
+    public ConcurrentHashMap<Integer, String> getSessionList() {
+        return sessionList;
+    }
+
+    @Override
+    public void sendChatMessage(final String message) {
+        threadPool.execute(new SendChatMessageRunnable(message, handler));
+    }
+
+    void notifyChatMessageReceived(ChatMessage message) {
+        this.chatMessage = message;
+        setChanged();
+        notifyObservers(UpdateType.CHAT_MESSAGE_RECEIVED);
+    }
+
+    @Override
+    public ChatMessage getChatMessage() {
+        return chatMessage;
+    }
+
+    @Override
+    public Exception getThrownException() {
+        return thrownException;
+    }
+
+    public void notifyInit(long blockQueueSeed) {
+        this.blockQueueSeed = blockQueueSeed;
+        setChanged();
+        notifyObservers(UpdateType.INIT_SIGNAL);
+    }
+
+    public void notifyGameStarted() {
+        setChanged();
+        notifyObservers(UpdateType.GAME_STARTED);
+    }
+
+    @Override
+    public ExecutorService getThreadPool() {
+        return threadPool;
+    }
+
+    @Override
+    public void sendReadySignal() {
+        handler.sendReadySignal();
+    }
+
+    @Override
+    public long getBlockQueueSeed() {
+        return blockQueueSeed;
+    }
 }

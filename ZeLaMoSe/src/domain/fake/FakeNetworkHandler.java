@@ -4,19 +4,20 @@
  */
 package domain.fake;
 
+
 import domain.Step;
-import java.util.concurrent.ExecutorService;
-import network.ChatMessage;
-import network.client.NetworkHandler;
-import network.SessionInformation;
 import domain.TetrisController.UpdateType;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import network.ChatMessage;
+import network.SessionInformation;
+import network.client.NetworkHandlerAbstract;
 
 /**
  *
- * @author chrigi
+ * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
-public class FakeNetworkHandler extends NetworkHandler {
+public class FakeNetworkHandler extends NetworkHandlerAbstract {
     public Step lastStep;
     @Override
     public SessionInformation getAddedSession() {

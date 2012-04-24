@@ -6,7 +6,7 @@ package networkTest;
 
 import domain.Step;
 import network.*;
-import network.client.NetworkHandlerImpl;
+import network.client.NetworkHandler;
 import org.junit.Ignore;
 
 /**
@@ -14,7 +14,7 @@ import org.junit.Ignore;
  * @author Fabian Senn <fsenn@hsr.ch>
  */
 @Ignore
-public class NetworkHandlerImplWithoutThreads extends NetworkHandlerImpl{
+public class NetworkHandlerImplWithoutThreads extends NetworkHandler{
 
    @Override
    public void connectToServer(String ip, String serverName, String nickname) {

@@ -8,7 +8,7 @@ import java.util.Observable;
 
 /**
  *
- * @author chrigi
+ * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 abstract public class StepGeneratorAbstract extends Observable implements StepProducerInterface {
     abstract public void setSessionID(int sessionID);

@@ -17,7 +17,7 @@ import org.junit.Ignore;
 
 /**
  *
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
  @Ignore
 public abstract class WallKickTest {
@@ -27,7 +27,7 @@ public abstract class WallKickTest {
      *
      * /**
      *
-     * @author Patrick Zenhäusern
+     * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
      */
 
     protected GameEngine gameEngine;

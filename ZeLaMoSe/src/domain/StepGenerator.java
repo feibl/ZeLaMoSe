@@ -12,7 +12,7 @@ import java.awt.event.KeyEvent;
 
 /**
  *
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  *
  *
  */

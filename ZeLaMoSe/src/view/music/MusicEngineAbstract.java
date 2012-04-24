@@ -8,9 +8,9 @@ import org.newdawn.easyogg.OggClip;
 
 /**
  *
- * @author Cyrill
+ * @author Cyrill Lam <clam@hsr.ch>
  */
-public abstract class MusicEngine {
+public abstract class MusicEngineAbstract {
     
     protected OggClip musicClip = null;
     protected MusicFile musicFile;

@@ -11,7 +11,7 @@ import org.junit.Test;
 
 /**
  *
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class IWallKickTest extends WallKickTest {
 

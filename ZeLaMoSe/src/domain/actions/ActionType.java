@@ -6,7 +6,7 @@ package domain.actions;
 
 /**
  *
- * @author Cyrill
+ * @author Cyrill Lam <clam@hsr.ch>
  * 
  * Player relevant (input):
  * - rotation (direction)

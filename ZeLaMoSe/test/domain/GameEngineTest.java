@@ -18,7 +18,7 @@ import org.junit.rules.TestName;
 
 /**
  *
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class GameEngineTest {
 

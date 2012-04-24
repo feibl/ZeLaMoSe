@@ -19,7 +19,7 @@ import network.SessionInformation;
 
 /**
  *
- * @author chrigi
+ * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public class TetrisControllerTest {
     

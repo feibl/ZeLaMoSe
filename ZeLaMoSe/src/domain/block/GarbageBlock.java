@@ -10,7 +10,7 @@ import java.awt.Color;
 
 /**
  *
- * @author Cyrill
+ * @author Cyrill Lam <clam@hsr.ch>
  */
 public class GarbageBlock extends BlockAbstract {
 

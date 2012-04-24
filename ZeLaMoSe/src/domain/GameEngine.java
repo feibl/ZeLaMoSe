@@ -13,7 +13,7 @@ import java.util.Random;
 
 /**
  *
- * @author Cyrill
+ * @author Cyrill Lam <clam@hsr.ch>
  *
  */
 public class GameEngine extends GameEngineAbstract {

@@ -10,7 +10,7 @@ import org.newdawn.easyogg.OggClip;
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
-public class OffMusicEngine extends MusicEngine {
+public class OffMusicEngine extends MusicEngineAbstract {
 
     @Override
     public void playMusic(boolean doLoop, float gain) {

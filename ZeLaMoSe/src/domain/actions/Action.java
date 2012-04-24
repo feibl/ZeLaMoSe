@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author Cyrill
+ * @author Cyrill Lam <clam@hsr.ch>
  */
 public class Action implements Serializable{
     

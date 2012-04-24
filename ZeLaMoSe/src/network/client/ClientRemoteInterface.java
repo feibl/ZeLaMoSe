@@ -10,14 +10,13 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Collection;
 import network.ChatMessage;
-import network.server.SessionRemote;
 import network.SessionInformation;
 
 /**
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
-public interface ClientRemote extends Remote, Serializable {
+public interface ClientRemoteInterface extends Remote, Serializable {
 
    public void receiveSteps(Collection<Step> steps) throws RemoteException;
 

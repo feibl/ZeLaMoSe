@@ -6,7 +6,7 @@ package view;
 
 /**
  *
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class WaitToJoinJPanel extends javax.swing.JPanel {
 

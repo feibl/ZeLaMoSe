@@ -17,14 +17,14 @@ import java.util.Observer;
 import network.ChatMessage;
 import network.ServerFullException;
 import network.SessionInformation;
-import network.client.HandlerImpl;
-import network.client.NetworkHandlerImpl;
-import network.server.GameServerImpl;
-import network.server.SessionImpl;
+import network.client.Handler;
+import network.client.NetworkHandler;
+import network.server.GameServer;
+import network.server.Session;
 import static org.junit.Assert.*;
 import org.junit.*;
 import java.io.*;
-import network.server.SessionRemote;
+import network.server.SessionRemoteInterface;
 
 /**
  *
@@ -32,7 +32,7 @@ import network.server.SessionRemote;
  */
 public class GameServerImplTest {
 
-    GameServerImpl gameServerImpl;
+    GameServer gameServerImpl;
     private final String SERVER_NAME = "Tetris-Server";
     private final String PLAYER_NAME = "TestPlayer";
     private static boolean flag;
@@ -49,7 +49,7 @@ public class GameServerImplTest {
 
     @Before
     public void setUp() throws RemoteException, MalformedURLException {
-        gameServerImpl = new GameServerImpl();
+        gameServerImpl = new GameServer();
         flag = false;
         count1 = 0;
         count2 = 0;
@@ -61,13 +61,13 @@ public class GameServerImplTest {
 
     @Test
     public void testCreateSession() throws RemoteException {
-//        SessionInformation sessionInfo = gameServerImpl.createSession(PLAYER_NAME, new HandlerImpl(new NetworkHandlerImpl())).getRemoteSessionInformation();
+//        SessionInformation sessionInfo = gameServerImpl.createSession(PLAYER_NAME, new Handler(new NetworkHandler())).getRemoteSessionInformation();
 //        assertEquals(new SessionInformation(1, PLAYER_NAME), sessionInfo);
     }
 
     @Test
     public void testSessionAddedNotification() throws RemoteException {
-        final NetworkHandlerImpl hostNetworkHandler = new NetworkHandlerImpl();
+        final NetworkHandler hostNetworkHandler = new NetworkHandler();
         hostNetworkHandler.addObserver(new Observer() {
 
             @Override
@@ -78,14 +78,14 @@ public class GameServerImplTest {
             }
         });
 
-        gameServerImpl.createSession("Host", new HandlerImpl(hostNetworkHandler));
-        gameServerImpl.createSession(PLAYER_NAME, new HandlerImpl(new NetworkHandlerImpl()));
+        gameServerImpl.createSession("Host", new Handler(hostNetworkHandler));
+        gameServerImpl.createSession(PLAYER_NAME, new Handler(new NetworkHandler()));
         assertTrue(flag);
     }
 
     @Test
     public void testSessionAddedNoNotificationForAccessingPlayer() throws RemoteException {
-        final NetworkHandlerImpl newPlayerNetworkHandler = new NetworkHandlerImpl();
+        final NetworkHandler newPlayerNetworkHandler = new NetworkHandler();
 
         Observer observer = new Observer() {
 
@@ -98,7 +98,7 @@ public class GameServerImplTest {
         };
 
         newPlayerNetworkHandler.addObserver(observer);
-        gameServerImpl.createSession(PLAYER_NAME, new HandlerImpl(newPlayerNetworkHandler));
+        gameServerImpl.createSession(PLAYER_NAME, new Handler(newPlayerNetworkHandler));
 
         assertFalse(flag);
     }
@@ -106,7 +106,7 @@ public class GameServerImplTest {
     @Test(expected = ServerFullException.class)
     public void testCreateSessionServerFull() throws RemoteException {
         for (int i = 0; i < 5; i++) {
-            gameServerImpl.createSession("Player", new HandlerImpl(new NetworkHandlerImpl()));
+            gameServerImpl.createSession("Player", new Handler(new NetworkHandler()));
         }
     }
 
@@ -131,7 +131,7 @@ public class GameServerImplTest {
         final int NBR_OF_PLAYERS = 4;
         SessionInformation[] sessions = new SessionInformation[NBR_OF_PLAYERS];
         for (int i = 0; i < NBR_OF_PLAYERS; i++) {
-            sessions[i] = gameServerImpl.createSession("Player", new HandlerImpl(new NetworkHandlerImpl())).getRemoteSessionInformation();
+            sessions[i] = gameServerImpl.createSession("Player", new Handler(new NetworkHandler())).getRemoteSessionInformation();
         }
         List<SessionInformation> createdSessions = gameServerImpl.getSessionList();
         assertArrayEquals(sessions, createdSessions.toArray());
@@ -147,7 +147,7 @@ public class GameServerImplTest {
             }
         });
 
-        gameServerImpl.createSession("bla", new HandlerImpl(new NetworkHandlerImpl()));
+        gameServerImpl.createSession("bla", new Handler(new NetworkHandler()));
         assertEquals(1, gameServerImpl.getSessionList().size());
     }
 
@@ -167,15 +167,15 @@ public class GameServerImplTest {
                 throw new RemoteException();
             }
         });
-        gameServerImpl.createSession("bla", new HandlerImpl(new NetworkHandlerImpl()));
+        gameServerImpl.createSession("bla", new Handler(new NetworkHandler()));
         assertEquals(1, gameServerImpl.getSessionList().size());
     }
     
     @Test
     public void testRemoveSession() throws RemoteException {
-        SessionRemote session = gameServerImpl.createSession(PLAYER_NAME, new HandlerImpl(new NetworkHandlerImpl()));
+        SessionRemoteInterface session = gameServerImpl.createSession(PLAYER_NAME, new Handler(new NetworkHandler()));
         for(int i = 0; i < 3; i++) {
-            gameServerImpl.createSession("Player" + i, new HandlerImpl(new NetworkHandlerImpl()));
+            gameServerImpl.createSession("Player" + i, new Handler(new NetworkHandler()));
         }
         session.disconnect();
         assertEquals(3, gameServerImpl.getSessionList().size());
@@ -199,7 +199,7 @@ public class GameServerImplTest {
         for (int i = 0; i < 4; i++) {
             gameServerImpl.createSession(SERVER_NAME, fakeRemote);
         }
-        gameServerImpl.postChatMessage(new SessionImpl(new SessionInformation(ID, PLAYER_NAME), fakeRemote, gameServerImpl), MESSAGE);
+        gameServerImpl.postChatMessage(new Session(new SessionInformation(ID, PLAYER_NAME), fakeRemote, gameServerImpl), MESSAGE);
         assertEquals(4, count1);
     }
 }

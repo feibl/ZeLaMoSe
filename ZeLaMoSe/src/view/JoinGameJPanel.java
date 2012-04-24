@@ -6,7 +6,7 @@ package view;
 
 /**
  *
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class JoinGameJPanel extends javax.swing.JPanel {
 

@@ -4,16 +4,16 @@
  */
 package network;
 
-import network.client.Handler;
+import network.client.HandlerInterface;
 
 /**
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
 public class DisconnectionRunnable implements Runnable {
-   private final Handler handler;
+   private final HandlerInterface handler;
 
-   public DisconnectionRunnable(Handler handler) {
+   public DisconnectionRunnable(HandlerInterface handler) {
       this.handler = handler;
    }
 

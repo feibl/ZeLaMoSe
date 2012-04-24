@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * 
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class RemoveLineAction extends Action{
     

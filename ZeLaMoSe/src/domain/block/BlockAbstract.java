@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Cyrill
+ * @author Cyrill Lam <clam@hsr.ch>
  */
 public abstract class BlockAbstract implements Cloneable {
 

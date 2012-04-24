@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author chrigi
+ * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public class Step implements Serializable {
     private int sequenceNumber;

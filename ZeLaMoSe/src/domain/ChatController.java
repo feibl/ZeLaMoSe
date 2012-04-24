@@ -11,7 +11,7 @@ import java.util.Observer;
 import java.util.concurrent.ConcurrentHashMap;
 import network.ChatMessage;
 import network.SessionInformation;
-import network.client.NetworkHandler;
+import network.client.NetworkHandlerAbstract;
 
 /**
  *
@@ -19,9 +19,9 @@ import network.client.NetworkHandler;
  */
 public class ChatController extends Observable implements Observer {
 
-    private NetworkHandler nH;
+    private NetworkHandlerAbstract nH;
 
-    public ChatController(NetworkHandler nH) {
+    public ChatController(NetworkHandlerAbstract nH) {
         this.nH = nH;
         nH.addObserver(this);
     }

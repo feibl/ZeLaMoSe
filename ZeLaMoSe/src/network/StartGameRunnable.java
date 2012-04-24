@@ -5,18 +5,18 @@
 package network;
 
 import java.rmi.RemoteException;
-import network.server.GameServerImpl;
-import network.server.Session;
+import network.server.GameServer;
+import network.server.SessionInterface;
 
 /**
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
 public class StartGameRunnable implements Runnable {
-    private GameServerImpl gameServer;
-    private Session[] sessionList;
+    private GameServer gameServer;
+    private SessionInterface[] sessionList;
 
-    public StartGameRunnable(GameServerImpl gameServer, Session[] sessionList) {
+    public StartGameRunnable(GameServer gameServer, SessionInterface[] sessionList) {
         this.gameServer = gameServer;
         this.sessionList = sessionList;
     }
@@ -24,7 +24,7 @@ public class StartGameRunnable implements Runnable {
     @Override
     public void run() {
         for (int i = 0; i < sessionList.length; i++) {
-            Session s = sessionList[i];
+            SessionInterface s = sessionList[i];
             if (s != null) {
                 try {
                     s.sendStartSignal();

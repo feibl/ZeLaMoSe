@@ -8,8 +8,8 @@ import domain.Step;
 import java.rmi.RemoteException;
 import java.util.Collection;
 import network.ChatMessage;
-import network.client.ClientRemote;
-import network.server.SessionRemote;
+import network.client.ClientRemoteInterface;
+import network.server.SessionRemoteInterface;
 import network.SessionInformation;
 import org.junit.Ignore;
 
@@ -18,7 +18,7 @@ import org.junit.Ignore;
  * @author Fabian Senn <fsenn@hsr.ch>
  */
 @Ignore
-public class ClientRemoteAdapter implements ClientRemote {
+public class ClientRemoteAdapter implements ClientRemoteInterface {
 
     @Override
     public void receiveSessionAddedMessage(SessionInformation session) throws RemoteException {
