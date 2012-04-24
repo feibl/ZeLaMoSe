@@ -368,7 +368,7 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
 
     private void initNextBlockRenderer() {
         
-        glPnlNextBlock.addGLEventListener(new NexBlockRenderer(gameEngine));
+        glPnlNextBlock.addGLEventListener(new NextBlockRenderer(gameEngine));
         FPSAnimator ownGameFieldAnimator = new FPSAnimator(glPnlNextBlock, Config.frameRate, true);
         ownGameFieldAnimator.start();
     }

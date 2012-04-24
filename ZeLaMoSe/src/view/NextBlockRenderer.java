@@ -21,14 +21,14 @@ import javax.media.opengl.glu.GLU;
  *
  * @author Cyrill
  */
-class NexBlockRenderer implements GLEventListener, Observer {
+class NextBlockRenderer implements GLEventListener, Observer {
     
     
     private SimulationStateInterface gameEngine;
     private Block nextBlock;
     private int blockSize=40;
 
-    public NexBlockRenderer(SimulationStateInterface gameEngine) {
+    public NextBlockRenderer(SimulationStateInterface gameEngine) {
         this.gameEngine = gameEngine;
         gameEngine.addObserver(this);
     }
