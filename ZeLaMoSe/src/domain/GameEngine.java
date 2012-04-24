@@ -16,9 +16,12 @@ import java.util.Random;
  * @author Cyrill Lam <clam@hsr.ch>
  *
  */
+
+
 public class GameEngine extends GameEngineAbstract {
 
     private Action lastAction;
+    private GarbageLineAction lastGarbageLineAction;
     private int sessionId;
     private BlockAbstract[][] grid;
     private int gridWidth = Config.gridWidth, gridHeight = Config.gridHeight;
@@ -29,12 +32,11 @@ public class GameEngine extends GameEngineAbstract {
     private int score;
     private BlockAbstract nextBlock;
     private int blockCounter = 0;
-    private SimulationController simulationController;
     private Random randomGarbageLineGenerator;
     private String nickName = "";
     private int level;
     private int totalRemovedLines;
-
+    
     public GameEngine(int sessionId, long seed) {
         this(sessionId, seed, new BlockQueue(seed));
     }
@@ -86,7 +88,7 @@ public class GameEngine extends GameEngineAbstract {
     public void setLastAction(Action action) {
         lastAction = action;
         setChanged();
-        notifyObservers();
+        notifyObservers(UpdateType.LASTACTION);
     }
 
     @Override
@@ -118,7 +120,12 @@ public class GameEngine extends GameEngineAbstract {
     public Action getSimulationState() {
         return lastAction;
     }
-
+    
+    @Override
+    public GarbageLineAction getlastGarbageLineAction() {
+        return lastGarbageLineAction;
+    }
+    
     private void calculatePlayerStats(ArrayList<Integer> linesToRemove) {
         //Calculate the score
         switch (linesToRemove.size()) {
@@ -368,9 +375,9 @@ public class GameEngine extends GameEngineAbstract {
                 garbageLines[x][y] = garbageBlock;
             }
         }
-        if (simulationController != null) {
-            simulationController.addGarbageLineAction(sessionId, new GarbageLineAction(0, garbageLines));
-        }
+        lastGarbageLineAction = new GarbageLineAction(0, garbageLines);
+        setChanged();
+        notifyObservers(UpdateType.GARBAGELINE);
     }
 
     private void handleGarbageLineAction(GarbageLineAction action) {
@@ -393,10 +400,6 @@ public class GameEngine extends GameEngineAbstract {
         setLastAction(action);
     }
 
-    @Override
-    public void setSimulationController(SimulationController simulationController) {
-        this.simulationController = simulationController;
-    }
 
     public String getNickName() {
         return nickName;

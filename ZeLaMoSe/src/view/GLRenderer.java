@@ -5,6 +5,7 @@
 package view;
 
 import domain.Config;
+import domain.GameEngineAbstract;
 import domain.SimulationStateAbstract;
 import domain.actions.*;
 import domain.actions.RotateAction.Direction;
@@ -126,7 +127,11 @@ class GLRenderer implements GLEventListener, Observer {
 
     @Override
     public void update(Observable o, Object o1) {
-        processAction(gameEngine.getSimulationState());
+        //add actiontype
+           if ((SimulationStateAbstract.UpdateType)o1 == SimulationStateAbstract.UpdateType.LASTACTION) {
+            processAction(gameEngine.getSimulationState());
+        }
+        
     }
 
     private void processAction(Action action) {

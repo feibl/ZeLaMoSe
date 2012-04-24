@@ -13,7 +13,7 @@ import java.util.*;
  *
  * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
-public class SimulationController implements StepInterface {
+public class SimulationController implements StepInterface, Observer {
 
     private Map<Integer, Step> stepQueue = new HashMap<Integer, Step>();
     private Map<Integer, GameEngineAbstract> gameEngines = new HashMap<Integer, GameEngineAbstract>();
@@ -39,9 +39,9 @@ public class SimulationController implements StepInterface {
         if (gameEngines.containsKey(sessionId)) {
             throw new IllegalStateException("session already added");
         }
+        gameEngine.addObserver(this);
         gameEngines.put(sessionId, gameEngine);
         sessions.put(sessionId, name);
-        gameEngine.setSimulationController(this);
         gameEngine.setNickName(name);
     }
 
@@ -155,6 +155,13 @@ public class SimulationController implements StepInterface {
             if (session != sessionFrom) {
                 gameEngines.get(session).handleAction(action);
             }
+        }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+     if ((SimulationStateAbstract.UpdateType)arg == SimulationStateAbstract.UpdateType.GARBAGELINE) {
+            addGarbageLineAction(((GameEngineAbstract)o).getSessionID(),((GameEngineAbstract)o).getlastGarbageLineAction());
         }
     }
 }

@@ -6,6 +6,7 @@ package domain.fake;
 import domain.SimulationController;
 import domain.GameEngineAbstract;
 import domain.actions.Action;
+import domain.actions.GarbageLineAction;
 
 /**
  *
@@ -57,14 +58,15 @@ public class FakeGameEngine extends GameEngineAbstract {
         return new String("MockGameEndine " + sessionId);
     }
 
-    @Override
-    public void setSimulationController(SimulationController simulationController) {
-       
-    }
 
     @Override
     public void setNickName(String nickName) {
        
+    }
+
+    @Override
+    public GarbageLineAction getlastGarbageLineAction() {
+       return null;
     }
 
   

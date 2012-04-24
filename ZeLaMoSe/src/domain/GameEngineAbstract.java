@@ -5,6 +5,7 @@
 package domain;
 
 import domain.actions.ActionInterface;
+import domain.actions.GarbageLineAction;
 
 /**
  *
@@ -14,6 +15,6 @@ abstract public class GameEngineAbstract extends SimulationStateAbstract impleme
     abstract public int getSessionID();
     abstract public void startGame();
     abstract public int getLevel();
-    abstract public void setSimulationController(SimulationController simulationController);
     abstract public void setNickName(String nickName);
+    abstract public GarbageLineAction getlastGarbageLineAction();
 }
