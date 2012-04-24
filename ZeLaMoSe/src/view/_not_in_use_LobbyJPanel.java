@@ -10,15 +10,15 @@ import domain.TetrisController;
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
-public class LobbyJPanel extends javax.swing.JPanel {
+public class _not_in_use_LobbyJPanel extends javax.swing.JPanel {
     private final TetrisController tetrisController;
     private final boolean host;
 
     /**
-     * Creates new form LobbyJPanel
+     * Creates new form _not_in_use_LobbyJPanel
      */
     
-    public LobbyJPanel(TetrisController tetrisController, boolean host) {
+    public _not_in_use_LobbyJPanel(TetrisController tetrisController, boolean host) {
         this.tetrisController = tetrisController;
         this.host = host;
         initComponents();
@@ -99,7 +99,7 @@ public class LobbyJPanel extends javax.swing.JPanel {
         );
         pnlClockLayout.setVerticalGroup(
             pnlClockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 109, Short.MAX_VALUE)
+            .addGap(0, 113, Short.MAX_VALUE)
         );
 
         lblTimeHere.setText("Time you're here:");
