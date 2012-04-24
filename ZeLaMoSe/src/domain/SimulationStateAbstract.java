@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.interfaces;
+package domain;
 
 import domain.actions.Action;
 import java.util.Observable;
@@ -11,6 +11,6 @@ import java.util.Observable;
  *
  * @author chrigi
  */
-abstract public class SimulationStateInterface extends Observable {
+abstract public class SimulationStateAbstract extends Observable {
     abstract public Action getSimulationState();
 }

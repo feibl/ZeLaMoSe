@@ -4,8 +4,8 @@
  */
 package domain.fake;
 
-import domain.interfaces.BlockQueueInterface;
-import domain.block.Block;
+import domain.BlockQueueInterface;
+import domain.block.BlockAbstract;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -14,10 +14,10 @@ import java.util.Queue;
  * @author Patrick Zenhäusern
  */
 public class FakeBlockQueue  implements BlockQueueInterface {
-        public Queue<Block> blocklist = new LinkedList <Block>();
+        public Queue<BlockAbstract> blocklist = new LinkedList <BlockAbstract>();
  
         @Override
-        public Block getNextBlock(){
+        public BlockAbstract getNextBlock(){
             return blocklist.remove();
     }
 }

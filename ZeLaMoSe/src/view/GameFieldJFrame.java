@@ -8,7 +8,7 @@ import com.jogamp.opengl.util.FPSAnimator;
 import domain.Config;
 import domain.GameEngine;
 import domain.InputSampler;
-import domain.interfaces.SimulationStateInterface;
+import domain.SimulationStateAbstract;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -20,9 +20,9 @@ import javax.swing.SwingUtilities;
  */
 public class GameFieldJFrame extends javax.swing.JFrame implements Observer {
 
-    private SimulationStateInterface enemyEngine1;
-    private SimulationStateInterface enemyEngine2;
-    private SimulationStateInterface enemyEngine3;
+    private SimulationStateAbstract enemyEngine1;
+    private SimulationStateAbstract enemyEngine2;
+    private SimulationStateAbstract enemyEngine3;
 
     /**
      * Creates new form frmGame
@@ -31,7 +31,7 @@ public class GameFieldJFrame extends javax.swing.JFrame implements Observer {
         initComponents();
     }
 
-    public GameFieldJFrame(InputSampler is, SimulationStateInterface mainSimulation, List<SimulationStateInterface> otherSimulations) {
+    public GameFieldJFrame(InputSampler is, SimulationStateAbstract mainSimulation, List<SimulationStateAbstract> otherSimulations) {
         initComponents();
         ownGameFieldJPanel1.setInputSampler(is);
         ownGameFieldJPanel1.initRenderer(mainSimulation);
@@ -459,21 +459,21 @@ public class GameFieldJFrame extends javax.swing.JFrame implements Observer {
         return ownGameFieldJPanel1;
     }
 
-    private void initEnemyArea1(SimulationStateInterface gameEngine) {
+    private void initEnemyArea1(SimulationStateAbstract gameEngine) {
         GLRenderer rendererEnemyArea1 = new GLRenderer(Config.EnemyGameFieldBlockSize, false, gameEngine);
         gLPnlEnemyArea1.addGLEventListener(rendererEnemyArea1);
         FPSAnimator animator1 = new FPSAnimator(gLPnlEnemyArea1, Config.frameRate, true);
         animator1.start();
     }
 
-    private void initEnemyArea2(SimulationStateInterface gameEngine) {
+    private void initEnemyArea2(SimulationStateAbstract gameEngine) {
         GLRenderer rendererEnemyArea2 = new GLRenderer(Config.EnemyGameFieldBlockSize, false, gameEngine);
         gLPnlEnemyArea2.addGLEventListener(rendererEnemyArea2);
         FPSAnimator animator2 = new FPSAnimator(gLPnlEnemyArea2, Config.frameRate, true);
         animator2.start();
     }
 
-    private void initEnemyArea3(SimulationStateInterface gameEngine) {
+    private void initEnemyArea3(SimulationStateAbstract gameEngine) {
         GLRenderer rendererEnemyArea3 = new GLRenderer(Config.EnemyGameFieldBlockSize, false, gameEngine);
         gLPnlEnemyArea3.addGLEventListener(rendererEnemyArea3);
         FPSAnimator animator3 = new FPSAnimator(gLPnlEnemyArea3, Config.frameRate, true);

@@ -8,7 +8,7 @@ import com.jogamp.opengl.util.FPSAnimator;
 import domain.Config;
 import domain.GameEngine;
 import domain.InputSampler;
-import domain.interfaces.SimulationStateInterface;
+import domain.SimulationStateAbstract;
 import java.awt.KeyboardFocusManager;
 import java.util.Observable;
 import java.util.Observer;
@@ -315,7 +315,7 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
     private GLRenderer renderer;
     private GameEngine gameEngine;
 
-    public void initRenderer(SimulationStateInterface gameEngine) {
+    public void initRenderer(SimulationStateAbstract gameEngine) {
         this.gameEngine = (GameEngine)gameEngine;
         gameEngine.addObserver(this);
         initOwnGameFieldRenderer();

@@ -7,9 +7,6 @@ package domain;
 import domain.actions.Action;
 import domain.actions.GarbageLineAction;
 import domain.actions.MoveAction;
-import domain.interfaces.GameEngineInterface;
-import domain.interfaces.SimulationStateInterface;
-import domain.interfaces.StepInterface;
 import java.util.*;
 
 /**
@@ -19,7 +16,7 @@ import java.util.*;
 public class SimulationController implements StepInterface {
 
     private Map<Integer, Step> stepQueue = new HashMap<Integer, Step>();
-    private Map<Integer, GameEngineInterface> gameEngines = new HashMap<Integer, GameEngineInterface>();
+    private Map<Integer, GameEngineAbstract> gameEngines = new HashMap<Integer, GameEngineAbstract>();
     private Map<Integer, String> sessions = new HashMap<Integer, String>();
     private int currentHighestLevel = 1;
     public boolean autoadvance = true;
@@ -38,7 +35,7 @@ public class SimulationController implements StepInterface {
     /*
      * Register session
      */
-    public void addSession(int sessionId, String name, GameEngineInterface gameEngine) {
+    public void addSession(int sessionId, String name, GameEngineAbstract gameEngine) {
         if (gameEngines.containsKey(sessionId)) {
             throw new IllegalStateException("session already added");
         }
@@ -49,7 +46,7 @@ public class SimulationController implements StepInterface {
     }
 
     public void initSimulation() {
-        for (GameEngineInterface e : gameEngines.values()) {
+        for (GameEngineAbstract e : gameEngines.values()) {
             e.startGame();
         }
     }
@@ -90,13 +87,13 @@ public class SimulationController implements StepInterface {
         fillActionList(seqNum, actionList);
 
         if (autoadvance && (seqNum % (Config.advanceStepLimit - currentHighestLevel) == 0)) {
-            for (GameEngineInterface g : gameEngines.values()) {
+            for (GameEngineAbstract g : gameEngines.values()) {
                 g.handleAction(new MoveAction(0, MoveAction.Direction.DOWN, 1));
             }
         }
         distributeActions(actionList);
 
-        for (GameEngineInterface g : gameEngines.values()) {
+        for (GameEngineAbstract g : gameEngines.values()) {
             if (g.getLevel() > currentHighestLevel && currentHighestLevel < Config.maxLevelForSpeed) {
                 currentHighestLevel = g.getLevel();
             }
@@ -113,7 +110,7 @@ public class SimulationController implements StepInterface {
             if (!gameEngines.containsKey(e.getValue())) {
                 throw new IllegalStateException("Could not find gameEngine");
             }
-            GameEngineInterface g = gameEngines.get(e.getValue());
+            GameEngineAbstract g = gameEngines.get(e.getValue());
             if (g.getSessionID() != e.getValue()) {
                 throw new IllegalStateException("wrong session id: " + e.getValue());
             }
@@ -146,7 +143,7 @@ public class SimulationController implements StepInterface {
         }
     }
 
-    public SimulationStateInterface getSimulationStateInterface(int sessionId) {
+    public SimulationStateAbstract getSimulationStateInterface(int sessionId) {
         if (!gameEngines.containsKey(sessionId)) {
             throw new IllegalStateException("gameEngine not avilable " + sessionId);
         }

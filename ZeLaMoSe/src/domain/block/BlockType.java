@@ -19,9 +19,9 @@ public enum BlockType {
     
     private final Class className;
 
-    public Block createBlock() {
+    public BlockAbstract createBlock() {
         try {
-            return (Block)className.newInstance();
+            return (BlockAbstract)className.newInstance();
         } catch (InstantiationException ex) {
             Logger.getLogger(BlockType.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {

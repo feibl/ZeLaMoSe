@@ -113,7 +113,7 @@ public class FakeNetworkHandler extends NetworkHandler {
     }
 
     @Override
-    public void niggasInParis() {
+    public void processStep() {
         //do nothing
     }
 

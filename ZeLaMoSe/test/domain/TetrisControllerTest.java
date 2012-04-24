@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import domain.actions.MoveAction;
-import domain.interfaces.SimulationStateInterface;
 import java.util.Observable;
 import java.util.Observer;
 import network.SessionInformation;
@@ -63,7 +62,7 @@ public class TetrisControllerTest {
         assertNotNull(nH.getSessionList().get(sessionID));
         nH.setConnected();
         nH.setGameStarted();
-        SimulationStateInterface gE = sC.getSimulationStateInterface(sessionID);
+        SimulationStateAbstract gE = sC.getSimulationStateInterface(sessionID);
         assertNotNull(gE);
         GameEngine gameEngine = (GameEngine)gE;
         assertEquals(gameEngine.getSessionID(), sessionID);

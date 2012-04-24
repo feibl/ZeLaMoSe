@@ -24,7 +24,7 @@ public class GameEngineTest {
 
     private GameEngine gameEngine;
     private FakeBlockQueue fakeQueue;
-    private Block[][] expectedGrid;
+    private BlockAbstract[][] expectedGrid;
 
     private void addCurrentBlockToExpectedGrid(int x, int y) {
         expectedGrid[x][y] = gameEngine.getCurrentBlock();
@@ -39,7 +39,7 @@ public class GameEngineTest {
     }
 
     private void initializeExpectedGrid() {
-        expectedGrid = new Block[Config.gridWidth][Config.gridHeight];
+        expectedGrid = new BlockAbstract[Config.gridWidth][Config.gridHeight];
     }
     
     private void fillInFakes() {

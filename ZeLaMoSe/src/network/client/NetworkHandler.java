@@ -4,8 +4,8 @@
  */
 package network.client;
 
-import domain.interfaces.StepInterface;
-import domain.interfaces.StepProducerInterface;
+import domain.StepInterface;
+import domain.StepProducerInterface;
 import java.util.Observable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;

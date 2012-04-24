@@ -319,7 +319,7 @@ public class MainJFrame extends javax.swing.JFrame {
             public void run() {
                 InputSampler is = new InputSampler();
                 NetworkHandler nh = new NetworkHandlerImpl();
-                new MainJFrame(new TetrisController(new SimulationController(), nh, new StepGeneratorImpl(is)), nh).setVisible(true);
+                new MainJFrame(new TetrisController(new SimulationController(), nh, new StepGenerator(is)), nh).setVisible(true);
             }
         });
     }

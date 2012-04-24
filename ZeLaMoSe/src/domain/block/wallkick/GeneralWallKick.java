@@ -4,21 +4,21 @@
  */
 package domain.block.wallkick;
 
-import domain.block.Block;
+import domain.block.BlockAbstract;
 
 /**
  *
  * @author Patrick Zenhäusern
  */
-public class GeneralWallKick extends WallKick {
+public class GeneralWallKick extends WallKickAbstract {
     
 
     @Override
-    public void Test1(Block block) {
+    public void Test1(BlockAbstract block) {
     }
 
     @Override
-    public void Test2(Block block) {
+    public void Test2(BlockAbstract block) {
         switch(block.getBlockRotationState()){
             case r0r90:
             case r180r90:
@@ -38,7 +38,7 @@ public class GeneralWallKick extends WallKick {
     }
 
     @Override
-    public void Test3(Block block) {
+    public void Test3(BlockAbstract block) {
         switch(block.getBlockRotationState()){
             case r0r90:
             case r180r90:
@@ -64,7 +64,7 @@ public class GeneralWallKick extends WallKick {
     }
 
     @Override
-    public void Test4(Block block) {
+    public void Test4(BlockAbstract block) {
        switch(block.getBlockRotationState()){
             case r0r90:
             case r180r90:
@@ -84,7 +84,7 @@ public class GeneralWallKick extends WallKick {
     }
 
     @Override
-    public void Test5(Block block) {
+    public void Test5(BlockAbstract block) {
       switch(block.getBlockRotationState()){
             case r0r90:
             case r180r90:

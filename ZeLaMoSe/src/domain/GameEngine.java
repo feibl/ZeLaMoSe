@@ -4,10 +4,8 @@
  */
 package domain;
 
-import domain.interfaces.BlockQueueInterface;
-import domain.interfaces.GameEngineInterface;
 import domain.actions.*;
-import domain.block.Block;
+import domain.block.BlockAbstract;
 import domain.block.GarbageBlock;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,18 +16,18 @@ import java.util.Random;
  * @author Cyrill
  *
  */
-public class GameEngine extends GameEngineInterface {
+public class GameEngine extends GameEngineAbstract {
 
     private Action lastAction;
     private int sessionId;
-    private Block[][] grid;
+    private BlockAbstract[][] grid;
     private int gridWidth = Config.gridWidth, gridHeight = Config.gridHeight;
     private int blockStartPositionX = Config.blockStartPositionX, blockStartPositionY = Config.blockStartPositionY;
     private BlockQueueInterface queue;
-    private Block currentBlock;
+    private BlockAbstract currentBlock;
     private boolean gameOver;
     private int score;
-    private Block nextBlock;
+    private BlockAbstract nextBlock;
     private int blockCounter = 0;
     private SimulationController simulationController;
     private Random randomNewLineGenerator;
@@ -43,7 +41,7 @@ public class GameEngine extends GameEngineInterface {
 
     public GameEngine(int sessionId, long seed, BlockQueueInterface fakeQueue) {
         this.sessionId = sessionId;
-        grid = new Block[gridWidth][gridHeight];
+        grid = new BlockAbstract[gridWidth][gridHeight];
         queue = fakeQueue;
         score = 0;
         level = 1;
@@ -51,8 +49,8 @@ public class GameEngine extends GameEngineInterface {
         randomNewLineGenerator = new Random(seed);
     }
 
-    public Block getNextBlock() {
-        return (Block) nextBlock.clone();
+    public BlockAbstract getNextBlock() {
+        return (BlockAbstract) nextBlock.clone();
     }
 
     @Override
@@ -72,7 +70,7 @@ public class GameEngine extends GameEngineInterface {
         return gameOver;
     }
 
-    public Block getCurrentBlock() {
+    public BlockAbstract getCurrentBlock() {
         return currentBlock;
     }
 
@@ -81,7 +79,7 @@ public class GameEngine extends GameEngineInterface {
         nextBlock();
     }
 
-    public Block[][] getGrid() {
+    public BlockAbstract[][] getGrid() {
         return grid;
     }
 
@@ -170,7 +168,7 @@ public class GameEngine extends GameEngineInterface {
     }
 
     private boolean checkForCollision() {
-        Block[][] blockGrid = currentBlock.getGrid();
+        BlockAbstract[][] blockGrid = currentBlock.getGrid();
         for (int x = 0; x < blockGrid.length; x++) {
             for (int y = 0; y < blockGrid.length; y++) {
                 if (blockGrid[x][y] != null) {
@@ -217,7 +215,7 @@ public class GameEngine extends GameEngineInterface {
     }
 
     private void saveCurrenblockToGrid() {
-        Block[][] blockGrid = currentBlock.getGrid();
+        BlockAbstract[][] blockGrid = currentBlock.getGrid();
         //Refactor find a better way to delte the old block references
         for (int x = 0; x < gridWidth; x++) {
             for (int y = 0; y < gridHeight; y++) {
@@ -358,7 +356,7 @@ public class GameEngine extends GameEngineInterface {
     }
 
     private void createGarbageLineAction(int numberOfLines) {
-        Block[][] garbageLines = new Block[gridWidth][numberOfLines];
+        BlockAbstract[][] garbageLines = new BlockAbstract[gridWidth][numberOfLines];
 
         int emptyXPosition = randomNewLineGenerator.nextInt(gridWidth);
         GarbageBlock garbageBlock = new GarbageBlock();

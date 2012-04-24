@@ -2,9 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.interfaces;
-
-import domain.Step;
+package domain;
 
 /**
  *
@@ -14,5 +12,5 @@ public interface StepProducerInterface {
   
   public Step getStep();
   //Called every 50ms
-  public void niggasInParis();
+  public void processStep();
 }

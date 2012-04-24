@@ -27,10 +27,6 @@ public class Step implements Serializable {
         return sequenceNumber;
     }
     
-//    public void setSessionId(int id) {
-//        this.getSessionID = id;
-//    }
-    
     public int getSessionID() {
         return sessionID;
     }

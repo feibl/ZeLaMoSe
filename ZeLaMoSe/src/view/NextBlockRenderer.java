@@ -5,8 +5,8 @@
 package view;
 
 import domain.GameEngine;
-import domain.block.Block;
-import domain.interfaces.SimulationStateInterface;
+import domain.block.BlockAbstract;
+import domain.SimulationStateAbstract;
 import java.awt.Color;
 import java.util.Observable;
 import java.util.Observer;
@@ -24,11 +24,11 @@ import javax.media.opengl.glu.GLU;
 class NextBlockRenderer implements GLEventListener, Observer {
     
     
-    private SimulationStateInterface gameEngine;
-    private Block nextBlock;
+    private SimulationStateAbstract gameEngine;
+    private BlockAbstract nextBlock;
     private int blockSize=40;
 
-    public NextBlockRenderer(SimulationStateInterface gameEngine) {
+    public NextBlockRenderer(SimulationStateAbstract gameEngine) {
         this.gameEngine = gameEngine;
         gameEngine.addObserver(this);
     }
@@ -106,7 +106,7 @@ class NextBlockRenderer implements GLEventListener, Observer {
         gl.glBegin(GL2.GL_QUADS);
         int x = nextBlock.getX();
         int y = nextBlock.getY();
-        Block[][] grid = nextBlock.getGrid();
+        BlockAbstract[][] grid = nextBlock.getGrid();
         for (int a = 0; a < grid.length; a++) {
             for (int b = 0; b < grid.length; b++) {
                 if (grid[a][b] != null) {

@@ -6,7 +6,7 @@ package domain;
 
 import domain.fake.FakeBlockQueue;
 import domain.actions.RotateAction;
-import domain.block.Block;
+import domain.block.BlockAbstract;
 import domain.block.OBlock;
 import org.junit.After;
 import org.junit.Before;
@@ -32,11 +32,11 @@ public abstract class WallKickTest {
 
     protected GameEngine gameEngine;
     protected FakeBlockQueue fakeQueue;
-    protected Block[][] expectedGrid;
-    protected Block[][] actualGrid;
+    protected BlockAbstract[][] expectedGrid;
+    protected BlockAbstract[][] actualGrid;
     protected OBlock dummyBlock;
 
-    protected void addBlockToExpectedGrid(Block block, int x, int y) {
+    protected void addBlockToExpectedGrid(BlockAbstract block, int x, int y) {
         expectedGrid[x][y] = block;
     }
 
@@ -60,7 +60,7 @@ public abstract class WallKickTest {
     }
 
     protected void initializeExpectedGrid() {
-        expectedGrid = new Block[Config.gridWidth][Config.gridHeight];
+        expectedGrid = new BlockAbstract[Config.gridWidth][Config.gridHeight];
     }
 
     protected abstract void fillInFakes();

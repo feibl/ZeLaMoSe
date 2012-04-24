@@ -4,7 +4,7 @@
  */
 package domain.actions;
 
-import domain.block.Block;
+import domain.block.BlockAbstract;
 
 /**
  *
@@ -12,13 +12,13 @@ import domain.block.Block;
  */
 public class NewBlockAction extends Action{
 
-    Block blockType;
-    public NewBlockAction(Block type, long timestamp) {
+    BlockAbstract blockType;
+    public NewBlockAction(BlockAbstract type, long timestamp) {
         super(ActionType.NEWBLOCK, timestamp);
         this.blockType = type;
     }
     
-    public Block getBlocktype() {
+    public BlockAbstract getBlocktype() {
         return blockType;
     }
     

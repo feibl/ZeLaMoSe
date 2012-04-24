@@ -6,16 +6,16 @@ package domain.fake;
 
 import domain.InputSampler;
 import domain.Step;
-import domain.StepGenerator;
+import domain.StepGeneratorAbstract;
 import domain.TetrisController;
-import domain.interfaces.StepProducerInterface;
+import domain.StepProducerInterface;
 import network.client.NetworkHandler;
 
 /**
  *
  * @author chrigi
  */
-public class FakeStepGenerator extends StepGenerator {
+public class FakeStepGenerator extends StepGeneratorAbstract {
     public Step step;
 
     @Override
@@ -24,7 +24,7 @@ public class FakeStepGenerator extends StepGenerator {
     }    
 
     @Override
-    public void niggasInParis() {
+    public void processStep() {
         setChanged();
         notifyObservers(TetrisController.UpdateType.STEP);
     }

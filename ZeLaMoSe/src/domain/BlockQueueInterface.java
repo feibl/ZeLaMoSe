@@ -2,17 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.interfaces;
+package domain;
 
-import domain.block.Block;
-import domain.block.IBlock;
-import java.util.LinkedList;
-import java.util.Queue;
+import domain.block.BlockAbstract;
 
 /**
  *
  * @author Patrick Zenhäusern
  */
 public interface BlockQueueInterface {
-    public Block getNextBlock();
+    public BlockAbstract getNextBlock();
 }

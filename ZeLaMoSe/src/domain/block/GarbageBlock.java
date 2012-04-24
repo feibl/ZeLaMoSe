@@ -5,14 +5,14 @@
 package domain.block;
 
 import domain.block.wallkick.NoWallKick;
-import domain.block.wallkick.WallKick;
+import domain.block.wallkick.WallKickAbstract;
 import java.awt.Color;
 
 /**
  *
  * @author Cyrill
  */
-public class GarbageBlock extends Block {
+public class GarbageBlock extends BlockAbstract {
 
     public GarbageBlock() {
         super(Color.GRAY, "G", new NoWallKick());
@@ -21,22 +21,22 @@ public class GarbageBlock extends Block {
     
 
     @Override
-    protected void rotation0(Block[][] grid) {
+    protected void rotation0(BlockAbstract[][] grid) {
         grid[0][0] = this;
     }
 
     @Override
-    protected void rotation90(Block[][] grid) {
+    protected void rotation90(BlockAbstract[][] grid) {
         throw new UnsupportedOperationException("Will never be Supported with this kind of Block");
     }
 
     @Override
-    protected void rotation180(Block[][] grid) {
+    protected void rotation180(BlockAbstract[][] grid) {
         throw new UnsupportedOperationException("Will never be Supported with this kind of Block");
     }
 
     @Override
-    protected void rotation270(Block[][] grid) {
+    protected void rotation270(BlockAbstract[][] grid) {
         throw new UnsupportedOperationException("Will never be Supported with this kind of Block");
     }
     

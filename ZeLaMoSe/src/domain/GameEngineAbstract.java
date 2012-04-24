@@ -2,15 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.interfaces;
+package domain;
 
-import domain.SimulationController;
+import domain.actions.ActionInterface;
 
 /**
  *
  * @author chrigi
  */
-abstract public class GameEngineInterface extends SimulationStateInterface implements ActionInterface{
+abstract public class GameEngineAbstract extends SimulationStateAbstract implements ActionInterface{
     abstract public int getSessionID();
     abstract public void startGame();
     abstract public int getLevel();

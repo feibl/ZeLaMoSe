@@ -11,14 +11,14 @@ import java.awt.Color;
  *
  * @author Patrick Zenhäusern
  */
-public class LBlock extends Block {
+public class LBlock extends BlockAbstract {
 
     public LBlock() {
         super(new Color(255, 170, 0), "L", new GeneralWallKick());
     }
 
     @Override
-    protected void rotation0(Block[][] grid) {
+    protected void rotation0(BlockAbstract[][] grid) {
         grid[0][1] = this;
         grid[1][1] = this;
         grid[2][0] = this;
@@ -26,7 +26,7 @@ public class LBlock extends Block {
     }
 
     @Override
-    protected void rotation90(Block[][] grid) {
+    protected void rotation90(BlockAbstract[][] grid) {
         grid[1][0] = this;
         grid[1][1] = this;
         grid[1][2] = this;
@@ -34,7 +34,7 @@ public class LBlock extends Block {
     }
 
     @Override
-    protected void rotation180(Block[][] grid) {
+    protected void rotation180(BlockAbstract[][] grid) {
         grid[0][1] = this;
         grid[0][2] = this;
         grid[1][1] = this;
@@ -42,7 +42,7 @@ public class LBlock extends Block {
     }
 
     @Override
-    protected void rotation270(Block[][] grid) {
+    protected void rotation270(BlockAbstract[][] grid) {
         grid[0][0] = this;
         grid[1][0] = this;
         grid[1][1] = this;

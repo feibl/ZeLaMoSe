@@ -4,22 +4,22 @@
  */
 package domain.actions;
 
-import domain.block.Block;
+import domain.block.BlockAbstract;
 
 /**
  *
  * @author chrigi
  */
 public class GarbageLineAction extends Action{
-    Block[][] lines;
+    BlockAbstract[][] lines;
 
-    public GarbageLineAction(long timestamp, Block[][] line) {
+    public GarbageLineAction(long timestamp, BlockAbstract[][] line) {
         super(ActionType.NEWLINE, timestamp);
         this.lines = line;
     }
 
     
-    public Block[][] getLines() {
+    public BlockAbstract[][] getLines() {
         return lines;
     }
     

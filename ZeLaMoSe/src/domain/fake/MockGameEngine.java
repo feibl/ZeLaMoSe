@@ -4,14 +4,14 @@
  */
 package domain.fake;
 import domain.SimulationController;
-import domain.interfaces.GameEngineInterface;
+import domain.GameEngineAbstract;
 import domain.actions.Action;
 
 /**
  *
  * @author chrigi
  */
-public class MockGameEngine extends GameEngineInterface {
+public class MockGameEngine extends GameEngineAbstract {
   private Action lastAction  = null;
   private int sessionId;
   public MockGameEngine(int sessionId) {

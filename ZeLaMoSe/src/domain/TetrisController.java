@@ -4,18 +4,12 @@
  */
 package domain;
 
-import domain.interfaces.SimulationStateInterface;
-import domain.interfaces.StepProducerInterface;
 import java.net.*;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import network.SessionInformation;
 import network.client.NetworkHandler;
 import network.server.GameServer;
 import network.server.GameServerImpl;
@@ -37,9 +31,8 @@ public class TetrisController extends Observable implements Observer {
     private Timer timer;
     private SimulationController simulationController;
     private NetworkHandler networkHandler;
-    private StepGenerator stepGenerator;
+    private StepGeneratorAbstract stepGenerator;
     private int currentStep = 0;
-    private final int stepDuration = 50; //in millisecond   
     private GameServer gameServer;
     private String serverIP = "";
     private ConcurrentHashMap<Integer, String> sessionMap;
@@ -58,7 +51,7 @@ public class TetrisController extends Observable implements Observer {
         STEP, SESSION_ADDED, SESSION_REMOVED, CONNECTION_ESTABLISHED, EXCEPTION_THROWN, CHAT_MESSAGE_RECEIVED, GAME_STARTED, INIT_SIGNAL
     };
 
-    public TetrisController(SimulationController sController, NetworkHandler nH, StepGenerator sG) {
+    public TetrisController(SimulationController sController, NetworkHandler nH, StepGeneratorAbstract sG) {
         simulationController = sController;
         networkHandler = nH;
         networkHandler.addObserver(this);
@@ -72,17 +65,17 @@ public class TetrisController extends Observable implements Observer {
     }
 
     public GameFieldJFrame createGameFieldFrame() {
-        List<SimulationStateInterface> otherSimulations = new ArrayList<SimulationStateInterface>();
+        List<SimulationStateAbstract> otherSimulations = new ArrayList<SimulationStateAbstract>();
         for (Integer sessionID : sessionMap.keySet()) {
             if (sessionID != localSessionID) {
                 otherSimulations.add(simulationController.getSimulationStateInterface(sessionID));
             }
         }
-        SimulationStateInterface localSimulation = simulationController.getSimulationStateInterface(localSessionID);;
+        SimulationStateAbstract localSimulation = simulationController.getSimulationStateInterface(localSessionID);;
         return new GameFieldJFrame(stepGenerator.getInputSampler(), localSimulation, otherSimulations);
     }
 
-    public SimulationStateInterface getSession(int sessionId) {
+    public SimulationStateAbstract getSession(int sessionId) {
         return simulationController.getSimulationStateInterface(sessionId);
     }
 
@@ -187,10 +180,10 @@ public class TetrisController extends Observable implements Observer {
     public void runStep() {
         System.out.println("running step: " + currentStep + " time: " + System.currentTimeMillis());
         if (currentStep > 0) { //on the first step we don't have all steps available so we wait for the others and don't simulate yet
-            networkHandler.niggasInParis();
+            networkHandler.processStep();
             simulationController.simulateStep(currentStep - 1); //Simulate previous step
         }
-        stepGenerator.niggasInParis();
+        stepGenerator.processStep();
         currentStep++;
     }
 

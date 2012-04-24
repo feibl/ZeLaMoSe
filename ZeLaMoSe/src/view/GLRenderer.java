@@ -6,10 +6,10 @@ package view;
 
 import domain.Config;
 import domain.actions.*;
-import domain.block.Block;
+import domain.block.BlockAbstract;
 import domain.actions.RotateAction.Direction;
 import domain.block.GarbageBlock;
-import domain.interfaces.SimulationStateInterface;
+import domain.SimulationStateAbstract;
 import java.awt.Color;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -33,14 +33,14 @@ class GLRenderer implements GLEventListener, Observer {
     private volatile boolean isAnimating = false;
     private ConcurrentLinkedQueue<Action> actionQueue;
     private int viewPortWidth, viewPortHeight, blockSize;
-    private SimulationStateInterface gameEngine;
-    private Block currentBlock;
+    private SimulationStateAbstract gameEngine;
+    private BlockAbstract currentBlock;
     private final int defaultX = 4, defaultY = 23;
     private volatile Color[][] grid;
     private Color backGroundColor = Color.BLACK;
     private MusicEngine backGroundMusic, rotateSound, moveSound, dropSound, lineRemovedSound, fourLineRemovedSound, gameOverSound;
 
-    public GLRenderer(int blocksize, boolean useSound, SimulationStateInterface gameEngine) {
+    public GLRenderer(int blocksize, boolean useSound, SimulationStateAbstract gameEngine) {
         this.viewPortWidth = Config.gridWidth * blocksize;
         this.viewPortHeight = (Config.gridHeight - 2) * blocksize;
         this.blockSize = blocksize;
@@ -174,7 +174,7 @@ class GLRenderer implements GLEventListener, Observer {
         gl.glBegin(GL2.GL_QUADS);
         int x = currentBlock.getX();
         int y = currentBlock.getY();
-        Block[][] grid = currentBlock.getGrid();
+        BlockAbstract[][] grid = currentBlock.getGrid();
         for (int a = 0; a < grid.length; a++) {
             for (int b = 0; b < grid.length; b++) {
                 if (grid[a][b] != null) {
@@ -258,18 +258,18 @@ class GLRenderer implements GLEventListener, Observer {
         }
     }
 
-    private void handleNewBlockAction(Block block) {
+    private void handleNewBlockAction(BlockAbstract block) {
         if ((currentBlock != null)) {
             dropSound.playMusic(false);
             saveCurrentblockToGrid();
         }
-        currentBlock = (Block) block.clone();
+        currentBlock = (BlockAbstract) block.clone();
         currentBlock.setX(defaultX);
         currentBlock.setY(defaultY);
 
     }
 
-    private void handleNewLineAction(Block[][] lines) {
+    private void handleNewLineAction(BlockAbstract[][] lines) {
 
         for (int x = 0; x < Config.gridWidth; x++) {
             for (int y = Config.gridHeight - 1 - lines[0].length; y >= 0; y--) {
@@ -383,7 +383,7 @@ class GLRenderer implements GLEventListener, Observer {
             public void run() {
                 backGroundMusic.stopMusic();
                 gameOverSound.playMusic(false);
-                Block[][] filler = new Block[Config.gridWidth][1];
+                BlockAbstract[][] filler = new BlockAbstract[Config.gridWidth][1];
 
                 for (int j = 0; j < Config.gridWidth; j++) {
                     filler[j][0] = new GarbageBlock();

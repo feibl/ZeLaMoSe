@@ -38,7 +38,7 @@ public class NetworkHandlerImpl extends NetworkHandler {
     private long blockQueueSeed;
 
     @Override
-    public void niggasInParis() {
+    public void processStep() {
         try {
             Collection<Step> steps = stepQueue.take();
             if (steps != null) {
