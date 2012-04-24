@@ -4,16 +4,17 @@
  */
 package domain;
 
-import domain.Fake.FakeBlockQueue;
+import domain.fake.FakeBlockQueue;
 import domain.actions.HardDropAction;
 import domain.actions.MoveAction;
 import domain.actions.RotateAction;
 import domain.block.*;
+import org.junit.After;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.*;
 import org.junit.rules.TestName;
-import static org.junit.Assert.*;
 
 /**
  *

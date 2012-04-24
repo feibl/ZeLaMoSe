@@ -4,7 +4,7 @@
  */
 package domain;
 
-import domain.Fake.FakeBlockQueue;
+import domain.fake.FakeBlockQueue;
 import domain.actions.RotateAction;
 import domain.block.Block;
 import domain.block.OBlock;
