@@ -366,6 +366,7 @@ public class RMILocalhostTest {
         for (int i = 0; i < NBR_OF_STEPS; i++) {
             p1.addStep(new Step(i, p1Info.getId()));
             p2.addStep(new Step(i, p2Info.getId()));
+            gameServerImpl.distributeSteps();
             p1.niggasInParis();
             p2.niggasInParis();
         }
