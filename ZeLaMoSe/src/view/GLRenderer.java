@@ -275,7 +275,7 @@ class GLRenderer implements GLEventListener, Observer {
 
     }
 
-    private void handleNewLineAction(BlockAbstract[][] lines) {
+    private void handleGarbageLineAction(BlockAbstract[][] lines) {
 
         for (int x = 0; x < Config.gridWidth; x++) {
             for (int y = Config.gridHeight - 1 - lines[0].length; y >= 0; y--) {
@@ -400,7 +400,7 @@ class GLRenderer implements GLEventListener, Observer {
                     } catch (InterruptedException ex) {
                         Logger.getLogger(GLRenderer.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    handleNewLineAction(filler);
+                    handleGarbageLineAction(filler);
                 }
             }
         }).start();
@@ -417,8 +417,8 @@ class GLRenderer implements GLEventListener, Observer {
             case NEWBLOCK:
                 handleNewBlockAction(((NewBlockAction) action).getBlocktype());
                 break;
-            case NEWLINE:
-                handleNewLineAction(((GarbageLineAction) action).getLines());
+            case GARBAGELINE:
+                handleGarbageLineAction(((GarbageLineAction) action).getLines());
                 break;
             case REMOVELINE:
                 isAnimating = true;

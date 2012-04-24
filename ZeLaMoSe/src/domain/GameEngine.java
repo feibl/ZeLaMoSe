@@ -30,7 +30,7 @@ public class GameEngine extends GameEngineAbstract {
     private BlockAbstract nextBlock;
     private int blockCounter = 0;
     private SimulationController simulationController;
-    private Random randomNewLineGenerator;
+    private Random randomGarbageLineGenerator;
     private String nickName = "";
     private int level;
     private int totalRemovedLines;
@@ -46,7 +46,7 @@ public class GameEngine extends GameEngineAbstract {
         score = 0;
         level = 1;
         totalRemovedLines = 0;
-        randomNewLineGenerator = new Random(seed);
+        randomGarbageLineGenerator = new Random(seed);
     }
 
     public BlockAbstract getNextBlock() {
@@ -107,7 +107,7 @@ public class GameEngine extends GameEngineAbstract {
                 case HARDDROP:
                     handleHardDropAction();
                     break;
-                case NEWLINE:
+                case GARBAGELINE:
                     handleGarbageLineAction((GarbageLineAction) action);
                     break;
             }
@@ -358,7 +358,7 @@ public class GameEngine extends GameEngineAbstract {
     private void createGarbageLineAction(int numberOfLines) {
         BlockAbstract[][] garbageLines = new BlockAbstract[gridWidth][numberOfLines];
 
-        int emptyXPosition = randomNewLineGenerator.nextInt(gridWidth);
+        int emptyXPosition = randomGarbageLineGenerator.nextInt(gridWidth);
         GarbageBlock garbageBlock = new GarbageBlock();
         for (int x = 0; x < gridWidth; ++x) {
             if (x == emptyXPosition) {

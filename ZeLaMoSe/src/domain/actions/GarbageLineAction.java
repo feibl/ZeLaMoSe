@@ -14,7 +14,7 @@ public class GarbageLineAction extends Action{
     BlockAbstract[][] lines;
 
     public GarbageLineAction(long timestamp, BlockAbstract[][] line) {
-        super(ActionType.NEWLINE, timestamp);
+        super(ActionType.GARBAGELINE, timestamp);
         this.lines = line;
     }
 
