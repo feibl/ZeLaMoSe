@@ -75,15 +75,15 @@ public class TetrisController extends Observable implements Observer {
         List<SimulationStateInterface> otherSimulations = new ArrayList<SimulationStateInterface>();
         for (Integer sessionID : sessionMap.keySet()) {
             if (sessionID != localSessionID) {
-                otherSimulations.add(simulationController.getSimulation(sessionID));
+                otherSimulations.add(simulationController.getSimulationStateInterface(sessionID));
             }
         }
-        SimulationStateInterface localSimulation = simulationController.getSimulation(localSessionID);;
+        SimulationStateInterface localSimulation = simulationController.getSimulationStateInterface(localSessionID);;
         return new GameFieldJFrame(stepGenerator.getInputSampler(), localSimulation, otherSimulations);
     }
 
     public SimulationStateInterface getSession(int sessionId) {
-        return simulationController.getSimulation(sessionId);
+        return simulationController.getSimulationStateInterface(sessionId);
     }
 
     private String getLocalIP() {

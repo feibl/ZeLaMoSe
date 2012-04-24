@@ -63,7 +63,7 @@ public class TetrisControllerTest {
         assertNotNull(nH.getSessionList().get(sessionID));
         nH.setConnected();
         nH.setGameStarted();
-        SimulationStateInterface gE = sC.getSimulation(sessionID);
+        SimulationStateInterface gE = sC.getSimulationStateInterface(sessionID);
         assertNotNull(gE);
         GameEngine gameEngine = (GameEngine)gE;
         assertEquals(gameEngine.getSessionID(), sessionID);
@@ -102,13 +102,13 @@ public class TetrisControllerTest {
         nH.getSessionList().put(6, "session6");
         nH.setGameStarted();
         
-        GameEngine gE1 = (GameEngine)sC.getSimulation(sessionID);
+        GameEngine gE1 = (GameEngine)sC.getSimulationStateInterface(sessionID);
         new Tester(gE1);
-        GameEngine gE2 = (GameEngine)sC.getSimulation(4);
+        GameEngine gE2 = (GameEngine)sC.getSimulationStateInterface(4);
         new Tester(gE2);
-        GameEngine gE3 = (GameEngine)sC.getSimulation(5);
+        GameEngine gE3 = (GameEngine)sC.getSimulationStateInterface(5);
         new Tester(gE3);
-        GameEngine gE4 = (GameEngine)sC.getSimulation(6);
+        GameEngine gE4 = (GameEngine)sC.getSimulationStateInterface(6);
         new Tester(gE4);
         
         for (int i = 0; i < 10; i++) {
@@ -123,7 +123,7 @@ public class TetrisControllerTest {
             }
         }
         
-        GameEngine gE = (GameEngine)sC.getSimulation(sessionID);
+        GameEngine gE = (GameEngine)sC.getSimulationStateInterface(sessionID);
         assertNotNull(gE);
 
         

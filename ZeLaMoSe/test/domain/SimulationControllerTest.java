@@ -50,10 +50,10 @@ public class SimulationControllerTest {
   @Test
   public void testGetSimulation() {
       System.out.println("getSimulation");
-      //assertEquals(instance.getSimulation(0), null);
-      assertEquals(instance.getSimulation(sessionId), engine1);
-      assertEquals(instance.getSimulation(sessionId2), engine2);
-      assertEquals(instance.getSimulation(sessionId3), engine3);
+      //assertEquals(instance.getSimulationStateInterface(0), null);
+      assertEquals(instance.getSimulationStateInterface(sessionId), engine1);
+      assertEquals(instance.getSimulationStateInterface(sessionId2), engine2);
+      assertEquals(instance.getSimulationStateInterface(sessionId3), engine3);
   }
   
   Step createStep(int id, Action action, int seq) {

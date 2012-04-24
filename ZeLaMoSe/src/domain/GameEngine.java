@@ -371,7 +371,7 @@ public class GameEngine extends GameEngineInterface {
             }
         }
         if (simulationController != null) {
-            simulationController.addNewLineAction(sessionId, new GarbageLineAction(0, garbageLines));
+            simulationController.addGarbageLineAction(sessionId, new GarbageLineAction(0, garbageLines));
         }
     }
 
