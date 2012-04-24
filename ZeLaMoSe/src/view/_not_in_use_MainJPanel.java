@@ -8,12 +8,12 @@ package view;
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
-public class MainJPanel extends javax.swing.JPanel {
+public class _not_in_use_MainJPanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form MainJPanel
+     * Creates new form _not_in_use_MainJPanel
      */
-    public MainJPanel() {
+    public _not_in_use_MainJPanel() {
         initComponents();
     }
 

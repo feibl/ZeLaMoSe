@@ -25,7 +25,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private MusicEngine musicEngine;
     private final ChatController chatController;
 
-    LobbyJFrame(TetrisController tetrisController, ChatController chatController, boolean host, MainJFrame menu) {
+    LobbyJFrame(TetrisController tetrisController, ChatController chatController, boolean host, MainJFrame menu, boolean isSinglePlayer) {
         this.tetrisController = tetrisController;
         this.menu = menu;
         this.host = host;
@@ -39,6 +39,10 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         
         musicEngine = new OnMusicEngine(MusicFile.lobbyBackgroundMusic);
         musicEngine.playMusic(true);
+        
+        if (isSinglePlayer) {
+            tetrisController.startGame();
+        }
     }
 
     @Override
@@ -156,7 +160,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         );
         pnlClockLayout.setVerticalGroup(
             pnlClockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 109, Short.MAX_VALUE)
+            .addGap(0, 113, Short.MAX_VALUE)
         );
 
         lblTimeHere.setText("Time you're here:");
