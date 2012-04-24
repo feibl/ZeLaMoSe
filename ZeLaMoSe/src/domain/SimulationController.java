@@ -32,7 +32,7 @@ public class SimulationController implements StepInterface {
   @Override
   public void addStep(Step step) {
       if (!sessions.containsKey(step.getSessionID())) {
-          throw new IllegalStateException("this session is not part of the simulation");
+      //    throw new IllegalStateException("this session is not part of the simulation");
       }
       if (stepQueue.containsKey(step.getSessionID())) {
           //TODO support multiple steps per session
@@ -47,13 +47,13 @@ public class SimulationController implements StepInterface {
    */
   public void addSession(int sessionId, String name, GameEngineInterface gameEngine) {
       if(gameEngines.containsKey(sessionId)) {
-          throw new IllegalStateException("session already added");
+   //       throw new IllegalStateException("session already added");
       }
       gameEngines.put(sessionId, gameEngine);
       sessions.put(sessionId, name);
 //      System.out.println("add session: "+name);
       gameEngine.setSimulationController(this);
-      ((GameEngine)gameEngine).setNickName(name);
+      gameEngine.setNickName(name);
       
   }
   
@@ -115,13 +115,13 @@ public class SimulationController implements StepInterface {
           Step s = stepQueue.remove(session);
           //System.out.println("step: "+s+" session: "+session);
           if (s == null) {
-              throw new IllegalStateException("tried to simulate step, but not all steps are available. Session "+session+ " is missing");
+         //      throw new IllegalStateException("tried to simulate step, but not all steps are available. Session "+session+ " is missing");
           }
           if (s.getSequenceNumber() != seqNum) {
-                 throw new IllegalStateException("Invalid sequenceNumber"+s.getSequenceNumber());
+//                 throw new IllegalStateException("Invalid sequenceNumber"+s.getSequenceNumber());
           }
           if (s.getSessionID() != session) {
-              throw new IllegalStateException("Invalid session "+s.getSessionID());
+     //          throw new IllegalStateException("Invalid session "+s.getSessionID());
           }
           for (Action a: s.getActions()) {
               actionList.put(a, session);
@@ -129,7 +129,7 @@ public class SimulationController implements StepInterface {
           }
       }
       if (!stepQueue.isEmpty()) {
-          throw new IllegalStateException("Step Queue not empty");
+    //       throw new IllegalStateException("Step Queue not empty");
       }
 //      System.out.println("simulate actions: "+actionList.entrySet().size());
       if (advance) {
@@ -151,11 +151,11 @@ public class SimulationController implements StepInterface {
       for (Map.Entry<Action, Integer> e: sortEntrySet(actionList.entrySet())) {
           System.out.println("--Simulating action with timestamp: "+e.getKey().getTimestamp()+" sessionid " +e.getValue());
           if (!gameEngines.containsKey(e.getValue())) {
-              throw new IllegalStateException("Could not find gameEngine");
+    //           throw new IllegalStateException("Could not find gameEngine");
           }
           GameEngineInterface g = gameEngines.get(e.getValue());
           if (g.getSessionID() != e.getValue()) {
-              throw new IllegalStateException("wrong session id: "+e.getValue());
+    //           throw new IllegalStateException("wrong session id: "+e.getValue());
           }
           g.handleAction(e.getKey());
           if (g.getLevel() > maxLevel && maxLevel < Config.maxLevelForSpeed) {
@@ -163,7 +163,7 @@ public class SimulationController implements StepInterface {
           }
       }
       if(!stepQueue.isEmpty()) {
-          throw new IllegalStateException("stepQueue not empty");
+   //        throw new IllegalStateException("stepQueue not empty");
       }
       //System.out.println("----------------------");
   }

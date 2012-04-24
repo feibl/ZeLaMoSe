@@ -15,4 +15,5 @@ abstract public class GameEngineInterface extends SimulationStateInterface imple
     abstract public void startGame();
     abstract public int getLevel();
     abstract public void setSimulationController(SimulationController simulationController);
+    abstract public void setNickName(String nickName);
 }

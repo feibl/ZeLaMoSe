@@ -80,6 +80,10 @@ public class GameEngine extends GameEngineInterface {
         this.sessionId = sessionId;
         grid = new Block[gridwidth][gridheight];
         queue = fakeQueue;
+                score = 0;
+        level = 1;
+        totalRemovedLines = 0;
+        randomNewLineGenerator = new Random(seed);
     }
 
     public Block[][] getGrid() {
@@ -431,9 +435,7 @@ public class GameEngine extends GameEngineInterface {
     public String getNickName() {
         return nickName;
     }
-
     public void setNickName(String nickName) {
         this.nickName = nickName;
-    }
-    
+    }    
 }
