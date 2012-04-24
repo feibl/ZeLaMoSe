@@ -25,7 +25,9 @@ public class Config {
     public final static int frameRate = 30;
     public final static int ownGameFieldBlockSize = 30;
     public final static int EnemyGameFieldBlockSize = 10;
-    public final static String basicPathToMusicFiles = "/view/music/files/";
+    public final static String basicPathToMusicFiles = "/resource/music/";
+    public final static int blockStartPositionX = 4;
+    public final static int blockStartPositionY = gridHeight - 1;
 
     public static File convertRMI(Class c) {
         File tf = null;
@@ -33,7 +35,7 @@ public class Config {
             tf = File.createTempFile(c.getSimpleName().toString(), ".policy");
             tf.deleteOnExit();
             byte buffer[] = new byte[0x1000];
-            InputStream in = c.getResourceAsStream("/rmi.policy");
+            InputStream in = c.getResourceAsStream("/resource/rmi/rmi.policy");
             FileOutputStream out = new FileOutputStream(tf);
             int cnt;
             while ((cnt = in.read(buffer)) != -1) {

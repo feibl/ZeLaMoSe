@@ -10,10 +10,10 @@ import domain.block.Block;
  *
  * @author chrigi
  */
-public class NewLineAction extends Action{
+public class GarbageLineAction extends Action{
     Block[][] lines;
 
-    public NewLineAction(long timestamp, Block[][] line) {
+    public GarbageLineAction(long timestamp, Block[][] line) {
         super(ActionType.NEWLINE, timestamp);
         this.lines = line;
     }

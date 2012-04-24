@@ -41,16 +41,16 @@ public abstract class WallKickTest {
     }
 
     protected void assertEqualBothGrids() {
-        for (int i = 0; i < gameEngine.gridheight; i++) {
-            for (int j = 0; j < gameEngine.gridwidth; j++) {
+        for (int i = 0; i < gameEngine.getGrid()[0].length; i++) {
+            for (int j = 0; j < gameEngine.getGrid().length; j++) {
                 assertEquals(expectedGrid[j][i], (gameEngine.getGrid())[j][i]);
             }
         }
     }
 
     protected void cloneGridOnlyOBlocks() {
-        for (int i = 0; i < gameEngine.gridheight; i++) {
-            for (int j = 0; j < gameEngine.gridwidth; j++) {
+        for (int i = 0; i < gameEngine.getGrid()[0].length; i++) {
+            for (int j = 0; j < gameEngine.getGrid().length; j++) {
                 if (actualGrid[j][i] != null && actualGrid[j][i].equals(dummyBlock)) {
                     expectedGrid[j][i] = actualGrid[j][i];
                 }

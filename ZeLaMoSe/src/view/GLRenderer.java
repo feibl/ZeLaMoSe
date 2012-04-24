@@ -412,7 +412,7 @@ class GLRenderer implements GLEventListener, Observer {
                 handleNewBlockAction(((NewBlockAction) action).getBlocktype());
                 break;
             case NEWLINE:
-                handleNewLineAction(((NewLineAction) action).getLines());
+                handleNewLineAction(((GarbageLineAction) action).getLines());
                 break;
             case REMOVELINE:
                 isAnimating = true;

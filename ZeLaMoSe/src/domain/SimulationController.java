@@ -9,7 +9,7 @@ import domain.interfaces.GameEngineInterface;
 import domain.interfaces.SimulationStateInterface;
 import domain.actions.Action;
 import domain.actions.MoveAction;
-import domain.actions.NewLineAction;
+import domain.actions.GarbageLineAction;
 import java.util.*;
 
 /**
@@ -22,7 +22,7 @@ public class SimulationController implements StepInterface {
   protected Map<Integer, String> sessions = new HashMap<Integer, String>();
   protected int maxLevel = 1;
   public boolean autoadvance = true;
-  private Map<Integer, NewLineAction> newLineActionQueue = new HashMap<Integer, NewLineAction>();
+  private Map<Integer, GarbageLineAction> newLineActionQueue = new HashMap<Integer, GarbageLineAction>();
   
   
   public SimulationController() {
@@ -138,7 +138,7 @@ public class SimulationController implements StepInterface {
           }
       }
       
-      for(Map.Entry<Integer,NewLineAction> entry: newLineActionQueue.entrySet()){
+      for(Map.Entry<Integer,GarbageLineAction> entry: newLineActionQueue.entrySet()){
           for(int session:  sessions.keySet()){
               if(session!=entry.getKey()){
                   actionList.put(entry.getValue(), session);
@@ -176,7 +176,7 @@ public class SimulationController implements StepInterface {
       return gameEngines.get(sessionId);
   }
   
-  public void addNewLineAction(Integer sessionFrom, NewLineAction action){
+  public void addNewLineAction(Integer sessionFrom, GarbageLineAction action){
       newLineActionQueue.put(sessionFrom, action);
   }
 }
