@@ -209,7 +209,7 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
         }
     }
 
-    private void distributeSteps() {
+    public void distributeSteps() {
         final Collection<Step> removedSteps = new ArrayList<Step>();
         receivedSteps.drainTo(removedSteps);
         for(Step s: removedSteps) {
