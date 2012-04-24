@@ -241,7 +241,7 @@ public class MainJFrame extends javax.swing.JFrame {
         getContentPane().add(lblSinglePlayer);
         lblSinglePlayer.setBounds(40, 60, 70, 14);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/image/tetrisbg.jpeg"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/image/tetrisbg.jpeg")));
         getContentPane().add(jLabel2);
         jLabel2.setBounds(0, 0, 420, 390);
 
