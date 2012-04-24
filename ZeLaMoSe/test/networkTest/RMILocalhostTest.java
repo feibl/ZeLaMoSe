@@ -19,8 +19,8 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import network.SessionInformation;
-import network.client.NetworkHandlerImpl;
-import network.server.GameServerImpl;
+import network.client.NetworkHandler;
+import network.server.GameServer;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -30,7 +30,7 @@ import static org.junit.Assert.*;
  */
 public class RMILocalhostTest {
 
-    private GameServerImpl gameServerImpl;
+    private GameServer gameServerImpl;
     private final String SERVER_NAME = "Tetris-Server";
     private final String PLAYER_NAME = "TestPlayer";
     private final int MAX_SESSIONS = 4;
@@ -44,7 +44,7 @@ public class RMILocalhostTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        File policy= Config.convertRMI(GameServerImpl.class);
+        File policy= Config.convertRMI(GameServer.class);
         System.setProperty("java.security.policy", policy.getAbsolutePath() );
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new RMISecurityManager());
@@ -69,7 +69,7 @@ public class RMILocalhostTest {
 
     @Test
     public void testUpdateTypeConnectToServer() {
-        NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
+        NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
         handler.addObserver(new Observer() {
 
             @Override
@@ -85,7 +85,7 @@ public class RMILocalhostTest {
 
     @Test
     public void testOwnSessionInformationConnectToServer() {
-        final NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
+        final NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
         handler.addObserver(new Observer() {
 
             @Override
@@ -101,7 +101,7 @@ public class RMILocalhostTest {
 
     @Test
     public void testSessionListConnectToServer() {
-        final NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
+        final NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
         handler.addObserver(new Observer() {
 
             @Override
@@ -120,7 +120,7 @@ public class RMILocalhostTest {
         for (int i = 0; i < 4; i++) {
             gameServerImpl.createSession("bla" + i, new ClientRemoteAdapter());
         }
-        final NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
+        final NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
         handler.addObserver(new Observer() {
 
             @Override
@@ -136,7 +136,7 @@ public class RMILocalhostTest {
 
     @Test
     public void testSessionAddedUpdate() throws RemoteException {
-        final NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
+        final NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
         handler.addObserver(new Observer() {
 
             @Override
@@ -165,7 +165,7 @@ public class RMILocalhostTest {
             }
         };
         for (int i = 0; i < MAX_SESSIONS; i++) {
-            NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
+            NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
             handler.addObserver(observer);
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME);
         }
@@ -183,7 +183,7 @@ public class RMILocalhostTest {
             }
         };
         for (int i = 0; i < MAX_SESSIONS + 1; i++) {
-            NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
+            NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
             handler.addObserver(observer);
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME);
         }
@@ -192,7 +192,7 @@ public class RMILocalhostTest {
 
     @Test
     public void testDisconnect() {
-        NetworkHandlerImpl[] handlers = new NetworkHandlerImpl[4];
+        NetworkHandler[] handlers = new NetworkHandler[4];
         Observer observer = new Observer() {
 
             @Override
@@ -203,7 +203,7 @@ public class RMILocalhostTest {
             }
         };
         for (int i = 0; i < handlers.length; i++) {
-            NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
+            NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
             handlers[i] = handler;
             handler.addObserver(observer);
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME);
@@ -221,7 +221,7 @@ public class RMILocalhostTest {
             @Override
             public void update(Observable o, Object o1) {
                 if ((UpdateType) o1 == UpdateType.CHAT_MESSAGE_RECEIVED) {
-                    NetworkHandlerImpl handler = (NetworkHandlerImpl) o;
+                    NetworkHandler handler = (NetworkHandler) o;
                     if (handler.getChatMessage().getMessage().equals(MESSAGE)) {
                         if (handler.getChatMessage().getSender().getNickname().equals(SENDER)) {
                             count++;
@@ -230,11 +230,11 @@ public class RMILocalhostTest {
                 }
             }
         };
-        NetworkHandlerImpl sender = new NetworkHandlerImplWithoutThreads();
+        NetworkHandler sender = new NetworkHandlerImplWithoutThreads();
         sender.addObserver(observer);
         sender.connectToServer(IP, SERVER_NAME, SENDER);
         for (int i = 0; i < MAX_SESSIONS - 1; i++) {
-            NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
+            NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
             handler.addObserver(observer);
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + " 1");
         }
@@ -254,7 +254,7 @@ public class RMILocalhostTest {
             }
         };
         for (int i = 0; i < MAX_SESSIONS; i++) {
-            NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
+            NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
             handler.addObserver(observer);
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + i);
         }
@@ -264,7 +264,7 @@ public class RMILocalhostTest {
 
     @Test
     public void testStartSignal() {
-        List<NetworkHandlerImpl> handlers = new ArrayList<NetworkHandlerImpl>();
+        List<NetworkHandler> handlers = new ArrayList<NetworkHandler>();
         Observer observer = new Observer() {
 
             @Override
@@ -275,14 +275,14 @@ public class RMILocalhostTest {
             }
         };
         for (int i = 0; i < MAX_SESSIONS; i++) {
-            NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
+            NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
             handlers.add(handler);
             handler.addObserver(observer);
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + i);
         }
         gameServerImpl.startGame();
 
-        for (NetworkHandlerImpl handler : handlers) {
+        for (NetworkHandler handler : handlers) {
             handler.sendReadySignal();
         }
 
@@ -292,7 +292,7 @@ public class RMILocalhostTest {
     @Test
     public void testStepReceived() {
         final String SENDER = "Sender";
-        List<NetworkHandlerImpl> otherPlayers = new ArrayList<NetworkHandlerImpl>();
+        List<NetworkHandler> otherPlayers = new ArrayList<NetworkHandler>();
         Observer observer = new Observer() {
 
             @Override
@@ -302,24 +302,24 @@ public class RMILocalhostTest {
                 }
             }
         };
-        NetworkHandlerImpl sender = new NetworkHandlerImplWithoutThreads();
+        NetworkHandler sender = new NetworkHandlerImplWithoutThreads();
         sender.addObserver(observer);
         sender.connectToServer(IP, SERVER_NAME, SENDER);
         for (int i = 0; i < MAX_SESSIONS - 1; i++) {
-            NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
+            NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
             otherPlayers.add(handler);
             handler.addObserver(observer);
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + " 1");
         }
         gameServerImpl.startGame();
         sender.sendReadySignal();
-        for (NetworkHandlerImpl nh : otherPlayers) {
+        for (NetworkHandler nh : otherPlayers) {
             nh.sendReadySignal();
         }
         sender.addStep(new Step(1, 3));
 
-        for (NetworkHandlerImpl nh : otherPlayers) {
-            nh.niggasInParis();
+        for (NetworkHandler nh : otherPlayers) {
+            nh.processStep();
         }
         assertEquals(MAX_SESSIONS - 1, count);
     }
@@ -330,11 +330,11 @@ public class RMILocalhostTest {
         final String P2_NAME = "Brutus";
         final int NBR_OF_STEPS = 50;
 
-        final NetworkHandlerImpl p1 = new NetworkHandlerImplWithoutThreads();
+        final NetworkHandler p1 = new NetworkHandlerImplWithoutThreads();
         p1.connectToServer(IP, SERVER_NAME, P1_NAME);
         final SessionInformation p1Info = p1.getOwnSession();
 
-        final NetworkHandlerImpl p2 = new NetworkHandlerImplWithoutThreads();
+        final NetworkHandler p2 = new NetworkHandlerImplWithoutThreads();
         p2.connectToServer(IP, SERVER_NAME, P2_NAME);
         final SessionInformation p2Info = p2.getOwnSession();
 
@@ -367,8 +367,8 @@ public class RMILocalhostTest {
             p1.addStep(new Step(i, p1Info.getId()));
             p2.addStep(new Step(i, p2Info.getId()));
             gameServerImpl.distributeSteps();
-            p1.niggasInParis();
-            p2.niggasInParis();
+            p1.processStep();
+            p2.processStep();
         }
         assertEquals(50, p1Steps.size());
         assertEquals(50, p2Steps.size());
@@ -381,12 +381,12 @@ public class RMILocalhostTest {
     @Test
     public void testStepDuration() {
         final String SENDER = "Sender";
-        List<NetworkHandlerImpl> otherPlayers = new ArrayList<NetworkHandlerImpl>();
+        List<NetworkHandler> otherPlayers = new ArrayList<NetworkHandler>();
 
-        NetworkHandlerImpl sender = new NetworkHandlerImplWithoutThreads();
+        NetworkHandler sender = new NetworkHandlerImplWithoutThreads();
         sender.connectToServer(IP, SERVER_NAME, SENDER);
         for (int i = 0; i < MAX_SESSIONS - 1; i++) {
-            NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads();
+            NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
             otherPlayers.add(handler);
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + " 1");
         }
@@ -404,12 +404,12 @@ public class RMILocalhostTest {
     @Test
     public void testStepDurationWithNetworkDelay() {
         final String SENDER = "Sender";
-        List<NetworkHandlerImpl> otherPlayers = new ArrayList<NetworkHandlerImpl>();
+        List<NetworkHandler> otherPlayers = new ArrayList<NetworkHandler>();
 
-        NetworkHandlerImpl sender = new NetworkHandlerImplWithoutThreads();
+        NetworkHandler sender = new NetworkHandlerImplWithoutThreads();
         sender.connectToServer(IP, SERVER_NAME, SENDER);
         for (int i = 0; i < MAX_SESSIONS - 1; i++) {
-            NetworkHandlerImpl handler = new NetworkHandlerImplWithoutThreads() {
+            NetworkHandler handler = new NetworkHandlerImplWithoutThreads() {
 
                 //Sleep of 30 ms for faking network-Delay
                 @Override
