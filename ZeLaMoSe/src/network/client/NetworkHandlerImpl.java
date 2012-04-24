@@ -6,6 +6,7 @@ package network.client;
 
 import domain.Step;
 import domain.TetrisController.UpdateType;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,6 +14,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import network.*;
@@ -24,7 +26,7 @@ import network.*;
 public class NetworkHandlerImpl extends NetworkHandler {
 
     private Handler handler;
-    private BlockingQueue<Step> stepQueue = new LinkedBlockingQueue<Step>();
+    private BlockingQueue<Collection<Step>> stepQueue = new LinkedBlockingQueue<Collection<Step>>();
     private Step lastStep;
     private SessionInformation lastAddedSession;
     private SessionInformation lastRemovedSession;
@@ -38,11 +40,15 @@ public class NetworkHandlerImpl extends NetworkHandler {
     @Override
     public void niggasInParis() {
         try {
-            lastStep = stepQueue.take();
-            setChanged();
-            notifyObservers(UpdateType.STEP);
+            Collection<Step> steps = stepQueue.take();
+            if (steps != null) {
+                for (Step step : steps) {
+                    lastStep = step;
+                    setChanged();
+                    notifyObservers(UpdateType.STEP);
+                }
+            }
         } catch (InterruptedException ex) {
-            Logger.getLogger(NetworkHandlerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -93,8 +99,8 @@ public class NetworkHandlerImpl extends NetworkHandler {
         threadPool.execute(new DisconnectionRunnable(handler));
     }
 
-    public void notifyStepReceived(Step step) {
-        stepQueue.add(step);
+    public void notifyStepsReceived(Collection<Step> steps) {
+        stepQueue.add(steps);
     }
 
     public void notifySessionAdded(SessionInformation addedSession) {

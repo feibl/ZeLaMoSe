@@ -10,6 +10,7 @@ import java.io.File;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Collection;
 import network.ChatMessage;
 import network.server.SessionRemote;
 import network.SessionInformation;
@@ -60,8 +61,8 @@ public class HandlerImpl extends UnicastRemoteObject implements Handler, ClientR
     }
 
     @Override
-    public void receiveStep(Step step) throws RemoteException {
-        networkHandler.notifyStepReceived(step);
+    public void receiveSteps(Collection<Step> steps) throws RemoteException {
+        networkHandler.notifyStepsReceived(steps);
     }
 
     @Override

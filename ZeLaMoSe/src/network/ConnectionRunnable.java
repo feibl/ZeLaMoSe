@@ -48,7 +48,7 @@ public class ConnectionRunnable implements Runnable {
             SessionRemote ownSession = server.createSession(nickname, handler);
             List<SessionInformation> sessionList = server.getSessionList();
             handler.setSessionRemote(ownSession);
-            networkHandler.notifyConnectionEstablished(ownSession.getSessionInformation(), sessionList);
+            networkHandler.notifyConnectionEstablished(ownSession.getRemoteSessionInformation(), sessionList);
          } else {
             throw new RemoteException();
          }

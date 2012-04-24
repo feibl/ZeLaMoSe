@@ -6,6 +6,7 @@ package networkTest;
 
 import domain.Step;
 import java.rmi.RemoteException;
+import java.util.Collection;
 import network.ChatMessage;
 import network.client.ClientRemote;
 import network.server.SessionRemote;
@@ -18,10 +19,6 @@ import org.junit.Ignore;
  */
 @Ignore
 public class ClientRemoteAdapter implements ClientRemote {
-
-    @Override
-    public void receiveStep(Step step) throws RemoteException {
-    }
 
     @Override
     public void receiveSessionAddedMessage(SessionInformation session) throws RemoteException {
@@ -41,5 +38,9 @@ public class ClientRemoteAdapter implements ClientRemote {
 
     @Override
     public void receiveInitSignal(long blockQueueSeed) throws RemoteException {
+    }
+
+    @Override
+    public void receiveSteps(Collection<Step> steps) throws RemoteException {
     }
 }

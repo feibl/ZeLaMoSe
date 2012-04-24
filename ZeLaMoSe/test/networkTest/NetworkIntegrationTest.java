@@ -129,6 +129,7 @@ public class NetworkIntegrationTest {
                 }
             }
 
+            @Override
             public Long call() {
                 for (NetworkHandler handler : otherPlayers) {
                     handler.niggasInParis();

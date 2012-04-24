@@ -7,6 +7,7 @@ package network.server;
 import domain.Step;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Collection;
 import network.ChatMessage;
 import network.SessionInformation;
 import network.client.ClientRemote;
@@ -43,7 +44,7 @@ public class SessionImpl extends UnicastRemoteObject implements SessionRemote, S
 
     @Override
     public SessionInformation getRemoteSessionInformation() throws RemoteException {
-        return getRemoteSessionInformation();
+        return getSessionInformation();
     }
     
         @Override
@@ -57,8 +58,8 @@ public class SessionImpl extends UnicastRemoteObject implements SessionRemote, S
     }
 
     @Override
-    public void sendStep(Step step) throws RemoteException {
-        client.receiveStep(step);
+    public void sendSteps(Collection<Step> steps) throws RemoteException {
+        client.receiveSteps(steps);
     }
 
     @Override

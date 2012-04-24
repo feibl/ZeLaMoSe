@@ -101,7 +101,7 @@ public class TetrisController extends Observable implements Observer {
             }
         } catch (SocketException ex) {
         }
-        
+
         return "localhost";
     }
 
@@ -112,13 +112,13 @@ public class TetrisController extends Observable implements Observer {
         }
         Registry registry = LocateRegistry.getRegistry();
         gameServer = new GameServerImpl(TetrisController.SERVER_NAME, registry);
-        
+
         serverIP = getLocalIP();
     }
 
     public void connectToServer(String ip, int port, String nickname) {
         networkHandler.connectToServer(ip, TetrisController.SERVER_NAME, nickname);
-        
+
         serverIP = ip;
     }
 
@@ -147,7 +147,7 @@ public class TetrisController extends Observable implements Observer {
                     throw new IllegalStateException();
                 }
                 simulationController.addStep(step);
-                if (step.getSessionID() == localSessionID) {
+                if (step.getSessionID() == localSessionID && o == stepGenerator) {
                     networkHandler.addStep(step);
                 }
                 break;
@@ -185,27 +185,25 @@ public class TetrisController extends Observable implements Observer {
      * public for testing
      */
     public void runStep() {
-        // System.out.println("running step: " + currentStep + " time: " + System.nanoTime());
-        if (currentStep > 0) { //on the first step we don't have all steps available so we wait for the others and don't simulate yet
-            for (int i = 0; i < sessionMap.size() - 1; i++) {
+        while (true) {
+            System.out.println("running step: " + currentStep + " time: " + System.currentTimeMillis());
+            if (currentStep > 0) { //on the first step we don't have all steps available so we wait for the others and don't simulate yet
                 networkHandler.niggasInParis();
-
+                simulationController.simulateStep(currentStep - 1); //Simulate previous step
             }
-            simulationController.simulateStep(currentStep - 1); //Simulate previous step
+            stepGenerator.niggasInParis();
+            currentStep++;
         }
-        stepGenerator.niggasInParis();
-        currentStep++;
     }
 
     //Start the step timer
     private void run() {
-        TimerTask stepTask = new TimerTask() {
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
                 runStep();
             }
-        };
-        timer.scheduleAtFixedRate(stepTask, 0, stepDuration);
+        }).start();
     }
 }

@@ -8,6 +8,7 @@ import domain.Step;
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Collection;
 import network.ChatMessage;
 import network.server.SessionRemote;
 import network.SessionInformation;
@@ -18,7 +19,7 @@ import network.SessionInformation;
  */
 public interface ClientRemote extends Remote, Serializable {
 
-   public void receiveStep(Step step) throws RemoteException;
+   public void receiveSteps(Collection<Step> steps) throws RemoteException;
 
    public void receiveChatMessage(ChatMessage message) throws RemoteException;
 

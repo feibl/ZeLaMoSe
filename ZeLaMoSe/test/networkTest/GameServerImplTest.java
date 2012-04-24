@@ -61,7 +61,7 @@ public class GameServerImplTest {
 
     @Test
     public void testCreateSession() throws RemoteException {
-        SessionInformation sessionInfo = gameServerImpl.createSession(PLAYER_NAME, new HandlerImpl(new NetworkHandlerImpl())).getSessionInformation();
+        SessionInformation sessionInfo = gameServerImpl.createSession(PLAYER_NAME, new HandlerImpl(new NetworkHandlerImpl())).getRemoteSessionInformation();
         assertEquals(new SessionInformation(1, PLAYER_NAME), sessionInfo);
     }
 
@@ -131,7 +131,7 @@ public class GameServerImplTest {
         final int NBR_OF_PLAYERS = 4;
         SessionInformation[] sessions = new SessionInformation[NBR_OF_PLAYERS];
         for (int i = 0; i < NBR_OF_PLAYERS; i++) {
-            sessions[i] = gameServerImpl.createSession("Player", new HandlerImpl(new NetworkHandlerImpl())).getSessionInformation();
+            sessions[i] = gameServerImpl.createSession("Player", new HandlerImpl(new NetworkHandlerImpl())).getRemoteSessionInformation();
         }
         List<SessionInformation> createdSessions = gameServerImpl.getSessionList();
         assertArrayEquals(sessions, createdSessions.toArray());

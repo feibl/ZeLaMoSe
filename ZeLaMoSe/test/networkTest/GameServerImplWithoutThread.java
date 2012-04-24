@@ -8,6 +8,9 @@ import domain.Step;
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import network.server.GameServerImpl;
 import network.server.Session;
 import org.junit.Ignore;
@@ -29,44 +32,30 @@ public class GameServerImplWithoutThread extends GameServerImpl {
     }
 
     @Override
-    protected void distributeStepToOthers(Session sender, Step step) {
-        final Step stepFinal = step;
-        for (final Session s : sessionList) {
-            if (s != null && s != sender) {
-                try {
-                    s.sendStep(stepFinal);
-                } catch (RemoteException ex) {
-                    removeSession(s);
-                }
-            }
+    protected void sendInitSignal(Session s, long blockQueueSeed) {
+        try {
+            s.sendInitSignal(blockQueueSeed);
+        } catch (RemoteException ex) {
+            Logger.getLogger(GameServerImplWithoutThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
-    protected void notifyAllGameStarted() {
-        for (int i = 0; i < sessionList.length; i++) {
-            final Session s = sessionList[i];
-            if (s != null) {
-                try {
-                    s.sendStartSignal();
-                } catch (RemoteException ex) {
-                    removeSession(s);
-                }
-            }
+    protected void sendStartSignal(Session s) {
+        try {
+            s.sendStartSignal();
+        } catch (RemoteException ex) {
+            Logger.getLogger(GameServerImplWithoutThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
-    protected void notifyAllInitSignal(long blockQueueSeed) {
-        for (int i = 0; i < sessionList.length; i++) {
-            final Session s = sessionList[i];
-            if (s != null) {
-                try {
-                    s.sendInitSignal(blockQueueSeed);
-                } catch (RemoteException ex) {
-                    removeSession(s);
-                }
-            }
+    protected void sendSteps(Session s, Collection<Step> removedSteps) {
+        try {
+            s.sendSteps(removedSteps);
+        } catch (RemoteException ex) {
+            Logger.getLogger(GameServerImplWithoutThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
 }

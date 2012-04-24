@@ -412,13 +412,13 @@ public class RMILocalhostTest {
 
                 //Sleep of 30 ms for faking network-Delay
                 @Override
-                public void notifyStepReceived(Step step) {
+                public void notifyStepsReceived(Collection<Step> steps) {
                     try {
                         Thread.sleep(30);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(RMILocalhostTest.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    super.notifyStepReceived(step);
+                    super.notifyStepsReceived(steps);
                 }
             };
             otherPlayers.add(handler);

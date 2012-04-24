@@ -13,11 +13,12 @@ import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,24 +36,26 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
     private static int id = 1;
     private AtomicInteger readyCount = new AtomicInteger(0);
     protected ExecutorService threadPool;
+    private BlockingQueue<Step> receivedSteps = new LinkedBlockingQueue<Step>();
+    private Timer timer = new Timer();
+    private final int stepDuration = 50; //in millisecond   
 
     public GameServerImpl(String serverName, Registry registry) throws RemoteException, MalformedURLException {
-    
+
         sessionList = new Session[MAX_SESSIONS];
-                //GameServerImpl.class.getClass().getResource("/rmi.policy").getFile()
-        File policy= Config.convertRMI(GameServerImpl.class);
-        System.setProperty("java.security.policy", policy.getAbsolutePath() );
+        //GameServerImpl.class.getClass().getResource("/rmi.policy").getFile()
+        File policy = Config.convertRMI(GameServerImpl.class);
+        System.setProperty("java.security.policy", policy.getAbsolutePath());
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new RMISecurityManager());
         }
         registry.rebind(serverName, this);
     }
-    
+
     public GameServerImpl() throws RemoteException {
-       sessionList = new Session[MAX_SESSIONS]; 
+        sessionList = new Session[MAX_SESSIONS];
     }
 
-        
     @Override
     public synchronized SessionRemote createSession(String nickname, ClientRemote clientRemote) throws RemoteException, ServerFullException {
         SessionInformation sInfo = new SessionInformation(id++, nickname);
@@ -72,11 +75,7 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
         List<SessionInformation> returnList = new ArrayList<SessionInformation>();
         for (Session session : sessionList) {
             if (session != null) {
-                try {
-                    returnList.add(session.getSessionInformation());
-                } catch (RemoteException ex) {
-                    Logger.getLogger(GameServerImpl.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                returnList.add(session.getSessionInformation());
             }
         }
         return returnList;
@@ -90,6 +89,48 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
             }
         }
         notifyAllSessionRemoved(session);
+    }
+
+    protected void sendInitSignal(final Session s, final long blockQueueSeed) {
+        threadPool.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    s.sendInitSignal(blockQueueSeed);
+                } catch (RemoteException ex) {
+                    removeSession(s);
+                }
+            }
+        });
+    }
+
+    protected void sendStartSignal(final Session s) {
+        threadPool.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    s.sendStartSignal();
+                } catch (RemoteException ex) {
+                    removeSession(s);
+                }
+            }
+        });
+    }
+
+    protected void sendSteps(final Session s, final Collection<Step> removedSteps) {
+        threadPool.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    s.sendSteps(removedSteps);
+                } catch (RemoteException ex) {
+                    removeSession(s);
+                }
+            }
+        });
     }
 
     private void notifyAllSessionRemoved(Session session) {
@@ -131,24 +172,8 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
         }
     }
 
-    protected void distributeStepToOthers(Session sender, Step step) {
-        final Step stepFinal = step;
-        for (final Session s : sessionList) {
-            if (s != null && s != sender) {
-                threadPool.execute(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        try {
-                            s.sendStep(stepFinal);
-                        } catch (RemoteException ex) {
-                            removeSession(s);
-                        }
-                    }
-                });
-
-            }
-        }
+    protected void addStep(Session sender, Step step) {
+        receivedSteps.add(step);
     }
 
     @Override
@@ -162,26 +187,16 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
         for (int i = 0; i < sessionList.length; i++) {
             final Session s = sessionList[i];
             if (s != null) {
-
-                threadPool.execute(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        try {
-                            s.sendStartSignal();
-                        } catch (RemoteException ex) {
-                            removeSession(s);
-                        }
-                    }
-                });
-
+                sendStartSignal(s);
             }
         }
     }
 
+    //TODO 5 sec TimeOut
     public void notifyReadySignalReceived(Session session) {
         if (getSessionList().size() == readyCount.incrementAndGet()) {
             notifyAllGameStarted();
+            start();
         }
     }
 
@@ -189,20 +204,31 @@ public class GameServerImpl extends UnicastRemoteObject implements GameServer, G
         for (int i = 0; i < sessionList.length; i++) {
             final Session s = sessionList[i];
             if (s != null) {
-
-                threadPool.execute(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        try {
-                            s.sendInitSignal(blockQueueSeed);
-                        } catch (RemoteException ex) {
-                            removeSession(s);
-                        }
-                    }
-                });
-
+                sendInitSignal(s, blockQueueSeed);
             }
         }
+    }
+
+    private void distributeSteps() {
+        final Collection<Step> removedSteps = new ArrayList<Step>();
+        receivedSteps.drainTo(removedSteps);
+        for(Step s: removedSteps) {
+            System.out.println(s.getSequenceNumber() + ": " + s.getSessionID());
+        }
+        for (final Session s : sessionList) {
+            if (s != null) {
+                sendSteps(s, removedSteps);
+            }
+        }
+    }
+
+    private void start() {
+        TimerTask stepDistributionTask = new TimerTask() {
+            @Override
+            public void run() {
+                distributeSteps();
+            }
+        };
+        timer.scheduleAtFixedRate(stepDistributionTask, 1000, stepDuration);
     }
 }
