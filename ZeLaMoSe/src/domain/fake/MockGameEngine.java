@@ -62,6 +62,11 @@ public class MockGameEngine extends GameEngineInterface {
        
     }
 
+    @Override
+    public void setNickName(String nickName) {
+       
+    }
+
   
     
 }

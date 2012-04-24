@@ -185,15 +185,13 @@ public class TetrisController extends Observable implements Observer {
      * public for testing
      */
     public void runStep() {
-        while (true) {
-            System.out.println("running step: " + currentStep + " time: " + System.currentTimeMillis());
-            if (currentStep > 0) { //on the first step we don't have all steps available so we wait for the others and don't simulate yet
-                networkHandler.niggasInParis();
-                simulationController.simulateStep(currentStep - 1); //Simulate previous step
-            }
-            stepGenerator.niggasInParis();
-            currentStep++;
+        System.out.println("running step: " + currentStep + " time: " + System.currentTimeMillis());
+        if (currentStep > 0) { //on the first step we don't have all steps available so we wait for the others and don't simulate yet
+            networkHandler.niggasInParis();
+            simulationController.simulateStep(currentStep - 1); //Simulate previous step
         }
+        stepGenerator.niggasInParis();
+        currentStep++;
     }
 
     //Start the step timer
@@ -202,7 +200,9 @@ public class TetrisController extends Observable implements Observer {
 
             @Override
             public void run() {
-                runStep();
+                while (true) {
+                    runStep();
+                }
             }
         }).start();
     }
