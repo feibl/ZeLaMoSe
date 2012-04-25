@@ -139,9 +139,12 @@ public class TetrisController extends Observable implements Observer {
                 if (step == null) {
                     throw new IllegalStateException();
                 }
-                simulationController.addStep(step);
                 if (step.getSessionID() == localSessionID && o == stepGenerator) {
+                    simulationController.addStep(step);
                     networkHandler.addStep(step);
+                }
+                else if(step.getSessionID() != localSessionID) {
+                   simulationController.addStep(step); 
                 }
                 break;
             case CONNECTION_ESTABLISHED:
