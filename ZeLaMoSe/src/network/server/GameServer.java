@@ -13,11 +13,10 @@ import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import network.ServerFullException;
 import network.SessionInformation;
 import network.client.ClientRemoteInterface;
@@ -36,7 +35,9 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     private BlockingQueue<Step> receivedSteps = new LinkedBlockingQueue<Step>();
     private Timer timer = new Timer();
     private final int stepDuration = 50; //in millisecond   
-
+    private Semaphore currentNumberOfReceivedSteps = new Semaphore(0);;
+    private Semaphore mutex = new Semaphore(1, true);
+            
     public GameServer(String serverName, Registry registry) throws RemoteException, MalformedURLException {
 
         sessionList = new SessionInterface[MAX_SESSIONS];
@@ -168,8 +169,17 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         }
     }
 
-    protected void addStep(SessionInterface sender, Step step) {
+    protected synchronized void addStep(SessionInterface sender, Step step) {
+        System.out.println("addStep"+ sender.getSessionInformation() + " step " + step.getSequenceNumber());
+       
+            currentNumberOfReceivedSteps.release();
+        try {
+            mutex.acquire();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
         receivedSteps.add(step);
+        mutex.release();
     }
 
     @Override
@@ -206,13 +216,22 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     }
 
     public void distributeSteps() {
-        final Collection<Step> removedSteps = new ArrayList<Step>();
+        try {
+            currentNumberOfReceivedSteps.acquire(getSessionList().size());
+            mutex.acquire();
+                    final Collection<Step> removedSteps = new ArrayList<Step>();
         receivedSteps.drainTo(removedSteps);
         for (final SessionInterface s : sessionList) {
             if (s != null) {
+                System.out.println("distributeSteps"+ s.getSessionInformation() + " steps " + removedSteps.toString());
                 sendSteps(s, removedSteps);
             }
         }
+        mutex.release();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         //TODO TimerTask + blockieren in der for schleife
     }
 
