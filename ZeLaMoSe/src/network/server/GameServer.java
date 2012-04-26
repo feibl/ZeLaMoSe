@@ -13,10 +13,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,14 +27,16 @@ import network.client.ClientRemoteInterface;
  */
 public class GameServer extends UnicastRemoteObject implements GameServerInterface, GameServerRemoteInterface {
 
-    protected List<SessionInterface> sessionArrayList;
+    protected List<SessionInterface> sessionList;
     private static final int MAX_SESSIONS = 4;
     private static int id = 1;
     private AtomicInteger readyCount = new AtomicInteger(0);
     protected ExecutorService threadPool;
     private BlockingQueue<Step> receivedSteps = new LinkedBlockingQueue<Step>();
-    private Timer timer = new Timer();
-    private final int stepDuration = 50; //in millisecond   
+    private final int stepDuration = 50; //in millisecond
+    private Semaphore currentNumberOfReceivedSteps = new Semaphore(0);
+    ;
+    private Semaphore mutex = new Semaphore(1, true);
 
     public GameServer(String serverName, Registry registry) throws RemoteException, MalformedURLException {
         this();
@@ -50,16 +49,16 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     }
 
     public GameServer() throws RemoteException {
-        sessionArrayList = new ArrayList<SessionInterface>(MAX_SESSIONS);
+        sessionList = new ArrayList<SessionInterface>(MAX_SESSIONS);
     }
 
     @Override
     public synchronized SessionRemoteInterface createSession(String nickname, ClientRemoteInterface clientRemote) throws RemoteException, ServerFullException {
         SessionInformation sInfo = new SessionInformation(id++, nickname);
-        if (sessionArrayList.size() < MAX_SESSIONS) {
+        if (sessionList.size() < MAX_SESSIONS) {
             Session newSession = new Session(sInfo, clientRemote, this);
             notifyOthersSessionAdded(newSession);
-            sessionArrayList.add(newSession);
+            sessionList.add(newSession);
             return newSession;
         }
         throw new ServerFullException();
@@ -68,7 +67,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     @Override
     public synchronized List<SessionInformation> getSessionList() {
         List<SessionInformation> returnList = new ArrayList<SessionInformation>();
-        for (SessionInterface session : sessionArrayList) {
+        for (SessionInterface session : sessionList) {
             if (session != null) {
                 returnList.add(session.getSessionInformation());
             }
@@ -77,8 +76,8 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     }
 
     public synchronized void removeSession(SessionInterface session) {
-        if (sessionArrayList.contains(session)) {
-            sessionArrayList.remove(session);
+        if (sessionList.contains(session)) {
+            sessionList.remove(session);
             notifyAllSessionRemoved(session);
         }
     }
@@ -126,7 +125,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     }
 
     private void notifyAllSessionRemoved(SessionInterface session) {
-        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionArrayList);
+        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionList);
         for (SessionInterface s : copy) {
             try {
                 s.sendSessionRemovedMessage(session.getSessionInformation());
@@ -137,7 +136,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     }
 
     private void notifyOthersSessionAdded(SessionInterface session) {
-        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionArrayList);
+        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionList);
         for (SessionInterface s : copy) {
             try {
                 s.sendSessionAddedMessage(session.getSessionInformation());
@@ -148,7 +147,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     }
 
     public synchronized void postChatMessage(SessionInterface sender, String message) {
-        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionArrayList);
+        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionList);
         for (SessionInterface s : copy) {
             try {
                 s.sendChatMessage(sender.getSessionInformation(), message);
@@ -156,10 +155,6 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
                 removeSession(s);
             }
         }
-    }
-
-    protected void addStep(SessionInterface sender, Step step) {
-        receivedSteps.add(step);
     }
 
     @Override
@@ -170,7 +165,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     }
 
     protected synchronized void notifyAllGameStarted() {
-        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionArrayList);
+        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionList);
         for (SessionInterface s : copy) {
             sendStartSignal(s);
         }
@@ -178,38 +173,66 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 
     //TODO 5 sec TimeOut
     public synchronized void notifyReadySignalReceived(SessionInterface session) {
-        if (getSessionList().size() == readyCount.incrementAndGet()) {
+        if (sessionList.size() == readyCount.incrementAndGet()) {
             notifyAllGameStarted();
             start();
         }
     }
 
     protected synchronized void notifyAllInitSignal(final long blockQueueSeed) {
-        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionArrayList);
+        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionList);
         for (SessionInterface s : copy) {
             sendInitSignal(s, blockQueueSeed);
         }
     }
 
-    public void distributeSteps() {
-        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionArrayList);
-        final Collection<Step> removedSteps = new ArrayList<Step>();
-        receivedSteps.drainTo(removedSteps);
-
-        for (final SessionInterface s : copy) {
-            sendSteps(s, removedSteps);
+    protected synchronized void addStep(SessionInterface sender, Step step) {
+        try {
+            mutex.acquire();
+            receivedSteps.add(step);
+            currentNumberOfReceivedSteps.release();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            mutex.release();
         }
-        //TODO TimerTask + blockieren in der for schleife
+    }
+
+    public void distributeSteps() {
+        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionList);
+        Collection<Step> removedSteps = new ArrayList<Step>();
+        try {
+            currentNumberOfReceivedSteps.acquire(sessionList.size());
+            try {
+                mutex.acquire();
+                receivedSteps.drainTo(removedSteps);
+                for (final SessionInterface s : copy) {
+                    sendSteps(s, removedSteps);
+                }
+            } catch (InterruptedException ex) {
+                Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                mutex.release();
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void start() {
-        TimerTask stepDistributionTask = new TimerTask() {
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
-                distributeSteps();
+                while (true) {
+                    try {
+                        Thread.sleep(stepDuration);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    distributeSteps();
+                }
             }
-        };
-        timer.scheduleAtFixedRate(stepDistributionTask, 1000, stepDuration);
+        }).start();
     }
 }
