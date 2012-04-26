@@ -23,6 +23,7 @@ import network.client.NetworkHandler;
 import network.server.GameServer;
 import org.junit.*;
 import static org.junit.Assert.*;
+import sun.awt.geom.AreaOp;
 
 /**
  *
@@ -44,8 +45,8 @@ public class RMILocalhostTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        File policy= Config.convertRMI(GameServer.class);
-        System.setProperty("java.security.policy", policy.getAbsolutePath() );
+        File policy = Config.convertRMI(GameServer.class);
+        System.setProperty("java.security.policy", policy.getAbsolutePath());
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new RMISecurityManager());
         }
@@ -58,7 +59,7 @@ public class RMILocalhostTest {
 
     @Before
     public void setUp() throws RemoteException, MalformedURLException {
-        gameServerImpl = new GameServerImplWithoutThread(SERVER_NAME, registry);
+        gameServerImpl = new GameServerWithoutThread(SERVER_NAME, registry);
         flag = false;
         count = 0;
     }
@@ -69,217 +70,81 @@ public class RMILocalhostTest {
 
     @Test
     public void testUpdateTypeConnectToServer() {
-        NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
-        handler.addObserver(new Observer() {
-
-            @Override
-            public void update(Observable o, Object o1) {
-                if ((UpdateType) o1 == UpdateType.CONNECTION_ESTABLISHED) {
-                    flag = true;
-                }
-            }
-        });
-        handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME);
-        assertTrue(flag);
+        Observer observer = createCountObserver(UpdateType.CONNECTION_ESTABLISHED);
+        connectSessions(1, observer);
+        assertEquals(1, count);
     }
 
     @Test
     public void testOwnSessionInformationConnectToServer() {
-        final NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
-        handler.addObserver(new Observer() {
-
-            @Override
-            public void update(Observable o, Object o1) {
-                if (handler.getOwnSession().getNickname() == null ? PLAYER_NAME == null : handler.getOwnSession().getNickname().equals(PLAYER_NAME)) {
-                    flag = true;
-                }
-            }
-        });
+        final NetworkHandler handler = new NetworkHandlerWithoutThreads();
         handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME);
-        assertTrue(flag);
+        assertEquals(PLAYER_NAME, handler.getOwnSession().getNickname());
     }
 
     @Test
     public void testSessionListConnectToServer() {
-        final NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
-        handler.addObserver(new Observer() {
-
-            @Override
-            public void update(Observable o, Object o1) {
-                if (!handler.getSessionList().isEmpty()) {
-                    flag = true;
-                }
-            }
-        });
-        handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME);
-        assertTrue(flag);
+        Observer observer = createCountObserver(UpdateType.CONNECTION_ESTABLISHED);
+        List<NetworkHandler> handlers = connectSessions(MAX_SESSIONS, observer);
+        assertEquals(MAX_SESSIONS, handlers.get(0).getSessionList().size());
     }
 
     @Test
     public void testServerFullException() throws RemoteException {
-        for (int i = 0; i < 4; i++) {
-            gameServerImpl.createSession("bla" + i, new ClientRemoteAdapter());
-        }
-        final NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
-        handler.addObserver(new Observer() {
-
-            @Override
-            public void update(Observable o, Object o1) {
-                if ((UpdateType) o1 == UpdateType.EXCEPTION_THROWN) {
-                    flag = true;
-                }
-            }
-        });
-        handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME);
-        assertTrue(flag);
+        Observer observer = createCountObserver(UpdateType.EXCEPTION_THROWN);
+        connectSessions(MAX_SESSIONS + 1, observer);
+        assertEquals(1, count);
     }
 
     @Test
     public void testNbrOfSessionAddedUpdates() throws RemoteException {
-        Observer observer = new Observer() {
-
-            @Override
-            public void update(Observable o, Object o1) {
-                if ((UpdateType) o1 == UpdateType.SESSION_ADDED) {
-                    count++;
-                }
-            }
-        };
-        for (int i = 0; i < MAX_SESSIONS; i++) {
-            NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
-            handler.addObserver(observer);
-            handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME);
-        }
+        Observer observer = createCountObserver(UpdateType.SESSION_ADDED);
+        connectSessions(MAX_SESSIONS + 1, observer);
         assertEquals(6, count);
     }
 
     @Test
     public void testMultipleConnections() {
-        Observer observer = new Observer() {
-
-            @Override
-            public void update(Observable o, Object o1) {
-                if ((UpdateType) o1 == UpdateType.CONNECTION_ESTABLISHED) {
-                    count++;
-                }
-            }
-        };
-        for (int i = 0; i < MAX_SESSIONS; i++) {
-            NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
-            handler.addObserver(observer);
-            handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME);
-        }
+        Observer observer = createCountObserver(UpdateType.CONNECTION_ESTABLISHED);
+        connectSessions(MAX_SESSIONS, observer);
         assertEquals(MAX_SESSIONS, count);
     }
 
     public void testMaxNumberOfPlayers() {
-        Observer observer = new Observer() {
-
-            @Override
-            public void update(Observable o, Object o1) {
-                if ((UpdateType) o1 == UpdateType.CONNECTION_ESTABLISHED) {
-                    count++;
-                }
-            }
-        };
-        for (int i = 0; i < MAX_SESSIONS + 1; i++) {
-            NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
-            handler.addObserver(observer);
-            handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME);
-        }
+        Observer observer = createCountObserver(UpdateType.CONNECTION_ESTABLISHED);
+        connectSessions(MAX_SESSIONS + 1, observer);
         assertEquals(MAX_SESSIONS, count);
     }
 
     @Test
     public void testDisconnect() {
-        NetworkHandler[] handlers = new NetworkHandler[4];
-        Observer observer = new Observer() {
-
-            @Override
-            public void update(Observable o, Object o1) {
-                if ((UpdateType) o1 == UpdateType.SESSION_REMOVED) {
-                    count++;
-                }
-            }
-        };
-        for (int i = 0; i < handlers.length; i++) {
-            NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
-            handlers[i] = handler;
-            handler.addObserver(observer);
-            handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME);
-        }
-        handlers[0].disconnectFromServer();
+        Observer observer = createCountObserver(UpdateType.SESSION_REMOVED);
+        List<NetworkHandler> handlers = connectSessions(MAX_SESSIONS, observer);
+        handlers.get(0).disconnectFromServer();
         assertEquals(MAX_SESSIONS - 1, count);
     }
 
     @Test
     public void testSendChatMessage() {
-        final String MESSAGE = "Hello";
-        final String SENDER = "Sender";
-        Observer observer = new Observer() {
-
-            @Override
-            public void update(Observable o, Object o1) {
-                if ((UpdateType) o1 == UpdateType.CHAT_MESSAGE_RECEIVED) {
-                    NetworkHandler handler = (NetworkHandler) o;
-                    if (handler.getChatMessage().getMessage().equals(MESSAGE)) {
-                        if (handler.getChatMessage().getSender().getNickname().equals(SENDER)) {
-                            count++;
-                        }
-                    }
-                }
-            }
-        };
-        NetworkHandler sender = new NetworkHandlerImplWithoutThreads();
-        sender.addObserver(observer);
-        sender.connectToServer(IP, SERVER_NAME, SENDER);
-        for (int i = 0; i < MAX_SESSIONS - 1; i++) {
-            NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
-            handler.addObserver(observer);
-            handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + " 1");
-        }
-        sender.sendChatMessage(MESSAGE);
+        final String MESSAGE = "hallo";
+        Observer observer = createCountObserver(UpdateType.CHAT_MESSAGE_RECEIVED);
+        List<NetworkHandler> handlers = connectSessions(MAX_SESSIONS, observer);
+        handlers.get(0).sendChatMessage(MESSAGE);
         assertEquals(MAX_SESSIONS, count);
     }
 
     @Test
     public void testInitSignal() {
-        Observer observer = new Observer() {
-
-            @Override
-            public void update(Observable o, Object o1) {
-                if ((UpdateType) o1 == UpdateType.INIT_SIGNAL) {
-                    count++;
-                }
-            }
-        };
-        for (int i = 0; i < MAX_SESSIONS; i++) {
-            NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
-            handler.addObserver(observer);
-            handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + i);
-        }
+        Observer observer = createCountObserver(UpdateType.INIT_SIGNAL);
+        connectSessions(MAX_SESSIONS, observer);
         gameServerImpl.startGame();
         assertEquals(MAX_SESSIONS, count);
     }
 
     @Test
     public void testStartSignal() {
-        List<NetworkHandler> handlers = new ArrayList<NetworkHandler>();
-        Observer observer = new Observer() {
-
-            @Override
-            public void update(Observable o, Object o1) {
-                if ((UpdateType) o1 == UpdateType.GAME_STARTED) {
-                    count++;
-                }
-            }
-        };
-        for (int i = 0; i < MAX_SESSIONS; i++) {
-            NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
-            handlers.add(handler);
-            handler.addObserver(observer);
-            handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + i);
-        }
+        Observer observer = createCountObserver(UpdateType.GAME_STARTED);
+        List<NetworkHandler> handlers = connectSessions(MAX_SESSIONS, observer);
         gameServerImpl.startGame();
 
         for (NetworkHandler handler : handlers) {
@@ -289,92 +154,78 @@ public class RMILocalhostTest {
         assertEquals(MAX_SESSIONS, count);
     }
 
-    @Test
-    public void testStepReceived() {
-        final String SENDER = "Sender";
-        List<NetworkHandler> otherPlayers = new ArrayList<NetworkHandler>();
+    private List<NetworkHandler> connectSessions(int nbrOfSessions, Observer observer) {
+        List<NetworkHandler> handlers = new ArrayList<NetworkHandler>();
+
+        for (int i = 0; i < nbrOfSessions; i++) {
+            NetworkHandler handler = new NetworkHandlerWithoutThreads();
+            handlers.add(handler);
+            handler.addObserver(observer);
+            handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + i);
+        }
+        return handlers;
+    }
+
+    private Observer createCountObserver(final UpdateType updateType) {
         Observer observer = new Observer() {
 
             @Override
             public void update(Observable o, Object o1) {
-                if ((UpdateType) o1 == UpdateType.STEP) {
+                if ((UpdateType) o1 == updateType) {
                     count++;
                 }
             }
         };
-        NetworkHandler sender = new NetworkHandlerImplWithoutThreads();
-        sender.addObserver(observer);
-        sender.connectToServer(IP, SERVER_NAME, SENDER);
-        for (int i = 0; i < MAX_SESSIONS - 1; i++) {
-            NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
-            otherPlayers.add(handler);
-            handler.addObserver(observer);
-            handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + " 1");
-        }
-        gameServerImpl.startGame();
-        sender.sendReadySignal();
-        for (NetworkHandler nh : otherPlayers) {
-            nh.sendReadySignal();
-        }
-        sender.addStep(new Step(1, 3));
+        return observer;
+    }
 
-        for (NetworkHandler nh : otherPlayers) {
-            nh.processStep();
+    @Test
+    public void testStepReceived() {
+        Observer observer = createCountObserver(UpdateType.STEP);
+        List<NetworkHandler> handlers = connectSessions(MAX_SESSIONS, observer);
+        for (NetworkHandler handler : handlers) {
+            handler.addStep(new Step(0, handler.getOwnSession().getId()));
         }
-        assertEquals(MAX_SESSIONS - 1, count);
+        gameServerImpl.distributeSteps();
+        for (NetworkHandler handler : handlers) {
+            handler.processStep();
+        }
+        assertEquals(MAX_SESSIONS * MAX_SESSIONS, count);
     }
 
     @Test
     public void testSerialStep() {
-        final String P1_NAME = "Caesar";
-        final String P2_NAME = "Brutus";
         final int NBR_OF_STEPS = 50;
-
-        final NetworkHandler p1 = new NetworkHandlerImplWithoutThreads();
-        p1.connectToServer(IP, SERVER_NAME, P1_NAME);
-        final SessionInformation p1Info = p1.getOwnSession();
-
-        final NetworkHandler p2 = new NetworkHandlerImplWithoutThreads();
-        p2.connectToServer(IP, SERVER_NAME, P2_NAME);
-        final SessionInformation p2Info = p2.getOwnSession();
-
-        final Map<Integer, Step> p1Steps = new HashMap<Integer, Step>();
-        final Map<Integer, Step> p2Steps = new HashMap<Integer, Step>();
-
-        p1.addObserver(new Observer() {
+        final Map<Integer, Set<Integer>> steps = new HashMap<Integer, Set<Integer>>(50);
+        List<NetworkHandler> handlers = connectSessions(MAX_SESSIONS, new Observer() {
 
             @Override
             public void update(Observable o, Object o1) {
-                if ((UpdateType) o1 == UpdateType.STEP) {
-                    p1Steps.put(p1.getStep().getSequenceNumber(), p1.getStep());
+                if (o1 == UpdateType.STEP) {
+                    NetworkHandler handler = (NetworkHandler) o;
+                    int id = handler.getStep().getSessionID();
+                    int sequenceNbr = handler.getStep().getSequenceNumber();
+                    if (steps.containsKey(sequenceNbr)) {
+                        steps.get(sequenceNbr).add(id);
+                    } else {
+                        steps.put(sequenceNbr, new HashSet<Integer>());
+                        steps.get(sequenceNbr).add(id);
+                    }
                 }
             }
         });
-
-        p2.addObserver(new Observer() {
-
-            int sequNr = 0;
-
-            @Override
-            public void update(Observable o, Object o1) {
-                if ((UpdateType) o1 == UpdateType.STEP) {
-                    p2Steps.put(p2.getStep().getSequenceNumber(), p2.getStep());
-                }
-            }
-        });
-
         for (int i = 0; i < NBR_OF_STEPS; i++) {
-            p1.addStep(new Step(i, p1Info.getId()));
-            p2.addStep(new Step(i, p2Info.getId()));
+            for (NetworkHandler handler : handlers) {
+                handler.addStep(new Step(i, handler.getOwnSession().getId()));
+            }
             gameServerImpl.distributeSteps();
-            p1.processStep();
-            p2.processStep();
+            for (NetworkHandler handler : handlers) {
+                handler.processStep();
+            }
         }
-        assertEquals(50, p1Steps.size());
-        assertEquals(50, p2Steps.size());
-        for(int i = 0; i < 50; i++) {
-            assertEquals(i, p1Steps.get(i).getSequenceNumber());
-            assertEquals(i, p2Steps.get(i).getSequenceNumber());
+        assertEquals(NBR_OF_STEPS, steps.size());
+        for(Set<Integer> sessionIds: steps.values()) {
+            assertEquals(MAX_SESSIONS, sessionIds.size());
         }
     }
 
@@ -383,10 +234,10 @@ public class RMILocalhostTest {
         final String SENDER = "Sender";
         List<NetworkHandler> otherPlayers = new ArrayList<NetworkHandler>();
 
-        NetworkHandler sender = new NetworkHandlerImplWithoutThreads();
+        NetworkHandler sender = new NetworkHandlerWithoutThreads();
         sender.connectToServer(IP, SERVER_NAME, SENDER);
         for (int i = 0; i < MAX_SESSIONS - 1; i++) {
-            NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
+            NetworkHandler handler = new NetworkHandlerWithoutThreads();
             otherPlayers.add(handler);
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + " 1");
         }
@@ -406,10 +257,10 @@ public class RMILocalhostTest {
         final String SENDER = "Sender";
         List<NetworkHandler> otherPlayers = new ArrayList<NetworkHandler>();
 
-        NetworkHandler sender = new NetworkHandlerImplWithoutThreads();
+        NetworkHandler sender = new NetworkHandlerWithoutThreads();
         sender.connectToServer(IP, SERVER_NAME, SENDER);
         for (int i = 0; i < MAX_SESSIONS - 1; i++) {
-            NetworkHandler handler = new NetworkHandlerImplWithoutThreads() {
+            NetworkHandler handler = new NetworkHandlerWithoutThreads() {
 
                 //Sleep of 30 ms for faking network-Delay
                 @Override

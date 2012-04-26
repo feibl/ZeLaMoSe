@@ -20,9 +20,9 @@ import org.junit.Ignore;
  * @author Fabian Senn <fsenn@hsr.ch>
  */
 @Ignore
-public class GameServerImplWithoutThread extends GameServer {
+public class GameServerWithoutThread extends GameServer {
 
-    public GameServerImplWithoutThread(String serverName, Registry registry) throws RemoteException, MalformedURLException {
+    public GameServerWithoutThread(String serverName, Registry registry) throws RemoteException, MalformedURLException {
         super(serverName, registry);
     }
 
@@ -36,7 +36,7 @@ public class GameServerImplWithoutThread extends GameServer {
         try {
             s.sendInitSignal(blockQueueSeed);
         } catch (RemoteException ex) {
-            Logger.getLogger(GameServerImplWithoutThread.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameServerWithoutThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -45,7 +45,7 @@ public class GameServerImplWithoutThread extends GameServer {
         try {
             s.sendStartSignal();
         } catch (RemoteException ex) {
-            Logger.getLogger(GameServerImplWithoutThread.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameServerWithoutThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -54,7 +54,7 @@ public class GameServerImplWithoutThread extends GameServer {
         try {
             s.sendSteps(removedSteps);
         } catch (RemoteException ex) {
-            Logger.getLogger(GameServerImplWithoutThread.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameServerWithoutThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

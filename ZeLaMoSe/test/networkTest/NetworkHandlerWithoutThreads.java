@@ -14,7 +14,7 @@ import org.junit.Ignore;
  * @author Fabian Senn <fsenn@hsr.ch>
  */
 @Ignore
-public class NetworkHandlerImplWithoutThreads extends NetworkHandler{
+public class NetworkHandlerWithoutThreads extends NetworkHandler{
 
    @Override
    public void connectToServer(String ip, String serverName, String nickname) {

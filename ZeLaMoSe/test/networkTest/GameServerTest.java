@@ -30,7 +30,7 @@ import network.server.SessionRemoteInterface;
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
-public class GameServerImplTest {
+public class GameServerTest {
 
     GameServer gameServerImpl;
     private final String SERVER_NAME = "Tetris-Server";
