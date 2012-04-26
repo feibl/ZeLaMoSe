@@ -36,7 +36,7 @@ public class GameServerWithoutThread extends GameServer {
         try {
             s.sendInitSignal(blockQueueSeed);
         } catch (RemoteException ex) {
-            Logger.getLogger(GameServerWithoutThread.class.getName()).log(Level.SEVERE, null, ex);
+            removeSession(s);
         }
     }
 
@@ -45,7 +45,7 @@ public class GameServerWithoutThread extends GameServer {
         try {
             s.sendStartSignal();
         } catch (RemoteException ex) {
-            Logger.getLogger(GameServerWithoutThread.class.getName()).log(Level.SEVERE, null, ex);
+            removeSession(s);
         }
     }
 
@@ -54,8 +54,16 @@ public class GameServerWithoutThread extends GameServer {
         try {
             s.sendSteps(removedSteps);
         } catch (RemoteException ex) {
-            Logger.getLogger(GameServerWithoutThread.class.getName()).log(Level.SEVERE, null, ex);
+            removeSession(s);
         }
     }
     
+    public SessionInterface getSession(int id) {
+        for(SessionInterface session : sessionList) {
+            if(session.getSessionInformation().getId() == id) {
+                return session;
+            }
+        }
+        return null;
+    }
 }

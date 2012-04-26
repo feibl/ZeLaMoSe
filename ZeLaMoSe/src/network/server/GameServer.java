@@ -186,7 +186,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         }
     }
 
-    protected synchronized void addStep(SessionInterface sender, Step step) {
+    public synchronized void addStep(SessionInterface sender, Step step) {
         try {
             mutex.acquire();
             receivedSteps.add(step);

@@ -19,8 +19,11 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import network.SessionInformation;
+import network.client.Handler;
 import network.client.NetworkHandler;
 import network.server.GameServer;
+import network.server.Session;
+import network.server.SessionRemoteInterface;
 import org.junit.*;
 import static org.junit.Assert.*;
 import sun.awt.geom.AreaOp;
@@ -31,7 +34,7 @@ import sun.awt.geom.AreaOp;
  */
 public class RMILocalhostTest {
 
-    private GameServer gameServerImpl;
+    private GameServerWithoutThread gameServerImpl;
     private final String SERVER_NAME = "Tetris-Server";
     private final String PLAYER_NAME = "TestPlayer";
     private final int MAX_SESSIONS = 4;
@@ -125,6 +128,14 @@ public class RMILocalhostTest {
     }
 
     @Test
+    public void testDisconnectUnknownSession() throws RemoteException {
+        Observer observer = createCountObserver(UpdateType.SESSION_REMOVED);
+        connectSessions(MAX_SESSIONS, observer);
+        gameServerImpl.removeSession(new Session(new SessionInformation(-1, "Anonymous"), null, gameServerImpl));
+        assertEquals(0, count);
+    }
+
+    @Test
     public void testSendChatMessage() {
         final String MESSAGE = "hallo";
         Observer observer = createCountObserver(UpdateType.CHAT_MESSAGE_RECEIVED);
@@ -194,6 +205,69 @@ public class RMILocalhostTest {
     }
 
     @Test
+    public void testDeleteUnreachableSession() throws RemoteException {
+        gameServerImpl.createSession(PLAYER_NAME, new ClientRemoteUnreachable());
+        gameServerImpl.createSession("bla", new Handler(new NetworkHandler()));
+        assertEquals(1, gameServerImpl.getSessionList().size());
+    }
+
+    @Test
+    public void testExceptionWhileSessionRemovedNotification() throws RemoteException {
+        Observer observer = createCountObserver(UpdateType.SESSION_REMOVED);
+        List<NetworkHandler> handlers = connectSessions(MAX_SESSIONS - 1, observer);
+        gameServerImpl.createSession(PLAYER_NAME, new ClientRemoteUnreachable());
+
+        handlers.get(0).disconnectFromServer();
+        assertEquals(4, count);
+    }
+
+    @Test
+    public void testExceptionWhileReceivingChatMessage() throws RemoteException {
+        Observer observer = createCountObserver(UpdateType.SESSION_REMOVED);
+        List<NetworkHandler> handlers = connectSessions(MAX_SESSIONS - 1, observer);
+        gameServerImpl.createSession(PLAYER_NAME, new ClientRemoteUnreachable());
+
+        handlers.get(0).sendChatMessage("hallo");
+        assertEquals(MAX_SESSIONS - 1, count);
+    }
+
+    @Test
+    public void testExceptionWhileReceivingInitSignal() throws RemoteException {
+        Observer observer = createCountObserver(UpdateType.SESSION_REMOVED);
+        connectSessions(MAX_SESSIONS - 1, observer);
+        gameServerImpl.createSession(PLAYER_NAME, new ClientRemoteUnreachable());
+
+        gameServerImpl.startGame();
+        assertEquals(MAX_SESSIONS - 1, count);
+    }
+
+    @Test
+    public void testExceptionWhileReceivingStartSignal() throws RemoteException {
+        Observer observer = createCountObserver(UpdateType.SESSION_REMOVED);
+        connectSessions(MAX_SESSIONS - 1, observer);
+        gameServerImpl.createSession(PLAYER_NAME, new ClientRemoteUnreachable());
+
+        for (int i = 0; i < MAX_SESSIONS; i++) {
+            gameServerImpl.notifyReadySignalReceived(null);
+        }
+        assertEquals(MAX_SESSIONS - 1, count);
+    }
+
+    @Test
+    public void testExceptionWhileReceivingStep() throws RemoteException {
+        Observer observer = createCountObserver(UpdateType.SESSION_REMOVED);
+        List<NetworkHandler> handlers = connectSessions(MAX_SESSIONS - 1, observer);
+        Session session = (Session) gameServerImpl.createSession(PLAYER_NAME, new ClientRemoteUnreachable());
+
+        gameServerImpl.addStep(session, new Step(0, session.getSessionInformation().getId()));
+        for (NetworkHandler handler : handlers) {
+            handler.addStep(new Step(0, handler.getOwnSession().getId()));
+        }
+        gameServerImpl.distributeSteps();
+        assertEquals(MAX_SESSIONS - 1, count);
+    }
+
+    @Test
     public void testSerialStep() {
         final int NBR_OF_STEPS = 50;
         final Map<Integer, Set<Integer>> steps = new HashMap<Integer, Set<Integer>>(50);
@@ -224,7 +298,7 @@ public class RMILocalhostTest {
             }
         }
         assertEquals(NBR_OF_STEPS, steps.size());
-        for(Set<Integer> sessionIds: steps.values()) {
+        for (Set<Integer> sessionIds : steps.values()) {
             assertEquals(MAX_SESSIONS, sessionIds.size());
         }
     }
@@ -250,40 +324,5 @@ public class RMILocalhostTest {
 
         System.out.println(timeAfter - timeBefore);
         assertTrue(timeAfter - timeBefore < 50);
-    }
-
-    @Test
-    public void testStepDurationWithNetworkDelay() {
-        final String SENDER = "Sender";
-        List<NetworkHandler> otherPlayers = new ArrayList<NetworkHandler>();
-
-        NetworkHandler sender = new NetworkHandlerWithoutThreads();
-        sender.connectToServer(IP, SERVER_NAME, SENDER);
-        for (int i = 0; i < MAX_SESSIONS - 1; i++) {
-            NetworkHandler handler = new NetworkHandlerWithoutThreads() {
-
-                //Sleep of 30 ms for faking network-Delay
-                @Override
-                public void notifyStepsReceived(Collection<Step> steps) {
-                    try {
-                        Thread.sleep(30);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(RMILocalhostTest.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    super.notifyStepsReceived(steps);
-                }
-            };
-            otherPlayers.add(handler);
-            handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + " 1");
-        }
-
-        gameServerImpl.startGame();
-
-        long timeBefore = System.currentTimeMillis();
-        sender.addStep(new Step(1, 3));
-        long timeAfter = System.currentTimeMillis();
-
-        System.out.println(timeAfter - timeBefore);
-        //assertTrue(timeAfter - timeBefore < 50);
     }
 }
