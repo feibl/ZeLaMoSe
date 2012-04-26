@@ -70,14 +70,8 @@ public class NetworkIntegrationTest {
 
     @Test
     public void testConnectOneSession() {
-        final String SENDER = "Sender";
-        NetworkHandler sender = new NetworkHandler();
-        sender.connectToServer(IP, SERVER_NAME, SENDER);
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(NetworkIntegrationTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        connectSessions(1);
+        waitForConnectionEstablished();
         assertEquals(1, gameServerImpl.getSessionList().size());
     }
 
@@ -86,84 +80,94 @@ public class NetworkIntegrationTest {
         assertEquals(0, gameServerImpl.getSessionList().size());
     }
 
+    private List<NetworkHandler> connectSessions(int nbrOfSessions) {
+        List<NetworkHandler> handlers = new ArrayList<NetworkHandler>();
+
+        for (int i = 0; i < nbrOfSessions; i++) {
+            NetworkHandler handler = new NetworkHandler();
+            handlers.add(handler);
+            handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + i);
+        }
+        return handlers;
+    }
+
+    @Test
+    public void testConnectMaxSessions() {
+        connectSessions(MAX_SESSIONS);
+        waitForConnectionEstablished();
+
+        assertEquals(MAX_SESSIONS, gameServerImpl.getSessionList().size());
+    }
+
+    private void waitForConnectionEstablished() {
+        for (int i = 0; i < 10; i++) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(NetworkIntegrationTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (gameServerImpl.getSessionList().size() == MAX_SESSIONS) {
+                break;
+            }
+        }
+    }
+
     @Test
     public void testStepDuration() {
-//        final String SENDER = "Sender";
-//        final List<NetworkHandlerImpl> otherPlayers = new ArrayList<NetworkHandlerImpl>();
-//        NetworkHandler sender = new NetworkHandler();
-//        sender.connectToServer(IP, SERVER_NAME, SENDER);
-//
-//        for (int i = 0; i < MAX_SESSIONS - 1; i++) {
-//            NetworkHandler handler = new NetworkHandler();
-//            otherPlayers.add(handler);
-//            handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + " 1");
-//            System.out.println("connect to server" + i);
-//        }
-//
-//        for (int i = 0; i < 10; i++) {
-//            try {
-//                Thread.sleep(500);
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(NetworkIntegrationTest.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            if (gameServerImpl.getSessionList().size() == MAX_SESSIONS) {
-//                System.out.println("got all sessions");
-//                break;
-//            }
-//            System.out.println("sessions " + gameServerImpl.getSessionList().size());
-//        }
-//        assertEquals(MAX_SESSIONS - 1, otherPlayers.size());
-//        assertEquals(MAX_SESSIONS, gameServerImpl.getSessionList().size());
-//        gameServerImpl.startGame();
-//
-//
-//        class MyCallable implements Callable<Long>, Observer {
-//
-//            private long t = -1;
-//
-//            @Override
-//            public void update(Observable o, Object o1) {
-//                if (o1 == TetrisController.UpdateType.STEP) {
-//                    count++;
-//                    t = System.currentTimeMillis();
-//                }
-//            }
-//
-//            @Override
-//            public Long call() {
-//                for (NetworkHandlerAbstract handler : otherPlayers) {
-//                    handler.processStep();
-//                }
-//                return new Long(t);
-//            }
-//        };
-//
-//        MyCallable myCallable = new MyCallable();
-//        for (NetworkHandlerAbstract handler : otherPlayers) {
-//            handler.addObserver(myCallable);
-//        }
-//
-//        FutureTask<Long> future = new FutureTask<Long>(myCallable);
-//        executor.execute(future);
-//
-//        long timeBefore = System.currentTimeMillis();
-//        sender.addStep(new Step(1, 3));
-//
-//
-//        long timeAfter = -1;
-//
-//        try {
-//            timeAfter = future.get(500, TimeUnit.MILLISECONDS).longValue();
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(NetworkIntegrationTest.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (ExecutionException ex) {
-//            Logger.getLogger(NetworkIntegrationTest.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (TimeoutException ex) {
-//            future.cancel(true);
-//        }
-//
-//        assertTrue(timeAfter >= 0);
-//        System.out.println(timeAfter - timeBefore);
-//        assertTrue(timeAfter - timeBefore < 50);
+        final List<NetworkHandler> players = connectSessions(MAX_SESSIONS);
+        waitForConnectionEstablished();
+        gameServerImpl.startGame();
+
+        class MyCallable implements Callable<Long>, Observer {
+
+            private long t = -1;
+
+            @Override
+            public void update(Observable o, Object o1) {
+                if (o1 == TetrisController.UpdateType.STEP) {
+                    count++;
+                    t = System.currentTimeMillis();
+                }
+            }
+
+            @Override
+            public Long call() {
+                for (NetworkHandlerAbstract handler : players) {
+                    handler.processStep();
+                }
+                return new Long(t);
+            }
+        };
+
+        MyCallable myCallable = new MyCallable();
+        for (NetworkHandlerAbstract handler : players) {
+            handler.addObserver(myCallable);
+        }
+
+        FutureTask<Long> future = new FutureTask<Long>(myCallable);
+        executor.execute(future);
+
+        long timeBefore = System.currentTimeMillis();
+        for (NetworkHandler handler : players) {
+            handler.addStep(new Step(0, handler.getOwnSession().getId()));
+        }
+        gameServerImpl.distributeSteps();
+
+        long timeAfter = -1;
+
+        try {
+            timeAfter = future.get(500, TimeUnit.MILLISECONDS).longValue();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(NetworkIntegrationTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ExecutionException ex) {
+            Logger.getLogger(NetworkIntegrationTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TimeoutException ex) {
+            future.cancel(true);
+        }
+
+        assertEquals(MAX_SESSIONS * MAX_SESSIONS, count);
+        assertTrue(timeAfter >= 0);
+        System.out.println(timeAfter - timeBefore);
+        assertTrue(timeAfter - timeBefore < 50);
     }
 }
