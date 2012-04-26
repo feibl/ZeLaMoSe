@@ -61,8 +61,8 @@ public class GameServerImplTest {
 
     @Test
     public void testCreateSession() throws RemoteException {
-//        SessionInformation sessionInfo = gameServerImpl.createSession(PLAYER_NAME, new Handler(new NetworkHandler())).getRemoteSessionInformation();
-//        assertEquals(new SessionInformation(1, PLAYER_NAME), sessionInfo);
+        SessionInformation sessionInfo = gameServerImpl.createSession(PLAYER_NAME, new Handler(new NetworkHandler())).getRemoteSessionInformation();
+        assertEquals(new SessionInformation(1, PLAYER_NAME), sessionInfo);
     }
 
     @Test

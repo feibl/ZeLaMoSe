@@ -135,22 +135,22 @@ public class RMILocalhostTest {
     }
 
     @Test
-    public void testSessionAddedUpdate() throws RemoteException {
-        final NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
-        handler.addObserver(new Observer() {
+    public void testNbrOfSessionAddedUpdates() throws RemoteException {
+        Observer observer = new Observer() {
 
             @Override
             public void update(Observable o, Object o1) {
                 if ((UpdateType) o1 == UpdateType.SESSION_ADDED) {
-                    if (handler.getAddedSession().getNickname().equals("bla")) {
-                        flag = true;
-                    }
+                    count++;
                 }
             }
-        });
-        handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME);
-        gameServerImpl.createSession("bla", new ClientRemoteAdapter());
-        assertTrue(flag);
+        };
+        for (int i = 0; i < MAX_SESSIONS; i++) {
+            NetworkHandler handler = new NetworkHandlerImplWithoutThreads();
+            handler.addObserver(observer);
+            handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME);
+        }
+        assertEquals(6, count);
     }
 
     @Test
