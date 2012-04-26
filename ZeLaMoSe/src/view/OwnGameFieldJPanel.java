@@ -15,6 +15,8 @@ import java.util.Observer;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.swing.SwingUtilities;
+import view.music.MusicFile;
+import view.music.SoundEngine;
 
 /**
  *
@@ -23,11 +25,13 @@ import javax.swing.SwingUtilities;
 public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
 
     private boolean useSound = false;
+    private SoundEngine soundEngine = new SoundEngine();
     /**
      * Creates new form pnlGameField
      */
     public OwnGameFieldJPanel() {
         initComponents();
+        
         
     }
 
@@ -279,11 +283,14 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
         
         if(useSound){
             tglSound.setText("Sound On");
+            soundEngine.playBackgroundMusic(MusicFile.gameBackgroundMusic);
+            gameEngine.addObserver(soundEngine);
         } else {
             tglSound.setText("Sound Off");
+             soundEngine.stopBackGroundMusic(MusicFile.gameBackgroundMusic);
+             gameEngine.deleteObserver(soundEngine);
         }
-        
-        renderer.initSoundEngine(useSound);
+       
         useSound = !useSound;
     }//GEN-LAST:event_tglSoundActionPerformed
 
@@ -312,14 +319,16 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
     private javax.swing.JLabel lblZeLaMoSe;
     private javax.swing.JToggleButton tglSound;
     // End of variables declaration//GEN-END:variables
-    private GLRenderer renderer;
+    private GameFieldRenderer renderer;
     private GameEngine gameEngine;
 
     public void initRenderer(SimulationStateAbstract gameEngine) {
         this.gameEngine = (GameEngine)gameEngine;
         gameEngine.addObserver(this);
+        gameEngine.addObserver(soundEngine);
         initOwnGameFieldRenderer();
         initNextBlockRenderer();
+        soundEngine.playBackgroundMusic(MusicFile.gameBackgroundMusic);
         
     }
 
@@ -354,7 +363,7 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
     }
 
     private void initOwnGameFieldRenderer() {
-        renderer = new GLRenderer(Config.ownGameFieldBlockSize, true, gameEngine);
+        renderer = new GameFieldRenderer(Config.ownGameFieldBlockSize, gameEngine);
         glPnlGameField.addGLEventListener(renderer);
         FPSAnimator ownGameFieldAnimator = new FPSAnimator(glPnlGameField, Config.frameRate, true);
         ownGameFieldAnimator.start();

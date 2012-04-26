@@ -4,7 +4,7 @@
  */
 package view.music;
 
-import domain.Config;
+import java.net.URL;
 
 /**
  *
@@ -21,13 +21,20 @@ public enum MusicFile {
     gameOverSound("gameover.ogg"),
     moveSound("move.ogg")
      ;
-    
-    private String musicFile;
+    private final static String basicPathToMusicFiles = "resource/music/";
+    private URL url;
+    private String fileName;
     private MusicFile(String musicFile) {
-        this.musicFile = Config.basicPathToMusicFiles + musicFile;
+        fileName = musicFile;
+        this.url = this.getClass().getClassLoader().getResource(basicPathToMusicFiles + fileName);
     }
     
-    public String getMusicFile(){
-        return musicFile;
+    public String getFileName(){
+        return fileName;
     }
+
+    public URL getUrl() {
+        return url;
+    }
+    
 }

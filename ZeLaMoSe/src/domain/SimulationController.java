@@ -15,6 +15,7 @@ import java.util.*;
  */
 public class SimulationController implements StepInterface, Observer {
 
+
     private Map<Integer, Step> stepQueue = new HashMap<Integer, Step>();
     private Map<Integer, GameEngineAbstract> gameEngines = new HashMap<Integer, GameEngineAbstract>();
     private Map<Integer, String> sessions = new HashMap<Integer, String>();
