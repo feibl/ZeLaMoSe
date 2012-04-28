@@ -165,4 +165,9 @@ public class SimulationController implements StepInterface, Observer {
             addGarbageLineAction(((GameEngineAbstract)o).getSessionID(),((GameEngineAbstract)o).getlastGarbageLineAction());
         }
     }
+    
+    public void removeSession(int sessionId) {
+        gameEngines.remove(sessionId).deleteObserver(this);
+        sessions.remove(sessionId);
+    }
 }

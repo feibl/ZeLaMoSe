@@ -37,6 +37,7 @@ public class TetrisController extends Observable implements Observer {
     private String serverIP = "";
     private ConcurrentHashMap<Integer, String> sessionMap;
     private int localSessionID = -1;
+    private boolean gameStarted = false;
 
     public Object getThrownException() {
         throw new UnsupportedOperationException("Not yet implemented");
@@ -142,9 +143,8 @@ public class TetrisController extends Observable implements Observer {
                 if (step.getSessionID() == localSessionID && o == stepGenerator) {
                     simulationController.addStep(step);
                     networkHandler.addStep(step);
-                }
-                else if(step.getSessionID() != localSessionID) {
-                   simulationController.addStep(step); 
+                } else if (step.getSessionID() != localSessionID) {
+                    simulationController.addStep(step);
                 }
                 break;
             case CONNECTION_ESTABLISHED:
@@ -170,6 +170,12 @@ public class TetrisController extends Observable implements Observer {
                 simulationController.initSimulation();
                 if (autorun) {
                     run();
+                }
+                gameStarted = true;
+                break;
+            case SESSION_REMOVED:
+                if (gameStarted) {
+                    simulationController.removeSession(networkHandler.getRemovedSession().getId());
                 }
                 break;
         }
