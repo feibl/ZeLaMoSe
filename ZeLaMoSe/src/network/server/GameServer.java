@@ -35,8 +35,8 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     private BlockingQueue<Step> receivedSteps = new LinkedBlockingQueue<Step>();
     private final int stepDuration = 50; //in millisecond
     private Semaphore currentNumberOfReceivedSteps = new Semaphore(0);
-    ;
     private Semaphore mutex = new Semaphore(1, true);
+    private int currentStep = 0;
 
     public GameServer(String serverName, Registry registry) throws RemoteException, MalformedURLException {
         this();
@@ -187,10 +187,46 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     }
 
     public synchronized void addStep(SessionInterface sender, Step step) {
+        if (step.getSequenceNumber() == currentStep && sessionList.contains(sender)) {
+            try {
+                mutex.acquire();
+                receivedSteps.add(step);
+                currentNumberOfReceivedSteps.release();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                mutex.release();
+            }
+        }
+    }
+
+    public void distributeSteps() {
+        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionList);
+        Collection<Step> removedSteps = new ArrayList<Step>();
+
+        boolean allStepsReceived = false;
+        boolean aquireComplete = false;
+
+        while (!aquireComplete) {
+            try {
+                allStepsReceived = currentNumberOfReceivedSteps.tryAcquire(sessionList.size(), 500, TimeUnit.MILLISECONDS);
+                aquireComplete = true;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
         try {
             mutex.acquire();
-            receivedSteps.add(step);
-            currentNumberOfReceivedSteps.release();
+            receivedSteps.drainTo(removedSteps);
+            currentStep++;
+            if (!allStepsReceived) {
+                System.out.println("Removing Session");
+                copy = checkReceivedSteps(copy);
+            }
+            for (final SessionInterface s : copy) {
+                sendSteps(s, removedSteps);
+            }
         } catch (InterruptedException ex) {
             Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -198,25 +234,21 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         }
     }
 
-    public void distributeSteps() {
-        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionList);
-        Collection<Step> removedSteps = new ArrayList<Step>();
-        try {
-            currentNumberOfReceivedSteps.acquire(sessionList.size());
-            try {
-                mutex.acquire();
-                receivedSteps.drainTo(removedSteps);
-                for (final SessionInterface s : copy) {
-                    sendSteps(s, removedSteps);
+    private List<SessionInterface> checkReceivedSteps(List<SessionInterface> copy) {
+        for (SessionInterface session : copy) {
+            boolean stepReceived = false;
+            for (Step step : receivedSteps) {
+                if (step.getSessionID() == session.getSessionInformation().getId()) {
+                    stepReceived = true;
+                    break;
                 }
-            } catch (InterruptedException ex) {
-                Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                mutex.release();
             }
-        } catch (InterruptedException ex) {
-            Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
+            if (!stepReceived) {
+                removeSession(session);
+            }
         }
+        copy = new ArrayList<SessionInterface>(sessionList);
+        return copy;
     }
 
     private void start() {
