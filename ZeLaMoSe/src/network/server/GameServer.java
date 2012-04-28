@@ -198,7 +198,10 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 
         while (!aquireComplete) {
             try {
-                allStepsReceived = currentNumberOfReceivedSteps.tryAcquire(sessionList.size(), 500, TimeUnit.MILLISECONDS);
+                //blocated
+                //currentNumberOfReceivedSteps.acquire(sessionList.size());
+                //not blocated
+                allStepsReceived = currentNumberOfReceivedSteps.tryAcquire(sessionList.size(), 1000, TimeUnit.MILLISECONDS);
                 aquireComplete = true;
             } catch (InterruptedException ex) {
                 Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
@@ -206,14 +209,15 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         }
 
         synchronized (this) {            
+            if (!allStepsReceived) {
+                System.out.println("GameServer: remove Session. Stepqueue size: " + receivedSteps.size());
+                checkReceivedSteps();
+            }
             Collection<Step> removedSteps = new ArrayList<Step>();
 
             receivedSteps.drainTo(removedSteps);
             currentStep++;
-            if (!allStepsReceived) {
-                System.out.println("Removing Session");
-                checkReceivedSteps();
-            }
+            
             List<SessionInterface> sessionListCopy = new ArrayList<SessionInterface>(sessionList);
             for (final SessionInterface s : sessionListCopy) {
                 sendSteps(s, removedSteps);
