@@ -8,9 +8,8 @@ import domain.*;
 import java.util.*;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
-import view.music.MusicEngineAbstract;
 import view.music.MusicFile;
-import view.music.OnMusicEngine;
+import view.music.SoundEngine;
 
 /**
  *
@@ -22,8 +21,8 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private final MainJFrame menu;
     private ListModel playerListModel;
     private final boolean host;
-    private MusicEngineAbstract musicEngine;
     private final ChatController chatController;
+    private SoundEngine soundEngine;
 
     LobbyJFrame(TetrisController tetrisController, ChatController chatController, boolean host, MainJFrame menu, boolean isSinglePlayer) {
         this.tetrisController = tetrisController;
@@ -37,9 +36,8 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         tetrisController.addObserver(this);
         chatController.addObserver(this);
         
-        musicEngine = new OnMusicEngine(MusicFile.lobbyBackgroundMusic);
-        musicEngine.playMusic(true);
-        
+        soundEngine = new SoundEngine();
+        soundEngine.playBackgroundMusic(MusicFile.lobbyBackgroundMusic);
         if (isSinglePlayer) {
             tetrisController.startGame();
         }
@@ -48,7 +46,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     @Override
     public void dispose() {
         super.dispose();
-        musicEngine.stopMusic();
+        soundEngine.stopBackGroundMusic(MusicFile.lobbyBackgroundMusic);
     }
 
     /**

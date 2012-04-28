@@ -25,7 +25,6 @@ public class Config {
     public final static int frameRate = 30;
     public final static int ownGameFieldBlockSize = 30;
     public final static int EnemyGameFieldBlockSize = 10;
-    public final static String basicPathToMusicFiles = "/resource/music/";
     public final static int blockStartPositionX = 4;
     public final static int blockStartPositionY = gridHeight - 1;
 
