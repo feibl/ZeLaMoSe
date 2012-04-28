@@ -5,9 +5,11 @@
 package view;
 
 import domain.*;
+import java.awt.Color;
+import java.awt.Component;
 import java.util.*;
-import javax.swing.ListModel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import network.ChatMessage;
 import view.music.MusicFile;
 import view.music.SoundEngine;
 
@@ -16,25 +18,42 @@ import view.music.SoundEngine;
  * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class LobbyJFrame extends javax.swing.JFrame implements Observer {
-
+    
     private TetrisController tetrisController;
     private final MainJFrame menu;
-    private ListModel playerListModel;
+    private PlayerListModel playerListModel;
     private final boolean host;
     private final ChatController chatController;
     private SoundEngine soundEngine;
-
-    LobbyJFrame(TetrisController tetrisController, ChatController chatController, boolean host, MainJFrame menu, boolean isSinglePlayer) {
+    
+    LobbyJFrame(TetrisController tetrisController, final ChatController chatController, boolean host, MainJFrame menu, boolean isSinglePlayer) {
         this.tetrisController = tetrisController;
         this.menu = menu;
         this.host = host;
         this.chatController = chatController;
-
+        this.playerListModel = new PlayerListModel(chatController.getSessionList());
+        
         initComponents();
         btnStart.setVisible(host);
         lblServerIPValue.setText(tetrisController.getServerIP());
         tetrisController.addObserver(this);
         chatController.addObserver(this);
+        chatController.addObserver(playerListModel);
+        playerList.setCellRenderer(new DefaultListCellRenderer() {
+            
+            @Override
+            public Component getListCellRendererComponent(JList jlist, Object o, int i, boolean bln, boolean bln1) {
+                Map.Entry<Integer, String> entry = (Map.Entry<Integer, String>)o;
+                setText(entry.getValue());
+                if (entry.getKey() == chatController.getOwnSession().getId()) {
+                    setBackground(new Color(230, 245, 245));
+                } else {
+                    setBackground(Color.white);
+                    setEnabled(false);
+                }
+                return this;
+            }
+        });
         
         soundEngine = new SoundEngine();
         soundEngine.playBackgroundMusic(MusicFile.lobbyBackgroundMusic);
@@ -42,7 +61,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
             tetrisController.startGame();
         }
     }
-
+    
     @Override
     public void dispose() {
         super.dispose();
@@ -64,17 +83,9 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         jLabel1 = new javax.swing.JLabel();
         txtMessage = new javax.swing.JTextField();
         btnSend = new javax.swing.JButton();
-        lblOtherPlayerName3 = new javax.swing.JLabel();
-        lblOtherPlayerName1 = new javax.swing.JLabel();
-        lblOtherPlayerName2 = new javax.swing.JLabel();
         btnExit = new javax.swing.JButton();
         btnStart = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        lblOwnPlayerName = new javax.swing.JLabel();
-        lblOne = new javax.swing.JLabel();
-        lblTwo = new javax.swing.JLabel();
-        lblThree = new javax.swing.JLabel();
-        lblFour = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
@@ -115,12 +126,6 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
             }
         });
 
-        lblOtherPlayerName3.setText("<OtherPlayerName3>");
-
-        lblOtherPlayerName1.setText("<OtherPlayerName1>");
-
-        lblOtherPlayerName2.setText("<OtherPlayerName2>");
-
         btnExit.setText("Exit");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -137,16 +142,6 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
 
         jLabel2.setText("Players:");
 
-        lblOwnPlayerName.setText("<OwnPlayerName>");
-
-        lblOne.setText("1.");
-
-        lblTwo.setText("2.");
-
-        lblThree.setText("3.");
-
-        lblFour.setText("4.");
-
         pnlClock.setBorder(javax.swing.BorderFactory.createTitledBorder("Clock"));
         pnlClock.setPreferredSize(new java.awt.Dimension(136, 136));
 
@@ -158,18 +153,14 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         );
         pnlClockLayout.setVerticalGroup(
             pnlClockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 113, Short.MAX_VALUE)
+            .addGap(0, 109, Short.MAX_VALUE)
         );
 
         lblTimeHere.setText("Time you're here:");
 
         lblTimeHereValue.setText("<TimeHereValue>");
 
-        playerList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
+        playerList.setModel(playerListModel);
         jScrollPane2.setViewportView(playerList);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -188,42 +179,28 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                         .addGap(203, 203, 203)
                         .addComponent(lblServerIP, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(28, 28, 28)
-                        .addComponent(lblServerIPValue, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE))
+                        .addComponent(lblServerIPValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnExit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnStart, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnExit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnStart, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(6, 6, 6)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(lblOne)
-                                        .addComponent(lblTwo)
-                                        .addComponent(lblThree)
-                                        .addComponent(lblFour))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lblOtherPlayerName2)
-                                        .addComponent(lblOtherPlayerName1)
-                                        .addComponent(lblOtherPlayerName3)
-                                        .addComponent(lblOwnPlayerName)))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(11, 11, 11)
-                                    .addComponent(jLabel2)))
-                            .addGap(18, 18, 18)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblTimeHere)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblTimeHereValue))
-                    .addComponent(pnlClock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(pnlClock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -237,46 +214,27 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lblOwnPlayerName)
-                                    .addComponent(lblOne))
-                                .addGap(4, 4, 4)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lblOtherPlayerName1)
-                                    .addComponent(lblTwo))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lblOtherPlayerName2)
-                                    .addComponent(lblThree))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lblOtherPlayerName3)
-                                    .addComponent(lblFour)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlClock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
+                        .addGap(16, 16, 16)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblTimeHere)
                             .addComponent(lblTimeHereValue))
-                        .addGap(42, 42, 42)
+                        .addGap(30, 30, 30)
                         .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtMessage)
-                    .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                    .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
                     .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -289,11 +247,11 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
   private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
       formWindowClosing(null);
   }//GEN-LAST:event_btnExitActionPerformed
-
+    
   private void txtMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMessageActionPerformed
       btnSendActionPerformed(evt);
   }//GEN-LAST:event_txtMessageActionPerformed
-
+    
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         tetrisController.deleteObserver(this);
         chatController.deleteObserver(this);
@@ -301,7 +259,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         chatController.tearDown();
         
         SwingUtilities.invokeLater(new Runnable() {
-
+            
             @Override
             public void run() {
                 menu.setVisible(true);
@@ -309,17 +267,17 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         });
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
-
+    
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
         tetrisController.startGame();
     }//GEN-LAST:event_btnStartActionPerformed
-
+    
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         if (!txtMessage.getText().isEmpty()) {
             chatController.sendChatMessage(txtMessage.getText());
             txtMessage.setText("");
         }
-
+        
     }//GEN-LAST:event_btnSendActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExit;
@@ -332,18 +290,10 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JLabel lblFour;
-    private javax.swing.JLabel lblOne;
-    private javax.swing.JLabel lblOtherPlayerName1;
-    private javax.swing.JLabel lblOtherPlayerName2;
-    private javax.swing.JLabel lblOtherPlayerName3;
-    private javax.swing.JLabel lblOwnPlayerName;
     private javax.swing.JLabel lblServerIP;
     private javax.swing.JLabel lblServerIPValue;
-    private javax.swing.JLabel lblThree;
     private javax.swing.JLabel lblTimeHere;
     private javax.swing.JLabel lblTimeHereValue;
-    private javax.swing.JLabel lblTwo;
     private javax.swing.JList playerList;
     private javax.swing.JPanel pnlClock;
     private javax.swing.JTextArea txaChat;
@@ -353,17 +303,18 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     @Override
     public void update(Observable o, Object o1) {
         TetrisController.UpdateType type = (TetrisController.UpdateType) o1;
-
+        
         switch (type) {
             case INIT_SIGNAL:                
                 chatController.deleteObserver(this);
+                chatController.deleteObserver(playerListModel);
                 chatController.tearDown();
                 tetrisController.deleteObserver(this);
-
+                
                 final GameFieldJFrame gameField = tetrisController.createGameFieldFrame();
-
+                
                 SwingUtilities.invokeLater(new Runnable() {
-
+                    
                     @Override
                     public void run() {
                         gameField.setVisible(true);
@@ -374,7 +325,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
             case EXCEPTION_THROWN:
                 break;
             case CHAT_MESSAGE_RECEIVED:
-                writeToChatArea(chatController.getChatMessage().toString());
+                writeChatMessage(chatController.getChatMessage());
                 break;
             case SESSION_ADDED:
                 writeToChatArea(chatController.getAddedSession().getNickname() + " enters");
@@ -386,7 +337,11 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 break;
         }
     }
-
+    
+    private void writeChatMessage(ChatMessage chatMessage) {
+        writeToChatArea(chatMessage.getSender().getNickname() + ": " + chatMessage.getMessage());
+    }
+    
     private void writeToChatArea(String message) {
         txaChat.append(message + '\n');
     }

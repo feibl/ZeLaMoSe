@@ -30,6 +30,10 @@ public class ChatController extends Observable implements Observer {
         return nH.getSessionList();
     }
     
+    public SessionInformation getOwnSession() {
+        return nH.getOwnSession();
+    }
+    
     public void tearDown() {
         nH.deleteObserver(this);
     }
