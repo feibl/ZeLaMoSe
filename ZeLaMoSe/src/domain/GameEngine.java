@@ -112,6 +112,10 @@ public class GameEngine extends GameEngineAbstract {
                 case GARBAGELINE:
                     handleGarbageLineAction((GarbageLineAction) action);
                     break;
+                case GAMEOVER:
+                    gameOver = true;
+                    setLastAction(new GameOverAction(0));
+                    break;
             }
         }
     }

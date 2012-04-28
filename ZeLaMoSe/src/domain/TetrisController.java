@@ -28,7 +28,6 @@ public class TetrisController extends Observable implements Observer {
     public final static int SERVER_PORT = Registry.REGISTRY_PORT;
     public static final String SERVER_NAME = "TetrisServer";
     public boolean autorun = true;
-    private Timer timer;
     private SimulationController simulationController;
     private NetworkHandlerAbstract networkHandler;
     private StepGeneratorAbstract stepGenerator;
@@ -38,6 +37,7 @@ public class TetrisController extends Observable implements Observer {
     private ConcurrentHashMap<Integer, String> sessionMap;
     private int localSessionID = -1;
     private boolean gameStarted = false;
+    private boolean gameRunning;
 
     public Object getThrownException() {
         throw new UnsupportedOperationException("Not yet implemented");
@@ -49,7 +49,7 @@ public class TetrisController extends Observable implements Observer {
 
     public enum UpdateType {
 
-        STEP, SESSION_ADDED, SESSION_REMOVED, CONNECTION_ESTABLISHED, EXCEPTION_THROWN, CHAT_MESSAGE_RECEIVED, GAME_STARTED, INIT_SIGNAL
+        STEP, SESSION_ADDED, SESSION_REMOVED, CONNECTION_ESTABLISHED, EXCEPTION_THROWN, CHAT_MESSAGE_RECEIVED, GAME_STARTED, INIT_SIGNAL, TIMED_OUT
     };
 
     public TetrisController(SimulationController sController, NetworkHandlerAbstract nH, StepGeneratorAbstract sG) {
@@ -58,7 +58,6 @@ public class TetrisController extends Observable implements Observer {
         networkHandler.addObserver(this);
         stepGenerator = sG;
         stepGenerator.addObserver(this);
-        timer = new Timer();
     }
 
     public Map<Integer, String> getSessionMap() {
@@ -120,7 +119,6 @@ public class TetrisController extends Observable implements Observer {
         //TODO delete All Informations from the played Game
         networkHandler.deleteObserver(this);
         stepGenerator.deleteObserver(this);
-        timer.cancel();
         networkHandler.disconnectFromServer();
     }
 
@@ -169,6 +167,7 @@ public class TetrisController extends Observable implements Observer {
             case GAME_STARTED:
                 simulationController.initSimulation();
                 if (autorun) {
+                    gameRunning = true;
                     run();
                 }
                 gameStarted = true;
@@ -177,6 +176,14 @@ public class TetrisController extends Observable implements Observer {
                 if (gameStarted) {
                     simulationController.removeSession(networkHandler.getRemovedSession().getId());
                 }
+                break;
+            case TIMED_OUT:
+                for (int sessionID : sessionMap.keySet()) {
+                    simulationController.removeSession(sessionID);
+                }
+                gameRunning = false;
+                networkHandler.deleteObserver(this);
+                stepGenerator.deleteObserver(this);
                 break;
         }
     }
@@ -202,7 +209,7 @@ public class TetrisController extends Observable implements Observer {
 
             @Override
             public void run() {
-                while (true) {
+                while (gameRunning) {
                     runStep();
                 }
             }

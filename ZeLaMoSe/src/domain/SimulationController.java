@@ -5,6 +5,7 @@
 package domain;
 
 import domain.actions.Action;
+import domain.actions.GameOverAction;
 import domain.actions.GarbageLineAction;
 import domain.actions.MoveAction;
 import java.util.*;
@@ -167,6 +168,7 @@ public class SimulationController implements StepInterface, Observer {
     }
     
     public void removeSession(int sessionId) {
+        gameEngines.get(sessionId).handleAction(new GameOverAction(0));
         gameEngines.remove(sessionId).deleteObserver(this);
         sessions.remove(sessionId);
     }
