@@ -98,10 +98,8 @@ class NextBlockRenderer implements GLEventListener, Observer {
     }
 
     private void drawBlock(GL2 gl) {
-        Color blockColor = nextBlock.getColor();
 
-
-        gl.glColor3f(convertRgbToGlColor(blockColor.getRed()), convertRgbToGlColor(blockColor.getGreen()), convertRgbToGlColor(blockColor.getBlue()));
+        gl.glColor3f(nextBlock.getGlRed(), nextBlock.getGlGreen(), nextBlock.getGlBlue());
 
         gl.glBegin(GL2.GL_QUADS);
         int x = nextBlock.getX();
@@ -120,14 +118,5 @@ class NextBlockRenderer implements GLEventListener, Observer {
         gl.glEnd();
     }
     
-        /**
-     * Converts an RGB Color To openGL Color scala which has a Range from 0.0 to 1.0
-     *
-     * @param rgbColor
-     * @return
-     */
-    private float convertRgbToGlColor(int rgbColor) {
-        return (float) rgbColor / 255f;
-    }
     
 }

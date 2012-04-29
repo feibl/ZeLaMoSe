@@ -38,7 +38,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
     private SimulationStateAbstract gameEngine;
     private BlockAbstract currentBlock;
     private final int defaultX = 4, defaultY = 23;
-    private volatile Color[][] grid;
+    private volatile BlockAbstract[][] grid;
     private Color backGroundColor = Color.BLACK;
 
     public GameFieldRenderer(int blocksize, SimulationStateAbstract gameEngine) {
@@ -53,7 +53,6 @@ class GameFieldRenderer implements GLEventListener, Observer {
             gameEngine.addObserver(this);
         }
     }
-
 
     @Override
     public void init(GLAutoDrawable drawable) {
@@ -98,10 +97,10 @@ class GameFieldRenderer implements GLEventListener, Observer {
     @Override
     public void update(Observable o, Object o1) {
         //add actiontype
-           if ((SimulationStateAbstract.UpdateType)o1 == SimulationStateAbstract.UpdateType.LASTACTION) {
+        if ((SimulationStateAbstract.UpdateType) o1 == SimulationStateAbstract.UpdateType.LASTACTION) {
             processAction(gameEngine.getSimulationState());
         }
-        
+
     }
 
     private void processAction(Action action) {
@@ -147,10 +146,9 @@ class GameFieldRenderer implements GLEventListener, Observer {
     }
 
     private void drawCurrentBlock(GL2 gl) {
-        Color blockColor = currentBlock.getColor();
 
 
-        gl.glColor3f(convertRgbToGlColor(blockColor.getRed()), convertRgbToGlColor(blockColor.getGreen()), convertRgbToGlColor(blockColor.getBlue()));
+        gl.glColor3f(currentBlock.getGlRed(), currentBlock.getGlGreen(), currentBlock.getGlBlue());
 
         gl.glBegin(GL2.GL_QUADS);
         int x = currentBlock.getX();
@@ -170,10 +168,10 @@ class GameFieldRenderer implements GLEventListener, Observer {
     }
 
     private void initStackGrid() {
-        grid = new Color[Config.gridWidth][Config.gridHeight];
+        grid = new BlockAbstract[Config.gridWidth][Config.gridHeight];
         for (int i = 0; i < Config.gridWidth; i++) {
             for (int j = 0; j < Config.gridHeight; j++) {
-                grid[i][j] = backGroundColor;
+                grid[i][j] = null;
             }
         }
     }
@@ -183,8 +181,12 @@ class GameFieldRenderer implements GLEventListener, Observer {
         for (int i = 0; i < Config.gridWidth; i++) {
             for (int j = 0; j < Config.gridHeight; j++) {
 
-                Color colorField = grid[i][j];
-                gl.glColor3f(convertRgbToGlColor(colorField.getRed()), convertRgbToGlColor(colorField.getGreen()), convertRgbToGlColor(colorField.getBlue()));
+                BlockAbstract block = grid[i][j];
+                if (block != null) {
+                    gl.glColor3f(block.getGlRed(), block.getGlGreen(), block.getGlBlue());
+                } else {
+                    gl.glColor3f(0, 0, 0);
+                }
 
                 gl.glBegin(GL2.GL_QUADS);
 
@@ -204,7 +206,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (currentBlock.getGrid()[i][j] != null) {
-                    grid[currentBlock.getX() + i][currentBlock.getY() - j] = currentBlock.getColor();
+                    grid[currentBlock.getX() + i][currentBlock.getY() - j] = currentBlock;
                 }
             }
         }
@@ -256,17 +258,17 @@ class GameFieldRenderer implements GLEventListener, Observer {
         for (int x = 0; x < lines.length; x++) {
             for (int y = 0; y < lines[x].length; y++) {
                 if (lines[x][y] != null) {
-                    grid[x][y] = lines[x][y].getColor();
+                    grid[x][y] = lines[x][y];
                 } else {
-                    grid[x][y] = backGroundColor;
+                    grid[x][y] = null;
                 }
             }
         }
     }
 
-    private Color[][] getGridCopy() {
+    private BlockAbstract[][] getGridCopy() {
 
-        Color[][] copy = new Color[grid.length][grid[0].length];
+        BlockAbstract[][] copy = new BlockAbstract[grid.length][grid[0].length];
         for (int i = 0; i < copy.length; i++) {
             copy[i] = Arrays.copyOf(grid[i], grid[i].length);
         }
@@ -281,14 +283,14 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 saveCurrentblockToGrid();
                 currentBlock = null;
 
-                Color[][] linesToRemoveMarkedGrid = getGridCopy();
-                Color[][] originalGrid = getGridCopy();
+                BlockAbstract[][] linesToRemoveMarkedGrid = getGridCopy();
+                BlockAbstract[][] originalGrid = getGridCopy();
 
                 List<Integer> linesToRemove = rmlineAction.getLinesToRemove();
                 for (Integer lineToRemove : linesToRemove) {
 
                     for (int x = 0; x < Config.gridWidth; x++) {
-                        linesToRemoveMarkedGrid[x][lineToRemove] = backGroundColor;
+                        linesToRemoveMarkedGrid[x][lineToRemove] = null;
                     }
                 }
 
@@ -333,7 +335,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
         for (int i = Config.gridHeight - 1; i >= 0; i--) {
             String lineOutput = "";
             for (int j = 0; j < Config.gridWidth; j++) {
-                if (grid[j][i] != backGroundColor) {
+                if (grid[j][i] != null) {
                     lineOutput += "[X]";
                 } else {
                     lineOutput += "[ ]";
@@ -394,15 +396,5 @@ class GameFieldRenderer implements GLEventListener, Observer {
         if (debug) {
             System.out.println("GLREnderer: actiontype " + action.getType() + " processed");
         }
-    }
-
-    /**
-     * Converts an RGB Color To openGL Color scala which has a Range from 0.0 to 1.0
-     *
-     * @param rgbColor
-     * @return
-     */
-    private float convertRgbToGlColor(int rgbColor) {
-        return (float) rgbColor / 255f;
     }
 }

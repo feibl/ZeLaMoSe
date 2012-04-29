@@ -17,6 +17,9 @@ import java.util.logging.Logger;
 public abstract class BlockAbstract implements Cloneable {
 
     protected Color color;
+    protected float glRed, glGreen, glBlue;
+
+    
     protected BlockAbstract[][] grid = new BlockAbstract[Config.gridBlockWidth][Config.gridBlockHeight];
     protected int rotation, x, y;
     protected String printLetter;
@@ -70,6 +73,9 @@ public abstract class BlockAbstract implements Cloneable {
      
     public BlockAbstract(Color c,String printLetter, WallKickAbstract wallkick){
         color = c;
+        glRed = convertRgbToGlColor(color.getRed());
+        glBlue = convertRgbToGlColor(color.getBlue());
+        glGreen = convertRgbToGlColor(color.getGreen());
         rotation = 0; 
         this.printLetter = printLetter;
         this.wallkick = wallkick;
@@ -165,5 +171,25 @@ public abstract class BlockAbstract implements Cloneable {
         }
         return null;
    }
+   public float getGlBlue() {
+        return glBlue;
+    }
+
+    public float getGlGreen() {
+        return glGreen;
+    }
+
+    public float getGlRed() {
+        return glRed;
+    }
    
+    /**
+     * Converts an RGB Color To openGL Color scala which has a Range from 0.0 to 1.0
+     *
+     * @param rgbColor
+     * @return
+     */
+    private float convertRgbToGlColor(int rgbColor) {
+        return (float) rgbColor / 255f;
+    }
 }
