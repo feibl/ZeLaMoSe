@@ -17,6 +17,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import network.GameAlreadyStartedException;
 import network.ServerFullException;
 import network.SessionInformation;
 import network.client.ClientRemoteInterface;
@@ -36,6 +37,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     private final int stepDuration = 50; //in millisecond
     private Semaphore currentNumberOfReceivedSteps = new Semaphore(0);
     private int currentStep = 0;
+    private boolean gameStarted = false;
 
     public GameServer(String serverName, Registry registry) throws RemoteException, MalformedURLException {
         this();
@@ -52,9 +54,12 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     }
 
     @Override
-    public synchronized SessionRemoteInterface createSession(String nickname, ClientRemoteInterface clientRemote) throws RemoteException, ServerFullException {
+    public synchronized SessionRemoteInterface createSession(String nickname, ClientRemoteInterface clientRemote) throws RemoteException, ServerFullException, GameAlreadyStartedException {
         SessionInformation sInfo = new SessionInformation(id++, nickname);
-        if (sessionList.size() < MAX_SESSIONS) {
+        if(gameStarted) {
+            throw new GameAlreadyStartedException();
+        }
+        else if (sessionList.size() < MAX_SESSIONS) {
             Session newSession = new Session(sInfo, clientRemote, this);
             notifyOthersSessionAdded(newSession);
             sessionList.add(newSession);
@@ -158,8 +163,9 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 
     @Override
     public synchronized void startGame() {
-        this.threadPool = Executors.newFixedThreadPool(getSessionList().size());
+        this.threadPool = Executors.newFixedThreadPool(sessionList.size());
         long blockQueueSeed = new Random().nextLong();
+        gameStarted = true;
         notifyAllInitSignal(blockQueueSeed);
     }
 

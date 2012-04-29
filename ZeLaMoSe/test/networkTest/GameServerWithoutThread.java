@@ -27,11 +27,6 @@ public class GameServerWithoutThread extends GameServer {
     }
 
     @Override
-    public void startGame() {
-        notifyAllInitSignal(3);
-    }
-
-    @Override
     protected void sendInitSignal(SessionInterface s, long blockQueueSeed) {
         try {
             s.sendInitSignal(blockQueueSeed);

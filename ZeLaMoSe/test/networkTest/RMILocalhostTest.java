@@ -18,6 +18,7 @@ import java.rmi.RMISecurityManager;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import network.GameAlreadyStartedException;
 import network.SessionInformation;
 import network.client.Handler;
 import network.client.NetworkHandler;
@@ -142,6 +143,13 @@ public class RMILocalhostTest {
         List<NetworkHandler> handlers = connectSessions(MAX_SESSIONS, observer);
         handlers.get(0).sendChatMessage(MESSAGE);
         assertEquals(MAX_SESSIONS, count);
+    }
+    
+    @Test(expected=GameAlreadyStartedException.class)
+    public void testGameAlreadyStartedException() throws RemoteException {
+        gameServerImpl.createSession("Hans", new ClientRemoteAdapter());
+        gameServerImpl.startGame();
+        gameServerImpl.createSession("Heiri", new ClientRemoteAdapter());
     }
 
     @Test
