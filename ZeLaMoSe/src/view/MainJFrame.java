@@ -5,8 +5,13 @@
 package view;
 
 import domain.*;
+import java.awt.Desktop;
 import java.awt.HeadlessException;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JOptionPane;
@@ -85,11 +90,11 @@ public class MainJFrame extends javax.swing.JFrame {
         pnlMultiPlayer = new javax.swing.JPanel();
         btnCreateGame = new javax.swing.JButton();
         btnJoinGame = new javax.swing.JButton();
-        lblNickName = new javax.swing.JLabel();
-        txtNickname = new javax.swing.JTextField();
         pnlControl = new javax.swing.JPanel();
         btnHelp = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
+        lblNickName = new javax.swing.JLabel();
+        txtNickname = new javax.swing.JTextField();
         lblMultiPlayer = new javax.swing.JLabel();
         lblSinglePlayer = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -104,7 +109,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabel1.setText("<html><h1>~ZeLaMoSe - Tetris~</h1></html>");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(78, 19, 265, 50);
+        jLabel1.setBounds(70, 0, 254, 49);
 
         pnlSinglePlayer.setOpaque(false);
         pnlSinglePlayer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -123,20 +128,20 @@ public class MainJFrame extends javax.swing.JFrame {
         pnlSinglePlayerLayout.setHorizontalGroup(
             pnlSinglePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlSinglePlayerLayout.createSequentialGroup()
-                .addGap(115, 115, 115)
-                .addComponent(btnStartGame, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(126, Short.MAX_VALUE))
+                .addGap(89, 89, 89)
+                .addComponent(btnStartGame, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(105, Short.MAX_VALUE))
         );
         pnlSinglePlayerLayout.setVerticalGroup(
             pnlSinglePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSinglePlayerLayout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
+            .addGroup(pnlSinglePlayerLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
                 .addComponent(btnStartGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlSinglePlayer);
-        pnlSinglePlayer.setBounds(37, 74, 338, 78);
+        pnlSinglePlayer.setBounds(40, 100, 338, 72);
 
         pnlMultiPlayer.setOpaque(false);
         pnlMultiPlayer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -152,19 +157,10 @@ public class MainJFrame extends javax.swing.JFrame {
         btnJoinGame.setText("Join Game");
         btnJoinGame.setMaximumSize(new java.awt.Dimension(95, 23));
         btnJoinGame.setMinimumSize(new java.awt.Dimension(95, 23));
-        btnJoinGame.setPreferredSize(new java.awt.Dimension(87, 23));
+        btnJoinGame.setPreferredSize(new java.awt.Dimension(95, 23));
         btnJoinGame.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnJoinGameActionPerformed(evt);
-            }
-        });
-
-        lblNickName.setText("Nickname:");
-
-        txtNickname.setText(nameGenerator.compose(2));
-        txtNickname.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNicknameActionPerformed(evt);
             }
         });
 
@@ -173,39 +169,50 @@ public class MainJFrame extends javax.swing.JFrame {
         pnlMultiPlayerLayout.setHorizontalGroup(
             pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMultiPlayerLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnCreateGame, javax.swing.GroupLayout.PREFERRED_SIZE, 95, Short.MAX_VALUE)
-                    .addComponent(lblNickName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
-                .addGroup(pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnJoinGame, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
-                    .addComponent(txtNickname))
-                .addGap(46, 46, 46))
+                .addContainerGap()
+                .addComponent(btnCreateGame, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addComponent(btnJoinGame, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         pnlMultiPlayerLayout.setVerticalGroup(
             pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMultiPlayerLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNickName)
-                    .addComponent(txtNickname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addGap(20, 20, 20)
                 .addGroup(pnlMultiPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCreateGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnJoinGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22))
+                    .addComponent(btnJoinGame, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlMultiPlayer);
-        pnlMultiPlayer.setBounds(37, 164, 338, 104);
+        pnlMultiPlayer.setBounds(37, 195, 338, 70);
 
         pnlControl.setOpaque(false);
         pnlControl.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
         btnHelp.setText("Help");
+        btnHelp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHelpActionPerformed(evt);
+            }
+        });
 
         btnExit.setText("Exit");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
+
+        lblNickName.setText("<html><strong>Nickname:</strong></html>");
+
+        txtNickname.setText(nameGenerator.compose(2));
+        txtNickname.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNicknameActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlControlLayout = new javax.swing.GroupLayout(pnlControl);
         pnlControl.setLayout(pnlControlLayout);
@@ -214,31 +221,41 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(pnlControlLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnHelp)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
-                .addComponent(btnExit)
+                .addGap(41, 41, 41)
+                .addGroup(pnlControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlControlLayout.createSequentialGroup()
+                        .addComponent(lblNickName, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnlControlLayout.createSequentialGroup()
+                        .addComponent(txtNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                        .addComponent(btnExit)))
                 .addContainerGap())
         );
         pnlControlLayout.setVerticalGroup(
             pnlControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlControlLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addContainerGap()
+                .addComponent(lblNickName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNickname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnHelp)
                     .addComponent(btnExit))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlControl);
-        pnlControl.setBounds(37, 283, 338, 88);
+        pnlControl.setBounds(37, 283, 338, 82);
 
         lblMultiPlayer.setBackground(new java.awt.Color(217, 19, 19));
         lblMultiPlayer.setText("<html><strong>MultiPlayer</strong></html>");
         getContentPane().add(lblMultiPlayer);
-        lblMultiPlayer.setBounds(40, 150, 76, 16);
+        lblMultiPlayer.setBounds(40, 180, 64, 14);
 
         lblSinglePlayer.setText("<html><strong>SinglePlayer</strong></html>");
         getContentPane().add(lblSinglePlayer);
-        lblSinglePlayer.setBounds(40, 60, 83, 16);
+        lblSinglePlayer.setBounds(40, 80, 70, 14);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/image/tetrisbg.jpeg")));
         getContentPane().add(jLabel2);
@@ -279,6 +296,34 @@ public class MainJFrame extends javax.swing.JFrame {
     private void txtNicknameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNicknameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNicknameActionPerformed
+
+    private void btnHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHelpActionPerformed
+
+        if (Desktop.isDesktopSupported()) {
+            Desktop desktop = Desktop.getDesktop();
+            File tf = null;
+            try {
+                tf = File.createTempFile("manual", ".pdf");
+                tf.deleteOnExit();
+                byte buffer[] = new byte[0x1000];
+                InputStream in = this.getClass().getClassLoader().getResourceAsStream("resource/util/UserManual.pdf");
+                FileOutputStream out = new FileOutputStream(tf);
+                int cnt;
+                while ((cnt = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, cnt);
+                }
+                in.close();
+                out.close();
+                desktop.open(tf);
+            } catch (Exception e) {
+                System.out.println("RMI file not found");
+            }
+        }
+    }//GEN-LAST:event_btnHelpActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+       System.exit(0);
+    }//GEN-LAST:event_btnExitActionPerformed
 
     /**
      * @param args the command line arguments
