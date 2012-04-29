@@ -14,26 +14,25 @@ import org.junit.Ignore;
  * @author Fabian Senn <fsenn@hsr.ch>
  */
 @Ignore
-public class NetworkHandlerWithoutThreads extends NetworkHandler{
+public class NetworkHandlerWithoutThreads extends NetworkHandler {
 
-   @Override
-   public void connectToServer(String ip, String serverName, String nickname) {
-      new ConnectionRunnable(this, ip, serverName, nickname).run();
-   }
+    @Override
+    public void connectToServer(String ip, String serverName, String nickname) {
+        runConnectToServer(ip, serverName, nickname);
+    }
 
-   @Override
-   public void disconnectFromServer() {
-      new DisconnectionRunnable(super.getHandler()).run();
-   }
+    @Override
+    public void disconnectFromServer() {
+        runDisconnectFromServer();
+    }
 
-   @Override
-   public void sendChatMessage(String message) {
-      new SendChatMessageRunnable(message, super.getHandler()).run();
-   }
+    @Override
+    public void sendChatMessage(String message) {
+        runSendChatMessage(message);
+    }
 
-   @Override
-   public void addStep(Step step) {
-      new AddStepRunnable(step, super.getHandler()).run();
-   }
-   
+    @Override
+    public void addStep(Step step) {
+        runAddStep(step);
+    }
 }

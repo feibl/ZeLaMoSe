@@ -20,7 +20,6 @@ import java.util.Observer;
 import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import network.ConnectionRunnable;
 import network.client.NetworkHandlerAbstract;
 import network.client.NetworkHandler;
 import network.server.GameServer;

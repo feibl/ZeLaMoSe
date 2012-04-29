@@ -6,10 +6,16 @@ package network.client;
 
 import domain.Step;
 import domain.TetrisController.UpdateType;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.*;
 import network.*;
+import network.server.GameServerRemoteInterface;
+import network.server.SessionRemoteInterface;
 
 /**
  *
@@ -77,12 +83,47 @@ public class NetworkHandler extends NetworkHandlerAbstract {
 
     @Override
     public void connectToServer(final String ip, final String serverName, final String nickname) {
-        threadPool.submit(new ConnectionRunnable(this, ip, serverName, nickname));
+        threadPool.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                runConnectToServer(ip, serverName, nickname);
+            }
+        });
+    }
+
+    protected void runConnectToServer(final String ip, final String serverName, final String nickname) {
+        try {
+            Object lookupObject = Naming.lookup("rmi://" + ip + '/' + serverName);
+
+            if (lookupObject instanceof GameServerRemoteInterface) {
+                GameServerRemoteInterface server = (GameServerRemoteInterface) lookupObject;
+                Handler tempHandler = new Handler(this);
+                setHandler(tempHandler);
+                SessionRemoteInterface sessionRemote = server.createSession(nickname, tempHandler);
+                handler.setSessionRemote(sessionRemote);
+                notifyConnectionEstablished(sessionRemote.getRemoteSessionInformation(), server.getSessionList());
+            } else {
+                throw new RemoteException();
+            }
+        } catch (Exception ex) {
+            notifyExceptionThrown(ex);
+        }
     }
 
     @Override
-    public void addStep(Step step) {
-        threadPool.execute(new AddStepRunnable(step, handler));
+    public void addStep(final Step step) {
+        threadPool.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                runAddStep(step);
+            }
+        });
+    }
+
+    protected void runAddStep(Step step) {
+        handler.sendStep(step);
     }
 
     @Override
@@ -92,7 +133,17 @@ public class NetworkHandler extends NetworkHandlerAbstract {
 
     @Override
     public void disconnectFromServer() {
-        threadPool.execute(new DisconnectionRunnable(handler));
+        threadPool.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                runDisconnectFromServer();
+            }
+        });
+    }
+
+    protected void runDisconnectFromServer() {
+        handler.disconnect();
     }
 
     public void notifyStepsReceived(Collection<Step> steps) {
@@ -140,7 +191,17 @@ public class NetworkHandler extends NetworkHandlerAbstract {
 
     @Override
     public void sendChatMessage(final String message) {
-        threadPool.execute(new SendChatMessageRunnable(message, handler));
+        threadPool.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                runSendChatMessage(message);
+            }
+        });
+    }
+
+    protected void runSendChatMessage(final String message) {
+        handler.sendChatMessage(message);
     }
 
     void notifyChatMessageReceived(ChatMessage message) {
