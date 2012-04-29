@@ -18,21 +18,21 @@ import view.music.SoundEngine;
  * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class LobbyJFrame extends javax.swing.JFrame implements Observer {
-    
+
     private TetrisController tetrisController;
     private final MainJFrame menu;
     private PlayerListModel playerListModel;
     private final boolean host;
     private final ChatController chatController;
     private SoundEngine soundEngine;
-    
+
     LobbyJFrame(TetrisController tetrisController, final ChatController chatController, boolean host, MainJFrame menu, boolean isSinglePlayer) {
         this.tetrisController = tetrisController;
         this.menu = menu;
         this.host = host;
         this.chatController = chatController;
         this.playerListModel = new PlayerListModel(chatController.getSessionList());
-        
+
         initComponents();
         btnStart.setVisible(host);
         lblServerIPValue.setText(tetrisController.getServerIP());
@@ -40,10 +40,10 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         chatController.addObserver(this);
         chatController.addObserver(playerListModel);
         playerList.setCellRenderer(new DefaultListCellRenderer() {
-            
+
             @Override
             public Component getListCellRendererComponent(JList jlist, Object o, int i, boolean bln, boolean bln1) {
-                Map.Entry<Integer, String> entry = (Map.Entry<Integer, String>)o;
+                Map.Entry<Integer, String> entry = (Map.Entry<Integer, String>) o;
                 setText(entry.getValue());
                 if (entry.getKey() == chatController.getOwnSession().getId()) {
                     setBackground(new Color(230, 245, 245));
@@ -54,14 +54,14 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 return this;
             }
         });
-        
+
         soundEngine = new SoundEngine();
         soundEngine.playBackgroundMusic(MusicFile.lobbyBackgroundMusic);
         if (isSinglePlayer) {
             tetrisController.startGame();
         }
     }
-    
+
     @Override
     public void dispose() {
         super.dispose();
@@ -247,19 +247,20 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
   private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
       formWindowClosing(null);
   }//GEN-LAST:event_btnExitActionPerformed
-    
+
   private void txtMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMessageActionPerformed
       btnSendActionPerformed(evt);
   }//GEN-LAST:event_txtMessageActionPerformed
-    
+
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         tetrisController.deleteObserver(this);
         chatController.deleteObserver(this);
+        chatController.deleteObserver(playerListModel);
         tetrisController.disconnectFromServer();
         chatController.tearDown();
-        
+
         SwingUtilities.invokeLater(new Runnable() {
-            
+
             @Override
             public void run() {
                 menu.setVisible(true);
@@ -267,17 +268,17 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         });
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
-    
+
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
         tetrisController.startGame();
     }//GEN-LAST:event_btnStartActionPerformed
-    
+
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         if (!txtMessage.getText().isEmpty()) {
             chatController.sendChatMessage(txtMessage.getText());
             txtMessage.setText("");
         }
-        
+
     }//GEN-LAST:event_btnSendActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExit;
@@ -303,18 +304,18 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     @Override
     public void update(Observable o, Object o1) {
         TetrisController.UpdateType type = (TetrisController.UpdateType) o1;
-        
+
         switch (type) {
-            case INIT_SIGNAL:                
+            case INIT_SIGNAL:
                 chatController.deleteObserver(this);
                 chatController.deleteObserver(playerListModel);
                 chatController.tearDown();
                 tetrisController.deleteObserver(this);
-                
+
                 final GameFieldJFrame gameField = tetrisController.createGameFieldFrame();
-                
+
                 SwingUtilities.invokeLater(new Runnable() {
-                    
+
                     @Override
                     public void run() {
                         gameField.setVisible(true);
@@ -329,19 +330,17 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 break;
             case SESSION_ADDED:
                 writeToChatArea(chatController.getAddedSession().getNickname() + " enters");
-//              updatePlayerList(networkHandler.getSessionList());
                 break;
             case SESSION_REMOVED:
                 writeToChatArea(chatController.getRemovedSession().getNickname() + " has left");
-//              updatePlayerList(networkHandler.getSessionList());
                 break;
         }
     }
-    
+
     private void writeChatMessage(ChatMessage chatMessage) {
         writeToChatArea(chatMessage.getSender().getNickname() + ": " + chatMessage.getMessage());
     }
-    
+
     private void writeToChatArea(String message) {
         txaChat.append(message + '\n');
     }
