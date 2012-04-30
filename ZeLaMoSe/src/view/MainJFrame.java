@@ -37,7 +37,7 @@ public class MainJFrame extends javax.swing.JFrame {
      */
     public MainJFrame(TetrisController tetrisController, NetworkHandlerAbstract networkHandler) {
         this.tetrisController = tetrisController;
-
+        setupMessageHandler();
         this.networkHandler = networkHandler;
 
         try {
@@ -50,29 +50,11 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     private void createGame(final boolean isSinglePlayer) throws HeadlessException {
-        Observer observer = new Observer() {
-
-            @Override
-            public void update(Observable o, Object o1) {
-                switch ((TetrisController.UpdateType) o1) {
-                    case CONNECTION_ESTABLISHED:
-                        tetrisController.deleteObserver(this);                
-                        showLobby(true,isSinglePlayer);
-                        break;
-                    case EXCEPTION_THROWN:
-                        JOptionPane.showMessageDialog(MainJFrame.this, tetrisController.getThrownException(), "Exception", JOptionPane.ERROR_MESSAGE);
-                        tetrisController.deleteObserver(this);
-                        break;
-                }
-            }
-        };
-        tetrisController.addObserver(observer);
         try {
             tetrisController.startServer();
             tetrisController.connectToServer(tetrisController.getServerIP(), TetrisController.SERVER_PORT, txtNickname.getText());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex, "Exception", JOptionPane.ERROR_MESSAGE);
-            tetrisController.deleteObserver(observer);
         }
     }
 
@@ -274,23 +256,25 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void btnJoinGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinGameActionPerformed
         final String ip = JOptionPane.showInputDialog(null, "Eingabe der IP");
+        tetrisController.connectToServer(ip, TetrisController.SERVER_PORT, txtNickname.getText());
+    }
+
+    private void setupMessageHandler() {
         tetrisController.addObserver(new Observer() {
 
             @Override
             public void update(Observable o, Object o1) {
                 switch ((TetrisController.UpdateType) o1) {
                     case CONNECTION_ESTABLISHED:
-                        tetrisController.deleteObserver(this);
-                        showLobby(false, false);
+                        showLobby(true, false);
                         break;
                     case EXCEPTION_THROWN:
                         JOptionPane.showMessageDialog(MainJFrame.this, tetrisController.getThrownException(), "Exception", JOptionPane.ERROR_MESSAGE);
-                        tetrisController.deleteObserver(this);
                         break;
                 }
+
             }
-        });       
-        tetrisController.connectToServer(ip, TetrisController.SERVER_PORT, txtNickname.getText());
+        });
     }//GEN-LAST:event_btnJoinGameActionPerformed
 
     private void txtNicknameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNicknameActionPerformed
