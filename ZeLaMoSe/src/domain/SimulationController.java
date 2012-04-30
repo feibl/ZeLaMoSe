@@ -54,24 +54,6 @@ public class SimulationController implements StepInterface, Observer {
     }
 
     /*
-     * This is just a workaround because the map doesn't seem to sort as expected, at least not with the entry set.
-     */
-    protected ArrayList< Map.Entry<Action, Integer>> sortEntrySet(Set< Map.Entry<Action, Integer>> set) {
-        ArrayList< Map.Entry<Action, Integer>> sortedList = new ArrayList< Map.Entry<Action, Integer>>();
-        for (Map.Entry<Action, Integer> e : set) {
-            int i = 0;
-            for (Map.Entry<Action, Integer> e1 : sortedList) {
-                if (e.getKey().getTimestamp() < e1.getKey().getTimestamp()) {
-                    break;
-                }
-                i++;
-            }
-            sortedList.add(i, e);
-        }
-        return sortedList;
-    }
-
-    /*
      * Execute simulation step. - Look for necessary states - Sort Actions - Simulation ACtions
      */
     public void simulateStep(int seqNum) {
@@ -107,7 +89,7 @@ public class SimulationController implements StepInterface, Observer {
     }
 
     private void distributeActions(Map<Action, Integer> actionList) {
-        for (Map.Entry<Action, Integer> e : sortEntrySet(actionList.entrySet())) {
+        for (Map.Entry<Action, Integer> e : actionList.entrySet()) {
             //System.out.println("--Simulating action with timestamp: " + e.getKey().getTimestamp() + " sessionid " + e.getValue());
             if (!gameEngines.containsKey(e.getValue())) {
                 throw new IllegalStateException("Could not find gameEngine");

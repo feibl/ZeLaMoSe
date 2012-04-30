@@ -103,7 +103,6 @@ public class SimulationControllerTest {
         @Override
         public void update(Observable o, Object o1) {                    
             FakeGameEngine g = (FakeGameEngine)o;
-            System.out.println("############UPDATE#########"+g);
             lastAction = g.getSimulationState();
             assertTrue(!expected.isEmpty());
             
@@ -117,7 +116,6 @@ public class SimulationControllerTest {
             Action e = expected.remove(0);
             
             assertEquals(e, lastAction);
-            System.out.println("got action");
         }
     }
   
@@ -155,9 +153,7 @@ public class SimulationControllerTest {
             assertNull(engine2.getLastAction());
             assertNull(engine3.getLastAction());
         }
-          System.out.println("starting simulation LJDSFFDFSDSDSLKJFSLKJDS");
         instance.simulateStep(i);
-        System.out.println("ending simulation LJDSFFDFSDSDSLKJFSLKJDS");
         assertEquals(action1, engine1.getLastAction());
         assertEquals(action2, engine2.getLastAction());
         assertEquals(action3, engine3.getLastAction());
