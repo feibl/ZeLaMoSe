@@ -155,6 +155,7 @@ public class SimulationController implements StepInterface, Observer {
         }
         gameEngines.get(sessionId).handleAction(new GameOverAction(0));
         gameEngines.remove(sessionId).deleteObserver(this);
+        stepQueue.remove(sessionId);
         sessions.remove(sessionId);
     }
 }
