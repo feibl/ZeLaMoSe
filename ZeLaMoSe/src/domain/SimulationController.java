@@ -150,6 +150,9 @@ public class SimulationController implements StepInterface, Observer {
     }
     
     public void removeSession(int sessionId) {
+        if (gameEngines.get(sessionId) == null) { //The session has already been removed
+            return;
+        }
         gameEngines.get(sessionId).handleAction(new GameOverAction(0));
         gameEngines.remove(sessionId).deleteObserver(this);
         sessions.remove(sessionId);
