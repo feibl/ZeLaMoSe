@@ -118,7 +118,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
 
     @Override
     public void update(Observable o, Object o1) {
-        //add actiontype
+        //add actiontype1
         if ((SimulationStateAbstract.UpdateType) o1 == SimulationStateAbstract.UpdateType.LASTACTION) {
             processAction(gameEngine.getSimulationState());
         }
