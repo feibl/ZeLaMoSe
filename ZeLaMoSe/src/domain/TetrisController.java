@@ -13,7 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import network.client.NetworkHandlerAbstract;
 import network.server.GameServerInterface;
 import network.server.GameServer;
-import view.GameFieldJFrame;
 
 /**
  *
@@ -61,19 +60,12 @@ public class TetrisController extends Observable implements Observer {
         stepGenerator.addObserver(this);
     }
 
+    public int getLocalSessionID() {
+        return localSessionID;
+    }
+    
     public Map<Integer, String> getSessionMap() {
         return sessionMap;
-    }
-
-    public GameFieldJFrame createGameFieldFrame() {
-        List<SimulationStateAbstract> otherSimulations = new ArrayList<SimulationStateAbstract>();
-        for (Integer sessionID : sessionMap.keySet()) {
-            if (sessionID != localSessionID) {
-                otherSimulations.add(simulationController.getSimulationStateInterface(sessionID));
-            }
-        }
-        SimulationStateAbstract localSimulation = simulationController.getSimulationStateInterface(localSessionID);;
-        return new GameFieldJFrame(stepGenerator.getInputSampler(), localSimulation, otherSimulations);
     }
 
     public SimulationStateAbstract getSession(int sessionId) {
@@ -99,6 +91,10 @@ public class TetrisController extends Observable implements Observer {
         }
 
         return "localhost";
+    }
+    
+    public InputSampler getInputSampler() {
+        return stepGenerator.getInputSampler();
     }
 
     public void startServer() throws RemoteException, MalformedURLException {

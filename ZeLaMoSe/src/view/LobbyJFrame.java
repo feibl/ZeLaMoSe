@@ -312,7 +312,15 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 chatController.tearDown();
                 tetrisController.deleteObserver(this);
 
-                final GameFieldJFrame gameField = tetrisController.createGameFieldFrame();
+                
+                List<SimulationStateAbstract> otherSimulations = new ArrayList<SimulationStateAbstract>();
+                for (Integer sessionID : tetrisController.getSessionMap().keySet()) {
+                    if (sessionID != tetrisController.getLocalSessionID()) {
+                        otherSimulations.add(tetrisController.getSession(sessionID));
+                    }
+                }
+                SimulationStateAbstract localSimulation = tetrisController.getSession(tetrisController.getLocalSessionID());
+                final GameFieldJFrame gameField = new GameFieldJFrame(tetrisController.getInputSampler(), localSimulation, otherSimulations);
 
                 SwingUtilities.invokeLater(new Runnable() {
 
