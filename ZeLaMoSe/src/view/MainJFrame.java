@@ -37,7 +37,6 @@ public class MainJFrame extends javax.swing.JFrame {
      */
     public MainJFrame(TetrisController tetrisController, NetworkHandlerAbstract networkHandler) {
         this.tetrisController = tetrisController;
-        setupMessageHandler();
         this.networkHandler = networkHandler;
 
         try {
@@ -49,7 +48,9 @@ public class MainJFrame extends javax.swing.JFrame {
         soundEngine = new SoundEngine();
     }
 
-    private void createGame(final boolean isSinglePlayer) throws HeadlessException {
+    private void createGame(final boolean isHost, final boolean isSinglePlayer) throws HeadlessException {
+        setupMessageHandler(isHost, isSinglePlayer);
+
         try {
             tetrisController.startServer();
             tetrisController.connectToServer(tetrisController.getServerIP(), TetrisController.SERVER_PORT, txtNickname.getText());
@@ -247,26 +248,27 @@ public class MainJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnStartGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartGameActionPerformed
-        createGame(true);
+        createGame(true,true);
     }//GEN-LAST:event_btnStartGameActionPerformed
 
     private void btnCreateGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateGameActionPerformed
-        createGame(false);
+        createGame(true,false);
     }//GEN-LAST:event_btnCreateGameActionPerformed
 
     private void btnJoinGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinGameActionPerformed
         final String ip = JOptionPane.showInputDialog(null, "Eingabe der IP");
+        setupMessageHandler(false, false);
         tetrisController.connectToServer(ip, TetrisController.SERVER_PORT, txtNickname.getText());
     }
 
-    private void setupMessageHandler() {
+    private void setupMessageHandler(final boolean isHost, final boolean isSinglePlayer) {
         tetrisController.addObserver(new Observer() {
 
             @Override
             public void update(Observable o, Object o1) {
                 switch ((TetrisController.UpdateType) o1) {
                     case CONNECTION_ESTABLISHED:
-                        showLobby(true, false);
+                        showLobby(isHost, isSinglePlayer);
                         break;
                     case EXCEPTION_THROWN:
                         JOptionPane.showMessageDialog(MainJFrame.this, tetrisController.getThrownException(), "Exception", JOptionPane.ERROR_MESSAGE);
