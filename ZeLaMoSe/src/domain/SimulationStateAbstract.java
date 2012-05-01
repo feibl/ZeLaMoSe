@@ -14,6 +14,6 @@ import java.util.Observable;
 abstract public class SimulationStateAbstract extends Observable {
     abstract public Action getSimulationState();
     public enum UpdateType {
-        LASTACTION, GARBAGELINE
+        LASTACTION, ACTIONFOROTHERS
     }
 }

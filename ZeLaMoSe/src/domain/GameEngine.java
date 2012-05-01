@@ -7,8 +7,10 @@ package domain;
 import domain.actions.*;
 import domain.block.BlockAbstract;
 import domain.block.GarbageBlock;
+import domain.block.MirrorBlock;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -21,7 +23,7 @@ import java.util.Random;
 public class GameEngine extends GameEngineAbstract {
 
     private Action lastAction;
-    private GarbageLineAction lastGarbageLineAction;
+    private Action lastActionForOthers;
     private int sessionId;
     private BlockAbstract[][] grid;
     private int gridWidth = Config.gridWidth, gridHeight = Config.gridHeight;
@@ -36,6 +38,9 @@ public class GameEngine extends GameEngineAbstract {
     private String nickName = "";
     private int level;
     private int totalRemovedLines;
+    private List<BlockAbstract> mirrorBlockList = new ArrayList<BlockAbstract>();
+    private int mirrorCounterFromAction = 0;
+    private int mirrorCounterFromLocal = 0;
     
     public GameEngine(int sessionId, long seed) {
         this(sessionId, seed, new BlockQueue(seed));
@@ -106,6 +111,10 @@ public class GameEngine extends GameEngineAbstract {
                 case ROTATION:
                     handleRotateAction((RotateAction) action);
                     break;
+                case MIRROR:
+                    setLastAction(action);
+                    ++mirrorCounterFromAction;
+                    break;
                 case HARDDROP:
                     handleHardDropAction();
                     break;
@@ -126,8 +135,8 @@ public class GameEngine extends GameEngineAbstract {
     }
     
     @Override
-    public GarbageLineAction getlastGarbageLineAction() {
-        return lastGarbageLineAction;
+    public Action getlastActionForOthers() {
+        return lastActionForOthers;
     }
     
     private void calculatePlayerStats(ArrayList<Integer> linesToRemove) {
@@ -348,6 +357,16 @@ public class GameEngine extends GameEngineAbstract {
         for (Integer lineToRemove : linesToRemove) {
             //remove the lineToRemove line
             for (int x = 0; x < gridWidth; x++) {
+                if (grid[x][lineToRemove] instanceof MirrorBlock) {
+                    if(mirrorCounterFromLocal == mirrorCounterFromAction ){
+                        mirrorCounterFromAction = ++mirrorCounterFromLocal;
+                        lastActionForOthers = new MirrorAction(0);
+                        setChanged();
+                        notifyObservers(UpdateType.ACTIONFOROTHERS);
+                    }else {
+                        mirrorCounterFromLocal++;
+                    }
+                }
                 grid[x][lineToRemove] = null;
             }
 
@@ -379,9 +398,9 @@ public class GameEngine extends GameEngineAbstract {
                 garbageLines[x][y] = garbageBlock;
             }
         }
-        lastGarbageLineAction = new GarbageLineAction(0, garbageLines);
+        lastActionForOthers = new GarbageLineAction(0, garbageLines);
         setChanged();
-        notifyObservers(UpdateType.GARBAGELINE);
+        notifyObservers(UpdateType.ACTIONFOROTHERS);
     }
 
     private void handleGarbageLineAction(GarbageLineAction action) {

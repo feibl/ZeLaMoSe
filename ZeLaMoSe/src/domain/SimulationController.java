@@ -134,7 +134,7 @@ public class SimulationController implements StepInterface, Observer {
         return gameEngines.get(sessionId);
     }
 
-    public void addGarbageLineAction(Integer sessionFrom, GarbageLineAction action) {
+    public void addActionForOthers(Integer sessionFrom, Action action) {
         for (int session : sessions.keySet()) {
             if (session != sessionFrom) {
                 gameEngines.get(session).handleAction(action);
@@ -142,10 +142,11 @@ public class SimulationController implements StepInterface, Observer {
         }
     }
 
+    
     @Override
     public void update(Observable o, Object arg) {
-     if ((SimulationStateAbstract.UpdateType)arg == SimulationStateAbstract.UpdateType.GARBAGELINE) {
-            addGarbageLineAction(((GameEngineAbstract)o).getSessionID(),((GameEngineAbstract)o).getlastGarbageLineAction());
+     if ((SimulationStateAbstract.UpdateType)arg == SimulationStateAbstract.UpdateType.ACTIONFOROTHERS) {
+            addActionForOthers(((GameEngineAbstract)o).getSessionID(),((GameEngineAbstract)o).getlastActionForOthers());
         }
     }
     

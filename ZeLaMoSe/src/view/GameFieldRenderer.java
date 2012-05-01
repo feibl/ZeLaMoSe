@@ -10,12 +10,12 @@ import domain.actions.*;
 import domain.actions.RotateAction.Direction;
 import domain.block.BlockAbstract;
 import domain.block.GarbageBlock;
-import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GL;
@@ -32,16 +32,18 @@ import javax.media.opengl.glu.GLU;
 class GameFieldRenderer implements GLEventListener, Observer {
 
     private boolean debug = false;
+    private long currentMirrorTime;
     private volatile boolean isAnimating = false;
     private ConcurrentLinkedQueue<Action> actionQueue;
+    private final int timeToMirror = 15000;
     private int viewPortWidth, viewPortHeight, blockSize;
     private SimulationStateAbstract gameEngine;
     private BlockAbstract currentBlock;
     private final int defaultX = 4, defaultY = 23;
     private volatile BlockAbstract[][] grid;
-    private Color backGroundColor = Color.BLACK;
-
+    private AtomicBoolean mirror;
     public GameFieldRenderer(int blocksize, SimulationStateAbstract gameEngine) {
+        this.mirror = new AtomicBoolean(false);
         this.viewPortWidth = Config.gridWidth * blocksize;
         this.viewPortHeight = (Config.gridHeight - 2) * blocksize;
         this.blockSize = blocksize;
@@ -68,7 +70,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
         if (debug) {
             glu.gluOrtho2D(-100, viewPortWidth + 100, -100, viewPortHeight + 100);
         } else {
-            glu.gluOrtho2D(0, viewPortWidth, 0, viewPortHeight);
+            glu.gluOrtho2D(0,viewPortWidth, 0,viewPortHeight);
         }
     }
 
@@ -76,12 +78,32 @@ class GameFieldRenderer implements GLEventListener, Observer {
     public void dispose(GLAutoDrawable drawable) {
     }
 
+    private void mirrorField(GL2 gl){
+        gl.glLoadIdentity();
+        GLU glu = new GLU();
+        glu.gluOrtho2D(viewPortWidth, 0, viewPortHeight,0 );
+    }
+    
+    private void normalizeField(GL2 gl){
+        gl.glLoadIdentity();
+        GLU glu = new GLU();
+        glu.gluOrtho2D(0,viewPortWidth, 0,viewPortHeight);
+    }
+    
     @Override
     public void display(GLAutoDrawable drawable) {
         GL2 gl = drawable.getGL().getGL2();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
-
+        if(mirror.getAndSet(false)){
+             mirrorField(gl);
+             currentMirrorTime = System.currentTimeMillis();
+        } else {
+            if(currentMirrorTime!= 0 && (System.currentTimeMillis() - currentMirrorTime) >= timeToMirror){
+                normalizeField(gl);
+                currentMirrorTime = 0;
+            }
+        }
         drawBlockStack(gl);
         if (currentBlock != null) {
             drawCurrentBlock(gl);
@@ -229,6 +251,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 currentBlock.setY(currentBlock.getY() - action.getSpeed());
                 break;
             case LEFT:
+
                 currentBlock.setX(currentBlock.getX() - action.getSpeed());
                 break;
             case RIGHT:
@@ -384,6 +407,9 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 break;
             case GARBAGELINE:
                 handleGarbageLineAction(((GarbageLineAction) action).getLines());
+                break;
+            case MIRROR:
+                mirror.set(true);
                 break;
             case REMOVELINE:
                 isAnimating = true;

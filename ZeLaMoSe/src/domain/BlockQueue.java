@@ -7,6 +7,8 @@ package domain;
 import domain.block.BlockAbstract;
 import domain.block.BlockType;
 import domain.block.GarbageBlock;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -16,7 +18,7 @@ import java.util.Random;
 public class BlockQueue implements BlockQueueInterface {
 
     private Random randomGenerator;
-
+    private List<BlockType> blocksProbability;
     /**
      * initalise blockqueue with given seed to make sure it's always the same order
      *
@@ -25,13 +27,24 @@ public class BlockQueue implements BlockQueueInterface {
      */
     public BlockQueue(long seed) {
         randomGenerator = new Random(seed);
+        fillBlockList();
     }
 
+    @Override
     public BlockAbstract getNextBlock() {
-        BlockAbstract returnValue = null;
-        do {
-            returnValue = (BlockType.values()[randomGenerator.nextInt(BlockType.values().length)]).createBlock();
-        } while (returnValue instanceof GarbageBlock);
+        BlockAbstract returnValue;
+        returnValue = blocksProbability.get(randomGenerator.nextInt(blocksProbability.size())).createBlock();
         return returnValue;
     }
+
+    private void fillBlockList() {
+        blocksProbability = new ArrayList<BlockType>();
+        for(BlockType blockType : BlockType.values()){
+            for(int i = 0; i < blockType.getProbability(); i++){
+                blocksProbability.add(blockType);
+            }
+        }
+    }
+    
+    
 }
