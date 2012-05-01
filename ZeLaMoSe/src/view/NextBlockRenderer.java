@@ -22,11 +22,10 @@ import javax.media.opengl.glu.GLU;
  * @author Cyrill Lam <clam@hsr.ch>
  */
 class NextBlockRenderer implements GLEventListener, Observer {
-    
-    
+
     private SimulationStateAbstract gameEngine;
     private BlockAbstract nextBlock;
-    private int blockSize=40;
+    private int blockSize = 40;
 
     public NextBlockRenderer(SimulationStateAbstract gameEngine) {
         this.gameEngine = gameEngine;
@@ -56,9 +55,9 @@ class NextBlockRenderer implements GLEventListener, Observer {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         drawBlock(gl);
         drawGridLines(gl);
-        
+
     }
-    
+
     private void drawGridLines(GL2 gl) {
 
 
@@ -94,29 +93,29 @@ class NextBlockRenderer implements GLEventListener, Observer {
 
     @Override
     public void update(Observable o, Object o1) {
-        nextBlock = ((GameEngine)o).getNextBlock();
+        nextBlock = ((GameEngine) o).getNextBlock();
     }
 
     private void drawBlock(GL2 gl) {
 
-        gl.glColor3f(nextBlock.getGlRed(), nextBlock.getGlGreen(), nextBlock.getGlBlue());
+        if (nextBlock != null) {
+            gl.glColor3f(nextBlock.getGlRed(), nextBlock.getGlGreen(), nextBlock.getGlBlue());
 
-        gl.glBegin(GL2.GL_QUADS);
-        int x = nextBlock.getX();
-        int y = nextBlock.getY();
-        BlockAbstract[][] grid = nextBlock.getGrid();
-        for (int a = 0; a < grid.length; a++) {
-            for (int b = 0; b < grid.length; b++) {
-                if (grid[a][b] != null) {
-                    gl.glVertex2i(blockSize * (x + a), blockSize * (y - b + 4));
-                    gl.glVertex2i(blockSize * (x + a), blockSize * (y - b+3));
-                    gl.glVertex2i(blockSize * (x + 1 + a), blockSize * (y - b+3));
-                    gl.glVertex2i(blockSize * (x + 1 + a), blockSize * (y - b + 4));
+            gl.glBegin(GL2.GL_QUADS);
+            int x = nextBlock.getX();
+            int y = nextBlock.getY();
+            BlockAbstract[][] grid = nextBlock.getGrid();
+            for (int a = 0; a < grid.length; a++) {
+                for (int b = 0; b < grid.length; b++) {
+                    if (grid[a][b] != null) {
+                        gl.glVertex2i(blockSize * (x + a), blockSize * (y - b + 4));
+                        gl.glVertex2i(blockSize * (x + a), blockSize * (y - b + 3));
+                        gl.glVertex2i(blockSize * (x + 1 + a), blockSize * (y - b + 3));
+                        gl.glVertex2i(blockSize * (x + 1 + a), blockSize * (y - b + 4));
+                    }
                 }
             }
+            gl.glEnd();
         }
-        gl.glEnd();
     }
-    
-    
 }

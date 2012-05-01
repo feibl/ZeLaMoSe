@@ -10,7 +10,6 @@ import domain.actions.*;
 import domain.actions.RotateAction.Direction;
 import domain.block.BlockAbstract;
 import domain.block.GarbageBlock;
-import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
@@ -39,7 +38,6 @@ class GameFieldRenderer implements GLEventListener, Observer {
     private BlockAbstract currentBlock;
     private final int defaultX = 4, defaultY = 23;
     private volatile BlockAbstract[][] grid;
-    private Color backGroundColor = Color.BLACK;
 
     public GameFieldRenderer(int blocksize, SimulationStateAbstract gameEngine) {
         this.viewPortWidth = Config.gridWidth * blocksize;
