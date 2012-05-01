@@ -38,7 +38,7 @@ public class NetworkHandler extends NetworkHandlerAbstract {
     @Override
     public void processStep() {
         try {
-            Collection<Step> steps = stepQueue.poll(2000, TimeUnit.MILLISECONDS);
+            Collection<Step> steps = stepQueue.poll(5000, TimeUnit.MILLISECONDS);
             if (steps != null) {
                 for (Step step : steps) {
                     lastStep = step;

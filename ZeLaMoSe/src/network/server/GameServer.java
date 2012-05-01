@@ -207,7 +207,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
                 //blocated
                 //currentNumberOfReceivedSteps.acquire(sessionList.size());
                 //not blocated
-                allStepsReceived = currentNumberOfReceivedSteps.tryAcquire(sessionList.size(), 1000, TimeUnit.MILLISECONDS);
+                allStepsReceived = currentNumberOfReceivedSteps.tryAcquire(sessionList.size(), 5000, TimeUnit.MILLISECONDS);
                 aquireComplete = true;
             } catch (InterruptedException ex) {
                 Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
