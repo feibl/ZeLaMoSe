@@ -355,7 +355,7 @@ public class GameEngine extends GameEngineAbstract {
         for (Integer lineToRemove : linesToRemove) {
             //remove the lineToRemove line
             for (int x = 0; x < gridWidth; x++) {
-                if (grid[x][lineToRemove] instanceof MirrorBlock) {
+                if (grid[x][lineToRemove] instanceof MirrorBlock && checkIfBlockOccurencesRemoved(grid[x][lineToRemove])) {
                     int blockNumber = grid[x][lineToRemove].getBlockNumber();
                     if(!specialBlockList.contains(blockNumber) ){
                         lastActionForOthers = new MirrorAction(0,blockNumber);
@@ -427,5 +427,20 @@ public class GameEngine extends GameEngineAbstract {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    private boolean checkIfBlockOccurencesRemoved(BlockAbstract block) {
+        int counter = 0;
+        for (int x = 0; x < gridWidth; x++) {
+            for (int y = 0; y < gridHeight; y++) {
+                if (grid[x][y] == block) {
+                    counter++;
+                    if (counter > 1) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 }
