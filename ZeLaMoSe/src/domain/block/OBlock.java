@@ -13,8 +13,8 @@ import java.awt.Color;
  */
 public class OBlock extends BlockAbstract {
 
-    public OBlock() {
-        super(new Color(255, 255, 0), "O", new NoWallKick());
+    public OBlock(int blockNumber) {
+        super(new Color(255, 255, 0), "O", new NoWallKick(),blockNumber);
     }
 
     @Override

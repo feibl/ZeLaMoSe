@@ -19,6 +19,7 @@ public class BlockQueue implements BlockQueueInterface {
 
     private Random randomGenerator;
     private List<BlockType> blocksProbability;
+    private int blockCounter;
     /**
      * initalise blockqueue with given seed to make sure it's always the same order
      *
@@ -27,13 +28,14 @@ public class BlockQueue implements BlockQueueInterface {
      */
     public BlockQueue(long seed) {
         randomGenerator = new Random(seed);
+        blockCounter = 0;
         fillBlockList();
     }
 
     @Override
     public BlockAbstract getNextBlock() {
         BlockAbstract returnValue;
-        returnValue = blocksProbability.get(randomGenerator.nextInt(blocksProbability.size())).createBlock();
+        returnValue = blocksProbability.get(randomGenerator.nextInt(blocksProbability.size())).createBlock(++blockCounter);
         return returnValue;
     }
 

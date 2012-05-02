@@ -14,8 +14,8 @@ import java.awt.Color;
  */
 public class GarbageBlock extends BlockAbstract {
 
-    public GarbageBlock() {
-        super(Color.GRAY, "G", new NoWallKick());
+    public GarbageBlock(int blockNumber) {
+        super(Color.GRAY, "G", new NoWallKick(),blockNumber);
     }
     
     

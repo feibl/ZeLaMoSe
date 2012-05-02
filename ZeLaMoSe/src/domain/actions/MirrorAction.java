@@ -9,8 +9,14 @@ package domain.actions;
  * @author Patrick Zenhäusern
  */
 public class MirrorAction extends Action {
-        public MirrorAction(long timestamp) {
+    private int blockNumber;
+        public MirrorAction(long timestamp, int blockNumber) {
         super(ActionType.MIRROR, timestamp);
+        this.blockNumber = blockNumber;
+    }
+
+    public int getBlockNumber() {
+        return blockNumber;
     }
 
 }

@@ -13,8 +13,8 @@ import java.awt.Color;
  */
 public class LBlock extends BlockAbstract {
 
-    public LBlock() {
-        super(new Color(255, 170, 0), "L", new GeneralWallKick());
+    public LBlock(int blockNumber) {
+        super(new Color(255, 170, 0), "L", new GeneralWallKick(), blockNumber);
     }
 
     @Override

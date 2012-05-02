@@ -4,6 +4,7 @@
  */
 package domain.block;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,12 +20,12 @@ public enum BlockType {
     
     private final Class className;
     private final int probability;
-    public BlockAbstract createBlock() {
+    public BlockAbstract createBlock(int blockNumber) {
         try {
-            return (BlockAbstract)className.newInstance();
-        } catch (InstantiationException ex) {
-            Logger.getLogger(BlockType.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
+            Constructor c = className.getConstructor(new Class[]{Integer.TYPE});
+            
+            return (BlockAbstract)(c.newInstance(new Object[]{blockNumber}));
+        }catch (Exception ex) {
             Logger.getLogger(BlockType.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;

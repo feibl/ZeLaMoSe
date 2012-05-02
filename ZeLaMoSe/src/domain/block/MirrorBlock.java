@@ -14,28 +14,31 @@ import java.awt.Color;
  */
 public class MirrorBlock extends BlockAbstract {
 
-    public MirrorBlock() {
-        super(Color.black, "M", new NoWallKick());
+    public MirrorBlock(int blockNumber) {
+        super(Color.white, "M", new NoWallKick(),blockNumber);
     }
     
     @Override
     protected void rotation0(BlockAbstract[][] grid) {
         grid[0][0] = this;
+        grid[2][0] = this;
+        grid[2][2] = this;
+        grid[0][2] = this;
     }
 
     @Override
     protected void rotation90(BlockAbstract[][] grid) {
-        grid[1][1] = this;
+        rotation0(grid);
     }
 
     @Override
     protected void rotation180(BlockAbstract[][] grid) {
-        grid[2][2] = this;
+        rotation0(grid);
     }
 
     @Override
     protected void rotation270(BlockAbstract[][] grid) {
-       grid[3][3] = this;
+       rotation0(grid);
     }
     
 }

@@ -38,9 +38,7 @@ public class GameEngine extends GameEngineAbstract {
     private String nickName = "";
     private int level;
     private int totalRemovedLines;
-    private List<BlockAbstract> mirrorBlockList = new ArrayList<BlockAbstract>();
-    private int mirrorCounterFromAction = 0;
-    private int mirrorCounterFromLocal = 0;
+    private List<Integer> specialBlockList = new ArrayList<Integer>();
     
     public GameEngine(int sessionId, long seed) {
         this(sessionId, seed, new BlockQueue(seed));
@@ -113,7 +111,7 @@ public class GameEngine extends GameEngineAbstract {
                     break;
                 case MIRROR:
                     setLastAction(action);
-                    ++mirrorCounterFromAction;
+                    specialBlockList.add(((MirrorAction)action).getBlockNumber());
                     break;
                 case HARDDROP:
                     handleHardDropAction();
@@ -347,7 +345,7 @@ public class GameEngine extends GameEngineAbstract {
             setLastAction(moveAction);
         }
     }
-
+    
     private void removeLines(ArrayList<Integer> linesToRemove) {
         if (linesToRemove.size() > 1) {
             createGarbageLineAction(linesToRemove.size() - 1);
@@ -358,13 +356,12 @@ public class GameEngine extends GameEngineAbstract {
             //remove the lineToRemove line
             for (int x = 0; x < gridWidth; x++) {
                 if (grid[x][lineToRemove] instanceof MirrorBlock) {
-                    if(mirrorCounterFromLocal == mirrorCounterFromAction ){
-                        mirrorCounterFromAction = ++mirrorCounterFromLocal;
-                        lastActionForOthers = new MirrorAction(0);
+                    int blockNumber = grid[x][lineToRemove].getBlockNumber();
+                    if(!specialBlockList.contains(blockNumber) ){
+                        lastActionForOthers = new MirrorAction(0,blockNumber);
                         setChanged();
                         notifyObservers(UpdateType.ACTIONFOROTHERS);
-                    }else {
-                        mirrorCounterFromLocal++;
+                        specialBlockList.add(blockNumber);
                     }
                 }
                 grid[x][lineToRemove] = null;
@@ -389,7 +386,7 @@ public class GameEngine extends GameEngineAbstract {
         BlockAbstract[][] garbageLines = new BlockAbstract[gridWidth][numberOfLines];
 
         int emptyXPosition = randomGarbageLineGenerator.nextInt(gridWidth);
-        GarbageBlock garbageBlock = new GarbageBlock();
+        GarbageBlock garbageBlock = new GarbageBlock(Integer.MAX_VALUE);
         for (int x = 0; x < gridWidth; ++x) {
             if (x == emptyXPosition) {
                 continue;

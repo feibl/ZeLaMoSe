@@ -7,6 +7,7 @@ package domain;
 import domain.fake.FakeBlockQueue;
 import domain.actions.RotateAction;
 import domain.block.BlockAbstract;
+import domain.block.GarbageBlock;
 import domain.block.OBlock;
 import org.junit.After;
 import org.junit.Before;
@@ -34,7 +35,7 @@ public abstract class WallKickTest {
     protected FakeBlockQueue fakeQueue;
     protected BlockAbstract[][] expectedGrid;
     protected BlockAbstract[][] actualGrid;
-    protected OBlock dummyBlock;
+    protected GarbageBlock dummyBlock;
 
     protected void addBlockToExpectedGrid(BlockAbstract block, int x, int y) {
         expectedGrid[x][y] = block;
@@ -75,7 +76,7 @@ public abstract class WallKickTest {
         gameEngine = new GameEngine(12345, 1, fakeQueue);
         gameEngine.startGame();
         actualGrid = gameEngine.getGrid();
-        dummyBlock = new OBlock();
+        dummyBlock = new GarbageBlock(Integer.MAX_VALUE);
         System.out.println("Start " + testName.getMethodName() + "----------------------------------");
     }
 

@@ -18,8 +18,8 @@ public class IWallKickTest extends WallKickTest {
     @Override
     protected void fillInFakes() {
         //Do not change the reihenfolge
-        fakeQueue.blocklist.add(new IBlock());
-        fakeQueue.blocklist.add(new IBlock());
+        fakeQueue.blocklist.add(new IBlock(1));
+        fakeQueue.blocklist.add(new IBlock(2));
     }
 
     @Override
