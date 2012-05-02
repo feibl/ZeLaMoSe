@@ -19,7 +19,11 @@ public class ShadowBlock extends BlockAbstract implements SpecialBlockInterface 
     
     @Override
     protected void rotation0(BlockAbstract[][] grid) {
+        //grid[0][0] = this;
         grid[0][0] = this;
+        grid[1][1] = this;
+        grid[2][2] = this;
+        grid[3][3] = this;
     }
 
     @Override

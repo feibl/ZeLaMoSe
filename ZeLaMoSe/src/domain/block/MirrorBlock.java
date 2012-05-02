@@ -19,7 +19,11 @@ public class MirrorBlock extends BlockAbstract implements SpecialBlockInterface 
     
     @Override
     protected void rotation0(BlockAbstract[][] grid) {
+       // grid[0][0] = this;
         grid[0][0] = this;
+        grid[2][0] = this;
+        grid[0][2] = this;
+        grid[2][2] = this;
     
     }
 
