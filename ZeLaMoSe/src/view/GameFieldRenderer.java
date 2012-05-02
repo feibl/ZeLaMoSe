@@ -418,9 +418,14 @@ class GameFieldRenderer implements GLEventListener, Observer {
             case GAMEOVER:
                 handleGameOverAction();
                 break;
+            case CLEAR:
+                initStackGrid();
+                break;
         }
         if (debug) {
             System.out.println("GLREnderer: actiontype " + action.getType() + " processed");
         }
     }
+
+
 }

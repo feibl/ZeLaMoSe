@@ -69,6 +69,16 @@ public class FakeGameEngine extends GameEngineAbstract {
        return null;
     }
 
+    @Override
+    public void setNumberOfJokers(int numberOfJokers) {
+        
+    }
+
+    @Override
+    public int getNumberOfJokers() {
+       return 0;
+    }
+
   
     
 }

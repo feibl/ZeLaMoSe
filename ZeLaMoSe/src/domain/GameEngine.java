@@ -38,6 +38,7 @@ public class GameEngine extends GameEngineAbstract {
     private String nickName = "";
     private int level;
     private int totalRemovedLines;
+    private int numberOfJokers;
     private List<Integer> specialBlockList = new ArrayList<Integer>();
     
     public GameEngine(int sessionId, long seed) {
@@ -122,6 +123,13 @@ public class GameEngine extends GameEngineAbstract {
                 case GAMEOVER:
                     gameOver = true;
                     setLastAction(new GameOverAction(0));
+                    break;
+                case CLEAR:
+                    if (numberOfJokers > 0) {
+                        --numberOfJokers;
+                        clearGrid();
+                        setLastAction(action);
+                        }
                     break;
             }
         }
@@ -443,4 +451,23 @@ public class GameEngine extends GameEngineAbstract {
         }
         return true;
     }
+
+    private void clearGrid() {
+        for (int x = 0; x < gridWidth; x++) {
+            for (int y = 0; y < gridHeight; y++) {
+                   grid[x][y] = null;
+            }
+        }
+    }
+
+    @Override
+    public void setNumberOfJokers(int numberOfJokers) {
+        this.numberOfJokers = numberOfJokers;
+    }
+    
+    @Override
+    public int getNumberOfJokers() {
+       return this.numberOfJokers;
+    }
+       
 }
