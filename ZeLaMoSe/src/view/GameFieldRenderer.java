@@ -32,18 +32,22 @@ import javax.media.opengl.glu.GLU;
 class GameFieldRenderer implements GLEventListener, Observer {
 
     private boolean debug = false;
-    private long currentMirrorTime;
+    private long currentMirrorTime = 0;
+    private long currentShadowTime = 0;
     private volatile boolean isAnimating = false;
     private ConcurrentLinkedQueue<Action> actionQueue;
     private final int timeToMirror = 15000;
+    private final int timeToShadow = 15000;
     private int viewPortWidth, viewPortHeight, blockSize;
     private SimulationStateAbstract gameEngine;
     private BlockAbstract currentBlock;
     private final int defaultX = 4, defaultY = 23;
     private volatile BlockAbstract[][] grid;
     private AtomicBoolean mirror;
+    private AtomicBoolean shadow;
     public GameFieldRenderer(int blocksize, SimulationStateAbstract gameEngine) {
         this.mirror = new AtomicBoolean(false);
+        this.shadow = new AtomicBoolean(false);
         this.viewPortWidth = Config.gridWidth * blocksize;
         this.viewPortHeight = (Config.gridHeight - 2) * blocksize;
         this.blockSize = blocksize;
@@ -83,12 +87,12 @@ class GameFieldRenderer implements GLEventListener, Observer {
         GLU glu = new GLU();
         glu.gluOrtho2D(viewPortWidth, 0, viewPortHeight,0 );
     }
-    
-    private void normalizeField(GL2 gl){
+      private void normalizeMirrorField(GL2 gl){
         gl.glLoadIdentity();
         GLU glu = new GLU();
         glu.gluOrtho2D(0,viewPortWidth, 0,viewPortHeight);
     }
+      
     
     @Override
     public void display(GLAutoDrawable drawable) {
@@ -100,11 +104,28 @@ class GameFieldRenderer implements GLEventListener, Observer {
              currentMirrorTime = System.currentTimeMillis();
         } else {
             if(currentMirrorTime!= 0 && (System.currentTimeMillis() - currentMirrorTime) >= timeToMirror){
-                normalizeField(gl);
+                normalizeMirrorField(gl);
                 currentMirrorTime = 0;
             }
         }
-        drawBlockStack(gl);
+        
+        if(shadow.getAndSet(false)){
+             drawBlockStack(gl,true);
+             currentShadowTime = System.currentTimeMillis();
+        } else {
+            if (currentShadowTime  == 0) {
+                drawBlockStack(gl,false);
+            }
+            else if( (System.currentTimeMillis() - currentShadowTime) >= timeToShadow){
+                drawBlockStack(gl,false);
+                currentShadowTime = 0;
+            } else {
+                drawBlockStack(gl,true);
+            } 
+        }       
+        
+        
+        
         if (currentBlock != null) {
             drawCurrentBlock(gl);
         }
@@ -198,13 +219,14 @@ class GameFieldRenderer implements GLEventListener, Observer {
         }
     }
 
-    private void drawBlockStack(GL2 gl) {
+    private void drawBlockStack(GL2 gl,boolean allBlackEverything) {
 
         for (int i = 0; i < Config.gridWidth; i++) {
             for (int j = 0; j < Config.gridHeight; j++) {
 
                 BlockAbstract block = grid[i][j];
-                if (block != null) {
+ 
+                if (block != null && !allBlackEverything) {
                     gl.glColor3f(block.getGlRed(), block.getGlGreen(), block.getGlBlue());
                 } else {
                     gl.glColor3f(0, 0, 0);
@@ -410,6 +432,9 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 break;
             case MIRROR:
                 mirror.set(true);
+                break;
+            case SHADOW:
+                shadow.set(true);
                 break;
             case REMOVELINE:
                 isAnimating = true;

@@ -8,9 +8,9 @@ package domain.actions;
  *
  * @author Patrick Zenhäusern
  */
-public class MirrorAction extends ActionForOthersAbstract {
+public class ShadowAction extends ActionForOthersAbstract {
 
-    public MirrorAction(long timestamp, int blockNumber) {
-        super(timestamp, blockNumber, ActionType.MIRROR);
+    public ShadowAction(long timestamp, int blockNumber) {
+        super(timestamp, blockNumber, ActionType.SHADOW);
     }
 }

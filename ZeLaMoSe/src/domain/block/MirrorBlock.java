@@ -11,7 +11,7 @@ import java.awt.Color;
  *
  * @author Cyrill Lam <clam@hsr.ch>
  */
-public class MirrorBlock extends BlockAbstract {
+public class MirrorBlock extends BlockAbstract implements SpecialBlockInterface {
 
     public MirrorBlock(int blockNumber) {
         super(Color.white, "M", new NoWallKick(),blockNumber);
@@ -20,9 +20,7 @@ public class MirrorBlock extends BlockAbstract {
     @Override
     protected void rotation0(BlockAbstract[][] grid) {
         grid[0][0] = this;
-        grid[2][0] = this;
-        grid[2][2] = this;
-        grid[0][2] = this;
+    
     }
 
     @Override

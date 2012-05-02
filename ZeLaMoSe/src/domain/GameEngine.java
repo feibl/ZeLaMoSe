@@ -5,9 +5,7 @@
 package domain;
 
 import domain.actions.*;
-import domain.block.BlockAbstract;
-import domain.block.GarbageBlock;
-import domain.block.MirrorBlock;
+import domain.block.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -39,7 +37,7 @@ public class GameEngine extends GameEngineAbstract {
     private int level;
     private int totalRemovedLines;
     private int numberOfJokers;
-    private List<Integer> specialBlockList = new ArrayList<Integer>();
+    private List<Integer> blockActionsFromOthers = new ArrayList<Integer>();
     
     public GameEngine(int sessionId, long seed) {
         this(sessionId, seed, new BlockQueue(seed));
@@ -111,8 +109,9 @@ public class GameEngine extends GameEngineAbstract {
                     handleRotateAction((RotateAction) action);
                     break;
                 case MIRROR:
+                case SHADOW:
                     setLastAction(action);
-                    specialBlockList.add(((MirrorAction)action).getBlockNumber());
+                    blockActionsFromOthers.add(((ActionForOthersAbstract)action).getBlockNumber());
                     break;
                 case HARDDROP:
                     handleHardDropAction();
@@ -363,13 +362,17 @@ public class GameEngine extends GameEngineAbstract {
         for (Integer lineToRemove : linesToRemove) {
             //remove the lineToRemove line
             for (int x = 0; x < gridWidth; x++) {
-                if (grid[x][lineToRemove] instanceof MirrorBlock && checkIfBlockOccurencesRemoved(grid[x][lineToRemove])) {
+                if (grid[x][lineToRemove] instanceof SpecialBlockInterface && checkIfBlockOccurencesRemoved(grid[x][lineToRemove])) {
                     int blockNumber = grid[x][lineToRemove].getBlockNumber();
-                    if(!specialBlockList.contains(blockNumber) ){
-                        lastActionForOthers = new MirrorAction(0,blockNumber);
+                    if(!blockActionsFromOthers.contains(blockNumber) ){
+                        if (grid[x][lineToRemove] instanceof MirrorBlock) {
+                            lastActionForOthers = new MirrorAction(0,blockNumber);
+                        } else if  (grid[x][lineToRemove] instanceof ShadowBlock) {
+                            lastActionForOthers = new ShadowAction(0,blockNumber);
+                        }
                         setChanged();
                         notifyObservers(UpdateType.ACTIONFOROTHERS);
-                        specialBlockList.add(blockNumber);
+                        blockActionsFromOthers.add(blockNumber);
                     }
                 }
                 grid[x][lineToRemove] = null;
@@ -433,6 +436,7 @@ public class GameEngine extends GameEngineAbstract {
         return nickName;
     }
 
+    @Override
     public void setNickName(String nickName) {
         this.nickName = nickName;
     }
