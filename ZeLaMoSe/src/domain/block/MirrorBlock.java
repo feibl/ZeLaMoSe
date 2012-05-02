@@ -5,7 +5,6 @@
 package domain.block;
 
 import domain.block.wallkick.NoWallKick;
-import domain.block.wallkick.WallKickAbstract;
 import java.awt.Color;
 
 /**
@@ -40,5 +39,25 @@ public class MirrorBlock extends BlockAbstract {
     protected void rotation270(BlockAbstract[][] grid) {
        rotation0(grid);
     }
+
+    @Override
+    public float getGlBlue() {
+        glBlue=(glBlue+0.015f)%1;
+        return super.getGlBlue();
+    }
+
+    @Override
+    public float getGlGreen() {
+        glGreen = (glGreen+0.01f)%1;
+        return super.getGlGreen();
+    }
+
+    @Override
+    public float getGlRed() {
+        glRed = (glRed+0.016f)%1;
+        return super.getGlRed();
+    }
+    
+    
     
 }
