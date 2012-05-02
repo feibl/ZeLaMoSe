@@ -38,13 +38,18 @@ public class TetrisController extends Observable implements Observer {
     private boolean gameStarted = false;
     private boolean gameRunning;
     private Object exception;
-
+    private int numberOfJokers;
+    
     public Object getThrownException() {
         return exception;
     }
 
     public String getServerIP() {
         return serverIP;
+    }
+
+    public void setNumberOfJokers(int numberOfJokers) {
+        this.numberOfJokers = numberOfJokers;
     }
 
     public enum UpdateType {
@@ -123,8 +128,8 @@ public class TetrisController extends Observable implements Observer {
         networkHandler.disconnectFromServer();
     }
 
-    public void startGame() {
-        gameServer.startGame();
+    public void startGame(int numberOfJokers) {
+        gameServer.startGame(numberOfJokers);
     }
 
     @Override
@@ -156,8 +161,9 @@ public class TetrisController extends Observable implements Observer {
             case INIT_SIGNAL:
                 stepGenerator.setSessionID(localSessionID);
                 long seed = networkHandler.getBlockQueueSeed();
+                int numberOfJokers = networkHandler.getNumberOfJokers();
                 for (Map.Entry<Integer, String> entry : sessionMap.entrySet()) {
-                    simulationController.addSession(entry.getKey(), entry.getValue(), new GameEngine(entry.getKey(), seed));
+                    simulationController.addSession(entry.getKey(), entry.getValue(), new GameEngine(entry.getKey(), seed,numberOfJokers));
                 }
 
                 setChanged();

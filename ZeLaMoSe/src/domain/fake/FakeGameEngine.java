@@ -70,11 +70,6 @@ public class FakeGameEngine extends GameEngineAbstract {
     }
 
     @Override
-    public void setNumberOfJokers(int numberOfJokers) {
-        
-    }
-
-    @Override
     public int getNumberOfJokers() {
        return 0;
     }

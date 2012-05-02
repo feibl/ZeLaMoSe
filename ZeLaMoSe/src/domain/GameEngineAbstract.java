@@ -17,7 +17,5 @@ abstract public class GameEngineAbstract extends SimulationStateAbstract impleme
     abstract public int getLevel();
     abstract public void setNickName(String nickName);
     abstract public Action getlastActionForOthers();
-    @Override
-    abstract public void setNumberOfJokers(int numberOfJokers);
     abstract public int getNumberOfJokers();
 }

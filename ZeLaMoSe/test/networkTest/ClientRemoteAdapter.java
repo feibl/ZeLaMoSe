@@ -37,10 +37,11 @@ public class ClientRemoteAdapter implements ClientRemoteInterface {
     }
 
     @Override
-    public void receiveInitSignal(long blockQueueSeed) throws RemoteException {
+    public void receiveInitSignal(long blockQueueSeed, int numberOfJokers) throws RemoteException {
     }
 
     @Override
     public void receiveSteps(Collection<Step> steps) throws RemoteException {
     }
+
 }

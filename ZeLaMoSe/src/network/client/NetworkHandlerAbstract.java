@@ -44,5 +44,7 @@ public abstract class NetworkHandlerAbstract extends Observable implements StepI
    
    public abstract long getBlockQueueSeed();
    
+   public abstract int getNumberOfJokers();
+   
    public abstract void sendReadySignal();
 }

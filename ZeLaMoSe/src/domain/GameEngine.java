@@ -39,11 +39,11 @@ public class GameEngine extends GameEngineAbstract {
     private int numberOfJokers;
     private List<Integer> blockActionsFromOthers = new ArrayList<Integer>();
     
-    public GameEngine(int sessionId, long seed) {
-        this(sessionId, seed, new BlockQueue(seed));
+    public GameEngine(int sessionId, long seed,int numberOfJokers) {
+        this(sessionId, seed, new BlockQueue(seed), numberOfJokers);
     }
 
-    public GameEngine(int sessionId, long seed, BlockQueueInterface fakeQueue) {
+    public GameEngine(int sessionId, long seed, BlockQueueInterface fakeQueue,int numberOfJokers) {
         this.sessionId = sessionId;
         grid = new BlockAbstract[gridWidth][gridHeight];
         queue = fakeQueue;
@@ -51,6 +51,7 @@ public class GameEngine extends GameEngineAbstract {
         level = 1;
         totalRemovedLines = 0;
         randomGarbageLineGenerator = new Random(seed);
+        this.numberOfJokers = numberOfJokers;
     }
 
     public BlockAbstract getNextBlock() {
@@ -464,11 +465,7 @@ public class GameEngine extends GameEngineAbstract {
         }
     }
 
-    @Override
-    public void setNumberOfJokers(int numberOfJokers) {
-        this.numberOfJokers = numberOfJokers;
-    }
-    
+   
     @Override
     public int getNumberOfJokers() {
        return this.numberOfJokers;

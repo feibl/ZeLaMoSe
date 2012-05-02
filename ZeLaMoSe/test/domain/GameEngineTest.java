@@ -69,7 +69,7 @@ public class GameEngineTest {
         fakeQueue = new FakeBlockQueue();
         initializeExpectedGrid();
         fillInFakes();
-        gameEngine = new GameEngine(12345, 1, fakeQueue);
+        gameEngine = new GameEngine(12345, 1, fakeQueue,0);
         gameEngine.startGame();
         System.out.println("Start " + testName.getMethodName() + "----------------------------------");
     }

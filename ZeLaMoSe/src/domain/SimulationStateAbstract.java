@@ -13,8 +13,6 @@ import java.util.Observable;
  */
 abstract public class SimulationStateAbstract extends Observable {
     abstract public Action getSimulationState();
-
-    abstract public void setNumberOfJokers(int numberOfJokers) ;
     public enum UpdateType {
         LASTACTION, ACTIONFOROTHERS
     }

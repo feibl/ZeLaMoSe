@@ -9,5 +9,5 @@ package network.server;
  * @author Fabian Senn <fsenn@hsr.ch>
  */
 public interface GameServerInterface {
-   public void startGame();
+   public void startGame(int numberOfJokers);
 }

@@ -43,7 +43,7 @@ public class ClientRemoteUnreachable implements ClientRemoteInterface {
     }
 
     @Override
-    public void receiveInitSignal(long blockQueueSeed) throws RemoteException {
+    public void receiveInitSignal(long blockQueueSeed, int numberOfJokers) throws RemoteException {
         throw new RemoteException();
     }
 }

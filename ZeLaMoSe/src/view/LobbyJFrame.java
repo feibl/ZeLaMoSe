@@ -58,7 +58,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
             }
         });
         if (isSinglePlayer) {
-            tetrisController.startGame();
+            tetrisController.startGame(0);
         } else {
             soundEngine = new SoundEngine();
             soundEngine.playBackgroundMusic(MusicFile.lobbyBackgroundMusic);
@@ -246,7 +246,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
   }//GEN-LAST:event_txtMessageActionPerformed
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-        tetrisController.startGame();
+        tetrisController.startGame((Integer)sprNumberOfJokersValue.getValue());
     }//GEN-LAST:event_btnStartActionPerformed
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
@@ -291,7 +291,6 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 
                 List<SimulationStateAbstract> otherSimulations = new ArrayList<SimulationStateAbstract>();
                 for (Integer sessionID : tetrisController.getSessionMap().keySet()) {
-                    tetrisController.getSession(sessionID).setNumberOfJokers((Integer)sprNumberOfJokersValue.getValue());
                     if (sessionID != tetrisController.getLocalSessionID()) {
                         otherSimulations.add(tetrisController.getSession(sessionID));
                     }
