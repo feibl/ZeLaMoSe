@@ -29,15 +29,15 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private TetrisController tetrisController;
     private SoundEngine soundEngine;
-    private NetworkHandlerAbstract networkHandler;
+    private ChatController chatController;
     private NameGenerator nameGenerator;
 
     /**
      * Creates new form frmMain
      */
-    public MainJFrame(TetrisController tetrisController, NetworkHandlerAbstract networkHandler) {
+    public MainJFrame(TetrisController tetrisController, domain.ChatController chatController) {
         this.tetrisController = tetrisController;
-        this.networkHandler = networkHandler;
+        this.chatController = chatController;
 
         try {
             nameGenerator = new NameGenerator("/resource/util/syllables.txt");
@@ -349,7 +349,7 @@ public class MainJFrame extends javax.swing.JFrame {
             public void run() {
                 InputSampler is = new InputSampler();
                 NetworkHandlerAbstract nh = new NetworkHandler();
-                new MainJFrame(new TetrisController(new SimulationController(), nh, new StepGenerator(is)), nh).setVisible(true);
+                new MainJFrame(new TetrisController(new SimulationController(), nh, new StepGenerator(is)), new ChatController(nh)).setVisible(true);
             }
         });
     }
@@ -382,7 +382,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     private void showLobby(boolean host, final boolean isSinglePlayer) {
-        final LobbyJFrame lobby = new LobbyJFrame(tetrisController, new ChatController(networkHandler), host, this, isSinglePlayer);
+        final LobbyJFrame lobby = new LobbyJFrame(tetrisController, chatController, host, this, isSinglePlayer);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 lobby.setVisible(!isSinglePlayer);
