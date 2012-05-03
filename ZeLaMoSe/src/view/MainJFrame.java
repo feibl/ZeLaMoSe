@@ -7,6 +7,9 @@ package view;
 import domain.*;
 import java.awt.Desktop;
 import java.awt.HeadlessException;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,6 +18,7 @@ import java.io.OutputStream;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import network.client.NetworkHandlerAbstract;
 import network.client.NetworkHandler;
 import util.NameGenerator;
@@ -248,17 +252,34 @@ public class MainJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnStartGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartGameActionPerformed
-        createGame(true,true);
+        createGame(true, true);
     }//GEN-LAST:event_btnStartGameActionPerformed
 
     private void btnCreateGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateGameActionPerformed
-        createGame(true,false);
+        createGame(true, false);
     }//GEN-LAST:event_btnCreateGameActionPerformed
 
     private void btnJoinGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinGameActionPerformed
-        final String ip = JOptionPane.showInputDialog(null, "Eingabe der IP");
-        setupMessageHandler(false, false);
-        tetrisController.connectToServer(ip, TetrisController.SERVER_PORT, txtNickname.getText());
+        final JoinGameJDialog joinDialog = new JoinGameJDialog(this, true, JoinGameJDialog.GameMode.MULTI_PLAYER_JOIN, tetrisController, txtNickname.getText());
+        joinDialog.addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                switch (joinDialog.getReturnValue()) {
+                    case CONNECTED:
+                        showLobby(false, false);
+                        break;
+                }
+            }
+        });
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                joinDialog.setVisible(true);
+            }
+        });
+
     }
 
     private void setupMessageHandler(final boolean isHost, final boolean isSinglePlayer) {
@@ -308,7 +329,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHelpActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-       System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_btnExitActionPerformed
 
     /**
@@ -384,6 +405,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private void showLobby(boolean host, final boolean isSinglePlayer) {
         final LobbyJFrame lobby = new LobbyJFrame(tetrisController, chatController, host, this, isSinglePlayer);
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
                 lobby.setVisible(!isSinglePlayer);
                 setVisible(false);
