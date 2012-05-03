@@ -181,6 +181,10 @@ public class TetrisController extends Observable implements Observer {
             case TIMED_OUT:
                 abortGame();
                 break;
+            case EXCEPTION_THROWN:
+                setChanged();
+                notifyObservers(UpdateType.EXCEPTION_THROWN);
+                break;
         }
     }
     
