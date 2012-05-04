@@ -15,8 +15,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import network.client.NetworkHandlerAbstract;
@@ -36,6 +40,12 @@ public class MainJFrame extends javax.swing.JFrame {
     private ChatController chatController;
     private NameGenerator nameGenerator;
 
+
+    public enum GameMode {
+
+        SINGLE_PLAYER, MULTI_PLAYER_HOST, MULTI_PLAYER_JOIN
+    }
+
     /**
      * Creates new form frmMain
      */
@@ -50,17 +60,6 @@ public class MainJFrame extends javax.swing.JFrame {
         }
         initComponents();
         soundEngine = new SoundEngine();
-    }
-
-    private void createGame(final boolean isHost, final boolean isSinglePlayer) throws HeadlessException {
-        setupMessageHandler(isHost, isSinglePlayer);
-
-        try {
-            tetrisController.startServer();
-            tetrisController.connectToServer(tetrisController.getServerIP(), TetrisController.SERVER_PORT, txtNickname.getText());
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex, "Exception", JOptionPane.ERROR_MESSAGE);
-        }
     }
 
     /**
@@ -96,7 +95,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabel1.setText("<html><h1>~ZeLaMoSe - Tetris~</h1></html>");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(70, 0, 254, 49);
+        jLabel1.setBounds(70, 0, 244, 53);
 
         pnlSinglePlayer.setOpaque(false);
         pnlSinglePlayer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -128,7 +127,7 @@ public class MainJFrame extends javax.swing.JFrame {
         );
 
         getContentPane().add(pnlSinglePlayer);
-        pnlSinglePlayer.setBounds(40, 100, 338, 72);
+        pnlSinglePlayer.setBounds(40, 100, 338, 80);
 
         pnlMultiPlayer.setOpaque(false);
         pnlMultiPlayer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -158,7 +157,7 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(pnlMultiPlayerLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnCreateGame, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(btnJoinGame, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -215,7 +214,7 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(pnlControlLayout.createSequentialGroup()
                         .addComponent(txtNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
                         .addComponent(btnExit)))
                 .addContainerGap())
         );
@@ -233,16 +232,16 @@ public class MainJFrame extends javax.swing.JFrame {
         );
 
         getContentPane().add(pnlControl);
-        pnlControl.setBounds(37, 283, 338, 82);
+        pnlControl.setBounds(37, 283, 338, 98);
 
         lblMultiPlayer.setBackground(new java.awt.Color(217, 19, 19));
         lblMultiPlayer.setText("<html><strong>MultiPlayer</strong></html>");
         getContentPane().add(lblMultiPlayer);
-        lblMultiPlayer.setBounds(40, 180, 64, 14);
+        lblMultiPlayer.setBounds(40, 180, 82, 21);
 
         lblSinglePlayer.setText("<html><strong>SinglePlayer</strong></html>");
         getContentPane().add(lblSinglePlayer);
-        lblSinglePlayer.setBounds(40, 80, 70, 14);
+        lblSinglePlayer.setBounds(40, 80, 90, 21);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/image/tetrisbg.jpeg")));
         getContentPane().add(jLabel2);
@@ -251,23 +250,37 @@ public class MainJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    private void createGame() {
+        try {
+            tetrisController.startServer();
+        } catch (Exception ex) {
+            Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     private void btnStartGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartGameActionPerformed
-        createGame(true, true);
+        createGame();
+        setupConnectionHandler(GameMode.SINGLE_PLAYER);
     }//GEN-LAST:event_btnStartGameActionPerformed
 
     private void btnCreateGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateGameActionPerformed
-        createGame(true, false);
+        createGame();
+        setupConnectionHandler(GameMode.MULTI_PLAYER_HOST);
     }//GEN-LAST:event_btnCreateGameActionPerformed
 
     private void btnJoinGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinGameActionPerformed
-        final JoinGameJDialog joinDialog = new JoinGameJDialog(this, true, JoinGameJDialog.GameMode.MULTI_PLAYER_JOIN, tetrisController, txtNickname.getText());
+        setupConnectionHandler(GameMode.MULTI_PLAYER_JOIN);
+    }
+
+    private void setupConnectionHandler(final GameMode gameMode) {
+        final JoinGameJDialog joinDialog = new JoinGameJDialog(this, true, gameMode, tetrisController, txtNickname.getText());
         joinDialog.addWindowListener(new WindowAdapter() {
 
             @Override
             public void windowClosed(WindowEvent e) {
                 switch (joinDialog.getReturnValue()) {
                     case CONNECTED:
-                        showLobby(false, false);
+                        showLobby(gameMode);
                         break;
                 }
             }
@@ -277,25 +290,6 @@ public class MainJFrame extends javax.swing.JFrame {
             @Override
             public void run() {
                 joinDialog.setVisible(true);
-            }
-        });
-
-    }
-
-    private void setupMessageHandler(final boolean isHost, final boolean isSinglePlayer) {
-        tetrisController.addObserver(new Observer() {
-
-            @Override
-            public void update(Observable o, Object o1) {
-                switch ((TetrisController.UpdateType) o1) {
-                    case CONNECTION_ESTABLISHED:
-                        showLobby(isHost, isSinglePlayer);
-                        break;
-                    case EXCEPTION_THROWN:
-                        JOptionPane.showMessageDialog(MainJFrame.this, tetrisController.getThrownException(), "Exception", JOptionPane.ERROR_MESSAGE);
-                        break;
-                }
-
             }
         });
     }//GEN-LAST:event_btnJoinGameActionPerformed
@@ -402,12 +396,15 @@ public class MainJFrame extends javax.swing.JFrame {
 
     }
 
-    private void showLobby(boolean host, final boolean isSinglePlayer) {
-        final LobbyJFrame lobby = new LobbyJFrame(tetrisController, chatController, host, this, isSinglePlayer);
+    private void showLobby(final GameMode gameMode) {
+        final LobbyJFrame lobby = new LobbyJFrame(tetrisController, chatController, gameMode);
         java.awt.EventQueue.invokeLater(new Runnable() {
 
+            @Override
             public void run() {
-                lobby.setVisible(!isSinglePlayer);
+                if (gameMode != GameMode.SINGLE_PLAYER) {
+                    lobby.setVisible(true);
+                }
                 setVisible(false);
             }
         });

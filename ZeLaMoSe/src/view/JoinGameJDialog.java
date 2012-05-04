@@ -6,12 +6,19 @@ package view;
 
 import domain.ChatController;
 import domain.TetrisController;
+import java.awt.CardLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import view.MainJFrame.GameMode;
 
 /**
  *
@@ -22,13 +29,8 @@ public class JoinGameJDialog extends javax.swing.JDialog {
     private final GameMode gameMode;
     private final TetrisController tetrisController;
     private final String nickname;
-    private final MainJFrame parent;
     private ReturnValue returnValue = ReturnValue.CANCELLED;
-
-    public enum GameMode {
-
-        SINGLE_PLAYER, MULTI_PLAYER_HOST, MULTI_PLAYER_JOIN
-    }
+    private final CardLayout cardLayout;
 
     public enum ReturnValue {
 
@@ -44,32 +46,52 @@ public class JoinGameJDialog extends javax.swing.JDialog {
      */
     public JoinGameJDialog(MainJFrame parent, boolean modal, GameMode gameMode, TetrisController tetrisController, String nickname) {
         super(parent, modal);
-        this.parent = parent;
         this.gameMode = gameMode;
         this.tetrisController = tetrisController;
         this.nickname = nickname;
+
         initComponents();
+        this.cardLayout = (CardLayout) pnlConnection.getLayout();
+        if (gameMode == GameMode.MULTI_PLAYER_HOST || gameMode == GameMode.SINGLE_PLAYER) {
+            connectToServer("localhost");
+        }
     }
 
     private void connectToServer(final String serverIP) {
-        tetrisController.connectToServer(serverIP, TetrisController.SERVER_PORT, nickname);
+        cardLayout.next(pnlConnection);
+        lblIPAddress1.setText(serverIP);
         tetrisController.addObserver(new Observer() {
 
             @Override
             public void update(Observable o, Object o1) {
                 switch ((TetrisController.UpdateType) o1) {
+
                     case CONNECTION_ESTABLISHED:
                         returnValue = ReturnValue.CONNECTED;
+                        tetrisController.deleteObserver(this);
                         dispose();
                         break;
                     case EXCEPTION_THROWN:
-                        returnValue = ReturnValue.ERROR_RECEIVED;
-                        dispose();
+                        if (gameMode == GameMode.MULTI_PLAYER_JOIN) {
+                            SwingUtilities.invokeLater(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    cardLayout.next(pnlConnection);
+                                    lblState.setText("Could not connect to the specified Server");
+                                }
+                            });
+                        } else {
+                            returnValue = ReturnValue.ERROR_RECEIVED;
+                            tetrisController.deleteObserver(this);
+                            dispose();
+                        }
                         break;
                 }
 
             }
         });
+        tetrisController.connectToServer(serverIP, TetrisController.SERVER_PORT, nickname);
     }
 
     /**
@@ -80,6 +102,7 @@ public class JoinGameJDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel3 = new javax.swing.JPanel();
         pnlConnection = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -89,6 +112,8 @@ public class JoinGameJDialog extends javax.swing.JDialog {
         btnJoin = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         btnHelp = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        lblState = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jSeparator2 = new javax.swing.JSeparator();
         btnCancel1 = new javax.swing.JButton();
@@ -96,6 +121,18 @@ public class JoinGameJDialog extends javax.swing.JDialog {
         lblTryToJoin = new javax.swing.JLabel();
         lblIPAddress1 = new javax.swing.JLabel();
         lblWait = new javax.swing.JLabel();
+        jProgressBar1 = new javax.swing.JProgressBar();
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -119,27 +156,44 @@ public class JoinGameJDialog extends javax.swing.JDialog {
         btnHelp.setText("Help");
         btnHelp.setPreferredSize(new java.awt.Dimension(65, 23));
 
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblState)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(lblState)
+                .addContainerGap(33, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator1)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnJoin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
+                        .addGap(34, 34, 34)
                         .addComponent(btnCancel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                        .addComponent(btnHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(19, 19, 19))
+                        .addComponent(btnHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtIPAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblIPAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblEnterIP, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())))
-            .addComponent(jSeparator1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,14 +204,15 @@ public class JoinGameJDialog extends javax.swing.JDialog {
                 .addComponent(lblIPAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtIPAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnJoin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancel)
+                    .addComponent(btnJoin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlConnection.add(jPanel1, "card2");
@@ -180,6 +235,8 @@ public class JoinGameJDialog extends javax.swing.JDialog {
 
         lblWait.setText("Please wait...");
 
+        jProgressBar1.setIndeterminate(true);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -188,6 +245,7 @@ public class JoinGameJDialog extends javax.swing.JDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(btnCancel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -211,7 +269,9 @@ public class JoinGameJDialog extends javax.swing.JDialog {
                     .addComponent(lblIPAddress1))
                 .addGap(30, 30, 30)
                 .addComponent(lblWait)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -222,16 +282,7 @@ public class JoinGameJDialog extends javax.swing.JDialog {
 
         pnlConnection.add(jPanel2, "card3");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlConnection, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlConnection, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-        );
+        getContentPane().add(pnlConnection, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -251,11 +302,15 @@ public class JoinGameJDialog extends javax.swing.JDialog {
     private javax.swing.JButton btnJoin;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel lblEnterIP;
     private javax.swing.JLabel lblIPAddress;
     private javax.swing.JLabel lblIPAddress1;
+    private javax.swing.JLabel lblState;
     private javax.swing.JLabel lblTryToJoin;
     private javax.swing.JLabel lblWait;
     private javax.swing.JPanel pnlConnection;

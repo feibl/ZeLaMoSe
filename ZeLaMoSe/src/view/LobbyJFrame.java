@@ -20,21 +20,16 @@ import view.music.SoundEngine;
 public class LobbyJFrame extends javax.swing.JFrame implements Observer {
 
     private TetrisController tetrisController;
-    private final MainJFrame menu;
     private PlayerListModel playerListModel;
-    private final boolean host;
     private final ChatController chatController;
     private SoundEngine soundEngine;
 
-    LobbyJFrame(TetrisController tetrisController, final ChatController chatController, boolean host, MainJFrame menu, boolean isSinglePlayer) {
+    LobbyJFrame(TetrisController tetrisController, final ChatController chatController, MainJFrame.GameMode gameMode) {
         this.tetrisController = tetrisController;
-        this.menu = menu;
-        this.host = host;
         this.chatController = chatController;
         this.playerListModel = new PlayerListModel(chatController.getSessionList());
 
         initComponents();
-        btnStart.setVisible(host);
         lblServerIPValue.setText(tetrisController.getServerIP());
         tetrisController.addObserver(this);
         chatController.addObserver(this);
@@ -57,8 +52,15 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
 
         soundEngine = new SoundEngine();
         soundEngine.playBackgroundMusic(MusicFile.lobbyBackgroundMusic);
-        if (isSinglePlayer) {
-            tetrisController.startGame();
+        switch(gameMode) {
+            case SINGLE_PLAYER:
+               tetrisController.startGame();
+                break;
+            case MULTI_PLAYER_HOST:
+                btnStart.setEnabled(true);
+                break;
+            case MULTI_PLAYER_JOIN:
+                btnStart.setEnabled(false);
         }
     }
 
@@ -227,8 +229,6 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                     .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
-
-        btnStart.setVisible(host);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
