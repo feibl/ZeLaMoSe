@@ -460,21 +460,21 @@ public class GameFieldJFrame extends javax.swing.JFrame implements Observer {
     }
 
     private void initEnemyArea1(SimulationStateAbstract gameEngine) {
-        GameFieldRenderer rendererEnemyArea1 = new GameFieldRenderer(Config.EnemyGameFieldBlockSize, gameEngine);
+        GameFieldRenderer rendererEnemyArea1 = new GameFieldRenderer(Config.EnemyGameFieldBlockSize, gameEngine,false);
         gLPnlEnemyArea1.addGLEventListener(rendererEnemyArea1);
         FPSAnimator animator1 = new FPSAnimator(gLPnlEnemyArea1, Config.frameRate, true);
         animator1.start();
     }
 
     private void initEnemyArea2(SimulationStateAbstract gameEngine) {
-        GameFieldRenderer rendererEnemyArea2 = new GameFieldRenderer(Config.EnemyGameFieldBlockSize, gameEngine);
+        GameFieldRenderer rendererEnemyArea2 = new GameFieldRenderer(Config.EnemyGameFieldBlockSize, gameEngine,false);
         gLPnlEnemyArea2.addGLEventListener(rendererEnemyArea2);
         FPSAnimator animator2 = new FPSAnimator(gLPnlEnemyArea2, Config.frameRate, true);
         animator2.start();
     }
 
     private void initEnemyArea3(SimulationStateAbstract gameEngine) {
-        GameFieldRenderer rendererEnemyArea3 = new GameFieldRenderer(Config.EnemyGameFieldBlockSize, gameEngine);
+        GameFieldRenderer rendererEnemyArea3 = new GameFieldRenderer(Config.EnemyGameFieldBlockSize, gameEngine,false);
         gLPnlEnemyArea3.addGLEventListener(rendererEnemyArea3);
         FPSAnimator animator3 = new FPSAnimator(gLPnlEnemyArea3, Config.frameRate, true);
         animator3.start();

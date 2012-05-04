@@ -4,16 +4,16 @@
  */
 package view;
 
+import com.jogamp.opengl.util.awt.TextRenderer;
+import com.sun.media.jai.rmi.RenderingKeyState;
 import domain.Config;
 import domain.SimulationStateAbstract;
 import domain.actions.*;
 import domain.actions.RotateAction.Direction;
 import domain.block.BlockAbstract;
 import domain.block.GarbageBlock;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.awt.Font;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
@@ -31,27 +31,32 @@ import javax.media.opengl.glu.GLU;
  */
 class GameFieldRenderer implements GLEventListener, Observer {
 
-    private boolean debug = false;
-    private long currentMirrorTime = 0;
+    private long timeToMirror = 0;
     private long currentShadowTime = 0;
     private volatile boolean isAnimating = false;
     private ConcurrentLinkedQueue<Action> actionQueue;
-    private final int timeToMirror = 15000;
+    private final int defaultTimeToMirror = 15000;
     private final int timeToShadow = 15000;
     private int viewPortWidth, viewPortHeight, blockSize;
     private SimulationStateAbstract gameEngine;
     private BlockAbstract currentBlock;
     private final int defaultX = 4, defaultY = 23;
     private volatile BlockAbstract[][] grid;
-    private AtomicBoolean mirror;
+    private boolean mirror = false;
     private AtomicBoolean shadow;
-    public GameFieldRenderer(int blocksize, SimulationStateAbstract gameEngine) {
-        this.mirror = new AtomicBoolean(false);
-        this.shadow = new AtomicBoolean(false);
-        this.viewPortWidth = Config.gridWidth * blocksize;
-        this.viewPortHeight = (Config.gridHeight - 2) * blocksize;
+    private TextRenderer textRenderer;
+    private long mirrorStartTime;
+    private boolean ownGameField;
+
+    public GameFieldRenderer(int blocksize, SimulationStateAbstract gameEngine, boolean ownGameField) {
         this.blockSize = blocksize;
+        this.ownGameField = ownGameField;
+        shadow = new AtomicBoolean(false);
+        viewPortWidth = Config.gridWidth * blocksize;
+        viewPortHeight = (Config.gridHeight - 2) * blocksize;
+        textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 18));
         actionQueue = new ConcurrentLinkedQueue<Action>();
+
         initStackGrid();
 
         if (gameEngine != null) {
@@ -71,66 +76,75 @@ class GameFieldRenderer implements GLEventListener, Observer {
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();
 
-        if (debug) {
-            glu.gluOrtho2D(-100, viewPortWidth + 100, -100, viewPortHeight + 100);
-        } else {
-            glu.gluOrtho2D(0,viewPortWidth, 0,viewPortHeight);
-        }
+        glu.gluOrtho2D(0, viewPortWidth, 0, viewPortHeight);
     }
 
     @Override
     public void dispose(GLAutoDrawable drawable) {
     }
 
-    private void mirrorField(GL2 gl){
+    private void mirrorField(GL2 gl) {
         gl.glLoadIdentity();
         GLU glu = new GLU();
-        glu.gluOrtho2D(viewPortWidth, 0, viewPortHeight,0 );
+        glu.gluOrtho2D(viewPortWidth, 0, viewPortHeight, 0);
     }
-      private void normalizeMirrorField(GL2 gl){
+
+    private void normalizeMirrorField(GL2 gl) {
         gl.glLoadIdentity();
         GLU glu = new GLU();
-        glu.gluOrtho2D(0,viewPortWidth, 0,viewPortHeight);
+        glu.gluOrtho2D(0, viewPortWidth, 0, viewPortHeight);
     }
-      
-    
+
     @Override
     public void display(GLAutoDrawable drawable) {
         GL2 gl = drawable.getGL().getGL2();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
-        if(mirror.getAndSet(false)){
-             mirrorField(gl);
-             currentMirrorTime = System.currentTimeMillis();
+        if (mirror) {
+            mirrorField(gl);
+            mirror=false;
         } else {
-            if(currentMirrorTime!= 0 && (System.currentTimeMillis() - currentMirrorTime) >= timeToMirror){
+            if (remainingMirrorTime() <= 0) {
                 normalizeMirrorField(gl);
-                currentMirrorTime = 0;
+                timeToMirror = 0;
             }
         }
-        
-        if(shadow.getAndSet(false)){
-             drawBlockStack(gl,true);
-             currentShadowTime = System.currentTimeMillis();
+
+        if (shadow.getAndSet(false)) {
+            drawBlockStack(gl, true);
+            currentShadowTime = System.currentTimeMillis();
         } else {
-            if (currentShadowTime  == 0) {
-                drawBlockStack(gl,false);
-            }
-            else if( (System.currentTimeMillis() - currentShadowTime) >= timeToShadow){
-                drawBlockStack(gl,false);
+            if (currentShadowTime == 0) {
+                drawBlockStack(gl, false);
+            } else if ((System.currentTimeMillis() - currentShadowTime) >= timeToShadow) {
+                drawBlockStack(gl, false);
                 currentShadowTime = 0;
             } else {
-                drawBlockStack(gl,true);
-            } 
-        }       
-        
-        
-        
+                drawBlockStack(gl, true);
+            }
+        }
+
+
+
         if (currentBlock != null) {
             drawCurrentBlock(gl);
         }
         drawGridLines(gl);
 
+
+        if (ownGameField) {
+            if (timeToMirror != 0) {
+                textRenderer.beginRendering(drawable.getWidth(), drawable.getHeight());
+                String timeToDisplay = Double.toString(remainingMirrorTime() / 1000d);
+                textRenderer.draw("Mirror Time Remaining: " + timeToDisplay, 30, 30);
+                textRenderer.endRendering();
+            }
+        }
+
+    }
+
+    private long remainingMirrorTime() {
+        return timeToMirror - (System.currentTimeMillis() - mirrorStartTime);
     }
 
     @Override
@@ -149,11 +163,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
     private void processAction(Action action) {
         if (isAnimating) {
             actionQueue.add(action);
-            if (debug) {
-                System.out.println("GLREnderer: actiontype " + action.getType() + " stored in queue");
-            }
         } else {
-
             handleAction(action);
         }
 
@@ -219,13 +229,13 @@ class GameFieldRenderer implements GLEventListener, Observer {
         }
     }
 
-    private void drawBlockStack(GL2 gl,boolean allBlackEverything) {
+    private void drawBlockStack(GL2 gl, boolean allBlackEverything) {
 
         for (int i = 0; i < Config.gridWidth; i++) {
             for (int j = 0; j < Config.gridHeight; j++) {
 
                 BlockAbstract block = grid[i][j];
- 
+
                 if (block != null && !allBlackEverything) {
                     gl.glColor3f(block.getGlRed(), block.getGlGreen(), block.getGlBlue());
                 } else {
@@ -431,7 +441,13 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 handleGarbageLineAction(((GarbageLineAction) action).getLines());
                 break;
             case MIRROR:
-                mirror.set(true);
+                mirror = true;
+                if (timeToMirror == 0) {
+                    timeToMirror = defaultTimeToMirror;
+                    mirrorStartTime = System.currentTimeMillis();
+                } else {
+                    timeToMirror += defaultTimeToMirror;
+                }
                 break;
             case SHADOW:
                 shadow.set(true);
@@ -447,10 +463,5 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 initStackGrid();
                 break;
         }
-        if (debug) {
-            System.out.println("GLREnderer: actiontype " + action.getType() + " processed");
-        }
     }
-
-
 }
