@@ -14,7 +14,7 @@ import java.awt.Color;
 public class ShadowBlock extends BlockAbstract implements SpecialBlockInterface {
 
     public ShadowBlock(int blockNumber) {
-        super(new Color(16,16,16), "S", new NoWallKick(),blockNumber);
+        super(new Color(20,20,20), "S", new NoWallKick(),blockNumber);
     }
     
     @Override
@@ -49,6 +49,8 @@ public class ShadowBlock extends BlockAbstract implements SpecialBlockInterface 
         grid[1][2] = this;
         grid[0][3] = this;
     }
+    
+    
     
     
 }
