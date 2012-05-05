@@ -270,7 +270,7 @@ public class JoinGameJDialog extends javax.swing.JDialog implements Observer {
                         @Override
                         public void run() {
                             cardLayout.next(pnlConnection);
-                            lblState.setText("<html>Could not connect to the specified Server</html>");
+                            lblState.setText("<html><font color=red>Connection Establishment failed</font></html>");
                         }
                     });
                 } else {
