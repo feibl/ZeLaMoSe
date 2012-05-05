@@ -24,7 +24,7 @@ import view.MainJFrame.GameMode;
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
-public class JoinGameJDialog extends javax.swing.JDialog {
+public class JoinGameJDialog extends javax.swing.JDialog implements Observer {
 
     private final GameMode gameMode;
     private final TetrisController tetrisController;
@@ -60,37 +60,7 @@ public class JoinGameJDialog extends javax.swing.JDialog {
     private void connectToServer(final String serverIP) {
         cardLayout.next(pnlConnection);
         lblIPAddress1.setText(serverIP);
-        tetrisController.addObserver(new Observer() {
-
-            @Override
-            public void update(Observable o, Object o1) {
-                switch ((TetrisController.UpdateType) o1) {
-
-                    case CONNECTION_ESTABLISHED:
-                        returnValue = ReturnValue.CONNECTED;
-                        tetrisController.deleteObserver(this);
-                        dispose();
-                        break;
-                    case EXCEPTION_THROWN:
-                        if (gameMode == GameMode.MULTI_PLAYER_JOIN) {
-                            SwingUtilities.invokeLater(new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    cardLayout.next(pnlConnection);
-                                    lblState.setText("Could not connect to the specified Server");
-                                }
-                            });
-                        } else {
-                            returnValue = ReturnValue.ERROR_RECEIVED;
-                            tetrisController.deleteObserver(this);
-                            dispose();
-                        }
-                        break;
-                }
-
-            }
-        });
+        tetrisController.addObserver(this);
         tetrisController.connectToServer(serverIP, TetrisController.SERVER_PORT, nickname);
     }
 
@@ -152,6 +122,11 @@ public class JoinGameJDialog extends javax.swing.JDialog {
         });
 
         btnCancel.setText("Cancel");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         btnHelp.setText("Help");
         btnHelp.setPreferredSize(new java.awt.Dimension(65, 23));
@@ -220,6 +195,11 @@ public class JoinGameJDialog extends javax.swing.JDialog {
         jPanel2.setPreferredSize(new java.awt.Dimension(279, 173));
 
         btnCancel1.setText("Cancel");
+        btnCancel1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancel1ActionPerformed(evt);
+            }
+        });
 
         btnHelp1.setText("Help");
         btnHelp1.setPreferredSize(new java.awt.Dimension(65, 23));
@@ -294,6 +274,55 @@ public class JoinGameJDialog extends javax.swing.JDialog {
     private void btnHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHelp1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnHelp1ActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        returnValue = ReturnValue.CANCELLED;
+        tetrisController.deleteObserver(this);
+        dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void btnCancel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancel1ActionPerformed
+        if (gameMode == GameMode.MULTI_PLAYER_JOIN) {
+            SwingUtilities.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    cardLayout.next(pnlConnection);
+                    lblState.setText("Could not connect to the specified Server");
+                }
+            });
+        } else {
+            btnCancelActionPerformed(evt);
+        }
+    }//GEN-LAST:event_btnCancel1ActionPerformed
+
+    @Override
+    public void update(Observable o, Object o1) {
+        switch ((TetrisController.UpdateType) o1) {
+
+            case CONNECTION_ESTABLISHED:
+                returnValue = ReturnValue.CONNECTED;
+                tetrisController.deleteObserver(this);
+                dispose();
+                break;
+            case EXCEPTION_THROWN:
+                if (gameMode == GameMode.MULTI_PLAYER_JOIN) {
+                    SwingUtilities.invokeLater(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            cardLayout.next(pnlConnection);
+                            lblState.setText("Could not connect to the specified Server");
+                        }
+                    });
+                } else {
+                    returnValue = ReturnValue.ERROR_RECEIVED;
+                    tetrisController.deleteObserver(this);
+                    dispose();
+                }
+                break;
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnCancel1;
