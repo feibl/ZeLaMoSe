@@ -397,7 +397,7 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
     }
 
     private void initOwnGameFieldRenderer() {
-        renderer = new GameFieldRenderer(Config.ownGameFieldBlockSize, gameEngine);
+        renderer = new GameFieldRenderer(Config.ownGameFieldBlockSize, gameEngine,true);
         glPnlGameField.addGLEventListener(renderer);
         FPSAnimator ownGameFieldAnimator = new FPSAnimator(glPnlGameField, Config.frameRate, true);
         ownGameFieldAnimator.start();

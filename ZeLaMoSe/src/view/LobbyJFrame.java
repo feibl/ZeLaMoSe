@@ -305,7 +305,8 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                     @Override
                     public void run() {
                         gameField.setVisible(true);
-                        soundEngine.stopBackGroundMusic(MusicFile.lobbyBackgroundMusic);
+                        if(soundEngine!=null)
+                            soundEngine.stopBackGroundMusic(MusicFile.lobbyBackgroundMusic);
                         dispose();
                     }
                 });
