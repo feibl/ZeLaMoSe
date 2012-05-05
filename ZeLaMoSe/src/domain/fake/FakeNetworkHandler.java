@@ -127,5 +127,10 @@ public class FakeNetworkHandler extends NetworkHandlerAbstract {
     public long getBlockQueueSeed() {
         return 1;
     }
+
+    @Override
+    public int getNumberOfJokers() {
+        return 0;
+    }
     
 }

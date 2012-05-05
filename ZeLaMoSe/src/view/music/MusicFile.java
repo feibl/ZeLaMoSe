@@ -19,7 +19,9 @@ public enum MusicFile {
     lineRemovedSound("line.ogg"),
     dropSound("drop.ogg"),
     gameOverSound("gameover.ogg"),
-    moveSound("move.ogg")
+    moveSound("move.ogg"),
+    shadowSound("dark.ogg"),
+    mirrorSound("mirror.ogg")
      ;
     private final static String basicPathToMusicFiles = "resource/music/";
     private URL url;

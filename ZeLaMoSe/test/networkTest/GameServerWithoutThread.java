@@ -27,9 +27,9 @@ public class GameServerWithoutThread extends GameServer {
     }
 
     @Override
-    protected void sendInitSignal(SessionInterface s, long blockQueueSeed) {
+    protected void sendInitSignal(SessionInterface s, long blockQueueSeed, int numberOfJokers) {
         try {
-            s.sendInitSignal(blockQueueSeed);
+            s.sendInitSignal(blockQueueSeed,numberOfJokers);
         } catch (RemoteException ex) {
             removeSession(s);
         }

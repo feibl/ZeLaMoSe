@@ -83,8 +83,8 @@ public class Session extends UnicastRemoteObject implements SessionRemoteInterfa
     }
 
     @Override
-    public void sendInitSignal(long blockQueueSeed) throws RemoteException {
-        client.receiveInitSignal(blockQueueSeed);
+    public void sendInitSignal(long blockQueueSeed, int numberOfJokers) throws RemoteException {
+        client.receiveInitSignal(blockQueueSeed, numberOfJokers);
     }
     
 }

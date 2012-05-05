@@ -27,5 +27,5 @@ public interface SessionInterface {
 
    public void sendStartSignal() throws RemoteException;
 
-    public void sendInitSignal(long blockQueueSeed) throws RemoteException;
+    public void sendInitSignal(long blockQueueSeed, int numberOfJokers) throws RemoteException;
 }

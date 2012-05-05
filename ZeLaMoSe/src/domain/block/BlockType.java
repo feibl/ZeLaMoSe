@@ -4,6 +4,7 @@
  */
 package domain.block;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,26 +14,34 @@ import java.util.logging.Logger;
  * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public enum BlockType {
-    I(IBlock.class), J(JBlock.class), L(LBlock.class), 
-    O(OBlock.class), S(SBlock.class), T(TBlock.class), 
-    Z(ZBlock.class), GARBAGE(GarbageBlock.class);
+    I(IBlock.class,100), J(JBlock.class,100), L(LBlock.class,100), 
+    O(OBlock.class,100), S(SBlock.class,100), T(TBlock.class,100), 
+    Z(ZBlock.class,100), GARBAGE(GarbageBlock.class,0), MIRROR(MirrorBlock.class,100),  
+    SHADOW(ShadowBlock.class,100);
     
     private final Class className;
-
-    public BlockAbstract createBlock() {
+    private final int probability;
+    public BlockAbstract createBlock(int blockNumber) {
         try {
-            return (BlockAbstract)className.newInstance();
-        } catch (InstantiationException ex) {
-            Logger.getLogger(BlockType.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
+            Constructor c = className.getConstructor(new Class[]{Integer.TYPE});
+            
+            return (BlockAbstract)(c.newInstance(new Object[]{blockNumber}));
+        }catch (Exception ex) {
             Logger.getLogger(BlockType.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
     
-    BlockType(Class cn){
-        className = cn;
+    BlockType(Class cn, int probability){
+        this.className = cn;
+        this.probability = probability;
     }
+
+    public int getProbability() {
+        return probability;
+    }
+    
+    
     
     
 }

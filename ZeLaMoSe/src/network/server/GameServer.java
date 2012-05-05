@@ -86,13 +86,13 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         }
     }
 
-    protected void sendInitSignal(final SessionInterface s, final long blockQueueSeed) {
+    protected void sendInitSignal(final SessionInterface s, final long blockQueueSeed, final int numberOfJokers) {
         threadPool.execute(new Runnable() {
 
             @Override
             public void run() {
                 try {
-                    s.sendInitSignal(blockQueueSeed);
+                    s.sendInitSignal(blockQueueSeed,numberOfJokers);
                 } catch (RemoteException ex) {
                     removeSession(s);
                 }
@@ -162,11 +162,11 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     }
 
     @Override
-    public synchronized void startGame() {
+    public synchronized void startGame(int numberOfJokers) {
         this.threadPool = Executors.newFixedThreadPool(sessionList.size());
         long blockQueueSeed = new Random().nextLong();
         gameStarted = true;
-        notifyAllInitSignal(blockQueueSeed);
+        notifyAllInitSignal(blockQueueSeed, numberOfJokers);
     }
 
     protected synchronized void notifyAllGameStarted() {
@@ -184,10 +184,10 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         }
     }
 
-    protected synchronized void notifyAllInitSignal(final long blockQueueSeed) {
+    protected synchronized void notifyAllInitSignal(final long blockQueueSeed, int numberOfJokers) {
         List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionList);
         for (SessionInterface s : copy) {
-            sendInitSignal(s, blockQueueSeed);
+            sendInitSignal(s, blockQueueSeed,numberOfJokers);
         }
     }
 
@@ -263,4 +263,5 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
             }
         }).start();
     }
+
 }

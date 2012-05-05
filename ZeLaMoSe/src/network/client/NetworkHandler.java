@@ -34,6 +34,7 @@ public class NetworkHandler extends NetworkHandlerAbstract {
     private ConcurrentHashMap<Integer, String> sessionList = new ConcurrentHashMap<Integer, String>();
     private Exception thrownException;
     private long blockQueueSeed;
+    private int numberOfJokers;
 
     @Override
     public void processStep() {
@@ -220,8 +221,9 @@ public class NetworkHandler extends NetworkHandlerAbstract {
         return thrownException;
     }
 
-    public void notifyInit(long blockQueueSeed) {
+    public void notifyInit(long blockQueueSeed, int numberOfJokers) {
         this.blockQueueSeed = blockQueueSeed;
+        this.numberOfJokers = numberOfJokers;
         setChanged();
         notifyObservers(UpdateType.INIT_SIGNAL);
     }
@@ -244,5 +246,10 @@ public class NetworkHandler extends NetworkHandlerAbstract {
     @Override
     public long getBlockQueueSeed() {
         return blockQueueSeed;
+    }
+
+    @Override
+    public int getNumberOfJokers() {
+        return numberOfJokers;
     }
 }

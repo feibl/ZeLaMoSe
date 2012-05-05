@@ -44,22 +44,22 @@ public class GameEngineTest {
     
     private void fillInFakes() {
         //Do not change the reihenfolge
-        fakeQueue.blocklist.add(new IBlock());
-        fakeQueue.blocklist.add(new JBlock());
-        fakeQueue.blocklist.add(new OBlock());
-        fakeQueue.blocklist.add(new LBlock());
-        fakeQueue.blocklist.add(new JBlock());
-        fakeQueue.blocklist.add(new OBlock());
-        fakeQueue.blocklist.add(new OBlock());
-        fakeQueue.blocklist.add(new OBlock());
-        fakeQueue.blocklist.add(new ZBlock());
-        fakeQueue.blocklist.add(new ZBlock());
-        fakeQueue.blocklist.add(new ZBlock());
-        fakeQueue.blocklist.add(new ZBlock());
-        fakeQueue.blocklist.add(new ZBlock());
-        fakeQueue.blocklist.add(new ZBlock());
-        fakeQueue.blocklist.add(new ZBlock());
-        fakeQueue.blocklist.add(new ZBlock());
+        fakeQueue.blocklist.add(new IBlock(1));
+        fakeQueue.blocklist.add(new JBlock(2));
+        fakeQueue.blocklist.add(new OBlock(3));
+        fakeQueue.blocklist.add(new LBlock(4));
+        fakeQueue.blocklist.add(new JBlock(5));
+        fakeQueue.blocklist.add(new OBlock(6));
+        fakeQueue.blocklist.add(new OBlock(7));
+        fakeQueue.blocklist.add(new OBlock(8));
+        fakeQueue.blocklist.add(new ZBlock(9));
+        fakeQueue.blocklist.add(new ZBlock(10));
+        fakeQueue.blocklist.add(new ZBlock(11));
+        fakeQueue.blocklist.add(new ZBlock(12));
+        fakeQueue.blocklist.add(new ZBlock(13));
+        fakeQueue.blocklist.add(new ZBlock(14));
+        fakeQueue.blocklist.add(new ZBlock(15));
+        fakeQueue.blocklist.add(new ZBlock(16));
     }
     @Rule
     public TestName testName = new TestName();
@@ -69,7 +69,7 @@ public class GameEngineTest {
         fakeQueue = new FakeBlockQueue();
         initializeExpectedGrid();
         fillInFakes();
-        gameEngine = new GameEngine(12345, 1, fakeQueue);
+        gameEngine = new GameEngine(12345, 1, fakeQueue,0);
         gameEngine.startGame();
         System.out.println("Start " + testName.getMethodName() + "----------------------------------");
     }

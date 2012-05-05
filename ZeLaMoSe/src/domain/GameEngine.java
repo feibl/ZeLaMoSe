@@ -5,10 +5,10 @@
 package domain;
 
 import domain.actions.*;
-import domain.block.BlockAbstract;
-import domain.block.GarbageBlock;
+import domain.block.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -21,7 +21,7 @@ import java.util.Random;
 public class GameEngine extends GameEngineAbstract {
 
     private Action lastAction;
-    private GarbageLineAction lastGarbageLineAction;
+    private Action lastActionForOthers;
     private int sessionId;
     private BlockAbstract[][] grid;
     private int gridWidth = Config.gridWidth, gridHeight = Config.gridHeight;
@@ -36,12 +36,14 @@ public class GameEngine extends GameEngineAbstract {
     private String nickName = "";
     private int level;
     private int totalRemovedLines;
+    private int numberOfJokers;
+    private List<Integer> blockActionsFromOthers = new ArrayList<Integer>();
     
-    public GameEngine(int sessionId, long seed) {
-        this(sessionId, seed, new BlockQueue(seed));
+    public GameEngine(int sessionId, long seed,int numberOfJokers) {
+        this(sessionId, seed, new BlockQueue(seed), numberOfJokers);
     }
 
-    public GameEngine(int sessionId, long seed, BlockQueueInterface fakeQueue) {
+    public GameEngine(int sessionId, long seed, BlockQueueInterface fakeQueue,int numberOfJokers) {
         this.sessionId = sessionId;
         grid = new BlockAbstract[gridWidth][gridHeight];
         queue = fakeQueue;
@@ -49,6 +51,7 @@ public class GameEngine extends GameEngineAbstract {
         level = 1;
         totalRemovedLines = 0;
         randomGarbageLineGenerator = new Random(seed);
+        this.numberOfJokers = numberOfJokers;
     }
 
     public BlockAbstract getNextBlock() {
@@ -106,6 +109,11 @@ public class GameEngine extends GameEngineAbstract {
                 case ROTATION:
                     handleRotateAction((RotateAction) action);
                     break;
+                case MIRROR:
+                case SHADOW:
+                    setLastAction(action);
+                    blockActionsFromOthers.add(((ActionForOthersAbstract)action).getBlockNumber());
+                    break;
                 case HARDDROP:
                     handleHardDropAction();
                     break;
@@ -115,6 +123,13 @@ public class GameEngine extends GameEngineAbstract {
                 case GAMEOVER:
                     gameOver = true;
                     setLastAction(new GameOverAction(0));
+                    break;
+                case CLEAR:
+                    if (numberOfJokers > 0) {
+                        --numberOfJokers;
+                        clearGrid();
+                        setLastAction(action);
+                        }
                     break;
             }
         }
@@ -126,8 +141,8 @@ public class GameEngine extends GameEngineAbstract {
     }
     
     @Override
-    public GarbageLineAction getlastGarbageLineAction() {
-        return lastGarbageLineAction;
+    public Action getlastActionForOthers() {
+        return lastActionForOthers;
     }
     
     private void calculatePlayerStats(ArrayList<Integer> linesToRemove) {
@@ -338,7 +353,7 @@ public class GameEngine extends GameEngineAbstract {
             setLastAction(moveAction);
         }
     }
-
+    
     private void removeLines(ArrayList<Integer> linesToRemove) {
         if (linesToRemove.size() > 1) {
             createGarbageLineAction(linesToRemove.size() - 1);
@@ -348,6 +363,19 @@ public class GameEngine extends GameEngineAbstract {
         for (Integer lineToRemove : linesToRemove) {
             //remove the lineToRemove line
             for (int x = 0; x < gridWidth; x++) {
+                if (grid[x][lineToRemove] instanceof SpecialBlockInterface && checkIfBlockOccurencesRemoved(grid[x][lineToRemove])) {
+                    int blockNumber = grid[x][lineToRemove].getBlockNumber();
+                    if(!blockActionsFromOthers.contains(blockNumber) ){
+                        if (grid[x][lineToRemove] instanceof MirrorBlock) {
+                            lastActionForOthers = new MirrorAction(0,blockNumber);
+                        } else if  (grid[x][lineToRemove] instanceof ShadowBlock) {
+                            lastActionForOthers = new ShadowAction(0,blockNumber);
+                        }
+                        setChanged();
+                        notifyObservers(UpdateType.ACTIONFOROTHERS);
+                        blockActionsFromOthers.add(blockNumber);
+                    }
+                }
                 grid[x][lineToRemove] = null;
             }
 
@@ -370,7 +398,7 @@ public class GameEngine extends GameEngineAbstract {
         BlockAbstract[][] garbageLines = new BlockAbstract[gridWidth][numberOfLines];
 
         int emptyXPosition = randomGarbageLineGenerator.nextInt(gridWidth);
-        GarbageBlock garbageBlock = new GarbageBlock();
+        GarbageBlock garbageBlock = new GarbageBlock(Integer.MAX_VALUE);
         for (int x = 0; x < gridWidth; ++x) {
             if (x == emptyXPosition) {
                 continue;
@@ -379,9 +407,9 @@ public class GameEngine extends GameEngineAbstract {
                 garbageLines[x][y] = garbageBlock;
             }
         }
-        lastGarbageLineAction = new GarbageLineAction(0, garbageLines);
+        lastActionForOthers = new GarbageLineAction(0, garbageLines);
         setChanged();
-        notifyObservers(UpdateType.GARBAGELINE);
+        notifyObservers(UpdateType.ACTIONFOROTHERS);
     }
 
     private void handleGarbageLineAction(GarbageLineAction action) {
@@ -409,7 +437,38 @@ public class GameEngine extends GameEngineAbstract {
         return nickName;
     }
 
+    @Override
     public void setNickName(String nickName) {
         this.nickName = nickName;
     }
+
+    private boolean checkIfBlockOccurencesRemoved(BlockAbstract block) {
+        int counter = 0;
+        for (int x = 0; x < gridWidth; x++) {
+            for (int y = 0; y < gridHeight; y++) {
+                if (grid[x][y] == block) {
+                    counter++;
+                    if (counter > 1) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    private void clearGrid() {
+        for (int x = 0; x < gridWidth; x++) {
+            for (int y = 0; y < gridHeight; y++) {
+                   grid[x][y] = null;
+            }
+        }
+    }
+
+   
+    @Override
+    public int getNumberOfJokers() {
+       return this.numberOfJokers;
+    }
+       
 }

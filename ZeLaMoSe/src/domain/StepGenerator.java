@@ -4,10 +4,7 @@
  */
 package domain;
 
-import domain.actions.HardDropAction;
-import domain.actions.InputEvent;
-import domain.actions.MoveAction;
-import domain.actions.RotateAction;
+import domain.actions.*;
 import java.awt.event.KeyEvent;
 
 /**
@@ -67,6 +64,9 @@ public class StepGenerator extends StepGeneratorAbstract {
                 case KeyEvent.VK_SPACE:
                 case KeyEvent.VK_UP:
                     step.addAction(new HardDropAction(relativeTime));
+                    break;
+                case KeyEvent.VK_J:
+                    step.addAction(new ClearAction(relativeTime));
                     break;
             }
         }

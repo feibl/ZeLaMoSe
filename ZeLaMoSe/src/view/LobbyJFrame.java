@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.text.NumberFormatter;
 import network.ChatMessage;
 import view.music.MusicFile;
 import view.music.SoundEngine;
@@ -49,18 +50,22 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 return this;
             }
         });
-
-        soundEngine = new SoundEngine();
-        soundEngine.playBackgroundMusic(MusicFile.lobbyBackgroundMusic);
-        switch(gameMode) {
+         switch(gameMode) {
             case SINGLE_PLAYER:
-               tetrisController.startGame();
+               tetrisController.startGame(0);
                 break;
             case MULTI_PLAYER_HOST:
                 btnStart.setEnabled(true);
+            soundEngine = new SoundEngine();
+            soundEngine.playBackgroundMusic(MusicFile.lobbyBackgroundMusic);
                 break;
             case MULTI_PLAYER_JOIN:
                 btnStart.setEnabled(false);
+        lblNumberOfJokers.setVisible(false);
+        sprNumberOfJokersValue.setVisible(false);
+            soundEngine = new SoundEngine();
+            soundEngine.playBackgroundMusic(MusicFile.lobbyBackgroundMusic);
+		break;
         }
     }
 
@@ -86,10 +91,10 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
         pnlClock = new javax.swing.JPanel();
-        lblTimeHere = new javax.swing.JLabel();
-        lblTimeHereValue = new javax.swing.JLabel();
+        lblNumberOfJokers = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         playerList = new javax.swing.JList();
+        sprNumberOfJokersValue = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1026, 710));
@@ -144,12 +149,10 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         );
         pnlClockLayout.setVerticalGroup(
             pnlClockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 109, Short.MAX_VALUE)
+            .addGap(0, 113, Short.MAX_VALUE)
         );
 
-        lblTimeHere.setText("Time you're here:");
-
-        lblTimeHereValue.setText("<TimeHereValue>");
+        lblNumberOfJokers.setText("Number of Jokers:");
 
         playerList.setModel(playerListModel);
         jScrollPane2.setViewportView(playerList);
@@ -185,9 +188,9 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblTimeHere)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTimeHereValue))
+                        .addComponent(lblNumberOfJokers)
+                        .addGap(32, 32, 32)
+                        .addComponent(sprNumberOfJokersValue, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
@@ -213,11 +216,11 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlClock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16)
+                        .addGap(13, 13, 13)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblTimeHere)
-                            .addComponent(lblTimeHereValue))
-                        .addGap(30, 30, 30)
+                            .addComponent(lblNumberOfJokers)
+                            .addComponent(sprNumberOfJokersValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(27, 27, 27)
                         .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE))
@@ -229,6 +232,9 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                     .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
+        JFormattedTextField txt = ((JSpinner.NumberEditor) sprNumberOfJokersValue.getEditor()).getTextField();
+        ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
+        ((NumberFormatter) txt.getFormatter()).setMinimum(0);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -242,7 +248,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
   }//GEN-LAST:event_txtMessageActionPerformed
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-        tetrisController.startGame();
+        tetrisController.startGame((Integer)sprNumberOfJokersValue.getValue());
     }//GEN-LAST:event_btnStartActionPerformed
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
@@ -263,12 +269,12 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JLabel lblNumberOfJokers;
     private javax.swing.JLabel lblServerIP;
     private javax.swing.JLabel lblServerIPValue;
-    private javax.swing.JLabel lblTimeHere;
-    private javax.swing.JLabel lblTimeHereValue;
     private javax.swing.JList playerList;
     private javax.swing.JPanel pnlClock;
+    private javax.swing.JSpinner sprNumberOfJokersValue;
     private javax.swing.JTextArea txaChat;
     private javax.swing.JTextField txtMessage;
     // End of variables declaration//GEN-END:variables

@@ -115,7 +115,7 @@ public class NetworkIntegrationTest {
     public void testStepDuration() {
         final List<NetworkHandler> players = connectSessions(MAX_SESSIONS);
         waitForConnectionEstablished();
-        gameServerImpl.startGame();
+        gameServerImpl.startGame(0);
 
         class MyCallable implements Callable<Long>, Observer {
 

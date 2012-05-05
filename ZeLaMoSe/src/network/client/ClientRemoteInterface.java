@@ -28,5 +28,5 @@ public interface ClientRemoteInterface extends Remote, Serializable {
 
    public void receiveStartSignal() throws RemoteException;
 
-    public void receiveInitSignal(long blockQueueSeed) throws RemoteException;
+    public void receiveInitSignal(long blockQueueSeed,int numberOfJokers) throws RemoteException;
 }

@@ -4,8 +4,8 @@
  */
 package domain;
 
+import domain.actions.Action;
 import domain.actions.ActionInterface;
-import domain.actions.GarbageLineAction;
 
 /**
  *
@@ -16,5 +16,6 @@ abstract public class GameEngineAbstract extends SimulationStateAbstract impleme
     abstract public void startGame();
     abstract public int getLevel();
     abstract public void setNickName(String nickName);
-    abstract public GarbageLineAction getlastGarbageLineAction();
+    abstract public Action getlastActionForOthers();
+    abstract public int getNumberOfJokers();
 }

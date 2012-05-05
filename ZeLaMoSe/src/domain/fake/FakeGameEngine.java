@@ -55,7 +55,7 @@ public class FakeGameEngine extends GameEngineAbstract {
 
     @Override
     public String toString() {
-        return new String("MockGameEndine " + sessionId);
+        return "MockGameEndine " + sessionId;
     }
 
 
@@ -65,8 +65,13 @@ public class FakeGameEngine extends GameEngineAbstract {
     }
 
     @Override
-    public GarbageLineAction getlastGarbageLineAction() {
+    public GarbageLineAction getlastActionForOthers() {
        return null;
+    }
+
+    @Override
+    public int getNumberOfJokers() {
+       return 0;
     }
 
   

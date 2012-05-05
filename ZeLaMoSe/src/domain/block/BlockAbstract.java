@@ -25,6 +25,7 @@ public abstract class BlockAbstract implements Cloneable {
     protected String printLetter;
     protected BlockRotationState blockRotationState;
     protected WallKickAbstract wallkick;
+    private final int blockNumber;
 
     public int getHeight() {
         int height = 0;
@@ -37,6 +38,14 @@ public abstract class BlockAbstract implements Cloneable {
             }
         }
         return height;
+    }
+
+    public int getBlockNumber() {
+        return blockNumber;
+    }
+
+    public int getRotation() {
+        return rotation;
     }
 
     public BlockRotationState getBlockRotationState(){
@@ -71,7 +80,7 @@ public abstract class BlockAbstract implements Cloneable {
         this.y  = y;
     }
      
-    public BlockAbstract(Color c,String printLetter, WallKickAbstract wallkick){
+    public BlockAbstract(Color c,String printLetter, WallKickAbstract wallkick,int blockNumber){
         color = c;
         glRed = convertRgbToGlColor(color.getRed());
         glBlue = convertRgbToGlColor(color.getBlue());
@@ -79,6 +88,7 @@ public abstract class BlockAbstract implements Cloneable {
         rotation = 0; 
         this.printLetter = printLetter;
         this.wallkick = wallkick;
+        this.blockNumber = blockNumber;
         rotation0(grid);
     }
         
