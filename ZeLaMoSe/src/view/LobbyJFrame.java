@@ -93,6 +93,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         setPreferredSize(new java.awt.Dimension(1026, 710));
 
         txaChat.setColumns(20);
+        txaChat.setEditable(false);
         txaChat.setRows(5);
         jScrollPane1.setViewportView(txaChat);
 
