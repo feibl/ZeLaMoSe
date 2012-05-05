@@ -5,7 +5,6 @@
 package view;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
-import com.sun.media.jai.rmi.RenderingKeyState;
 import domain.Config;
 import domain.SimulationStateAbstract;
 import domain.actions.*;
