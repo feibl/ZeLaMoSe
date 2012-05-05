@@ -35,37 +35,18 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         tetrisController.addObserver(this);
         chatController.addObserver(this);
         chatController.addObserver(playerListModel);
-        playerList.setCellRenderer(new DefaultListCellRenderer() {
-
-            @Override
-            public Component getListCellRendererComponent(JList jlist, Object o, int i, boolean bln, boolean bln1) {
-                Map.Entry<Integer, String> entry = (Map.Entry<Integer, String>) o;
-                setText(entry.getValue());
-                if (entry.getKey() == chatController.getOwnSession().getId()) {
-                    setBackground(new Color(230, 245, 245));
-                } else {
-                    setBackground(Color.white);
-                    setEnabled(false);
-                }
-                return this;
-            }
-        });
-         switch(gameMode) {
+        switch (gameMode) {
             case SINGLE_PLAYER:
-               tetrisController.startGame(0);
-                break;
-            case MULTI_PLAYER_HOST:
-                btnStart.setEnabled(true);
-            soundEngine = new SoundEngine();
-            soundEngine.playBackgroundMusic(MusicFile.lobbyBackgroundMusic);
+                tetrisController.startGame(0);
                 break;
             case MULTI_PLAYER_JOIN:
                 btnStart.setEnabled(false);
-        lblNumberOfJokers.setVisible(false);
-        sprNumberOfJokersValue.setVisible(false);
-            soundEngine = new SoundEngine();
-            soundEngine.playBackgroundMusic(MusicFile.lobbyBackgroundMusic);
-		break;
+                lblNumberOfJokers.setVisible(false);
+                sprNumberOfJokersValue.setVisible(false);
+            case MULTI_PLAYER_HOST:
+                soundEngine = new SoundEngine();
+                soundEngine.playBackgroundMusic(MusicFile.lobbyBackgroundMusic);
+                break;
         }
     }
 
@@ -93,7 +74,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         pnlClock = new javax.swing.JPanel();
         lblNumberOfJokers = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        playerList = new javax.swing.JList();
+        lstPlayers = new javax.swing.JList();
         sprNumberOfJokersValue = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -149,13 +130,28 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         );
         pnlClockLayout.setVerticalGroup(
             pnlClockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 113, Short.MAX_VALUE)
+            .addGap(0, 109, Short.MAX_VALUE)
         );
 
         lblNumberOfJokers.setText("Number of Jokers:");
 
-        playerList.setModel(playerListModel);
-        jScrollPane2.setViewportView(playerList);
+        lstPlayers.setModel(playerListModel);
+        lstPlayers.setCellRenderer(new DefaultListCellRenderer() {
+
+            @Override
+            public Component getListCellRendererComponent(JList jlist, Object o, int i, boolean bln, boolean bln1) {
+                Map.Entry<Integer, String> entry = (Map.Entry<Integer, String>) o;
+                setText(entry.getValue());
+                if (entry.getKey() == chatController.getOwnSession().getId()) {
+                    setBackground(new Color(230, 245, 245));
+                } else {
+                    setBackground(Color.white);
+                    setEnabled(false);
+                }
+                return this;
+            }
+        });
+        jScrollPane2.setViewportView(lstPlayers);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -232,6 +228,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                     .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
+
         JFormattedTextField txt = ((JSpinner.NumberEditor) sprNumberOfJokersValue.getEditor()).getTextField();
         ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
         ((NumberFormatter) txt.getFormatter()).setMinimum(0);
@@ -248,7 +245,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
   }//GEN-LAST:event_txtMessageActionPerformed
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-        tetrisController.startGame((Integer)sprNumberOfJokersValue.getValue());
+        tetrisController.startGame((Integer) sprNumberOfJokersValue.getValue());
     }//GEN-LAST:event_btnStartActionPerformed
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
@@ -272,7 +269,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel lblNumberOfJokers;
     private javax.swing.JLabel lblServerIP;
     private javax.swing.JLabel lblServerIPValue;
-    private javax.swing.JList playerList;
+    private javax.swing.JList lstPlayers;
     private javax.swing.JPanel pnlClock;
     private javax.swing.JSpinner sprNumberOfJokersValue;
     private javax.swing.JTextArea txaChat;
@@ -290,7 +287,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 chatController.tearDown();
                 tetrisController.deleteObserver(this);
 
-                
+
                 List<SimulationStateAbstract> otherSimulations = new ArrayList<SimulationStateAbstract>();
                 for (Integer sessionID : tetrisController.getSessionMap().keySet()) {
                     if (sessionID != tetrisController.getLocalSessionID()) {
@@ -305,8 +302,9 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                     @Override
                     public void run() {
                         gameField.setVisible(true);
-                        if(soundEngine!=null)
+                        if (soundEngine != null) {
                             soundEngine.stopBackGroundMusic(MusicFile.lobbyBackgroundMusic);
+                        }
                         dispose();
                     }
                 });
