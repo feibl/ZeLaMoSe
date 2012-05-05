@@ -35,21 +35,15 @@ public class TetrisController extends Observable implements Observer {
     private String serverIP = "";
     private ConcurrentHashMap<Integer, String> sessionMap;
     private int localSessionID = -1;
-    private boolean gameStarted = false;
-    private boolean gameRunning;
+    private volatile boolean gameRunning;
     private Object exception;
-    private int numberOfJokers;
-    
+
     public Object getThrownException() {
         return exception;
     }
 
     public String getServerIP() {
         return serverIP;
-    }
-
-    public void setNumberOfJokers(int numberOfJokers) {
-        this.numberOfJokers = numberOfJokers;
     }
 
     public enum UpdateType {
@@ -68,7 +62,7 @@ public class TetrisController extends Observable implements Observer {
     public int getLocalSessionID() {
         return localSessionID;
     }
-    
+
     public Map<Integer, String> getSessionMap() {
         return sessionMap;
     }
@@ -91,13 +85,13 @@ public class TetrisController extends Observable implements Observer {
                 }
             }
         } catch (SocketException ex) {
-            System.out.println("Caught socket exception: "+ex.getMessage());
+            System.out.println("Caught socket exception: " + ex.getMessage());
             handleException(ex);
         }
 
         return "localhost";
     }
-    
+
     public InputSampler getInputSampler() {
         return stepGenerator.getInputSampler();
     }
@@ -106,7 +100,7 @@ public class TetrisController extends Observable implements Observer {
         try {
             LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
         } catch (RemoteException ex) {
-            System.out.println("Caught remote exception: "+ex.getMessage());
+            System.out.println("Caught remote exception: " + ex.getMessage());
             handleException(ex);
         }
         Registry registry = LocateRegistry.getRegistry();
@@ -144,7 +138,7 @@ public class TetrisController extends Observable implements Observer {
                 if (step == null) {
                     throw new IllegalStateException();
                 }
-                if (step.getSessionID() == localSessionID && o == stepGenerator) {
+                if (o == stepGenerator) {
                     simulationController.addStep(step);
                     networkHandler.addStep(step);
                 } else if (step.getSessionID() != localSessionID) {
@@ -163,7 +157,7 @@ public class TetrisController extends Observable implements Observer {
                 long seed = networkHandler.getBlockQueueSeed();
                 int numberOfJokers = networkHandler.getNumberOfJokers();
                 for (Map.Entry<Integer, String> entry : sessionMap.entrySet()) {
-                    simulationController.addSession(entry.getKey(), entry.getValue(), new GameEngine(entry.getKey(), seed,numberOfJokers));
+                    simulationController.addSession(entry.getKey(), entry.getValue(), new GameEngine(entry.getKey(), seed, numberOfJokers));
                 }
 
                 setChanged();
@@ -177,10 +171,9 @@ public class TetrisController extends Observable implements Observer {
                     gameRunning = true;
                     run();
                 }
-                gameStarted = true;
                 break;
             case SESSION_REMOVED:
-                if (gameStarted) {
+                if (gameRunning) {
                     simulationController.removeSession(networkHandler.getRemovedSession().getId());
                 }
                 break;
@@ -188,12 +181,11 @@ public class TetrisController extends Observable implements Observer {
                 abortGame();
                 break;
             case EXCEPTION_THROWN:
-                setChanged();
-                notifyObservers(UpdateType.EXCEPTION_THROWN);
+                handleException(networkHandler.getThrownException());
                 break;
         }
     }
-    
+
     private void abortGame() {
         for (int sessionID : sessionMap.keySet()) {
             simulationController.removeSession(sessionID);
@@ -201,9 +193,9 @@ public class TetrisController extends Observable implements Observer {
         gameRunning = false;
         networkHandler.deleteObserver(this);
         stepGenerator.deleteObserver(this);
-        
+
     }
-    
+
     private void handleException(Exception e) {
         exception = e;
         setChanged();
@@ -225,7 +217,7 @@ public class TetrisController extends Observable implements Observer {
             stepGenerator.processStep();
             currentStep++;
         } catch (IllegalStateException e) {
-            System.out.println("Caught illegal state exception: "+e.getMessage());
+            System.out.println("Caught illegal state exception: " + e.getMessage());
             e.printStackTrace();
             handleException(e);
             //We cannot recover from illegal state exceptions, abort game
