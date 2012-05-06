@@ -211,7 +211,7 @@
               <Connection code="playerListModel" type="code"/>
             </Property>
             <Property name="cellRenderer" type="javax.swing.ListCellRenderer" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new DefaultListCellRenderer() {&#xa;&#xa;            @Override&#xa;            public Component getListCellRendererComponent(JList jlist, Object o, int i, boolean bln, boolean bln1) {&#xa;                Map.Entry&lt;Integer, String&gt; entry = (Map.Entry&lt;Integer, String&gt;) o;&#xa;                setText(entry.getValue());&#xa;                if (entry.getKey() == chatController.getOwnSession().getId()) {&#xa;                    setBackground(new Color(230, 245, 245));&#xa;                } else {&#xa;                    setBackground(Color.white);&#xa;                    setEnabled(false);&#xa;                }&#xa;                return this;&#xa;            }&#xa;        }" type="code"/>
+              <Connection code="playerListCellRenderer" type="code"/>
             </Property>
           </Properties>
         </Component>

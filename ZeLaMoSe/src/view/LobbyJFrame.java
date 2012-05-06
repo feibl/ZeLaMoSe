@@ -22,24 +22,19 @@ import view.music.SoundEngine;
  */
 public class LobbyJFrame extends javax.swing.JFrame implements Observer {
 
-    private TetrisController tetrisController;
-    private PlayerListModel playerListModel;
+    private final TetrisController tetrisController;
+    private final PlayerListModel playerListModel;
     private final ChatController chatController;
     private SoundEngine soundEngine;
+    private final PlayerListCellRenderer playerListCellRenderer;
     final static SimpleAttributeSet DEFAULT = new SimpleAttributeSet();
-    final static SimpleAttributeSet[] PLAYER_FONTS = new SimpleAttributeSet[4];
+    final static SimpleAttributeSet BOLD = new SimpleAttributeSet();
 
     static {
-        for (int i = 0; i < PLAYER_FONTS.length; i++) {
-            PLAYER_FONTS[i] = new SimpleAttributeSet();
-            StyleConstants.setFontFamily(PLAYER_FONTS[i], "Helvetica");
-            StyleConstants.setFontSize(PLAYER_FONTS[i], 12);
-            StyleConstants.setBold(PLAYER_FONTS[i], true);
-        }
-        StyleConstants.setForeground(PLAYER_FONTS[0], Color.blue);
-        StyleConstants.setForeground(PLAYER_FONTS[1], Color.red);
-        StyleConstants.setForeground(PLAYER_FONTS[2], Color.yellow);
-        StyleConstants.setForeground(PLAYER_FONTS[3], Color.green);
+        StyleConstants.setForeground(BOLD, Color.black);
+        StyleConstants.setFontFamily(BOLD, "Helvetica");
+        StyleConstants.setFontSize(BOLD, 12);
+        StyleConstants.setBold(BOLD, true);
 
         StyleConstants.setForeground(DEFAULT, Color.black);
         StyleConstants.setFontFamily(DEFAULT, "Helvetica");
@@ -50,6 +45,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         this.tetrisController = tetrisController;
         this.chatController = chatController;
         this.playerListModel = new PlayerListModel(chatController.getSessionList());
+        this.playerListCellRenderer = new PlayerListCellRenderer(chatController.getOwnSession().getId());
 
         initComponents();
         lblServerIPValue.setText(tetrisController.getServerIP());
@@ -164,21 +160,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         lblNumberOfJokers.setText("Number of Jokers:");
 
         lstPlayers.setModel(playerListModel);
-        lstPlayers.setCellRenderer(new DefaultListCellRenderer() {
-
-            @Override
-            public Component getListCellRendererComponent(JList jlist, Object o, int i, boolean bln, boolean bln1) {
-                Map.Entry<Integer, String> entry = (Map.Entry<Integer, String>) o;
-                setText(entry.getValue());
-                if (entry.getKey() == chatController.getOwnSession().getId()) {
-                    setBackground(new Color(230, 245, 245));
-                } else {
-                    setBackground(Color.white);
-                    setEnabled(false);
-                }
-                return this;
-            }
-        });
+        lstPlayers.setCellRenderer(playerListCellRenderer);
         jScrollPane2.setViewportView(lstPlayers);
 
         txpChat.setEditable(false);
@@ -348,7 +330,9 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     }
 
     private void writeChatMessage(ChatMessage chatMessage) {
-        appendText(chatMessage.getSender().getNickname() + ": ", PLAYER_FONTS[chatMessage.getSender().getId() % PLAYER_FONTS.length]);
+        SimpleAttributeSet playerFont = new SimpleAttributeSet(BOLD);
+        StyleConstants.setForeground(playerFont, playerListCellRenderer.getPlayerColor(chatMessage.getSender().getId()));
+        appendText(chatMessage.getSender().getNickname() + ": ", playerFont);
         appendText(chatMessage.getMessage() + '\n', DEFAULT);
         scrollToNewLine();
     }
