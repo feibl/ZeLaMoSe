@@ -183,7 +183,6 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         jScrollPane2.setViewportView(lstPlayers);
 
         txpChat.setEditable(false);
-        txpChat.setAutoscrolls(true);
         txpChat.setFocusable(false);
         jScrollPane3.setViewportView(txpChat);
 
@@ -351,10 +350,12 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private void writeChatMessage(ChatMessage chatMessage) {
         appendText(chatMessage.getSender().getNickname() + ": ", BLUE);
         appendText(chatMessage.getMessage() + '\n', DEFAULT);
+        scrollToNewLine();        
     }
 
     private void writeServerMessage(String message) {
         appendText(message + '\n', DEFAULT);
+        scrollToNewLine();
     }
 
     private void appendText(final String text, final AttributeSet set) {
@@ -369,5 +370,8 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 }
             }
         });
+    }
+    private void scrollToNewLine() {
+        txpChat.setCaretPosition(txpChat.getText().length());
     }
 }
