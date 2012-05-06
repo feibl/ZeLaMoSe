@@ -26,25 +26,24 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private PlayerListModel playerListModel;
     private final ChatController chatController;
     private SoundEngine soundEngine;
-    final static SimpleAttributeSet BLUE = new SimpleAttributeSet();
     final static SimpleAttributeSet DEFAULT = new SimpleAttributeSet();
-    final static SimpleAttributeSet INSERT = new SimpleAttributeSet();
+    final static SimpleAttributeSet[] PLAYER_FONTS = new SimpleAttributeSet[4];
 
     static {
-        StyleConstants.setForeground(BLUE, Color.blue);
-        StyleConstants.setFontFamily(BLUE, "Helvetica");
-        StyleConstants.setFontSize(BLUE, 12);
-        StyleConstants.setBold(BLUE, true);
+        for (int i = 0; i < PLAYER_FONTS.length; i++) {
+            PLAYER_FONTS[i] = new SimpleAttributeSet();
+            StyleConstants.setFontFamily(PLAYER_FONTS[i], "Helvetica");
+            StyleConstants.setFontSize(PLAYER_FONTS[i], 12);
+            StyleConstants.setBold(PLAYER_FONTS[i], true);
+        }
+        StyleConstants.setForeground(PLAYER_FONTS[0], Color.blue);
+        StyleConstants.setForeground(PLAYER_FONTS[1], Color.red);
+        StyleConstants.setForeground(PLAYER_FONTS[2], Color.yellow);
+        StyleConstants.setForeground(PLAYER_FONTS[3], Color.green);
 
         StyleConstants.setForeground(DEFAULT, Color.black);
         StyleConstants.setFontFamily(DEFAULT, "Helvetica");
         StyleConstants.setFontSize(DEFAULT, 12);
-
-        StyleConstants.setForeground(INSERT, Color.red);
-        StyleConstants.setFontFamily(INSERT, "Helvetica");
-        StyleConstants.setItalic(INSERT, true);
-        StyleConstants.setBold(INSERT, true);
-        StyleConstants.setFontSize(INSERT, 12);
     }
 
     LobbyJFrame(TetrisController tetrisController, final ChatController chatController, MainJFrame.GameMode gameMode) {
@@ -348,9 +347,9 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     }
 
     private void writeChatMessage(ChatMessage chatMessage) {
-        appendText(chatMessage.getSender().getNickname() + ": ", BLUE);
+        appendText(chatMessage.getSender().getNickname() + ": ", PLAYER_FONTS[chatMessage.getSender().getId() % PLAYER_FONTS.length]);
         appendText(chatMessage.getMessage() + '\n', DEFAULT);
-        scrollToNewLine();        
+        scrollToNewLine();
     }
 
     private void writeServerMessage(String message) {
@@ -371,6 +370,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
             }
         });
     }
+
     private void scrollToNewLine() {
         txpChat.setCaretPosition(txpChat.getText().length());
     }
