@@ -8,8 +8,10 @@ import domain.*;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.text.NumberFormatter;
+import javax.swing.text.*;
 import network.ChatMessage;
 import view.music.MusicFile;
 import view.music.SoundEngine;
@@ -24,6 +26,26 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private PlayerListModel playerListModel;
     private final ChatController chatController;
     private SoundEngine soundEngine;
+    final static SimpleAttributeSet BLUE = new SimpleAttributeSet();
+    final static SimpleAttributeSet DEFAULT = new SimpleAttributeSet();
+    final static SimpleAttributeSet INSERT = new SimpleAttributeSet();
+
+    static {
+        StyleConstants.setForeground(BLUE, Color.blue);
+        StyleConstants.setFontFamily(BLUE, "Helvetica");
+        StyleConstants.setFontSize(BLUE, 12);
+        StyleConstants.setBold(BLUE, true);
+
+        StyleConstants.setForeground(DEFAULT, Color.black);
+        StyleConstants.setFontFamily(DEFAULT, "Helvetica");
+        StyleConstants.setFontSize(DEFAULT, 12);
+
+        StyleConstants.setForeground(INSERT, Color.red);
+        StyleConstants.setFontFamily(INSERT, "Helvetica");
+        StyleConstants.setItalic(INSERT, true);
+        StyleConstants.setBold(INSERT, true);
+        StyleConstants.setFontSize(INSERT, 12);
+    }
 
     LobbyJFrame(TetrisController tetrisController, final ChatController chatController, MainJFrame.GameMode gameMode) {
         this.tetrisController = tetrisController;
@@ -70,8 +92,6 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txaChat = new javax.swing.JTextArea();
         lblServerIP = new javax.swing.JLabel();
         lblServerIPValue = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -88,14 +108,10 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         jScrollPane2 = new javax.swing.JScrollPane();
         lstPlayers = new javax.swing.JList();
         sprNumberOfJokersValue = new javax.swing.JSpinner();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txpChat = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1026, 710));
-
-        txaChat.setColumns(20);
-        txaChat.setEditable(false);
-        txaChat.setRows(5);
-        jScrollPane1.setViewportView(txaChat);
 
         lblServerIP.setText("Server-IP:");
 
@@ -166,6 +182,11 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         });
         jScrollPane2.setViewportView(lstPlayers);
 
+        txpChat.setEditable(false);
+        txpChat.setAutoscrolls(true);
+        txpChat.setFocusable(false);
+        jScrollPane3.setViewportView(txpChat);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -183,7 +204,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                         .addComponent(lblServerIP, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(28, 28, 28)
                         .addComponent(lblServerIPValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1))
+                    .addComponent(jScrollPane3))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -233,7 +254,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                         .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1))
+                    .addComponent(jScrollPane3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtMessage)
@@ -274,8 +295,8 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton btnStart;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
@@ -285,7 +306,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JList lstPlayers;
     private javax.swing.JPanel pnlClock;
     private javax.swing.JSpinner sprNumberOfJokersValue;
-    private javax.swing.JTextArea txaChat;
+    private javax.swing.JTextPane txpChat;
     private javax.swing.JTextField txtMessage;
     // End of variables declaration//GEN-END:variables
 
@@ -319,19 +340,34 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 writeChatMessage(chatController.getChatMessage());
                 break;
             case SESSION_ADDED:
-                writeToChatArea(chatController.getAddedSession().getNickname() + " enters");
+                writeServerMessage(chatController.getAddedSession().getNickname() + " enters");
                 break;
             case SESSION_REMOVED:
-                writeToChatArea(chatController.getRemovedSession().getNickname() + " has left");
+                writeServerMessage(chatController.getRemovedSession().getNickname() + " has left");
                 break;
         }
     }
 
     private void writeChatMessage(ChatMessage chatMessage) {
-        writeToChatArea(chatMessage.getSender().getNickname() + ": " + chatMessage.getMessage());
+        appendText(chatMessage.getSender().getNickname() + ": ", BLUE);
+        appendText(chatMessage.getMessage() + '\n', DEFAULT);
     }
 
-    private void writeToChatArea(String message) {
-        txaChat.append(message + '\n');
+    private void writeServerMessage(String message) {
+        appendText(message + '\n', DEFAULT);
+    }
+
+    private void appendText(final String text, final AttributeSet set) {
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    txpChat.getDocument().insertString(txpChat.getDocument().getLength(), text, set);
+                } catch (BadLocationException ex) {
+                    Logger.getLogger(LobbyJFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 }
