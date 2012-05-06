@@ -277,6 +277,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
   }//GEN-LAST:event_txtMessageActionPerformed
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
+        btnStart.setEnabled(false);
         tetrisController.startGame((Integer) sprNumberOfJokersValue.getValue());
     }//GEN-LAST:event_btnStartActionPerformed
 
