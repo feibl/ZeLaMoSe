@@ -401,7 +401,7 @@ public class GameEngine extends GameEngineAbstract {
         BlockAbstract[][] garbageLines = new BlockAbstract[gridWidth][numberOfLines];
 
         int emptyXPosition = randomGarbageLineGenerator.nextInt(gridWidth);
-        GarbageBlock garbageBlock = new GarbageBlock(Integer.MAX_VALUE);
+        GarbageBlock garbageBlock = new GarbageBlock(Integer.MAX_VALUE,0);
         for (int x = 0; x < gridWidth; ++x) {
             if (x == emptyXPosition) {
                 continue;

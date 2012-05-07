@@ -84,7 +84,7 @@ public abstract class BlockAbstract implements Cloneable {
         this.y  = y;
     }
      
-    public BlockAbstract(Color c,String printLetter, WallKickAbstract wallkick,int blockNumber){
+    public BlockAbstract(Color c,String printLetter, WallKickAbstract wallkick,int blockNumber,long seed){
         color = c;
         glRed = convertRgbToGlColor(color.getRed());
         glBlue = convertRgbToGlColor(color.getBlue());
@@ -93,11 +93,11 @@ public abstract class BlockAbstract implements Cloneable {
         this.printLetter = printLetter;
         this.wallkick = wallkick;
         this.blockNumber = blockNumber;
-        generateRandomPositions(blockNumber);
+        generateRandomPositions(blockNumber+seed);
         rotation0(grid);
     }
 
-    private void generateRandomPositions(int blockNumber) {
+    private void generateRandomPositions(long blockNumber) {
         Random random = new Random(blockNumber);
         for (int i = 0; i < 32; i++) {
             posList.add(random.nextInt(4));

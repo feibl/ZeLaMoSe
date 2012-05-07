@@ -16,8 +16,8 @@ import java.util.Random;
  */
 public class MirrorBlock extends BlockAbstract implements SpecialBlockInterface {
 
-    public MirrorBlock(int blockNumber) {
-        super(Color.white, "M", new NoWallKick(),blockNumber);
+    public MirrorBlock(int blockNumber,long seed) {
+        super(Color.white, "M", new NoWallKick(),blockNumber,seed);
     }
     
     @Override

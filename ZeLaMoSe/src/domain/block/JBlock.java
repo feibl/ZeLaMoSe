@@ -13,8 +13,8 @@ import java.awt.Color;
  */
 public class JBlock extends BlockAbstract {
 
-    public JBlock(int blockNumber) {
-        super(new Color(0, 0, 200), "J", new GeneralWallKick(),blockNumber);
+    public JBlock(int blockNumber,long seed) {
+        super(new Color(0, 0, 200), "J", new GeneralWallKick(),blockNumber,seed);
     }
 
     @Override

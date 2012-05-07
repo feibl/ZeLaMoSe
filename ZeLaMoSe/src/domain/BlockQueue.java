@@ -26,16 +26,18 @@ public class BlockQueue implements BlockQueueInterface {
      * @param seed
      *
      */
+    private long seed;
     public BlockQueue(long seed) {
         randomGenerator = new Random(seed);
         blockCounter = 0;
+        this.seed = seed;
         fillBlockList();
     }
 
     @Override
     public BlockAbstract getNextBlock() {
         BlockAbstract returnValue;
-        returnValue = blocksProbability.get(randomGenerator.nextInt(blocksProbability.size())).createBlock(++blockCounter);
+        returnValue = blocksProbability.get(randomGenerator.nextInt(blocksProbability.size())).createBlock(++blockCounter,seed);
         return returnValue;
     }
 

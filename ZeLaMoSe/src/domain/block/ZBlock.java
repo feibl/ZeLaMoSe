@@ -13,8 +13,8 @@ import java.awt.Color;
  */
 public class ZBlock extends BlockAbstract {
 
-    public ZBlock(int blockNumber) {
-        super(new Color(255,0,0),"Z", new GeneralWallKick(),blockNumber);
+    public ZBlock(int blockNumber,long seed) {
+        super(new Color(255,0,0),"Z", new GeneralWallKick(),blockNumber,seed);
     }
 
     @Override

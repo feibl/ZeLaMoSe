@@ -15,16 +15,16 @@ import java.util.logging.Logger;
 public enum BlockType {
     I(IBlock.class,100), J(JBlock.class,100), L(LBlock.class,100), 
     O(OBlock.class,100), S(SBlock.class,100), T(TBlock.class,100), 
-    Z(ZBlock.class,100), GARBAGE(GarbageBlock.class,0), MIRROR(MirrorBlock.class,10),  
+    Z(ZBlock.class,100), GARBAGE(GarbageBlock.class,0), MIRROR(MirrorBlock.class,100),  
     DARK(DarkBlock.class,10);
     
     private final Class className;
     private final int probability;
-    public BlockAbstract createBlock(int blockNumber) {
+    public BlockAbstract createBlock(int blockNumber, long seed) {
         try {
-            Constructor c = className.getConstructor(new Class[]{Integer.TYPE});
+            Constructor c = className.getConstructor(new Class[]{Integer.TYPE, Long.TYPE});
             
-            return (BlockAbstract)(c.newInstance(new Object[]{blockNumber}));
+            return (BlockAbstract)(c.newInstance(new Object[]{blockNumber,seed}));
         }catch (Exception ex) {
             Logger.getLogger(BlockType.class.getName()).log(Level.SEVERE, null, ex);
         }

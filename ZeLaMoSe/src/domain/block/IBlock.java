@@ -14,8 +14,8 @@ import java.awt.Color;
 public class IBlock extends BlockAbstract {
     
     
-    public IBlock(int blockNumber){
-        super(new Color(0,255,255),"I",new IWallKick(),blockNumber);
+    public IBlock(int blockNumber,long seed){
+        super(new Color(0,255,255),"I",new IWallKick(),blockNumber,seed);
     }
 
     @Override
