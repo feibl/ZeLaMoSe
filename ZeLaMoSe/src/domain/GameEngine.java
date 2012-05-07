@@ -368,9 +368,11 @@ public class GameEngine extends GameEngineAbstract {
                     int blockNumber = grid[x][lineToRemove].getBlockNumber();
                     if(!blockActionsFromOthers.contains(blockNumber) ){
                         if (grid[x][lineToRemove] instanceof MirrorBlock) {
+                            score += 1000;
                             lastActionForOthers = new MirrorAction(0,blockNumber);
                         } else if  (grid[x][lineToRemove] instanceof ShadowBlock) {
                             lastActionForOthers = new ShadowAction(0,blockNumber);
+                            score += 1500;
                         }
                         setChanged();
                         notifyObservers(UpdateType.ACTIONFOROTHERS);
