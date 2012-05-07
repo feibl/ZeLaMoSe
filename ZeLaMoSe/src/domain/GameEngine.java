@@ -429,6 +429,7 @@ public class GameEngine extends GameEngineAbstract {
                 }
             }
         }
+        score += numberOfLines*2;
         setLastAction(action);
     }
 
