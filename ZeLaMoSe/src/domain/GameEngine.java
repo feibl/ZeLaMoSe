@@ -321,6 +321,7 @@ public class GameEngine extends GameEngineAbstract {
         fieldsToMove--;
         currentBlock.setY(tempY);
         moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, fieldsToMove));
+          score += fieldsToMove*2;
         checkForLinesToRemove();
         nextBlock();
     }
