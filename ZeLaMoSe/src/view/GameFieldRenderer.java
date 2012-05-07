@@ -14,13 +14,9 @@ import domain.block.GarbageBlock;
 import java.awt.Font;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.media.opengl.GL;
-import javax.media.opengl.GL2;
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLEventListener;
+import javax.media.opengl.*;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 
@@ -31,29 +27,30 @@ import javax.media.opengl.glu.GLU;
 class GameFieldRenderer implements GLEventListener, Observer {
 
     private long timeToMirror = 0;
-    private long currentShadowTime = 0;
+    private long timeToShadow = 0;
     private volatile boolean isAnimating = false;
     private ConcurrentLinkedQueue<Action> actionQueue;
     private final int defaultTimeToMirror = 15000;
-    private final int timeToShadow = 15000;
+    private final int defaultTimeToShadow = 15000;
     private int viewPortWidth, viewPortHeight, blockSize;
     private SimulationStateAbstract gameEngine;
     private BlockAbstract currentBlock;
     private final int defaultX = 4, defaultY = 23;
     private volatile BlockAbstract[][] grid;
-    private boolean mirror = false;
-    private AtomicBoolean shadow;
-    private TextRenderer textRenderer;
+    private boolean activateMirrorEffect = false;
+    private TextRenderer effectTextRenderer;
+    private TextRenderer statusMsgsTextRenderer;
     private long mirrorStartTime;
+    private long shadowStartTime;
     private boolean ownGameField;
 
     public GameFieldRenderer(int blocksize, SimulationStateAbstract gameEngine, boolean ownGameField) {
         this.blockSize = blocksize;
         this.ownGameField = ownGameField;
-        shadow = new AtomicBoolean(false);
         viewPortWidth = Config.gridWidth * blocksize;
         viewPortHeight = (Config.gridHeight - 2) * blocksize;
-        textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 18));
+        effectTextRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 18), true, true);
+        statusMsgsTextRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 10), true, true);
         actionQueue = new ConcurrentLinkedQueue<Action>();
 
         initStackGrid();
@@ -99,28 +96,18 @@ class GameFieldRenderer implements GLEventListener, Observer {
         GL2 gl = drawable.getGL().getGL2();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
-        if (mirror) {
+        if (activateMirrorEffect) {
             mirrorField(gl);
-            mirror=false;
-        } else {
-            if (remainingMirrorTime() <= 0) {
-                normalizeMirrorField(gl);
-                timeToMirror = 0;
-            }
+            activateMirrorEffect = false;
+        } else if (remainingMirrorTime() <= 0) {
+            normalizeMirrorField(gl);
         }
 
-        if (shadow.getAndSet(false)) {
+
+        if (remainingShadowTime() > 0) {
             drawBlockStack(gl, true);
-            currentShadowTime = System.currentTimeMillis();
         } else {
-            if (currentShadowTime == 0) {
-                drawBlockStack(gl, false);
-            } else if ((System.currentTimeMillis() - currentShadowTime) >= timeToShadow) {
-                drawBlockStack(gl, false);
-                currentShadowTime = 0;
-            } else {
-                drawBlockStack(gl, true);
-            }
+            drawBlockStack(gl, false);
         }
 
 
@@ -132,18 +119,42 @@ class GameFieldRenderer implements GLEventListener, Observer {
 
 
         if (ownGameField) {
-            if (timeToMirror != 0) {
-                textRenderer.beginRendering(drawable.getWidth(), drawable.getHeight());
-                String timeToDisplay = Double.toString(remainingMirrorTime() / 1000d);
-                textRenderer.draw("Mirror Time Remaining: " + timeToDisplay, 30, 30);
-                textRenderer.endRendering();
+            if (remainingMirrorTime() > 0) {
+                String text = "Mirror Time Remaining: " + Double.toString(remainingMirrorTime() / 1000d);
+                renderText(drawable, text, 30, 30, effectTextRenderer);
             }
+            if (remainingShadowTime() > 0) {
+                String text = "Time until the sun rises: " + Double.toString(remainingShadowTime() / 1000d);
+                renderText(drawable, text, 30, 50, effectTextRenderer);
+            }
+        } else if (gameEngine == null) {
+            renderText(drawable, "Player not connected", 10, 130, statusMsgsTextRenderer);
+
         }
+
 
     }
 
+    private void renderText(GLAutoDrawable drawable, String text, int x, int y, TextRenderer renderer) throws GLException {
+        renderer.beginRendering(drawable.getWidth(), drawable.getHeight());
+        renderer.draw(text, x, y);
+        renderer.endRendering();
+    }
+
     private long remainingMirrorTime() {
-        return timeToMirror - (System.currentTimeMillis() - mirrorStartTime);
+        long remainingTime = timeToMirror - (System.currentTimeMillis() - mirrorStartTime);
+        if (remainingTime < 0) {
+            timeToMirror = 0;
+        }
+        return remainingTime;
+    }
+
+    private long remainingShadowTime() {
+        long remainingTime = timeToShadow - (System.currentTimeMillis() - shadowStartTime);
+        if (remainingTime < 0) {
+            timeToShadow = 0;
+        }
+        return remainingTime;
     }
 
     @Override
@@ -171,14 +182,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
     private void drawGridLines(GL2 gl) {
 
 
-        float red, green, blue;
-        ////////////////////
-        //drawing the grid
-        red = 0.0f;
-        green = 0.0f;
-        blue = 0.0f;
-
-        gl.glColor3f(red, green, blue);
+        gl.glColor3f(0, 0, 0);
 
         gl.glBegin(GL.GL_LINES);
 
@@ -228,14 +232,14 @@ class GameFieldRenderer implements GLEventListener, Observer {
         }
     }
 
-    private void drawBlockStack(GL2 gl, boolean allBlackEverything) {
+    private void drawBlockStack(GL2 gl, boolean drawEverythingBlack) {
 
         for (int i = 0; i < Config.gridWidth; i++) {
             for (int j = 0; j < Config.gridHeight; j++) {
 
                 BlockAbstract block = grid[i][j];
 
-                if (block != null && !allBlackEverything) {
+                if (block != null && !drawEverythingBlack) {
                     gl.glColor3f(block.getGlRed(), block.getGlGreen(), block.getGlBlue());
                 } else {
                     gl.glColor3f(0, 0, 0);
@@ -282,7 +286,6 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 currentBlock.setY(currentBlock.getY() - action.getSpeed());
                 break;
             case LEFT:
-
                 currentBlock.setX(currentBlock.getX() - action.getSpeed());
                 break;
             case RIGHT:
@@ -440,16 +443,10 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 handleGarbageLineAction(((GarbageLineAction) action).getLines());
                 break;
             case MIRROR:
-                mirror = true;
-                if (timeToMirror == 0) {
-                    timeToMirror = defaultTimeToMirror;
-                    mirrorStartTime = System.currentTimeMillis();
-                } else {
-                    timeToMirror += defaultTimeToMirror;
-                }
+                handleMirrorAction();
                 break;
             case SHADOW:
-                shadow.set(true);
+                handleShadowAction();
                 break;
             case REMOVELINE:
                 isAnimating = true;
@@ -461,6 +458,25 @@ class GameFieldRenderer implements GLEventListener, Observer {
             case CLEAR:
                 initStackGrid();
                 break;
+        }
+    }
+
+    private void handleMirrorAction() {
+        activateMirrorEffect = true;
+        if (timeToMirror == 0) {
+            timeToMirror = defaultTimeToMirror;
+            mirrorStartTime = System.currentTimeMillis();
+        } else {
+            timeToMirror += defaultTimeToMirror;
+        }
+    }
+
+    private void handleShadowAction() {
+        if (timeToShadow == 0) {
+            timeToShadow = defaultTimeToShadow;
+            shadowStartTime = System.currentTimeMillis();
+        } else {
+            timeToShadow += defaultTimeToShadow;
         }
     }
 }

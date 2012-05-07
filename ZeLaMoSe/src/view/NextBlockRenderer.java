@@ -7,7 +7,6 @@ package view;
 import domain.GameEngine;
 import domain.block.BlockAbstract;
 import domain.SimulationStateAbstract;
-import java.awt.Color;
 import java.util.Observable;
 import java.util.Observer;
 import javax.media.opengl.GL;
@@ -23,12 +22,10 @@ import javax.media.opengl.glu.GLU;
  */
 class NextBlockRenderer implements GLEventListener, Observer {
 
-    private SimulationStateAbstract gameEngine;
     private BlockAbstract nextBlock;
     private int blockSize = 40;
 
     public NextBlockRenderer(SimulationStateAbstract gameEngine) {
-        this.gameEngine = gameEngine;
         gameEngine.addObserver(this);
     }
 
@@ -60,15 +57,7 @@ class NextBlockRenderer implements GLEventListener, Observer {
 
     private void drawGridLines(GL2 gl) {
 
-
-        float red, green, blue;
-        ////////////////////
-        //drawing the grid
-        red = 0.0f;
-        green = 0.0f;
-        blue = 0.0f;
-
-        gl.glColor3f(red, green, blue);
+        gl.glColor3f(0, 0, 0);
 
         gl.glBegin(GL.GL_LINES);
 
