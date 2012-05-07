@@ -15,8 +15,8 @@ import java.util.logging.Logger;
 public enum BlockType {
     I(IBlock.class,100), J(JBlock.class,100), L(LBlock.class,100), 
     O(OBlock.class,100), S(SBlock.class,100), T(TBlock.class,100), 
-    Z(ZBlock.class,100), GARBAGE(GarbageBlock.class,0), MIRROR(MirrorBlock.class,5),  
-    SHADOW(ShadowBlock.class,5);
+    Z(ZBlock.class,100), GARBAGE(GarbageBlock.class,0), MIRROR(MirrorBlock.class,10),  
+    SHADOW(ShadowBlock.class,10);
     
     private final Class className;
     private final int probability;
