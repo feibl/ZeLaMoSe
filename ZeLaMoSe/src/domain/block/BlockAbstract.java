@@ -7,6 +7,9 @@ package domain.block;
 import domain.Config;
 import domain.block.wallkick.WallKickAbstract;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,7 +29,8 @@ public abstract class BlockAbstract implements Cloneable {
     protected BlockRotationState blockRotationState;
     protected WallKickAbstract wallkick;
     private final int blockNumber;
-
+    protected List<Integer> posList = new ArrayList<Integer>();
+    
     public int getHeight() {
         int height = 0;
         for(int i = 0; i < grid.length ; i++){
@@ -89,7 +93,15 @@ public abstract class BlockAbstract implements Cloneable {
         this.printLetter = printLetter;
         this.wallkick = wallkick;
         this.blockNumber = blockNumber;
+        generateRandomPositions(blockNumber);
         rotation0(grid);
+    }
+
+    private void generateRandomPositions(int blockNumber) {
+        Random random = new Random(blockNumber);
+        for (int i = 0; i < 32; i++) {
+            posList.add(random.nextInt(4));
+        }
     }
         
     protected void initializeGrid(BlockAbstract[][] grid) {

@@ -110,7 +110,7 @@ public class GameEngine extends GameEngineAbstract {
                     handleRotateAction((RotateAction) action);
                     break;
                 case MIRROR:
-                case SHADOW:
+                case DARK:
                     setLastAction(action);
                     blockActionsFromOthers.add(((ActionForOthersAbstract)action).getBlockNumber());
                     break;
@@ -368,11 +368,11 @@ public class GameEngine extends GameEngineAbstract {
                     int blockNumber = grid[x][lineToRemove].getBlockNumber();
                     if(!blockActionsFromOthers.contains(blockNumber) ){
                         if (grid[x][lineToRemove] instanceof MirrorBlock) {
-                            score += 1000;
+                            score += 300;
                             lastActionForOthers = new MirrorAction(0,blockNumber);
-                        } else if  (grid[x][lineToRemove] instanceof ShadowBlock) {
+                        } else if  (grid[x][lineToRemove] instanceof DarkBlock) {
                             lastActionForOthers = new ShadowAction(0,blockNumber);
-                            score += 1500;
+                            score += 500;
                         }
                         setChanged();
                         notifyObservers(UpdateType.ACTIONFOROTHERS);

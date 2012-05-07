@@ -445,7 +445,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
             case MIRROR:
                 handleMirrorAction();
                 break;
-            case SHADOW:
+            case DARK:
                 handleShadowAction();
                 break;
             case REMOVELINE:
