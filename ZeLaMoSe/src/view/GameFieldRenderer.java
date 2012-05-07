@@ -30,8 +30,8 @@ class GameFieldRenderer implements GLEventListener, Observer {
     private long timeToShadow = 0;
     private volatile boolean isAnimating = false;
     private ConcurrentLinkedQueue<Action> actionQueue;
-    private final int defaultTimeToMirror = 150000;
-    private final int defaultTimeToShadow = 150000;
+    private final int defaultTimeToMirror = 15000;
+    private final int defaultTimeToShadow = 15000;
     private int viewPortWidth, viewPortHeight, blockSize;
     private SimulationStateAbstract gameEngine;
     private BlockAbstract currentBlock;
