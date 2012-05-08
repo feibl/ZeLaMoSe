@@ -384,6 +384,6 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     }
 
     private void scrollToNewLine() {
-        txpChat.setCaretPosition(txpChat.getText().length());
+        txpChat.setCaretPosition(txpChat.getDocument().getLength());
     }
 }
