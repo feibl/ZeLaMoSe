@@ -33,12 +33,10 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         ownGameFieldJPanel2.initRenderer(mainSimulation);
 
         for (SimulationStateAbstract gameEngine : otherSimulations) {
-            OtherGameFieldJPanel panel = new OtherGameFieldJPanel(((GameEngine) gameEngine).getNickName(), gameEngine);            
+            OtherGameFieldJPanel panel = new OtherGameFieldJPanel(((GameEngine) gameEngine).getNickName(), (GameEngine)gameEngine);            
             pnlEnemyAreas.add(panel);
-            panel.initGLJPanel(gameEngine);
             gameEngine.addObserver(panel);
         }
-        repaint();
     }
 
     /**

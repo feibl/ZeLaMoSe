@@ -17,15 +17,16 @@ import java.util.Observer;
  */
 public class OtherGameFieldJPanel extends javax.swing.JPanel implements Observer {
 
-    private GameEngine observableEngine;
+    private GameEngine gameEngine;
 
     /**
      * Creates new form OtherGameFieldJPanel
      */
-    public OtherGameFieldJPanel(String playerName, SimulationStateAbstract observableEngine) {
+    public OtherGameFieldJPanel(String playerName, GameEngine gameEngine) {
         initComponents();
-        this.observableEngine = (GameEngine)observableEngine;
+        this.gameEngine = (GameEngine)gameEngine;
         this.lblPlayerName.setText("<html><b>" + playerName + "</html></b>");
+        initGLJPanel(gameEngine);
     }
 
     /**
@@ -169,10 +170,10 @@ public class OtherGameFieldJPanel extends javax.swing.JPanel implements Observer
 
     @Override
     public void update(Observable o, Object o1) {
-        lblScore.setText(Integer.toString(observableEngine.getScore()));
-        lblLevel.setText(Integer.toString(observableEngine.getLevel()));
-        lblNbrOfLines.setText(Integer.toString(observableEngine.getTotalRemovedLines()));
-        lblNbrOfBlocks.setText(Integer.toString(observableEngine.getBlockCounter()));
+        lblScore.setText(Integer.toString(gameEngine.getScore()));
+        lblLevel.setText(Integer.toString(gameEngine.getLevel()));
+        lblNbrOfLines.setText(Integer.toString(gameEngine.getTotalRemovedLines()));
+        lblNbrOfBlocks.setText(Integer.toString(gameEngine.getBlockCounter()));
     }
 
     public void initGLJPanel(SimulationStateAbstract gameEngine) {
