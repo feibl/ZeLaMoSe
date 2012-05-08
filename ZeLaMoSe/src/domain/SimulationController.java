@@ -20,6 +20,12 @@ public class SimulationController implements StepInterface, Observer {
     private Map<Integer, Step> stepQueue = new HashMap<Integer, Step>();
     private Map<Integer, GameEngineAbstract> gameEngines = new HashMap<Integer, GameEngineAbstract>();
     private Map<Integer, String> sessions = new HashMap<Integer, String>();
+    private SortedMap<Integer, GameEngineAbstract> rankingMap = new TreeMap<Integer, GameEngineAbstract>(new Comparator() { 
+    @Override 
+    public int compare(Object t, Object t1) { 
+        return ((Integer) t).compareTo((Integer) t1); 
+    } 
+    }); 
     private int currentHighestLevel = 1;
     public boolean autoadvance = true;
 
@@ -71,17 +77,23 @@ public class SimulationController implements StepInterface, Observer {
         fillActionList(seqNum, actionList);
 
         if (autoadvance && (seqNum % (Config.advanceStepLimit - currentHighestLevel) == 0)) {
+            rankingMap.clear();
             for (GameEngineAbstract g : gameEngines.values()) {
                 g.handleAction(new MoveAction(0, MoveAction.Direction.DOWN, 1));
+                if (g.getLevel() > currentHighestLevel && currentHighestLevel < Config.maxLevelForSpeed) {
+                    currentHighestLevel = g.getLevel();
+                }
+                rankingMap.put(g.getScore(), g);
             }
         }
+        
+        //Distribute Ranking
+        int rank = 1;
+        for (Map.Entry<Integer, GameEngineAbstract> e : rankingMap.entrySet()) {
+            e.getValue().setRank(rank++);
+        }
+        
         distributeActions(actionList);
-
-        for (GameEngineAbstract g : gameEngines.values()) {
-            if (g.getLevel() > currentHighestLevel && currentHighestLevel < Config.maxLevelForSpeed) {
-                currentHighestLevel = g.getLevel();
-            }
-        }
 
         if (!stepQueue.isEmpty()) {
             throw new IllegalStateException("stepQueue not empty");
@@ -90,7 +102,6 @@ public class SimulationController implements StepInterface, Observer {
 
     private void distributeActions(Map<Action, Integer> actionList) {
         for (Map.Entry<Action, Integer> e : actionList.entrySet()) {
-            //System.out.println("--Simulating action with timestamp: " + e.getKey().getTimestamp() + " sessionid " + e.getValue());
             if (!gameEngines.containsKey(e.getValue())) {
                 throw new IllegalStateException("Could not find gameEngine");
             }
@@ -159,4 +170,6 @@ public class SimulationController implements StepInterface, Observer {
         stepQueue.remove(sessionId);
         sessions.remove(sessionId);
     }
+
 }
+ 

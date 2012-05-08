@@ -37,6 +37,16 @@ public class GameEngine extends GameEngineAbstract {
     private int level;
     private int totalRemovedLines;
     private int numberOfJokers;
+    private int rank;
+
+    public int getRank() {
+        return rank;
+    }
+
+    @Override
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
     private List<Integer> blockActionsFromOthers = new ArrayList<Integer>();
     
     public GameEngine(int sessionId, long seed,int numberOfJokers) {
@@ -63,6 +73,7 @@ public class GameEngine extends GameEngineAbstract {
         return level;
     }
 
+    @Override
     public int getScore() {
         return score;
     }
