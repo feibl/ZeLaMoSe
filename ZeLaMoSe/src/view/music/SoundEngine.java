@@ -4,7 +4,7 @@
  */
 package view.music;
 
-import domain.GameEngineAbstract;
+import domain.SimulationStateAbstract;
 import domain.actions.Action;
 import domain.actions.MoveAction;
 import domain.actions.RemoveLineAction;
@@ -39,7 +39,7 @@ public class SoundEngine implements Observer {
 
     @Override
     public void update(Observable observable, Object o1) {
-        processAction(((GameEngineAbstract) observable).getSimulationState());
+        processAction(((SimulationStateAbstract) observable).getSimulationState());
     }
 
     private void processAction(Action action) {
