@@ -44,22 +44,22 @@ public class GameEngineTest {
     
     private void fillInFakes() {
         //Do not change the reihenfolge
-        fakeQueue.blocklist.add(new IBlock(1));
-        fakeQueue.blocklist.add(new JBlock(2));
-        fakeQueue.blocklist.add(new OBlock(3));
-        fakeQueue.blocklist.add(new LBlock(4));
-        fakeQueue.blocklist.add(new JBlock(5));
-        fakeQueue.blocklist.add(new OBlock(6));
-        fakeQueue.blocklist.add(new OBlock(7));
-        fakeQueue.blocklist.add(new OBlock(8));
-        fakeQueue.blocklist.add(new ZBlock(9));
-        fakeQueue.blocklist.add(new ZBlock(10));
-        fakeQueue.blocklist.add(new ZBlock(11));
-        fakeQueue.blocklist.add(new ZBlock(12));
-        fakeQueue.blocklist.add(new ZBlock(13));
-        fakeQueue.blocklist.add(new ZBlock(14));
-        fakeQueue.blocklist.add(new ZBlock(15));
-        fakeQueue.blocklist.add(new ZBlock(16));
+        fakeQueue.blocklist.add(new IBlock(1,0));
+        fakeQueue.blocklist.add(new JBlock(2,0));
+        fakeQueue.blocklist.add(new OBlock(3,0));
+        fakeQueue.blocklist.add(new LBlock(4,0));
+        fakeQueue.blocklist.add(new JBlock(5,0));
+        fakeQueue.blocklist.add(new OBlock(6,0));
+        fakeQueue.blocklist.add(new OBlock(7,0));
+        fakeQueue.blocklist.add(new OBlock(8,0));
+        fakeQueue.blocklist.add(new ZBlock(9,0));
+        fakeQueue.blocklist.add(new ZBlock(10,0));
+        fakeQueue.blocklist.add(new ZBlock(11,0));
+        fakeQueue.blocklist.add(new ZBlock(12,0));
+        fakeQueue.blocklist.add(new ZBlock(13,0));
+        fakeQueue.blocklist.add(new ZBlock(14,0));
+        fakeQueue.blocklist.add(new ZBlock(15,0));
+        fakeQueue.blocklist.add(new ZBlock(16,0));
     }
     @Rule
     public TestName testName = new TestName();

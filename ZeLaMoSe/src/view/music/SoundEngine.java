@@ -68,7 +68,7 @@ public class SoundEngine implements Observer {
             case ROTATION:
                 playSound(MusicFile.rotateSound);
                 break;
-            case SHADOW:    
+            case DARK:    
                 playSound(MusicFile.shadowSound);
                 break;
             case MIRROR:

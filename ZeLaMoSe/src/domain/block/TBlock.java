@@ -13,8 +13,8 @@ import java.awt.Color;
  */
 public class TBlock extends BlockAbstract {
 
-    public TBlock(int blockNumber) {
-        super(new Color(153,0,255),"T", new GeneralWallKick(),blockNumber);
+    public TBlock(int blockNumber,long seed) {
+        super(new Color(153,0,255),"T", new GeneralWallKick(),blockNumber,seed);
     }
 
     @Override

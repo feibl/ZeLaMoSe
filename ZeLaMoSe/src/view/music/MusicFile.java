@@ -12,7 +12,7 @@ import java.net.URL;
  */
 public enum MusicFile {
     gameBackgroundMusic("BackgroundThemeA.ogg"),
-    mainBackgroundMusic("Niggas_In_Paris.ogg"),
+    mainBackgroundMusic("mainbackground.ogg"),
     lobbyBackgroundMusic("lobby.ogg"),
     rotateSound("rotation.ogg"),
     fourLineRemovedSound("4line.ogg"),

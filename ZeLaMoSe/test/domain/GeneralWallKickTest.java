@@ -17,8 +17,8 @@ public class GeneralWallKickTest  extends WallKickTest{
 
     @Override
     protected void fillInFakes() {
-        fakeQueue.blocklist.add(new LBlock(1));
-        fakeQueue.blocklist.add(new LBlock(2));
+        fakeQueue.blocklist.add(new LBlock(1,0));
+        fakeQueue.blocklist.add(new LBlock(2,0));
     }
 
     @Override

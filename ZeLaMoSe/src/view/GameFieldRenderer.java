@@ -414,7 +414,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 BlockAbstract[][] filler = new BlockAbstract[Config.gridWidth][1];
 
                 for (int j = 0; j < Config.gridWidth; j++) {
-                    filler[j][0] = new GarbageBlock(Integer.MAX_VALUE);
+                    filler[j][0] = new GarbageBlock(Integer.MAX_VALUE,0);
                 }
                 for (int i = 0; i < Config.gridHeight; i++) {
                     try {
@@ -445,7 +445,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
             case MIRROR:
                 handleMirrorAction();
                 break;
-            case SHADOW:
+            case DARK:
                 handleShadowAction();
                 break;
             case REMOVELINE:
