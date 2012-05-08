@@ -23,17 +23,17 @@
                       <Component id="gLPnlEnemyArea1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblOtherNumberOfBlocks1" min="-2" pref="170" max="-2" attributes="0"/>
-                          <Component id="lblScore2" min="-2" pref="186" max="-2" attributes="0"/>
-                          <Component id="lblOtherScoreValue1" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblScoreTitle" min="-2" pref="186" max="-2" attributes="0"/>
+                          <Component id="lblScore" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblLevelTitle" min="-2" max="-2" attributes="0"/>
                           <Component id="lblLevel" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblOtherLevel1" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblNbrOfLines1" min="-2" pref="171" max="-2" attributes="0"/>
-                          <Component id="lblOtherNumbersOfLines1" min="-2" pref="170" max="-2" attributes="0"/>
-                          <Component id="lblNbrOfBlocks" min="-2" pref="171" max="-2" attributes="0"/>
+                          <Component id="lblNbrOfLinesTitle" min="-2" pref="171" max="-2" attributes="0"/>
+                          <Component id="lblNbrOfBlocksTitle" min="-2" pref="171" max="-2" attributes="0"/>
+                          <Component id="lblNbrOfLines" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblNbrOfBlocks" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <Component id="lblOtherPlayerName1" alignment="0" min="-2" pref="170" max="-2" attributes="0"/>
+                  <Component id="lblPlayerName" alignment="0" min="-2" pref="170" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -42,26 +42,30 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="lblOtherPlayerName1" min="-2" pref="21" max="-2" attributes="0"/>
+              <Component id="lblPlayerName" min="-2" pref="21" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="gLPnlEnemyArea1" min="-2" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <Component id="lblScore2" min="-2" max="-2" attributes="0"/>
+                      <Component id="gLPnlEnemyArea1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="lblScoreTitle" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblOtherScoreValue1" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblScore" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblLevelTitle" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblLevel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblOtherLevel1" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblNbrOfLinesTitle" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblNbrOfLines1" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblNbrOfLines" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblOtherNumbersOfLines1" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblNbrOfBlocksTitle" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblNbrOfBlocks" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                      <Component id="lblOtherNumberOfBlocks1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -97,12 +101,12 @@
         </DimensionLayout>
       </Layout>
     </Container>
-    <Component class="javax.swing.JLabel" name="lblOtherPlayerName1">
+    <Component class="javax.swing.JLabel" name="lblPlayerName">
       <Properties>
         <Property name="text" type="java.lang.String" value="&lt;OtherPlayerName1&gt;"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblScore2">
+    <Component class="javax.swing.JLabel" name="lblScoreTitle">
       <Properties>
         <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;Score:&lt;/b&gt;&lt;/html&gt;"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -120,13 +124,13 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblOtherScoreValue1">
+    <Component class="javax.swing.JLabel" name="lblScore">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="&lt;OtherScoreValue1&gt;"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblLevel">
+    <Component class="javax.swing.JLabel" name="lblLevelTitle">
       <Properties>
         <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;Level:&lt;/b&gt;&lt;/html&gt;"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -144,13 +148,13 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblOtherLevel1">
+    <Component class="javax.swing.JLabel" name="lblLevel">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="&lt;OtherLevel1&gt;"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblNbrOfLines1">
+    <Component class="javax.swing.JLabel" name="lblNbrOfLinesTitle">
       <Properties>
         <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;Number of Lines:&lt;/b&gt;&lt;/html&gt;"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -168,13 +172,13 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblOtherNumbersOfLines1">
+    <Component class="javax.swing.JLabel" name="lblNbrOfLines">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="&lt;OtherNumbersOfLines1&gt;"/>
+        <Property name="text" type="java.lang.String" value="&lt;OtherLines&gt;"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblNbrOfBlocks">
+    <Component class="javax.swing.JLabel" name="lblNbrOfBlocksTitle">
       <Properties>
         <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;Number of Blocks:&lt;/b&gt;&lt;/html&gt;"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -192,10 +196,10 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblOtherNumberOfBlocks1">
+    <Component class="javax.swing.JLabel" name="lblNbrOfBlocks">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="&lt;OtherNumberOfBlock1&gt;"/>
+        <Property name="text" type="java.lang.String" value="&lt;OtherBlocks&gt;"/>
       </Properties>
     </Component>
   </SubComponents>
