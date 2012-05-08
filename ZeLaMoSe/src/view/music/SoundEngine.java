@@ -38,11 +38,18 @@ public class SoundEngine implements Observer {
     }
 
     @Override
-    public void update(Observable observable, Object o1) {
-        processAction(((SimulationStateAbstract) observable).getSimulationState());
+    public void update(final Observable observable, Object o1) {
+        final Action a = ((SimulationStateAbstract) observable).getSimulationState();
+        processAction(a);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                processAction(a);
+            }
+        }).start();
     }
 
-    private void processAction(Action action) {
+    public void processAction(Action action) {
         switch (action.getType()) {
             case GAMEOVER:
                 stopBackGroundMusic(MusicFile.gameBackgroundMusic);

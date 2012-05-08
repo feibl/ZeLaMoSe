@@ -82,7 +82,7 @@ public abstract class WallKickTest {
 
     @After
     public void tearDown() {
-        gameEngine.print();
+        System.out.println(gameEngine);
         System.out.println("End " + testName.getMethodName() + "----------------------------------");
     }
 

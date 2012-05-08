@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
 import domain.actions.Action;
@@ -66,7 +62,7 @@ public class TetrisControllerTest {
         assertNotNull(gE);
         GameEngine gameEngine = (GameEngine)gE;
         assertEquals(gameEngine.getSessionID(), sessionID);
-        gameEngine.print();
+        System.out.println(gameEngine);
         
         for (int i = 0; i < 10; i++) {
 //            System.out.println(i+"############################################");
@@ -76,7 +72,7 @@ public class TetrisControllerTest {
             assertEquals(nH.lastStep, sG.step);
         }
 
-        gameEngine.print();
+        System.out.println(gameEngine);
     }
     
     class Tester implements Observer {
