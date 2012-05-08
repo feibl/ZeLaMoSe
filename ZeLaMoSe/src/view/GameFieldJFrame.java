@@ -23,7 +23,7 @@ public class GameFieldJFrame extends javax.swing.JFrame implements Observer {
     private SimulationStateAbstract enemyEngine1;
     private SimulationStateAbstract enemyEngine2;
     private SimulationStateAbstract enemyEngine3;
-
+    
     /**
      * Creates new form frmGame
      */
@@ -63,6 +63,7 @@ public class GameFieldJFrame extends javax.swing.JFrame implements Observer {
         } else {
             initEnemyArea3(null);
         }
+
         
         repaint();
         

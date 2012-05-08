@@ -43,6 +43,8 @@ class GameFieldRenderer implements GLEventListener, Observer {
     private long mirrorStartTime;
     private long shadowStartTime;
     private boolean ownGameField;
+    private volatile boolean isGameOver;
+    private int rank = 0;
 
     public GameFieldRenderer(int blocksize, SimulationStateAbstract gameEngine, boolean ownGameField) {
         this.blockSize = blocksize;
@@ -53,7 +55,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
         statusMsgsTextRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 10), true, true);
         actionQueue = new ConcurrentLinkedQueue<Action>();
 
-        initStackGrid();
+        fillStackGrid(null);
 
         if (gameEngine != null) {
             this.gameEngine = gameEngine;
@@ -164,8 +166,14 @@ class GameFieldRenderer implements GLEventListener, Observer {
     @Override
     public void update(Observable o, Object o1) {
         //add actiontype1
+        
         if ((SimulationStateAbstract.UpdateType) o1 == SimulationStateAbstract.UpdateType.LASTACTION) {
-            processAction(gameEngine.getSimulationState());
+            if (!isGameOver) {
+                processAction(gameEngine.getSimulationState());
+            } else {
+                System.out.println(rank);
+                setRanking(((SimulationStateAbstract) o).getRank());
+            }
         }
 
     }
@@ -174,6 +182,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
         if (isAnimating) {
             actionQueue.add(action);
         } else {
+
             handleAction(action);
         }
 
@@ -223,11 +232,11 @@ class GameFieldRenderer implements GLEventListener, Observer {
         gl.glEnd();
     }
 
-    private void initStackGrid() {
+    private void fillStackGrid(BlockAbstract block) {
         grid = new BlockAbstract[Config.gridWidth][Config.gridHeight];
         for (int i = 0; i < Config.gridWidth; i++) {
             for (int j = 0; j < Config.gridHeight; j++) {
-                grid[i][j] = null;
+                grid[i][j] = block;
             }
         }
     }
@@ -236,7 +245,6 @@ class GameFieldRenderer implements GLEventListener, Observer {
 
         for (int i = 0; i < Config.gridWidth; i++) {
             for (int j = 0; j < Config.gridHeight; j++) {
-
                 BlockAbstract block = grid[i][j];
 
                 if (block != null && !drawEverythingBlack) {
@@ -388,23 +396,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
         }).start();
     }
 
-    public void printGrid() {
-        for (int i = Config.gridHeight - 1; i >= 0; i--) {
-            String lineOutput = "";
-            for (int j = 0; j < Config.gridWidth; j++) {
-                if (grid[j][i] != null) {
-                    lineOutput += "[X]";
-                } else {
-                    lineOutput += "[ ]";
-                }
-            }
-            System.out.println(lineOutput);
-        }
-        System.out.println("");
-    }
-
     private void handleGameOverAction() {
-        gameEngine.deleteObserver(this);
         currentBlock = null;
 
         new Thread(new Runnable() {
@@ -414,7 +406,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 BlockAbstract[][] filler = new BlockAbstract[Config.gridWidth][1];
 
                 for (int j = 0; j < Config.gridWidth; j++) {
-                    filler[j][0] = new GarbageBlock(Integer.MAX_VALUE,0);
+                    filler[j][0] = new GarbageBlock(Integer.MAX_VALUE, 0);
                 }
                 for (int i = 0; i < Config.gridHeight; i++) {
                     try {
@@ -424,8 +416,10 @@ class GameFieldRenderer implements GLEventListener, Observer {
                     }
                     handleGarbageLineAction(filler);
                 }
+                isGameOver = true;
             }
         }).start();
+
     }
 
     private void handleAction(Action action) {
@@ -456,7 +450,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 handleGameOverAction();
                 break;
             case CLEAR:
-                initStackGrid();
+                fillStackGrid(null);
                 break;
         }
     }
@@ -477,6 +471,284 @@ class GameFieldRenderer implements GLEventListener, Observer {
             shadowStartTime = System.currentTimeMillis();
         } else {
             timeToShadow += defaultTimeToShadow;
+        }
+    }
+
+    private void setRanking(int newRank) {
+        if (newRank != rank) {
+            rank = newRank;
+            fillStackGrid(new GarbageBlock(0, 0));
+            switch (rank) {
+                case 1:
+                    grid[9][20] = null;
+                    grid[9][19] = null;
+                    grid[9][18] = null;
+                    grid[9][17] = null;
+                    grid[9][16] = null;
+                    grid[9][15] = null;
+                    grid[9][14] = null;
+                    grid[9][13] = null;
+                    grid[9][12] = null;
+                    grid[9][11] = null;
+                    grid[9][10] = null;
+                    grid[9][9] = null;
+                    grid[9][8] = null;
+                    grid[9][7] = null;
+                    grid[9][6] = null;
+                    grid[9][5] = null;
+                    grid[9][4] = null;
+                    grid[9][3] = null;
+                    grid[10][20] = null;
+                    grid[10][19] = null;
+                    grid[10][18] = null;
+                    grid[10][17] = null;
+                    grid[10][16] = null;
+                    grid[10][15] = null;
+                    grid[10][14] = null;
+                    grid[10][13] = null;
+                    grid[10][12] = null;
+                    grid[10][11] = null;
+                    grid[10][9] = null;
+                    grid[10][10] = null;
+                    grid[10][8] = null;
+                    grid[10][7] = null;
+                    grid[10][6] = null;
+                    grid[10][5] = null;
+                    grid[10][4] = null;
+                    grid[10][3] = null;
+                    break;
+                case 2:
+                    grid[2][20] = null;
+                    grid[3][20] = null;
+                    grid[4][20] = null;
+                    grid[5][20] = null;
+                    grid[6][20] = null;
+                    grid[7][20] = null;
+                    grid[8][20] = null;
+                    grid[9][20] = null;
+                    grid[10][20] = null;
+                    grid[2][19] = null;
+                    grid[3][19] = null;
+                    grid[4][19] = null;
+                    grid[5][19] = null;
+                    grid[6][19] = null;
+                    grid[7][19] = null;
+                    grid[8][19] = null;
+                    grid[9][19] = null;
+                    grid[10][19] = null;
+
+                    grid[2][12] = null;
+                    grid[3][12] = null;
+                    grid[4][12] = null;
+                    grid[5][12] = null;
+                    grid[6][12] = null;
+                    grid[7][12] = null;
+                    grid[8][12] = null;
+                    grid[9][12] = null;
+                    grid[10][12] = null;
+
+                    grid[2][11] = null;
+                    grid[3][11] = null;
+                    grid[4][11] = null;
+                    grid[5][11] = null;
+                    grid[6][11] = null;
+                    grid[7][11] = null;
+                    grid[8][11] = null;
+                    grid[9][11] = null;
+                    grid[10][11] = null;
+
+                    grid[2][4] = null;
+                    grid[3][4] = null;
+                    grid[4][4] = null;
+                    grid[5][4] = null;
+                    grid[6][4] = null;
+                    grid[7][4] = null;
+                    grid[8][4] = null;
+                    grid[9][4] = null;
+                    grid[10][4] = null;
+
+                    grid[2][3] = null;
+                    grid[3][3] = null;
+                    grid[4][3] = null;
+                    grid[5][3] = null;
+                    grid[6][3] = null;
+                    grid[7][3] = null;
+                    grid[8][3] = null;
+                    grid[9][3] = null;
+                    grid[10][3] = null;
+
+                    grid[9][18] = null;
+                    grid[9][17] = null;
+                    grid[9][16] = null;
+                    grid[9][15] = null;
+                    grid[9][14] = null;
+                    grid[9][13] = null;
+
+                    grid[10][18] = null;
+                    grid[10][17] = null;
+                    grid[10][16] = null;
+                    grid[10][15] = null;
+                    grid[10][14] = null;
+                    grid[10][13] = null;
+
+                    grid[2][10] = null;
+                    grid[2][9] = null;
+                    grid[2][8] = null;
+                    grid[2][7] = null;
+                    grid[2][6] = null;
+                    grid[2][5] = null;
+
+                    grid[3][10] = null;
+                    grid[3][9] = null;
+                    grid[3][8] = null;
+                    grid[3][7] = null;
+                    grid[3][6] = null;
+                    grid[3][5] = null;
+                    break;
+                case 3:
+                    grid[2][20] = null;
+                    grid[3][20] = null;
+
+                    grid[9][20] = null;
+                    grid[10][20] = null;
+                    grid[2][19] = null;
+                    grid[3][19] = null;
+
+                    grid[9][19] = null;
+                    grid[10][19] = null;
+
+                    grid[2][12] = null;
+                    grid[3][12] = null;
+                    grid[4][12] = null;
+                    grid[5][12] = null;
+                    grid[6][12] = null;
+                    grid[7][12] = null;
+                    grid[8][12] = null;
+                    grid[9][12] = null;
+                    grid[10][12] = null;
+
+                    grid[2][11] = null;
+                    grid[3][11] = null;
+                    grid[4][11] = null;
+                    grid[5][11] = null;
+                    grid[6][11] = null;
+                    grid[7][11] = null;
+                    grid[8][11] = null;
+                    grid[9][11] = null;
+                    grid[10][11] = null;
+
+                    grid[2][4] = null;
+                    grid[3][4] = null;
+                    grid[4][4] = null;
+                    grid[5][4] = null;
+                    grid[6][4] = null;
+                    grid[7][4] = null;
+                    grid[8][4] = null;
+                    grid[9][4] = null;
+                    grid[10][4] = null;
+
+                    grid[2][3] = null;
+                    grid[3][3] = null;
+                    grid[4][3] = null;
+                    grid[5][3] = null;
+                    grid[6][3] = null;
+                    grid[7][3] = null;
+                    grid[8][3] = null;
+                    grid[9][3] = null;
+                    grid[10][3] = null;
+
+                    grid[9][18] = null;
+                    grid[9][17] = null;
+                    grid[9][16] = null;
+                    grid[9][15] = null;
+                    grid[9][14] = null;
+                    grid[9][13] = null;
+
+                    grid[10][18] = null;
+                    grid[10][17] = null;
+                    grid[10][16] = null;
+                    grid[10][15] = null;
+                    grid[10][14] = null;
+                    grid[10][13] = null;
+                    break;
+                case 4:
+                    grid[2][20] = null;
+                    grid[3][20] = null;
+                    grid[4][20] = null;
+                    grid[5][20] = null;
+                    grid[6][20] = null;
+                    grid[7][20] = null;
+                    grid[8][20] = null;
+                    grid[9][20] = null;
+                    grid[10][20] = null;
+                    grid[2][19] = null;
+                    grid[3][19] = null;
+                    grid[4][19] = null;
+                    grid[5][19] = null;
+                    grid[6][19] = null;
+                    grid[7][19] = null;
+                    grid[8][19] = null;
+                    grid[9][19] = null;
+                    grid[10][19] = null;
+
+                    grid[2][12] = null;
+                    grid[3][12] = null;
+                    grid[4][12] = null;
+                    grid[5][12] = null;
+                    grid[6][12] = null;
+                    grid[7][12] = null;
+                    grid[8][12] = null;
+                    grid[9][12] = null;
+                    grid[10][12] = null;
+
+                    grid[2][11] = null;
+                    grid[3][11] = null;
+                    grid[4][11] = null;
+                    grid[5][11] = null;
+                    grid[6][11] = null;
+                    grid[7][11] = null;
+                    grid[8][11] = null;
+                    grid[9][11] = null;
+                    grid[10][11] = null;
+
+
+                    grid[9][4] = null;
+                    grid[10][4] = null;
+
+
+                    grid[9][3] = null;
+                    grid[10][3] = null;
+
+                    grid[9][18] = null;
+                    grid[9][17] = null;
+                    grid[9][16] = null;
+                    grid[9][15] = null;
+                    grid[9][14] = null;
+                    grid[9][13] = null;
+
+                    grid[10][18] = null;
+                    grid[10][17] = null;
+                    grid[10][16] = null;
+                    grid[10][15] = null;
+                    grid[10][14] = null;
+                    grid[10][13] = null;
+
+
+                    grid[2][18] = null;
+                    grid[2][17] = null;
+                    grid[2][16] = null;
+                    grid[2][15] = null;
+                    grid[2][14] = null;
+                    grid[2][13] = null;
+
+                    grid[3][18] = null;
+                    grid[3][17] = null;
+                    grid[3][16] = null;
+                    grid[3][15] = null;
+                    grid[3][14] = null;
+                    grid[3][13] = null;
+                    break;
+            }
         }
     }
 }

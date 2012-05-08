@@ -4,11 +4,11 @@
  */
 package domain;
 
-import domain.fake.FakeBlockQueue;
 import domain.actions.HardDropAction;
 import domain.actions.MoveAction;
 import domain.actions.RotateAction;
 import domain.block.*;
+import domain.fake.FakeBlockQueue;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -61,6 +61,7 @@ public class GameEngineTest {
         fakeQueue.blocklist.add(new ZBlock(15,0));
         fakeQueue.blocklist.add(new ZBlock(16,0));
     }
+    
     @Rule
     public TestName testName = new TestName();
 

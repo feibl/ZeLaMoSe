@@ -74,6 +74,21 @@ public class FakeGameEngine extends GameEngineAbstract {
        return 0;
     }
 
+    @Override
+    public int getScore() {
+       return 0;
+    }
+
+    @Override
+    public void setRank(int rank) {
+        
+    }
+
+    @Override
+    public int getRank() {
+        return 0;
+    }
+
   
     
 }
