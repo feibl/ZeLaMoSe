@@ -14,7 +14,7 @@ import java.awt.Color;
 public class DarkBlock extends BlockAbstract implements SpecialBlockInterface {
 
     public DarkBlock(int blockNumber,long seed) {
-        super(new Color(20,20,20), "S", new NoWallKick(),blockNumber,seed);
+        super(new Color(40,40,40), "S", new NoWallKick(),blockNumber,seed);
     }
     
     @Override

@@ -13,6 +13,8 @@ import java.util.Observable;
  */
 abstract public class SimulationStateAbstract extends Observable {
     abstract public Action getSimulationState();
+    abstract public int getScore();
+    abstract public int getRank();
     public enum UpdateType {
         LASTACTION, ACTIONFOROTHERS
     }

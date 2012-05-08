@@ -167,6 +167,9 @@ public class TetrisController extends Observable implements Observer {
     }
 
     private void handleException(Exception e) {
+        e.printStackTrace();
+        System.out.println(e.getMessage());
+        
         exception = e;
         setChanged();
         notifyObservers(UpdateType.EXCEPTION_THROWN);

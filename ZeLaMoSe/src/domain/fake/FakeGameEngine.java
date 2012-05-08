@@ -84,6 +84,11 @@ public class FakeGameEngine extends GameEngineAbstract {
         
     }
 
+    @Override
+    public int getRank() {
+        return 0;
+    }
+
   
     
 }
