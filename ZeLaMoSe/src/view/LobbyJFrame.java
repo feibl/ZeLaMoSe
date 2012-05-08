@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.*;
 import network.ChatMessage;
+import util.NetworkUtil;
 import view.music.MusicFile;
 import view.music.SoundEngine;
 
@@ -48,7 +49,6 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         this.playerListCellRenderer = new PlayerListCellRenderer(chatController.getOwnSession().getId());
 
         initComponents();
-        lblServerIPValue.setText(tetrisController.getServerIP());
         tetrisController.addObserver(this);
         chatController.addObserver(this);
         chatController.addObserver(playerListModel);
@@ -57,10 +57,16 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 tetrisController.startGame(0);
                 break;
             case MULTI_PLAYER_JOIN:
+                lblServerIP.setText("");
+                lblServerIPValue.setText("");
                 btnStart.setEnabled(false);
                 lblNumberOfJokers.setVisible(false);
                 sprNumberOfJokersValue.setVisible(false);
+                soundEngine = new SoundEngine();
+                soundEngine.playBackgroundMusic(MusicFile.lobbyBackgroundMusic);
+                break;
             case MULTI_PLAYER_HOST:
+                lblServerIPValue.setText(NetworkUtil.getLocalIP());
                 soundEngine = new SoundEngine();
                 soundEngine.playBackgroundMusic(MusicFile.lobbyBackgroundMusic);
                 break;
@@ -81,7 +87,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
 
     private void exit() {
         tetrisController.disconnectFromServer();
-        dispose();
+        System.exit(0);
     }
 
     /**
@@ -261,9 +267,9 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     }// </editor-fold>//GEN-END:initComponents
 
   private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        exit();
+      exit();
   }//GEN-LAST:event_btnExitActionPerformed
-  
+
   private void txtMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMessageActionPerformed
       btnSendActionPerformed(evt);
   }//GEN-LAST:event_txtMessageActionPerformed
@@ -282,9 +288,8 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_btnSendActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-       exit(); 
+        exit();
     }//GEN-LAST:event_formWindowClosing
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnSend;
@@ -379,6 +384,6 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     }
 
     private void scrollToNewLine() {
-        txpChat.setCaretPosition(txpChat.getText().length());
+        txpChat.setCaretPosition(txpChat.getDocument().getLength());
     }
 }
