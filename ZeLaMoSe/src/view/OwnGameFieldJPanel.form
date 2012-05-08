@@ -17,51 +17,49 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="580" pref="580" max="-2" attributes="0"/>
-                      <Component id="tglSound" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="24" pref="24" max="-2" attributes="0"/>
-                      <Component id="glPnlGameField" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblNextPiece" min="-2" max="-2" attributes="0"/>
-                          <Component id="glPnlNextBlock" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblBlockCounter1" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblLevelValue" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblJokerValue" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblYourScoreValue" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblNumberOfLinesValue" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblJoker1" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblScore1" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblLevel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="lblNbrOfBlocks" alignment="0" pref="171" max="32767" attributes="0"/>
-                              <Component id="lblNbrOfLines1" alignment="0" max="32767" attributes="0"/>
+                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                      <Component id="lblPlayerName" min="-2" pref="161" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="glPnlGameField" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblNextPiece" min="-2" max="-2" attributes="0"/>
+                              <Component id="glPnlNextBlock" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblBlockCounter1" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblLevelValue" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblJokerValue" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblNumberOfLinesValue" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblJoker1" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblScore1" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblLevel" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="lblNbrOfBlocks" alignment="0" pref="171" max="32767" attributes="0"/>
+                                  <Component id="lblNbrOfLines1" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="lblYourScoreValue" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="132" max="-2" attributes="0"/>
+                          <Component id="lblZeLaMoSe" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="158" pref="158" max="-2" attributes="0"/>
-                      <Component id="lblZeLaMoSe" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="127" max="-2" attributes="0"/>
-                      <Component id="lblPlayerName" min="-2" pref="161" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="tglSound" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="tglSound" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
               <Component id="lblPlayerName" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -94,6 +92,7 @@
               </Group>
               <EmptySpace min="8" pref="8" max="-2" attributes="0"/>
               <Component id="lblZeLaMoSe" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
