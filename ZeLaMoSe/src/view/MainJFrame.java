@@ -4,28 +4,21 @@
  */
 package view;
 
-import domain.*;
+import domain.ChatController;
+import domain.ControllerFactory;
+import domain.TetrisController;
 import java.awt.Desktop;
-import java.awt.HeadlessException;
-import java.awt.event.ComponentAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.rmi.RemoteException;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import network.client.NetworkHandlerAbstract;
-import network.client.NetworkHandler;
 import util.NameGenerator;
 import view.music.MusicFile;
 import view.music.SoundEngine;
@@ -362,9 +355,8 @@ public class MainJFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                InputSampler is = new InputSampler();
-                NetworkHandlerAbstract nh = new NetworkHandler();
-                new MainJFrame(new TetrisController(new SimulationController(), nh, new StepGenerator(is)), new ChatController(nh)).setVisible(true);
+                NetworkHandlerAbstract nh = ControllerFactory.getNetworkHandler();
+                new MainJFrame(ControllerFactory.getTetrisController(nh), new ChatController(nh)).setVisible(true);
             }
         });
     }
