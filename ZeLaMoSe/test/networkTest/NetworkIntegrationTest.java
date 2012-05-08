@@ -142,31 +142,30 @@ public class NetworkIntegrationTest {
         for (NetworkHandlerAbstract handler : players) {
             handler.addObserver(myCallable);
         }
+        for (int stepSequencyNr = 0; stepSequencyNr < 10; stepSequencyNr++) {
+            FutureTask<Long> future = new FutureTask<Long>(myCallable);
+            executor.execute(future);
+            long timeBefore = System.currentTimeMillis();
+            for (NetworkHandler handler : players) {
+                handler.addStep(new Step(stepSequencyNr, handler.getOwnSession().getId()));
+            }
+            gameServerImpl.distributeSteps();
 
-        FutureTask<Long> future = new FutureTask<Long>(myCallable);
-        executor.execute(future);
+            long timeAfter = -1;
+            try {
+                timeAfter = future.get(500, TimeUnit.MILLISECONDS).longValue();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(NetworkIntegrationTest.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ExecutionException ex) {
+                Logger.getLogger(NetworkIntegrationTest.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (TimeoutException ex) {
+                future.cancel(true);
+            }
 
-        long timeBefore = System.currentTimeMillis();
-        for (NetworkHandler handler : players) {
-            handler.addStep(new Step(0, handler.getOwnSession().getId()));
+            assertEquals(MAX_SESSIONS * MAX_SESSIONS * (stepSequencyNr+1), count);
+            assertTrue(timeAfter >= 0);
+            System.out.println("Delay(ms): " + (timeAfter - timeBefore));
+            assertTrue(timeAfter - timeBefore < 50);
         }
-        gameServerImpl.distributeSteps();
-
-        long timeAfter = -1;
-
-        try {
-            timeAfter = future.get(500, TimeUnit.MILLISECONDS).longValue();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(NetworkIntegrationTest.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ExecutionException ex) {
-            Logger.getLogger(NetworkIntegrationTest.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (TimeoutException ex) {
-            future.cancel(true);
-        }
-
-        assertEquals(MAX_SESSIONS * MAX_SESSIONS, count);
-        assertTrue(timeAfter >= 0);
-        System.out.println(timeAfter - timeBefore);
-        assertTrue(timeAfter - timeBefore < 50);
     }
 }
