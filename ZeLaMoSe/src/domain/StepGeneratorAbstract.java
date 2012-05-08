@@ -12,5 +12,5 @@ import java.util.Observable;
  */
 abstract public class StepGeneratorAbstract extends Observable implements StepProducerInterface {
     abstract public void setSessionID(int sessionID);
-    abstract public InputSampler getInputSampler();
+    abstract public InputSamplerInterface getInputSampler();
 }
