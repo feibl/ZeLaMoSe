@@ -11,6 +11,7 @@ import domain.actions.*;
 import domain.actions.RotateAction.Direction;
 import domain.block.BlockAbstract;
 import domain.block.GarbageBlock;
+import domain.block.OBlock;
 import java.awt.Font;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -165,15 +166,16 @@ class GameFieldRenderer implements GLEventListener, Observer {
 
     @Override
     public void update(Observable o, Object o1) {
-        //add actiontype1
-        
-        if ((SimulationStateAbstract.UpdateType) o1 == SimulationStateAbstract.UpdateType.LASTACTION) {
-            if (!isGameOver) {
+        switch ((SimulationStateAbstract.UpdateType) o1) {
+            case LASTACTION:
                 processAction(gameEngine.getSimulationState());
-            } else {
-                System.out.println(rank);
-                setRanking(((SimulationStateAbstract) o).getRank());
-            }
+                break;
+            case RANKING:
+                if (isGameOver) {
+                    setRanking(((SimulationStateAbstract) o).getRank());
+                }
+
+                break;
         }
 
     }
@@ -475,278 +477,324 @@ class GameFieldRenderer implements GLEventListener, Observer {
     }
 
     private void setRanking(int newRank) {
+        BlockAbstract dummyBlock = new OBlock(0,0);
         if (newRank != rank) {
             rank = newRank;
             fillStackGrid(new GarbageBlock(0, 0));
             switch (rank) {
                 case 1:
-                    grid[9][20] = null;
-                    grid[9][19] = null;
-                    grid[9][18] = null;
-                    grid[9][17] = null;
-                    grid[9][16] = null;
-                    grid[9][15] = null;
-                    grid[9][14] = null;
-                    grid[9][13] = null;
-                    grid[9][12] = null;
-                    grid[9][11] = null;
-                    grid[9][10] = null;
-                    grid[9][9] = null;
-                    grid[9][8] = null;
-                    grid[9][7] = null;
-                    grid[9][6] = null;
-                    grid[9][5] = null;
-                    grid[9][4] = null;
-                    grid[9][3] = null;
-                    grid[10][20] = null;
-                    grid[10][19] = null;
-                    grid[10][18] = null;
-                    grid[10][17] = null;
-                    grid[10][16] = null;
-                    grid[10][15] = null;
-                    grid[10][14] = null;
-                    grid[10][13] = null;
-                    grid[10][12] = null;
-                    grid[10][11] = null;
-                    grid[10][9] = null;
-                    grid[10][10] = null;
-                    grid[10][8] = null;
-                    grid[10][7] = null;
-                    grid[10][6] = null;
-                    grid[10][5] = null;
-                    grid[10][4] = null;
-                    grid[10][3] = null;
+                    
+                    grid[8][20] = dummyBlock;
+                    grid[8][19] = dummyBlock;
+                    grid[7][19] = dummyBlock;
+                    grid[7][18] = dummyBlock;
+                    grid[6][18] = dummyBlock;
+                    grid[6][17] = dummyBlock;
+                    
+                            grid[5][17] = dummyBlock;
+                     grid[5][16] = dummyBlock;
+                      grid[4][16] = dummyBlock;
+                       grid[4][15] = dummyBlock;
+                    
+                    
+                    
+                    grid[9][20] = dummyBlock;
+                    grid[9][19] = dummyBlock;
+                    grid[9][18] = dummyBlock;
+                    grid[9][17] = dummyBlock;
+                    grid[9][16] = dummyBlock;
+                    grid[9][15] = dummyBlock;
+                    grid[9][14] = dummyBlock;
+                    grid[9][13] = dummyBlock;
+                    grid[9][12] = dummyBlock;
+                    grid[9][11] = dummyBlock;
+                    grid[9][10] = dummyBlock;
+                    grid[9][9] = dummyBlock;
+                    grid[9][8] = dummyBlock;
+                    grid[9][7] = dummyBlock;
+                    grid[9][6] = dummyBlock;
+                    grid[9][5] = dummyBlock;
+                    grid[9][4] = dummyBlock;
+                    grid[9][3] = dummyBlock;
+                    grid[10][20] = dummyBlock;
+                    grid[10][19] = dummyBlock;
+                    grid[10][18] = dummyBlock;
+                    grid[10][17] = dummyBlock;
+                    grid[10][16] = dummyBlock;
+                    grid[10][15] = dummyBlock;
+                    grid[10][14] = dummyBlock;
+                    grid[10][13] = dummyBlock;
+                    grid[10][12] = dummyBlock;
+                    grid[10][11] = dummyBlock;
+                    grid[10][9] = dummyBlock;
+                    grid[10][10] = dummyBlock;
+                    grid[10][8] = dummyBlock;
+                    grid[10][7] = dummyBlock;
+                    grid[10][6] = dummyBlock;
+                    grid[10][5] = dummyBlock;
+                    grid[10][4] = dummyBlock;
+                    grid[10][3] = dummyBlock;
                     break;
                 case 2:
-                    grid[2][20] = null;
-                    grid[3][20] = null;
-                    grid[4][20] = null;
-                    grid[5][20] = null;
-                    grid[6][20] = null;
-                    grid[7][20] = null;
-                    grid[8][20] = null;
-                    grid[9][20] = null;
-                    grid[10][20] = null;
-                    grid[2][19] = null;
-                    grid[3][19] = null;
-                    grid[4][19] = null;
-                    grid[5][19] = null;
-                    grid[6][19] = null;
-                    grid[7][19] = null;
-                    grid[8][19] = null;
-                    grid[9][19] = null;
-                    grid[10][19] = null;
+                    grid[2][20] = dummyBlock;
+                    grid[3][20] = dummyBlock;
+                    grid[4][20] = dummyBlock;
+                    grid[5][20] = dummyBlock;
+                    grid[6][20] = dummyBlock;
+                    grid[7][20] = dummyBlock;
+                    grid[8][20] = dummyBlock;
+                    grid[9][20] = dummyBlock;
+                    grid[10][20] = dummyBlock;
+                    grid[2][19] = dummyBlock;
+                    grid[3][19] = dummyBlock;
+                    grid[4][19] = dummyBlock;
+                    grid[5][19] = dummyBlock;
+                    grid[6][19] = dummyBlock;
+                    grid[7][19] = dummyBlock;
+                    grid[8][19] = dummyBlock;
+                    grid[9][19] = dummyBlock;
+                    grid[10][19] = dummyBlock;
 
-                    grid[2][12] = null;
-                    grid[3][12] = null;
-                    grid[4][12] = null;
-                    grid[5][12] = null;
-                    grid[6][12] = null;
-                    grid[7][12] = null;
-                    grid[8][12] = null;
-                    grid[9][12] = null;
-                    grid[10][12] = null;
+                    grid[2][12] = dummyBlock;
+                    grid[3][12] = dummyBlock;
+                    grid[4][12] = dummyBlock;
+                    grid[5][12] = dummyBlock;
+                    grid[6][12] = dummyBlock;
+                    grid[7][12] = dummyBlock;
+                    grid[8][12] = dummyBlock;
+                    grid[9][12] = dummyBlock;
+                    grid[10][12] = dummyBlock;
 
-                    grid[2][11] = null;
-                    grid[3][11] = null;
-                    grid[4][11] = null;
-                    grid[5][11] = null;
-                    grid[6][11] = null;
-                    grid[7][11] = null;
-                    grid[8][11] = null;
-                    grid[9][11] = null;
-                    grid[10][11] = null;
+                    grid[2][11] = dummyBlock;
+                    grid[3][11] = dummyBlock;
+                    grid[4][11] = dummyBlock;
+                    grid[5][11] = dummyBlock;
+                    grid[6][11] = dummyBlock;
+                    grid[7][11] = dummyBlock;
+                    grid[8][11] = dummyBlock;
+                    grid[9][11] = dummyBlock;
+                    grid[10][11] = dummyBlock;
 
-                    grid[2][4] = null;
-                    grid[3][4] = null;
-                    grid[4][4] = null;
-                    grid[5][4] = null;
-                    grid[6][4] = null;
-                    grid[7][4] = null;
-                    grid[8][4] = null;
-                    grid[9][4] = null;
-                    grid[10][4] = null;
+                    grid[2][4] = dummyBlock;
+                    grid[3][4] = dummyBlock;
+                    grid[4][4] = dummyBlock;
+                    grid[5][4] = dummyBlock;
+                    grid[6][4] = dummyBlock;
+                    grid[7][4] = dummyBlock;
+                    grid[8][4] = dummyBlock;
+                    grid[9][4] = dummyBlock;
+                    grid[10][4] = dummyBlock;
 
-                    grid[2][3] = null;
-                    grid[3][3] = null;
-                    grid[4][3] = null;
-                    grid[5][3] = null;
-                    grid[6][3] = null;
-                    grid[7][3] = null;
-                    grid[8][3] = null;
-                    grid[9][3] = null;
-                    grid[10][3] = null;
+                    grid[2][3] = dummyBlock;
+                    grid[3][3] = dummyBlock;
+                    grid[4][3] = dummyBlock;
+                    grid[5][3] = dummyBlock;
+                    grid[6][3] = dummyBlock;
+                    grid[7][3] = dummyBlock;
+                    grid[8][3] = dummyBlock;
+                    grid[9][3] = dummyBlock;
+                    grid[10][3] = dummyBlock;
 
-                    grid[9][18] = null;
-                    grid[9][17] = null;
-                    grid[9][16] = null;
-                    grid[9][15] = null;
-                    grid[9][14] = null;
-                    grid[9][13] = null;
+                    grid[9][18] = dummyBlock;
+                    grid[9][17] = dummyBlock;
+                    grid[9][16] = dummyBlock;
+                    grid[9][15] = dummyBlock;
+                    grid[9][14] = dummyBlock;
+                    grid[9][13] = dummyBlock;
 
-                    grid[10][18] = null;
-                    grid[10][17] = null;
-                    grid[10][16] = null;
-                    grid[10][15] = null;
-                    grid[10][14] = null;
-                    grid[10][13] = null;
+                    grid[10][18] = dummyBlock;
+                    grid[10][17] = dummyBlock;
+                    grid[10][16] = dummyBlock;
+                    grid[10][15] = dummyBlock;
+                    grid[10][14] = dummyBlock;
+                    grid[10][13] = dummyBlock;
 
-                    grid[2][10] = null;
-                    grid[2][9] = null;
-                    grid[2][8] = null;
-                    grid[2][7] = null;
-                    grid[2][6] = null;
-                    grid[2][5] = null;
+                    grid[2][10] = dummyBlock;
+                    grid[2][9] = dummyBlock;
+                    grid[2][8] = dummyBlock;
+                    grid[2][7] = dummyBlock;
+                    grid[2][6] = dummyBlock;
+                    grid[2][5] = dummyBlock;
 
-                    grid[3][10] = null;
-                    grid[3][9] = null;
-                    grid[3][8] = null;
-                    grid[3][7] = null;
-                    grid[3][6] = null;
-                    grid[3][5] = null;
+                    grid[3][10] = dummyBlock;
+                    grid[3][9] = dummyBlock;
+                    grid[3][8] = dummyBlock;
+                    grid[3][7] = dummyBlock;
+                    grid[3][6] = dummyBlock;
+                    grid[3][5] = dummyBlock;
                     break;
                 case 3:
-                    grid[2][20] = null;
-                    grid[3][20] = null;
+               grid[2][20] = dummyBlock;
+                    grid[3][20] = dummyBlock;
+                    grid[4][20] = dummyBlock;
+                    grid[5][20] = dummyBlock;
+                    grid[6][20] = dummyBlock;
+                    grid[7][20] = dummyBlock;
+                    grid[8][20] = dummyBlock;
+                    grid[9][20] = dummyBlock;
+                    grid[10][20] = dummyBlock;
+                    grid[2][19] = dummyBlock;
+                    grid[3][19] = dummyBlock;
+                    grid[4][19] = dummyBlock;
+                    grid[5][19] = dummyBlock;
+                    grid[6][19] = dummyBlock;
+                    grid[7][19] = dummyBlock;
+                    grid[8][19] = dummyBlock;
+                    grid[9][19] = dummyBlock;
+                    grid[10][19] = dummyBlock;
 
-                    grid[9][20] = null;
-                    grid[10][20] = null;
-                    grid[2][19] = null;
-                    grid[3][19] = null;
+                    grid[2][12] = dummyBlock;
+                    grid[3][12] = dummyBlock;
+                    grid[4][12] = dummyBlock;
+                    grid[5][12] = dummyBlock;
+                    grid[6][12] = dummyBlock;
+                    grid[7][12] = dummyBlock;
+                    grid[8][12] = dummyBlock;
+                    grid[9][12] = dummyBlock;
+                    grid[10][12] = dummyBlock;
 
-                    grid[9][19] = null;
-                    grid[10][19] = null;
+                    grid[2][11] = dummyBlock;
+                    grid[3][11] = dummyBlock;
+                    grid[4][11] = dummyBlock;
+                    grid[5][11] = dummyBlock;
+                    grid[6][11] = dummyBlock;
+                    grid[7][11] = dummyBlock;
+                    grid[8][11] = dummyBlock;
+                    grid[9][11] = dummyBlock;
+                    grid[10][11] = dummyBlock;
 
-                    grid[2][12] = null;
-                    grid[3][12] = null;
-                    grid[4][12] = null;
-                    grid[5][12] = null;
-                    grid[6][12] = null;
-                    grid[7][12] = null;
-                    grid[8][12] = null;
-                    grid[9][12] = null;
-                    grid[10][12] = null;
+                    grid[2][4] = dummyBlock;
+                    grid[3][4] = dummyBlock;
+                    grid[4][4] = dummyBlock;
+                    grid[5][4] = dummyBlock;
+                    grid[6][4] = dummyBlock;
+                    grid[7][4] = dummyBlock;
+                    grid[8][4] = dummyBlock;
+                    grid[9][4] = dummyBlock;
+                    grid[10][4] = dummyBlock;
 
-                    grid[2][11] = null;
-                    grid[3][11] = null;
-                    grid[4][11] = null;
-                    grid[5][11] = null;
-                    grid[6][11] = null;
-                    grid[7][11] = null;
-                    grid[8][11] = null;
-                    grid[9][11] = null;
-                    grid[10][11] = null;
+                    grid[2][3] = dummyBlock;
+                    grid[3][3] = dummyBlock;
+                    grid[4][3] = dummyBlock;
+                    grid[5][3] = dummyBlock;
+                    grid[6][3] = dummyBlock;
+                    grid[7][3] = dummyBlock;
+                    grid[8][3] = dummyBlock;
+                    grid[9][3] = dummyBlock;
+                    grid[10][3] = dummyBlock;
 
-                    grid[2][4] = null;
-                    grid[3][4] = null;
-                    grid[4][4] = null;
-                    grid[5][4] = null;
-                    grid[6][4] = null;
-                    grid[7][4] = null;
-                    grid[8][4] = null;
-                    grid[9][4] = null;
-                    grid[10][4] = null;
+                    grid[9][18] = dummyBlock;
+                    grid[9][17] = dummyBlock;
+                    grid[9][16] = dummyBlock;
+                    grid[9][15] = dummyBlock;
+                    grid[9][14] = dummyBlock;
+                    grid[9][13] = dummyBlock;
 
-                    grid[2][3] = null;
-                    grid[3][3] = null;
-                    grid[4][3] = null;
-                    grid[5][3] = null;
-                    grid[6][3] = null;
-                    grid[7][3] = null;
-                    grid[8][3] = null;
-                    grid[9][3] = null;
-                    grid[10][3] = null;
+                    grid[10][18] = dummyBlock;
+                    grid[10][17] = dummyBlock;
+                    grid[10][16] = dummyBlock;
+                    grid[10][15] = dummyBlock;
+                    grid[10][14] = dummyBlock;
+                    grid[10][13] = dummyBlock;
 
-                    grid[9][18] = null;
-                    grid[9][17] = null;
-                    grid[9][16] = null;
-                    grid[9][15] = null;
-                    grid[9][14] = null;
-                    grid[9][13] = null;
+                    grid[9][10] = dummyBlock;
+                    grid[9][9] = dummyBlock;
+                    grid[9][8] = dummyBlock;
+                    grid[9][7] = dummyBlock;
+                    grid[9][6] = dummyBlock;
+                    grid[9][5] = dummyBlock;
 
-                    grid[10][18] = null;
-                    grid[10][17] = null;
-                    grid[10][16] = null;
-                    grid[10][15] = null;
-                    grid[10][14] = null;
-                    grid[10][13] = null;
+                    grid[10][10] = dummyBlock;
+                    grid[10][9] = dummyBlock;
+                    grid[10][8] = dummyBlock;
+                    grid[10][7] = dummyBlock;
+                    grid[10][6] = dummyBlock;
+                    grid[10][5] = dummyBlock;
                     break;
                 case 4:
-                    grid[2][20] = null;
-                    grid[3][20] = null;
-                    grid[4][20] = null;
-                    grid[5][20] = null;
-                    grid[6][20] = null;
-                    grid[7][20] = null;
-                    grid[8][20] = null;
-                    grid[9][20] = null;
-                    grid[10][20] = null;
-                    grid[2][19] = null;
-                    grid[3][19] = null;
-                    grid[4][19] = null;
-                    grid[5][19] = null;
-                    grid[6][19] = null;
-                    grid[7][19] = null;
-                    grid[8][19] = null;
-                    grid[9][19] = null;
-                    grid[10][19] = null;
+           grid[2][20] = dummyBlock;
+                    grid[3][20] = dummyBlock;
+      
+                    grid[9][20] = dummyBlock;
+                    grid[10][20] = dummyBlock;
+                    grid[2][19] = dummyBlock;
+                    grid[3][19] = dummyBlock;
+               
+                    grid[9][19] = dummyBlock;
+                    grid[10][19] = dummyBlock;
 
-                    grid[2][12] = null;
-                    grid[3][12] = null;
-                    grid[4][12] = null;
-                    grid[5][12] = null;
-                    grid[6][12] = null;
-                    grid[7][12] = null;
-                    grid[8][12] = null;
-                    grid[9][12] = null;
-                    grid[10][12] = null;
+                    
+                    
+                    grid[2][18] = dummyBlock;
+                    grid[2][17] = dummyBlock;
+                    grid[2][16] = dummyBlock;
+                    grid[2][15] = dummyBlock;
+                    grid[2][14] = dummyBlock;
+                    grid[2][13] = dummyBlock;
+                      grid[3][18] = dummyBlock;
+                    grid[3][17] = dummyBlock;
+                    grid[3][16] = dummyBlock;
+                    grid[3][15] = dummyBlock;
+                    grid[3][14] = dummyBlock;
+                    grid[3][13] = dummyBlock;
+                    
+                    
+                    
+                    grid[2][12] = dummyBlock;
+                    grid[3][12] = dummyBlock;
+                    grid[4][12] = dummyBlock;
+                    grid[5][12] = dummyBlock;
+                    grid[6][12] = dummyBlock;
+                    grid[7][12] = dummyBlock;
+                    grid[8][12] = dummyBlock;
+                    grid[9][12] = dummyBlock;
+                    grid[10][12] = dummyBlock;
 
-                    grid[2][11] = null;
-                    grid[3][11] = null;
-                    grid[4][11] = null;
-                    grid[5][11] = null;
-                    grid[6][11] = null;
-                    grid[7][11] = null;
-                    grid[8][11] = null;
-                    grid[9][11] = null;
-                    grid[10][11] = null;
+                    grid[2][11] = dummyBlock;
+                    grid[3][11] = dummyBlock;
+                    grid[4][11] = dummyBlock;
+                    grid[5][11] = dummyBlock;
+                    grid[6][11] = dummyBlock;
+                    grid[7][11] = dummyBlock;
+                    grid[8][11] = dummyBlock;
+                    grid[9][11] = dummyBlock;
+                    grid[10][11] = dummyBlock;
 
+               
+                    grid[9][4] = dummyBlock;
+                    grid[10][4] = dummyBlock;
 
-                    grid[9][4] = null;
-                    grid[10][4] = null;
+                   
+                    grid[9][3] = dummyBlock;
+                    grid[10][3] = dummyBlock;
 
+                    grid[9][18] = dummyBlock;
+                    grid[9][17] = dummyBlock;
+                    grid[9][16] = dummyBlock;
+                    grid[9][15] = dummyBlock;
+                    grid[9][14] = dummyBlock;
+                    grid[9][13] = dummyBlock;
 
-                    grid[9][3] = null;
-                    grid[10][3] = null;
+                    grid[10][18] = dummyBlock;
+                    grid[10][17] = dummyBlock;
+                    grid[10][16] = dummyBlock;
+                    grid[10][15] = dummyBlock;
+                    grid[10][14] = dummyBlock;
+                    grid[10][13] = dummyBlock;
 
-                    grid[9][18] = null;
-                    grid[9][17] = null;
-                    grid[9][16] = null;
-                    grid[9][15] = null;
-                    grid[9][14] = null;
-                    grid[9][13] = null;
+                    grid[9][10] = dummyBlock;
+                    grid[9][9] = dummyBlock;
+                    grid[9][8] = dummyBlock;
+                    grid[9][7] = dummyBlock;
+                    grid[9][6] = dummyBlock;
+                    grid[9][5] = dummyBlock;
 
-                    grid[10][18] = null;
-                    grid[10][17] = null;
-                    grid[10][16] = null;
-                    grid[10][15] = null;
-                    grid[10][14] = null;
-                    grid[10][13] = null;
-
-
-                    grid[2][18] = null;
-                    grid[2][17] = null;
-                    grid[2][16] = null;
-                    grid[2][15] = null;
-                    grid[2][14] = null;
-                    grid[2][13] = null;
-
-                    grid[3][18] = null;
-                    grid[3][17] = null;
-                    grid[3][16] = null;
-                    grid[3][15] = null;
-                    grid[3][14] = null;
-                    grid[3][13] = null;
+                    grid[10][10] = dummyBlock;
+                    grid[10][9] = dummyBlock;
+                    grid[10][8] = dummyBlock;
+                    grid[10][7] = dummyBlock;
+                    grid[10][6] = dummyBlock;
+                    grid[10][5] = dummyBlock;
                     break;
             }
         }

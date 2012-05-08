@@ -17,5 +17,5 @@ abstract public class SimulationStateAbstract extends Observable {
     abstract public int getRank();
     public enum UpdateType {
         LASTACTION, ACTIONFOROTHERS
-    }
+    ,   RANKING}
 }

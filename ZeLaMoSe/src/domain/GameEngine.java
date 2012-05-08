@@ -143,6 +143,9 @@ public class GameEngine extends GameEngineAbstract {
                         }
                     break;
             }
+        }else {
+            setChanged();
+            notifyObservers(UpdateType.RANKING);
         }
     }
 

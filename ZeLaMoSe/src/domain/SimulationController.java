@@ -23,7 +23,7 @@ public class SimulationController implements StepInterface, Observer {
     private SortedMap<Integer, GameEngineAbstract> rankingMap = new TreeMap<Integer, GameEngineAbstract>(new Comparator() { 
     @Override 
     public int compare(Object t, Object t1) { 
-        return ((Integer) t).compareTo((Integer) t1); 
+        return ((Integer) t1).compareTo((Integer) t); 
     } 
     }); 
     private int currentHighestLevel = 1;
