@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import view.music.SoundEngine;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -38,6 +39,7 @@ public class SoundEnginePerformance {
 //            } catch (InterruptedException ex) {
 //                Logger.getLogger(SoundEnginePerformance.class.getName()).log(Level.SEVERE, null, ex);
 //            }
+            assertTrue(timeAfter - timeBefore < 50);
         }
     }
 }
