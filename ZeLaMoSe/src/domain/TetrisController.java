@@ -66,7 +66,7 @@ public class TetrisController extends Observable implements Observer {
         return simulationController.getSimulationStateInterface(sessionId);
     }
 
-    public InputSampler getInputSampler() {
+    public InputSamplerInterface getInputSampler() {
         return stepGenerator.getInputSampler();
     }
 
