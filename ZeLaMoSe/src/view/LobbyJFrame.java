@@ -44,7 +44,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     LobbyJFrame(TetrisController tetrisController, final ChatController chatController, MainJFrame.GameMode gameMode) {
         this.tetrisController = tetrisController;
         this.chatController = chatController;
-        this.playerListModel = new PlayerListModel(chatController.getSessionList());
+        this.playerListModel = new PlayerListModel(chatController);
         this.playerListCellRenderer = new PlayerListCellRenderer(chatController.getOwnSession().getId());
 
         initComponents();
