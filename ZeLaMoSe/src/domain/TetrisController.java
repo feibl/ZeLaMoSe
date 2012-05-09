@@ -80,6 +80,7 @@ public class TetrisController extends Observable implements Observer {
         }
         Registry registry = LocateRegistry.getRegistry();
         gameServer = new GameServer(TetrisController.SERVER_NAME, registry);
+        gameServer.startDiscoveryServer();
     }
 
     public void connectToServer(String ip, int port, String nickname) {
@@ -95,6 +96,7 @@ public class TetrisController extends Observable implements Observer {
 
     public void startGame(long blockQueueSeed, int nbrOfJokers, boolean includeSpecialBlocks, int startLevel) {
         gameServer.startGame(blockQueueSeed, nbrOfJokers, includeSpecialBlocks, startLevel);
+        gameServer.stopDiscoveryServer();
     }
 
     @Override

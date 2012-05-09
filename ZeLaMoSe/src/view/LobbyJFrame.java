@@ -6,7 +6,7 @@ package view;
 
 import domain.*;
 import java.awt.Color;
-import java.awt.Component;
+import java.net.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;

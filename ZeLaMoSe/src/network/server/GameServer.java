@@ -30,7 +30,7 @@ import network.client.ClientRemoteInterface;
 public class GameServer extends UnicastRemoteObject implements GameServerInterface, GameServerRemoteInterface {
 
     protected List<SessionInterface> sessionList;
-    private static final int MAX_SESSIONS = 4;
+    private static final int MAX_SESSIONS = 8;
     private static int id = 1;
     private AtomicInteger readyCount = new AtomicInteger(0);
     protected ExecutorService threadPool;
@@ -39,6 +39,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     private Semaphore currentNumberOfReceivedSteps = new Semaphore(0);
     private int currentStep = 0;
     private boolean gameStarted = false;
+    private DiscoveryServer discoveryServer;
 
     public GameServer(String serverName, Registry registry) throws RemoteException, MalformedURLException {
         this();
@@ -48,6 +49,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
             System.setSecurityManager(new RMISecurityManager());
         }
         registry.rebind(serverName, this);
+        discoveryServer = new DiscoveryServer();
     }
 
     public GameServer() throws RemoteException {
@@ -263,6 +265,16 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
                 }
             }
         }).start();
+    }
+
+    @Override
+    public void startDiscoveryServer() {
+        discoveryServer.start();
+    }
+
+    @Override
+    public void stopDiscoveryServer() {
+        discoveryServer.end();
     }
 
 }
