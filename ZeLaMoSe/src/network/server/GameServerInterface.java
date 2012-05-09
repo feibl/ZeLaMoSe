@@ -4,10 +4,12 @@
  */
 package network.server;
 
+import network.GameParams;
+
 /**
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
 public interface GameServerInterface {
-   public void startGame(int numberOfJokers);
+   public void startGame(long blockQueueSeed, int nbrOfJokers, boolean includeSpecialBlocks, int startLevel);
 }

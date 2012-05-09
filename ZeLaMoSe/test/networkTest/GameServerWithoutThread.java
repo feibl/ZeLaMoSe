@@ -11,6 +11,7 @@ import java.rmi.registry.Registry;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import network.GameParams;
 import network.server.GameServer;
 import network.server.SessionInterface;
 import org.junit.Ignore;
@@ -27,9 +28,9 @@ public class GameServerWithoutThread extends GameServer {
     }
 
     @Override
-    protected void sendInitSignal(SessionInterface s, long blockQueueSeed, int numberOfJokers) {
+    protected void sendInitSignal(SessionInterface s, GameParams initParameter) {
         try {
-            s.sendInitSignal(blockQueueSeed,numberOfJokers);
+            s.sendInitSignal(initParameter);
         } catch (RemoteException ex) {
             removeSession(s);
         }

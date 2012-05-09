@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Collection;
 import network.ChatMessage;
+import network.GameParams;
 import network.SessionInformation;
 import network.client.ClientRemoteInterface;
 
@@ -83,8 +84,8 @@ public class Session extends UnicastRemoteObject implements SessionRemoteInterfa
     }
 
     @Override
-    public void sendInitSignal(long blockQueueSeed, int numberOfJokers) throws RemoteException {
-        client.receiveInitSignal(blockQueueSeed, numberOfJokers);
+    public void sendInitSignal(GameParams gameParams) throws RemoteException {
+        client.receiveInitSignal(gameParams);
     }
     
 }

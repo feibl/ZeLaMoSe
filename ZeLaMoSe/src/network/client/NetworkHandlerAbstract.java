@@ -10,6 +10,7 @@ import java.util.Observable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import network.ChatMessage;
+import network.GameParams;
 import network.SessionInformation;
 
 /**
@@ -42,9 +43,7 @@ public abstract class NetworkHandlerAbstract extends Observable implements StepI
    
    public abstract ExecutorService getThreadPool();
    
-   public abstract long getBlockQueueSeed();
-   
-   public abstract int getNumberOfJokers();
+   public abstract GameParams getGameParams();
    
    public abstract void sendReadySignal();
 }

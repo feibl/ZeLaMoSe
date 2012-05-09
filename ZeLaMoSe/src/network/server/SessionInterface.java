@@ -7,6 +7,7 @@ package network.server;
 import domain.Step;
 import java.rmi.RemoteException;
 import java.util.Collection;
+import network.GameParams;
 import network.SessionInformation;
 
 /**
@@ -27,5 +28,5 @@ public interface SessionInterface {
 
    public void sendStartSignal() throws RemoteException;
 
-    public void sendInitSignal(long blockQueueSeed, int numberOfJokers) throws RemoteException;
+    public void sendInitSignal(GameParams gameParams) throws RemoteException;
 }

@@ -54,7 +54,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         chatController.addObserver(playerListModel);
         switch (gameMode) {
             case SINGLE_PLAYER:
-                tetrisController.startGame(0);
+                tetrisController.startGame(computeRandomBlockSeed(), 0, false, 1);
                 break;
             case MULTI_PLAYER_JOIN:
                 lblServerIP.setText("");
@@ -276,7 +276,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
         btnStart.setEnabled(false);
-        tetrisController.startGame((Integer) sprNumberOfJokersValue.getValue());
+        tetrisController.startGame(computeRandomBlockSeed(), (Integer) sprNumberOfJokersValue.getValue(), true, 1);
     }//GEN-LAST:event_btnStartActionPerformed
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
@@ -385,5 +385,9 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
 
     private void scrollToNewLine() {
         txpChat.setCaretPosition(txpChat.getDocument().getLength());
+    }
+    
+    private long computeRandomBlockSeed() {
+        return System.currentTimeMillis();
     }
 }

@@ -10,6 +10,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import network.GameParams;
 import network.client.NetworkHandlerAbstract;
 import network.server.GameServerInterface;
 import network.server.GameServer;
@@ -92,8 +93,8 @@ public class TetrisController extends Observable implements Observer {
         networkHandler.disconnectFromServer();
     }
 
-    public void startGame(int numberOfJokers) {
-        gameServer.startGame(numberOfJokers);
+    public void startGame(long blockQueueSeed, int nbrOfJokers, boolean includeSpecialBlocks, int startLevel) {
+        gameServer.startGame(blockQueueSeed, nbrOfJokers, includeSpecialBlocks, startLevel);
     }
 
     @Override
@@ -124,8 +125,9 @@ public class TetrisController extends Observable implements Observer {
                 break;
             case INIT_SIGNAL:
                 stepGenerator.setSessionID(localSessionID);
-                long seed = networkHandler.getBlockQueueSeed();
-                int numberOfJokers = networkHandler.getNumberOfJokers();
+                GameParams gameParams = networkHandler.getGameParams();
+                long seed = gameParams.getBlockQueueSeed();
+                int numberOfJokers = gameParams.getNbrOfJokers();
                 for (Map.Entry<Integer, String> entry : sessionMap.entrySet()) {
                     simulationController.addSession(entry.getKey(), entry.getValue(), new GameEngine(entry.getKey(), seed, numberOfJokers));
                 }
