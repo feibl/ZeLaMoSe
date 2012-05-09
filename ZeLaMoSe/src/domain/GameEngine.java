@@ -36,8 +36,8 @@ public class GameEngine extends GameEngineAbstract {
     private List<Integer> alreadyUsedSpecialBlocks = new ArrayList<Integer>();
     private Random randomGarbageLineGenerator;
 
-    public GameEngine(int sessionId, long seed, int numberOfJokers) {
-        this(sessionId, seed, new BlockQueue(seed), numberOfJokers);
+    public GameEngine(int sessionId, long seed, boolean includeSpecialBlocks, int numberOfJokers) {
+        this(sessionId, seed, new BlockQueue(seed, includeSpecialBlocks), numberOfJokers);
     }
 
     public GameEngine(int sessionId, long seed, BlockQueueInterface queue, int numberOfJokers) {

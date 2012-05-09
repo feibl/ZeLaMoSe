@@ -128,8 +128,9 @@ public class TetrisController extends Observable implements Observer {
                 GameParams gameParams = networkHandler.getGameParams();
                 long seed = gameParams.getBlockQueueSeed();
                 int numberOfJokers = gameParams.getNbrOfJokers();
+                simulationController.setLevel(gameParams.getStartLevel());
                 for (Map.Entry<Integer, String> entry : sessionMap.entrySet()) {
-                    simulationController.addSession(entry.getKey(), entry.getValue(), new GameEngine(entry.getKey(), seed, numberOfJokers));
+                    simulationController.addSession(entry.getKey(), entry.getValue(), new GameEngine(entry.getKey(), seed, gameParams.isIncludeSpecialBlocks(), numberOfJokers));
                 }
 
                 setChanged();

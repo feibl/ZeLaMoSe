@@ -190,6 +190,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
 
         lblNumberOfJokers.setText("Number of Jokers:");
 
+        cbxIncludeSpecialBlocks.setSelected(true);
         cbxIncludeSpecialBlocks.setText("Include Special Blocks");
 
         sprSeed.setEnabled(false);
