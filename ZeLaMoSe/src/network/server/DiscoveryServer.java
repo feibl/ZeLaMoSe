@@ -22,7 +22,7 @@ public class DiscoveryServer extends Thread {
                 byte[] buffer = new byte[1024];
                 DatagramPacket input = new DatagramPacket(buffer, buffer.length);
                 socket.receive(input);
-                if ((new String(buffer, 0, input.getLength())).equals(Config.discoveryClientMessage)) {
+                if ((new String(buffer, 0, input.getLength())).equals(Config.discoveryClientMessage) && doDiscovery) {
                     byte[] data = Config.discoveryServerMessage.getBytes();
                     DatagramPacket request = new DatagramPacket(data, data.length, input.getAddress(), input.getPort());
                     socket.send(request);
