@@ -60,8 +60,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 lblServerIP.setText("");
                 lblServerIPValue.setText("");
                 btnStart.setEnabled(false);
-                lblNumberOfJokers.setVisible(false);
-                sprNumberOfJokersValue.setVisible(false);
+                pnlSettings.setVisible(false);
                 soundEngine = new SoundEngine();
                 soundEngine.playBackgroundMusic(MusicFile.lobbyBackgroundMusic);
                 break;
@@ -81,7 +80,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
             }
         }
         SimulationStateAbstract localSimulation = tetrisController.getSession(tetrisController.getLocalSessionID());
-        final GameFieldJFrame gameField = new GameFieldJFrame((InputSampler)tetrisController.getInputSampler(), localSimulation, otherSimulations);
+        final GameFieldJFrame gameField = new GameFieldJFrame((InputSampler) tetrisController.getInputSampler(), localSimulation, otherSimulations);
         return gameField;
     }
 
@@ -109,13 +108,20 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
-        pnlClock = new javax.swing.JPanel();
-        lblNumberOfJokers = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstPlayers = new javax.swing.JList();
-        sprNumberOfJokersValue = new javax.swing.JSpinner();
         jScrollPane3 = new javax.swing.JScrollPane();
         txpChat = new javax.swing.JTextPane();
+        pnlSettings = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        lblStartLevel = new javax.swing.JLabel();
+        lblSeed = new javax.swing.JLabel();
+        sprStartLevel = new JSpinner(new SpinnerNumberModel(1, 1, 15, 1));
+        cbxRandomSeed = new javax.swing.JCheckBox();
+        lblNumberOfJokers = new javax.swing.JLabel();
+        cbxIncludeSpecialBlocks = new javax.swing.JCheckBox();
+        sprNumberOfJokersValue = new javax.swing.JSpinner();
+        sprSeed = new javax.swing.JSpinner(new SpinnerNumberModel(1, Long.MIN_VALUE, Long.MAX_VALUE, 1));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -159,22 +165,6 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
 
         jLabel2.setText("Players:");
 
-        pnlClock.setBorder(javax.swing.BorderFactory.createTitledBorder("Clock"));
-        pnlClock.setPreferredSize(new java.awt.Dimension(136, 136));
-
-        javax.swing.GroupLayout pnlClockLayout = new javax.swing.GroupLayout(pnlClock);
-        pnlClock.setLayout(pnlClockLayout);
-        pnlClockLayout.setHorizontalGroup(
-            pnlClockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 124, Short.MAX_VALUE)
-        );
-        pnlClockLayout.setVerticalGroup(
-            pnlClockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 109, Short.MAX_VALUE)
-        );
-
-        lblNumberOfJokers.setText("Number of Jokers:");
-
         lstPlayers.setModel(playerListModel);
         lstPlayers.setCellRenderer(playerListCellRenderer);
         jScrollPane2.setViewportView(lstPlayers);
@@ -182,6 +172,82 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         txpChat.setEditable(false);
         txpChat.setFocusable(false);
         jScrollPane3.setViewportView(txpChat);
+
+        jLabel3.setText("Settings:");
+
+        lblStartLevel.setText("Start at Level:");
+
+        lblSeed.setText("Seed:");
+        lblSeed.setEnabled(false);
+
+        cbxRandomSeed.setSelected(true);
+        cbxRandomSeed.setText("Random Seed");
+        cbxRandomSeed.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxRandomSeedActionPerformed(evt);
+            }
+        });
+
+        lblNumberOfJokers.setText("Number of Jokers:");
+
+        cbxIncludeSpecialBlocks.setText("Include Special Blocks");
+
+        sprSeed.setEnabled(false);
+
+        javax.swing.GroupLayout pnlSettingsLayout = new javax.swing.GroupLayout(pnlSettings);
+        pnlSettings.setLayout(pnlSettingsLayout);
+        pnlSettingsLayout.setHorizontalGroup(
+            pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSettingsLayout.createSequentialGroup()
+                .addContainerGap(22, Short.MAX_VALUE)
+                .addGroup(pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addGroup(pnlSettingsLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(pnlSettingsLayout.createSequentialGroup()
+                                .addGroup(pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblNumberOfJokers)
+                                    .addComponent(lblStartLevel)
+                                    .addComponent(cbxRandomSeed)
+                                    .addComponent(cbxIncludeSpecialBlocks))
+                                .addGap(32, 32, 32)
+                                .addGroup(pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(sprStartLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(sprNumberOfJokersValue, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(pnlSettingsLayout.createSequentialGroup()
+                                .addComponent(lblSeed)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(sprSeed, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap())
+        );
+        pnlSettingsLayout.setVerticalGroup(
+            pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSettingsLayout.createSequentialGroup()
+                .addContainerGap(21, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNumberOfJokers)
+                    .addComponent(sprNumberOfJokersValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblStartLevel)
+                    .addComponent(sprStartLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cbxRandomSeed)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSeed)
+                    .addComponent(sprSeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cbxIncludeSpecialBlocks)
+                .addContainerGap())
+        );
+
+        JFormattedTextField txt = ((JSpinner.NumberEditor) sprNumberOfJokersValue.getEditor()).getTextField();
+        ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
+        ((NumberFormatter) txt.getFormatter()).setMinimum(0);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -213,14 +279,8 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblNumberOfJokers)
-                        .addGap(32, 32, 32)
-                        .addComponent(sprNumberOfJokersValue, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(pnlClock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(pnlSettings, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -238,30 +298,22 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlClock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(13, 13, 13)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblNumberOfJokers)
-                            .addComponent(sprNumberOfJokersValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(27, 27, 27)
+                        .addGap(18, 18, 18)
+                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11)
+                        .addComponent(pnlSettings, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(94, 94, 94)
                         .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE))
+                        .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE))
                     .addComponent(jScrollPane3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtMessage)
-                    .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                    .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
                     .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
-
-        JFormattedTextField txt = ((JSpinner.NumberEditor) sprNumberOfJokersValue.getEditor()).getTextField();
-        ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
-        ((NumberFormatter) txt.getFormatter()).setMinimum(0);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -276,7 +328,13 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
         btnStart.setEnabled(false);
-        tetrisController.startGame(computeRandomBlockSeed(), (Integer) sprNumberOfJokersValue.getValue(), true, 1);
+        long seed;
+        if (cbxRandomSeed.isSelected()) {
+            seed = computeRandomBlockSeed();
+        } else {
+            seed = (Long) sprSeed.getValue();
+        }
+        tetrisController.startGame(seed, (Integer) sprNumberOfJokersValue.getValue(), cbxIncludeSpecialBlocks.isSelected(), (Integer) sprStartLevel.getValue());
     }//GEN-LAST:event_btnStartActionPerformed
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
@@ -290,23 +348,40 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         exit();
     }//GEN-LAST:event_formWindowClosing
+
+    private void cbxRandomSeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxRandomSeedActionPerformed
+        if (cbxRandomSeed.isSelected()) {
+            lblSeed.setEnabled(false);
+            sprSeed.setEnabled(false);
+        } else {
+            lblSeed.setEnabled(true);
+            sprSeed.setEnabled(true);
+        }
+    }//GEN-LAST:event_cbxRandomSeedActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnSend;
     private javax.swing.JButton btnStart;
+    private javax.swing.JCheckBox cbxIncludeSpecialBlocks;
+    private javax.swing.JCheckBox cbxRandomSeed;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JLabel lblNumberOfJokers;
+    private javax.swing.JLabel lblSeed;
     private javax.swing.JLabel lblServerIP;
     private javax.swing.JLabel lblServerIPValue;
+    private javax.swing.JLabel lblStartLevel;
     private javax.swing.JList lstPlayers;
-    private javax.swing.JPanel pnlClock;
+    private javax.swing.JPanel pnlSettings;
     private javax.swing.JSpinner sprNumberOfJokersValue;
+    private javax.swing.JSpinner sprSeed;
+    private javax.swing.JSpinner sprStartLevel;
     private javax.swing.JTextPane txpChat;
     private javax.swing.JTextField txtMessage;
     // End of variables declaration//GEN-END:variables
@@ -386,7 +461,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private void scrollToNewLine() {
         txpChat.setCaretPosition(txpChat.getDocument().getLength());
     }
-    
+
     private long computeRandomBlockSeed() {
         return System.currentTimeMillis();
     }
