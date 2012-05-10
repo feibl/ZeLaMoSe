@@ -10,6 +10,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import network.GameParams;
 import network.client.NetworkHandlerAbstract;
 import network.server.GameServerInterface;
 import network.server.GameServer;
@@ -66,7 +67,7 @@ public class TetrisController extends Observable implements Observer {
         return simulationController.getSimulationStateInterface(sessionId);
     }
 
-    public InputSampler getInputSampler() {
+    public InputSamplerInterface getInputSampler() {
         return stepGenerator.getInputSampler();
     }
 
@@ -79,6 +80,7 @@ public class TetrisController extends Observable implements Observer {
         }
         Registry registry = LocateRegistry.getRegistry();
         gameServer = new GameServer(TetrisController.SERVER_NAME, registry);
+        gameServer.startDiscoveryServer();
     }
 
     public void connectToServer(String ip, int port, String nickname) {
@@ -92,8 +94,9 @@ public class TetrisController extends Observable implements Observer {
         networkHandler.disconnectFromServer();
     }
 
-    public void startGame(int numberOfJokers) {
-        gameServer.startGame(numberOfJokers);
+    public void startGame(long blockQueueSeed, int nbrOfJokers, boolean includeSpecialBlocks, int startLevel) {
+        gameServer.startGame(blockQueueSeed, nbrOfJokers, includeSpecialBlocks, startLevel);
+        gameServer.stopDiscoveryServer();
     }
 
     @Override
@@ -124,10 +127,12 @@ public class TetrisController extends Observable implements Observer {
                 break;
             case INIT_SIGNAL:
                 stepGenerator.setSessionID(localSessionID);
-                long seed = networkHandler.getBlockQueueSeed();
-                int numberOfJokers = networkHandler.getNumberOfJokers();
+                GameParams gameParams = networkHandler.getGameParams();
+                long seed = gameParams.getBlockQueueSeed();
+                int numberOfJokers = gameParams.getNbrOfJokers();
+                simulationController.setLevel(gameParams.getStartLevel());
                 for (Map.Entry<Integer, String> entry : sessionMap.entrySet()) {
-                    simulationController.addSession(entry.getKey(), entry.getValue(), new GameEngine(entry.getKey(), seed, numberOfJokers));
+                    simulationController.addSession(entry.getKey(), entry.getValue(), new GameEngine(entry.getKey(), seed, gameParams.isIncludeSpecialBlocks(), numberOfJokers));
                 }
 
                 setChanged();

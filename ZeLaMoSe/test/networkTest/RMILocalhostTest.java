@@ -148,7 +148,7 @@ public class RMILocalhostTest {
     @Test(expected=GameAlreadyStartedException.class)
     public void testGameAlreadyStartedException() throws RemoteException {
         gameServerImpl.createSession("Hans", new ClientRemoteAdapter());
-        gameServerImpl.startGame(0);
+        gameServerImpl.startGame(1, 0, true, 1);
         gameServerImpl.createSession("Heiri", new ClientRemoteAdapter());
     }
 
@@ -156,7 +156,7 @@ public class RMILocalhostTest {
     public void testInitSignal() {
         Observer observer = createCountObserver(UpdateType.INIT_SIGNAL);
         connectSessions(MAX_SESSIONS, observer);
-        gameServerImpl.startGame(0);
+        gameServerImpl.startGame(1, 0, true, 1);
         assertEquals(MAX_SESSIONS, count);
     }
 
@@ -164,7 +164,7 @@ public class RMILocalhostTest {
     public void testStartSignal() {
         Observer observer = createCountObserver(UpdateType.GAME_STARTED);
         List<NetworkHandler> handlers = connectSessions(MAX_SESSIONS, observer);
-        gameServerImpl.startGame(0);
+        gameServerImpl.startGame(1, 0, true, 1);
 
         for (NetworkHandler handler : handlers) {
             handler.sendReadySignal();
@@ -245,7 +245,7 @@ public class RMILocalhostTest {
         connectSessions(MAX_SESSIONS - 1, observer);
         gameServerImpl.createSession(PLAYER_NAME, new ClientRemoteUnreachable());
 
-        gameServerImpl.startGame(0);
+        gameServerImpl.startGame(1, 0, true, 1);
         assertEquals(MAX_SESSIONS - 1, count);
     }
 
@@ -324,7 +324,7 @@ public class RMILocalhostTest {
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + " 1");
         }
 
-        gameServerImpl.startGame(0);
+        gameServerImpl.startGame(1, 0, true, 1);
 
         long timeBefore = System.currentTimeMillis();
         sender.addStep(new Step(1, 3));

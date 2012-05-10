@@ -10,6 +10,7 @@ import domain.TetrisController.UpdateType;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import network.ChatMessage;
+import network.GameParams;
 import network.SessionInformation;
 import network.client.NetworkHandlerAbstract;
 
@@ -124,13 +125,8 @@ public class FakeNetworkHandler extends NetworkHandlerAbstract {
     }
 
     @Override
-    public long getBlockQueueSeed() {
-        return 1;
-    }
-
-    @Override
-    public int getNumberOfJokers() {
-        return 0;
+    public GameParams getGameParams() {
+        return new GameParams(1, 0, true, 1);
     }
     
 }

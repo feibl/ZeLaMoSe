@@ -8,6 +8,7 @@ import domain.Step;
 import java.rmi.RemoteException;
 import java.util.Collection;
 import network.ChatMessage;
+import network.GameParams;
 import network.client.ClientRemoteInterface;
 import network.server.SessionRemoteInterface;
 import network.SessionInformation;
@@ -37,7 +38,7 @@ public class ClientRemoteAdapter implements ClientRemoteInterface {
     }
 
     @Override
-    public void receiveInitSignal(long blockQueueSeed, int numberOfJokers) throws RemoteException {
+    public void receiveInitSignal(GameParams gameParams) throws RemoteException {
     }
 
     @Override

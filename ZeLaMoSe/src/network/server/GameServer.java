@@ -18,6 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import network.GameAlreadyStartedException;
+import network.GameParams;
 import network.ServerFullException;
 import network.SessionInformation;
 import network.client.ClientRemoteInterface;
@@ -29,7 +30,7 @@ import network.client.ClientRemoteInterface;
 public class GameServer extends UnicastRemoteObject implements GameServerInterface, GameServerRemoteInterface {
 
     protected List<SessionInterface> sessionList;
-    private static final int MAX_SESSIONS = 4;
+    private static final int MAX_SESSIONS = 8;
     private static int id = 1;
     private AtomicInteger readyCount = new AtomicInteger(0);
     protected ExecutorService threadPool;
@@ -38,6 +39,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     private Semaphore currentNumberOfReceivedSteps = new Semaphore(0);
     private int currentStep = 0;
     private boolean gameStarted = false;
+    private DiscoveryServer discoveryServer;
 
     public GameServer(String serverName, Registry registry) throws RemoteException, MalformedURLException {
         this();
@@ -47,6 +49,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
             System.setSecurityManager(new RMISecurityManager());
         }
         registry.rebind(serverName, this);
+        discoveryServer = new DiscoveryServer();
     }
 
     public GameServer() throws RemoteException {
@@ -86,13 +89,13 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         }
     }
 
-    protected void sendInitSignal(final SessionInterface s, final long blockQueueSeed, final int numberOfJokers) {
+    protected void sendInitSignal(final SessionInterface s, final GameParams gameParams) {
         threadPool.execute(new Runnable() {
 
             @Override
             public void run() {
                 try {
-                    s.sendInitSignal(blockQueueSeed,numberOfJokers);
+                    s.sendInitSignal(gameParams);
                 } catch (RemoteException ex) {
                     removeSession(s);
                 }
@@ -162,11 +165,11 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     }
 
     @Override
-    public synchronized void startGame(int numberOfJokers) {
+    public synchronized void startGame(long blockQueueSeed, int nbrOfJokers, boolean includeSpecialBlocks, int startLevel) {
         this.threadPool = Executors.newFixedThreadPool(sessionList.size());
-        long blockQueueSeed = new Random().nextLong();
+        GameParams initParameter = new GameParams(blockQueueSeed, nbrOfJokers, includeSpecialBlocks, startLevel);
         gameStarted = true;
-        notifyAllInitSignal(blockQueueSeed, numberOfJokers);
+        notifyAllInitSignal(initParameter);
     }
 
     protected synchronized void notifyAllGameStarted() {
@@ -184,10 +187,10 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         }
     }
 
-    protected synchronized void notifyAllInitSignal(final long blockQueueSeed, int numberOfJokers) {
+    protected synchronized void notifyAllInitSignal(GameParams gameParams) {
         List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionList);
         for (SessionInterface s : copy) {
-            sendInitSignal(s, blockQueueSeed,numberOfJokers);
+            sendInitSignal(s,gameParams);
         }
     }
 
@@ -262,6 +265,16 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
                 }
             }
         }).start();
+    }
+
+    @Override
+    public void startDiscoveryServer() {
+        discoveryServer.start();
+    }
+
+    @Override
+    public void stopDiscoveryServer() {
+        discoveryServer.end();
     }
 
 }

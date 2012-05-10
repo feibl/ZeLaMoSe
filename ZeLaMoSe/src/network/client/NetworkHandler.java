@@ -33,8 +33,7 @@ public class NetworkHandler extends NetworkHandlerAbstract {
     private ExecutorService threadPool;
     private ConcurrentHashMap<Integer, String> sessionList = new ConcurrentHashMap<Integer, String>();
     private Exception thrownException;
-    private long blockQueueSeed;
-    private int numberOfJokers;
+    private GameParams gameParams;
 
     @Override
     public void processStep() {
@@ -221,9 +220,8 @@ public class NetworkHandler extends NetworkHandlerAbstract {
         return thrownException;
     }
 
-    public void notifyInit(long blockQueueSeed, int numberOfJokers) {
-        this.blockQueueSeed = blockQueueSeed;
-        this.numberOfJokers = numberOfJokers;
+    public void notifyInit(GameParams gameParams) {
+        this.gameParams = gameParams;
         setChanged();
         notifyObservers(UpdateType.INIT_SIGNAL);
     }
@@ -244,12 +242,7 @@ public class NetworkHandler extends NetworkHandlerAbstract {
     }
 
     @Override
-    public long getBlockQueueSeed() {
-        return blockQueueSeed;
-    }
-
-    @Override
-    public int getNumberOfJokers() {
-        return numberOfJokers;
+    public GameParams getGameParams() {
+        return gameParams;
     }
 }

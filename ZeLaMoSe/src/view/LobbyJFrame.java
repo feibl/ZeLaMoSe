@@ -6,7 +6,7 @@ package view;
 
 import domain.*;
 import java.awt.Color;
-import java.awt.Component;
+import java.net.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,14 +54,13 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         chatController.addObserver(playerListModel);
         switch (gameMode) {
             case SINGLE_PLAYER:
-                tetrisController.startGame(0);
+                tetrisController.startGame(computeRandomBlockSeed(), 0, false, 1);
                 break;
             case MULTI_PLAYER_JOIN:
                 lblServerIP.setText("");
                 lblServerIPValue.setText("");
                 btnStart.setEnabled(false);
-                lblNumberOfJokers.setVisible(false);
-                sprNumberOfJokersValue.setVisible(false);
+                pnlSettings.setVisible(false);
                 soundEngine = new SoundEngine();
                 soundEngine.playBackgroundMusic(MusicFile.lobbyBackgroundMusic);
                 break;
@@ -81,7 +80,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
             }
         }
         SimulationStateAbstract localSimulation = tetrisController.getSession(tetrisController.getLocalSessionID());
-        final GameFieldJFrame gameField = new GameFieldJFrame(tetrisController.getInputSampler(), localSimulation, otherSimulations);
+        final GameFieldJFrame gameField = new GameFieldJFrame((InputSampler) tetrisController.getInputSampler(), localSimulation, otherSimulations);
         return gameField;
     }
 
@@ -98,43 +97,95 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         lblServerIP = new javax.swing.JLabel();
         lblServerIPValue = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        txtMessage = new javax.swing.JTextField();
-        btnSend = new javax.swing.JButton();
-        btnExit = new javax.swing.JButton();
-        btnStart = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
-        jSeparator2 = new javax.swing.JSeparator();
-        jSeparator3 = new javax.swing.JSeparator();
-        pnlClock = new javax.swing.JPanel();
-        lblNumberOfJokers = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        lstPlayers = new javax.swing.JList();
-        sprNumberOfJokersValue = new javax.swing.JSpinner();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        jPanel2 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         txpChat = new javax.swing.JTextPane();
+        jPanel4 = new javax.swing.JPanel();
+        txtMessage = new javax.swing.JTextField();
+        btnSend = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        lstPlayers = new javax.swing.JList();
+        pnlSettings = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        lblStartLevel = new javax.swing.JLabel();
+        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        sprStartLevel = new JSpinner(new SpinnerNumberModel(1, 1, 15, 1));
+        jPanel8 = new javax.swing.JPanel();
+        lblNumberOfJokers = new javax.swing.JLabel();
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        sprNumberOfJokersValue = new javax.swing.JSpinner();
+        cbxRandomSeed = new javax.swing.JCheckBox();
+        cbxIncludeSpecialBlocks = new javax.swing.JCheckBox();
+        jPanel7 = new javax.swing.JPanel();
+        lblSeed = new javax.swing.JLabel();
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        sprSeed = new javax.swing.JSpinner(new SpinnerNumberModel(1, Long.MIN_VALUE, Long.MAX_VALUE, 1));
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
+        jPanel5 = new javax.swing.JPanel();
+        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        btnStart = new javax.swing.JButton();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
+        btnExit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(750, 500));
+        setMinimumSize(new java.awt.Dimension(750, 500));
+        setPreferredSize(new java.awt.Dimension(750, 500));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
         });
 
-        lblServerIP.setText("Server-IP:");
-
-        lblServerIPValue.setText("<ServerIPValue>");
+        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
         jLabel1.setText("<html><h3>ZeLaMoSe-Tetris - Lobby</h3></html>");
+        jLabel1.setMaximumSize(new java.awt.Dimension(500, 37));
+        jPanel1.add(jLabel1);
+        jPanel1.add(filler1);
+
+        lblServerIP.setText("Server-IP:");
+        jPanel1.add(lblServerIP);
+
+        lblServerIPValue.setText("<ServerIPValue>");
+        jPanel1.add(lblServerIPValue);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.NORTH);
+
+        jSplitPane1.setResizeWeight(1.0);
+        jSplitPane1.setMaximumSize(new java.awt.Dimension(750, 500));
+        jSplitPane1.setMinimumSize(new java.awt.Dimension(750, 500));
+        jSplitPane1.setPreferredSize(new java.awt.Dimension(750, 500));
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        jPanel2.setMaximumSize(new java.awt.Dimension(500, 500));
+        jPanel2.setMinimumSize(new java.awt.Dimension(500, 500));
+        jPanel2.setPreferredSize(new java.awt.Dimension(500, 500));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        txpChat.setEditable(false);
+        txpChat.setFocusable(false);
+        jScrollPane3.setViewportView(txpChat);
+
+        jPanel2.add(jScrollPane3, java.awt.BorderLayout.CENTER);
+
+        jPanel4.setLayout(new java.awt.BorderLayout());
 
         txtMessage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMessageActionPerformed(evt);
             }
         });
+        jPanel4.add(txtMessage, java.awt.BorderLayout.CENTER);
 
         btnSend.setText("Send");
         btnSend.addActionListener(new java.awt.event.ActionListener() {
@@ -142,13 +193,125 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 btnSendActionPerformed(evt);
             }
         });
+        jPanel4.add(btnSend, java.awt.BorderLayout.EAST);
 
-        btnExit.setText("Exit");
-        btnExit.addActionListener(new java.awt.event.ActionListener() {
+        jPanel2.add(jPanel4, java.awt.BorderLayout.SOUTH);
+
+        jSplitPane1.setLeftComponent(jPanel2);
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        jPanel3.setMaximumSize(new java.awt.Dimension(250, 500));
+        jPanel3.setMinimumSize(new java.awt.Dimension(250, 10));
+        jPanel3.setPreferredSize(new java.awt.Dimension(250, 10));
+        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Players"));
+        jPanel9.setAlignmentX(0.0F);
+        jPanel9.setAlignmentY(0.0F);
+        jPanel9.setMaximumSize(new java.awt.Dimension(250, 250));
+        jPanel9.setLayout(new java.awt.BorderLayout());
+
+        jScrollPane2.setAlignmentX(0.0F);
+        jScrollPane2.setAlignmentY(0.0F);
+
+        lstPlayers.setModel(playerListModel);
+        lstPlayers.setAlignmentX(0.0F);
+        lstPlayers.setAlignmentY(0.0F);
+        lstPlayers.setCellRenderer(playerListCellRenderer);
+        jScrollPane2.setViewportView(lstPlayers);
+
+        jPanel9.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        jPanel3.add(jPanel9);
+
+        pnlSettings.setBorder(javax.swing.BorderFactory.createTitledBorder("Settings"));
+        pnlSettings.setAlignmentX(0.0F);
+        pnlSettings.setAlignmentY(0.0F);
+        pnlSettings.setMaximumSize(new java.awt.Dimension(250, 123));
+        pnlSettings.setMinimumSize(new java.awt.Dimension(250, 123));
+        pnlSettings.setPreferredSize(new java.awt.Dimension(250, 123));
+        pnlSettings.setLayout(new javax.swing.BoxLayout(pnlSettings, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel6.setAlignmentX(0.0F);
+        jPanel6.setAlignmentY(0.0F);
+        jPanel6.setLayout(new javax.swing.BoxLayout(jPanel6, javax.swing.BoxLayout.LINE_AXIS));
+
+        lblStartLevel.setText("Start at Level:");
+        jPanel6.add(lblStartLevel);
+        jPanel6.add(filler5);
+
+        sprStartLevel.setMaximumSize(new java.awt.Dimension(100, 20));
+        sprStartLevel.setMinimumSize(new java.awt.Dimension(100, 20));
+        sprStartLevel.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel6.add(sprStartLevel);
+
+        pnlSettings.add(jPanel6);
+
+        jPanel8.setAlignmentX(0.0F);
+        jPanel8.setAlignmentY(0.0F);
+        jPanel8.setLayout(new javax.swing.BoxLayout(jPanel8, javax.swing.BoxLayout.LINE_AXIS));
+
+        lblNumberOfJokers.setText("Number of Jokers:");
+        jPanel8.add(lblNumberOfJokers);
+        jPanel8.add(filler3);
+
+        sprNumberOfJokersValue.setMaximumSize(new java.awt.Dimension(100, 20));
+        sprNumberOfJokersValue.setMinimumSize(new java.awt.Dimension(100, 20));
+        sprNumberOfJokersValue.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel8.add(sprNumberOfJokersValue);
+        JFormattedTextField txt = ((JSpinner.NumberEditor) sprNumberOfJokersValue.getEditor()).getTextField();
+        ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
+        ((NumberFormatter) txt.getFormatter()).setMinimum(0);
+
+        pnlSettings.add(jPanel8);
+
+        cbxRandomSeed.setSelected(true);
+        cbxRandomSeed.setText("Random Seed");
+        cbxRandomSeed.setAlignmentY(0.0F);
+        cbxRandomSeed.setMaximumSize(new java.awt.Dimension(91, 20));
+        cbxRandomSeed.setMinimumSize(new java.awt.Dimension(91, 20));
+        cbxRandomSeed.setPreferredSize(new java.awt.Dimension(91, 20));
+        cbxRandomSeed.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExitActionPerformed(evt);
+                cbxRandomSeedActionPerformed(evt);
             }
         });
+        pnlSettings.add(cbxRandomSeed);
+
+        cbxIncludeSpecialBlocks.setSelected(true);
+        cbxIncludeSpecialBlocks.setText("Include Special Blocks");
+        cbxIncludeSpecialBlocks.setAlignmentY(0.0F);
+        cbxIncludeSpecialBlocks.setMaximumSize(new java.awt.Dimension(129, 20));
+        cbxIncludeSpecialBlocks.setMinimumSize(new java.awt.Dimension(129, 20));
+        cbxIncludeSpecialBlocks.setPreferredSize(new java.awt.Dimension(129, 20));
+        pnlSettings.add(cbxIncludeSpecialBlocks);
+
+        jPanel7.setAlignmentX(0.0F);
+        jPanel7.setAlignmentY(0.0F);
+        jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.LINE_AXIS));
+
+        lblSeed.setText("Seed:");
+        lblSeed.setEnabled(false);
+        jPanel7.add(lblSeed);
+        jPanel7.add(filler4);
+
+        sprSeed.setEnabled(false);
+        sprSeed.setMaximumSize(new java.awt.Dimension(100, 20));
+        sprSeed.setMinimumSize(new java.awt.Dimension(100, 20));
+        sprSeed.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel7.add(sprSeed);
+
+        pnlSettings.add(jPanel7);
+
+        jPanel3.add(pnlSettings);
+        jPanel3.add(filler2);
+
+        jPanel5.setAlignmentX(0.0F);
+        jPanel5.setAlignmentY(0.0F);
+        jPanel5.setMaximumSize(new java.awt.Dimension(32910, 23));
+        jPanel5.setPreferredSize(new java.awt.Dimension(258, 23));
+        jPanel5.setLayout(new javax.swing.BoxLayout(jPanel5, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel5.add(filler6);
 
         btnStart.setText("Start Game");
         btnStart.addActionListener(new java.awt.event.ActionListener() {
@@ -156,112 +319,22 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 btnStartActionPerformed(evt);
             }
         });
+        jPanel5.add(btnStart);
+        jPanel5.add(filler7);
 
-        jLabel2.setText("Players:");
+        btnExit.setText("Exit");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btnExit);
 
-        pnlClock.setBorder(javax.swing.BorderFactory.createTitledBorder("Clock"));
-        pnlClock.setPreferredSize(new java.awt.Dimension(136, 136));
+        jPanel3.add(jPanel5);
 
-        javax.swing.GroupLayout pnlClockLayout = new javax.swing.GroupLayout(pnlClock);
-        pnlClock.setLayout(pnlClockLayout);
-        pnlClockLayout.setHorizontalGroup(
-            pnlClockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 124, Short.MAX_VALUE)
-        );
-        pnlClockLayout.setVerticalGroup(
-            pnlClockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 109, Short.MAX_VALUE)
-        );
+        jSplitPane1.setRightComponent(jPanel3);
 
-        lblNumberOfJokers.setText("Number of Jokers:");
-
-        lstPlayers.setModel(playerListModel);
-        lstPlayers.setCellRenderer(playerListCellRenderer);
-        jScrollPane2.setViewportView(lstPlayers);
-
-        txpChat.setEditable(false);
-        txpChat.setFocusable(false);
-        jScrollPane3.setViewportView(txpChat);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtMessage)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(203, 203, 203)
-                        .addComponent(lblServerIP, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(lblServerIPValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnExit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnStart, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblNumberOfJokers)
-                        .addGap(32, 32, 32)
-                        .addComponent(sprNumberOfJokersValue, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(pnlClock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblServerIP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblServerIPValue))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlClock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(13, 13, 13)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblNumberOfJokers)
-                            .addComponent(sprNumberOfJokersValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(27, 27, 27)
-                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtMessage)
-                    .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-                    .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
-        JFormattedTextField txt = ((JSpinner.NumberEditor) sprNumberOfJokersValue.getEditor()).getTextField();
-        ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
-        ((NumberFormatter) txt.getFormatter()).setMinimum(0);
+        getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -276,7 +349,13 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
         btnStart.setEnabled(false);
-        tetrisController.startGame((Integer) sprNumberOfJokersValue.getValue());
+        long seed;
+        if (cbxRandomSeed.isSelected()) {
+            seed = computeRandomBlockSeed();
+        } else {
+            seed = (Long) sprSeed.getValue();
+        }
+        tetrisController.startGame(seed, (Integer) sprNumberOfJokersValue.getValue(), cbxIncludeSpecialBlocks.isSelected(), (Integer) sprStartLevel.getValue());
     }//GEN-LAST:event_btnStartActionPerformed
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
@@ -290,23 +369,52 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         exit();
     }//GEN-LAST:event_formWindowClosing
+
+    private void cbxRandomSeedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxRandomSeedActionPerformed
+        if (cbxRandomSeed.isSelected()) {
+            lblSeed.setEnabled(false);
+            sprSeed.setEnabled(false);
+        } else {
+            lblSeed.setEnabled(true);
+            sprSeed.setEnabled(true);
+        }
+    }//GEN-LAST:event_cbxRandomSeedActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnSend;
     private javax.swing.JButton btnStart;
+    private javax.swing.JCheckBox cbxIncludeSpecialBlocks;
+    private javax.swing.JCheckBox cbxRandomSeed;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler4;
+    private javax.swing.Box.Filler filler5;
+    private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JLabel lblNumberOfJokers;
+    private javax.swing.JLabel lblSeed;
     private javax.swing.JLabel lblServerIP;
     private javax.swing.JLabel lblServerIPValue;
+    private javax.swing.JLabel lblStartLevel;
     private javax.swing.JList lstPlayers;
-    private javax.swing.JPanel pnlClock;
+    private javax.swing.JPanel pnlSettings;
     private javax.swing.JSpinner sprNumberOfJokersValue;
+    private javax.swing.JSpinner sprSeed;
+    private javax.swing.JSpinner sprStartLevel;
     private javax.swing.JTextPane txpChat;
     private javax.swing.JTextField txtMessage;
     // End of variables declaration//GEN-END:variables
@@ -385,5 +493,9 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
 
     private void scrollToNewLine() {
         txpChat.setCaretPosition(txpChat.getDocument().getLength());
+    }
+
+    private long computeRandomBlockSeed() {
+        return System.currentTimeMillis();
     }
 }

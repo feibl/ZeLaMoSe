@@ -10,6 +10,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Collection;
 import network.ChatMessage;
+import network.GameParams;
 import network.SessionInformation;
 
 /**
@@ -28,5 +29,5 @@ public interface ClientRemoteInterface extends Remote, Serializable {
 
    public void receiveStartSignal() throws RemoteException;
 
-    public void receiveInitSignal(long blockQueueSeed,int numberOfJokers) throws RemoteException;
+    public void receiveInitSignal(GameParams gameParams) throws RemoteException;
 }

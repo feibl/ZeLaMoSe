@@ -12,6 +12,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Collection;
 import network.ChatMessage;
+import network.GameParams;
 import network.SessionInformation;
 import network.server.GameServer;
 import network.server.SessionRemoteInterface;
@@ -101,7 +102,7 @@ public class Handler extends UnicastRemoteObject implements HandlerInterface, Cl
     }
 
     @Override
-    public void receiveInitSignal(long blockQueueSeed, int numberOfJokers) throws RemoteException {
-        networkHandler.notifyInit(blockQueueSeed, numberOfJokers);
+    public void receiveInitSignal(GameParams gameParams) throws RemoteException {
+        networkHandler.notifyInit(gameParams);
     }
 }
