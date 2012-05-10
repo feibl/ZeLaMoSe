@@ -533,93 +533,75 @@ class GameFieldRenderer implements GLEventListener, Observer {
                     grid[5][4] = dummyBlock;
                     grid[5][3] = dummyBlock;
                     break;
-                case 2:
-                    grid[2][20] = dummyBlock;
-                    grid[3][20] = dummyBlock;
-                    grid[4][20] = dummyBlock;
-                    grid[5][20] = dummyBlock;
-                    grid[6][20] = dummyBlock;
-                    grid[7][20] = dummyBlock;
-                    grid[8][20] = dummyBlock;
-                    grid[9][20] = dummyBlock;
-                    grid[10][20] = dummyBlock;
-                    grid[2][19] = dummyBlock;
-                    grid[3][19] = dummyBlock;
-                    grid[4][19] = dummyBlock;
-                    grid[5][19] = dummyBlock;
-                    grid[6][19] = dummyBlock;
-                    grid[7][19] = dummyBlock;
-                    grid[8][19] = dummyBlock;
-                    grid[9][19] = dummyBlock;
-                    grid[10][19] = dummyBlock;
-
-                    grid[2][12] = dummyBlock;
-                    grid[3][12] = dummyBlock;
-                    grid[4][12] = dummyBlock;
-                    grid[5][12] = dummyBlock;
-                    grid[6][12] = dummyBlock;
-                    grid[7][12] = dummyBlock;
-                    grid[8][12] = dummyBlock;
-                    grid[9][12] = dummyBlock;
-                    grid[10][12] = dummyBlock;
-
-                    grid[2][11] = dummyBlock;
-                    grid[3][11] = dummyBlock;
-                    grid[4][11] = dummyBlock;
-                    grid[5][11] = dummyBlock;
-                    grid[6][11] = dummyBlock;
-                    grid[7][11] = dummyBlock;
-                    grid[8][11] = dummyBlock;
-                    grid[9][11] = dummyBlock;
-                    grid[10][11] = dummyBlock;
-
-                    grid[2][4] = dummyBlock;
-                    grid[3][4] = dummyBlock;
-                    grid[4][4] = dummyBlock;
-                    grid[5][4] = dummyBlock;
-                    grid[6][4] = dummyBlock;
-                    grid[7][4] = dummyBlock;
-                    grid[8][4] = dummyBlock;
-                    grid[9][4] = dummyBlock;
-                    grid[10][4] = dummyBlock;
-
-                    grid[2][3] = dummyBlock;
-                    grid[3][3] = dummyBlock;
-                    grid[4][3] = dummyBlock;
-                    grid[5][3] = dummyBlock;
-                    grid[6][3] = dummyBlock;
-                    grid[7][3] = dummyBlock;
-                    grid[8][3] = dummyBlock;
-                    grid[9][3] = dummyBlock;
-                    grid[10][3] = dummyBlock;
-
-                    grid[9][18] = dummyBlock;
-                    grid[9][17] = dummyBlock;
-                    grid[9][16] = dummyBlock;
-                    grid[9][15] = dummyBlock;
-                    grid[9][14] = dummyBlock;
-                    grid[9][13] = dummyBlock;
-
-                    grid[10][18] = dummyBlock;
-                    grid[10][17] = dummyBlock;
+                case 2:                
+                    grid[8][18] = dummyBlock;
+                    grid[7][18] = dummyBlock;
+                    grid[6][18] = dummyBlock;
+                    grid[5][18] = dummyBlock;
+                    grid[4][18] = dummyBlock;
+                    grid[3][18] = dummyBlock;
+                    grid[8][17] = dummyBlock;
+                    grid[7][17] = dummyBlock;
+                    grid[6][17] = dummyBlock;
+                    grid[5][17] = dummyBlock;
+                    grid[4][17] = dummyBlock;
+                    grid[3][17] = dummyBlock;
+                    
+                    grid[2][16] = dummyBlock;
+                    grid[1][16] = dummyBlock;
+                    grid[2][15] = dummyBlock;
+                    grid[1][15] = dummyBlock;
+                    
                     grid[10][16] = dummyBlock;
+                    grid[9][16] = dummyBlock;
                     grid[10][15] = dummyBlock;
+                    grid[9][15] = dummyBlock;
+                    
                     grid[10][14] = dummyBlock;
+                    grid[9][14] = dummyBlock;
                     grid[10][13] = dummyBlock;
-
-                    grid[2][10] = dummyBlock;
-                    grid[2][9] = dummyBlock;
-                    grid[2][8] = dummyBlock;
-                    grid[2][7] = dummyBlock;
-                    grid[2][6] = dummyBlock;
-                    grid[2][5] = dummyBlock;
-
-                    grid[3][10] = dummyBlock;
-                    grid[3][9] = dummyBlock;
+                    grid[9][13] = dummyBlock;
+                    
+                    grid[8][12] = dummyBlock;
+                    grid[7][12] = dummyBlock;
+                    grid[8][11] = dummyBlock;
+                    grid[7][11] = dummyBlock;
+                    
+                    grid[6][10] = dummyBlock;
+                    grid[5][10] = dummyBlock;
+                    grid[6][9] = dummyBlock;
+                    grid[5][9] = dummyBlock;
+                    
+                    grid[4][8] = dummyBlock;
                     grid[3][8] = dummyBlock;
+                    grid[4][7] = dummyBlock;
                     grid[3][7] = dummyBlock;
-                    grid[3][6] = dummyBlock;
-                    grid[3][5] = dummyBlock;
+                    
+                    grid[2][6] = dummyBlock;
+                    grid[1][6] = dummyBlock;
+                    grid[2][5] = dummyBlock;
+                    grid[1][5] = dummyBlock;
+                    
+                    grid[10][4] = dummyBlock;
+                    grid[9][4] = dummyBlock;
+                    grid[8][4] = dummyBlock;
+                    grid[7][4] = dummyBlock;
+                    grid[6][4] = dummyBlock;
+                    grid[5][4] = dummyBlock;
+                    grid[4][4] = dummyBlock;
+                    grid[3][4] = dummyBlock;
+                    grid[2][4] = dummyBlock;
+                    grid[1][4] = dummyBlock;
+                    grid[10][3] = dummyBlock;
+                    grid[9][3] = dummyBlock;
+                    grid[8][3] = dummyBlock;
+                    grid[7][3] = dummyBlock;
+                    grid[6][3] = dummyBlock;
+                    grid[5][3] = dummyBlock;
+                    grid[4][3] = dummyBlock;
+                    grid[3][3] = dummyBlock;
+                    grid[2][3] = dummyBlock;
+                    grid[1][3] = dummyBlock;
                     break;
                 case 3:
                     grid[2][20] = dummyBlock;
