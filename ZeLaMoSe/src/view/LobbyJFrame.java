@@ -110,24 +110,35 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         txtMessage = new javax.swing.JTextField();
         btnSend = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstPlayers = new javax.swing.JList();
         pnlSettings = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
         lblStartLevel = new javax.swing.JLabel();
-        lblSeed = new javax.swing.JLabel();
+        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         sprStartLevel = new JSpinner(new SpinnerNumberModel(1, 1, 15, 1));
-        cbxRandomSeed = new javax.swing.JCheckBox();
+        jPanel8 = new javax.swing.JPanel();
         lblNumberOfJokers = new javax.swing.JLabel();
-        cbxIncludeSpecialBlocks = new javax.swing.JCheckBox();
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         sprNumberOfJokersValue = new javax.swing.JSpinner();
+        cbxRandomSeed = new javax.swing.JCheckBox();
+        cbxIncludeSpecialBlocks = new javax.swing.JCheckBox();
+        jPanel7 = new javax.swing.JPanel();
+        lblSeed = new javax.swing.JLabel();
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         sprSeed = new javax.swing.JSpinner(new SpinnerNumberModel(1, Long.MIN_VALUE, Long.MAX_VALUE, 1));
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
         jPanel5 = new javax.swing.JPanel();
+        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         btnStart = new javax.swing.JButton();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
         btnExit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(750, 500));
+        setMinimumSize(new java.awt.Dimension(750, 500));
+        setPreferredSize(new java.awt.Dimension(750, 500));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -149,6 +160,11 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         jPanel1.add(lblServerIPValue);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.NORTH);
+
+        jSplitPane1.setResizeWeight(1.0);
+        jSplitPane1.setMaximumSize(new java.awt.Dimension(750, 500));
+        jSplitPane1.setMinimumSize(new java.awt.Dimension(750, 500));
+        jSplitPane1.setPreferredSize(new java.awt.Dimension(750, 500));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         jPanel2.setMaximumSize(new java.awt.Dimension(500, 500));
@@ -185,13 +201,15 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         jPanel3.setMaximumSize(new java.awt.Dimension(250, 500));
-        jPanel3.setMinimumSize(new java.awt.Dimension(250, 500));
-        jPanel3.setPreferredSize(new java.awt.Dimension(250, 500));
+        jPanel3.setMinimumSize(new java.awt.Dimension(250, 10));
+        jPanel3.setPreferredSize(new java.awt.Dimension(250, 10));
         jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.Y_AXIS));
 
-        jLabel2.setText("Players:");
-        jLabel2.setAlignmentY(0.0F);
-        jPanel3.add(jLabel2);
+        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Players"));
+        jPanel9.setAlignmentX(0.0F);
+        jPanel9.setAlignmentY(0.0F);
+        jPanel9.setMaximumSize(new java.awt.Dimension(250, 250));
+        jPanel9.setLayout(new java.awt.BorderLayout());
 
         jScrollPane2.setAlignmentX(0.0F);
         jScrollPane2.setAlignmentY(0.0F);
@@ -202,96 +220,98 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         lstPlayers.setCellRenderer(playerListCellRenderer);
         jScrollPane2.setViewportView(lstPlayers);
 
-        jPanel3.add(jScrollPane2);
+        jPanel9.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
+        jPanel3.add(jPanel9);
+
+        pnlSettings.setBorder(javax.swing.BorderFactory.createTitledBorder("Settings"));
         pnlSettings.setAlignmentX(0.0F);
         pnlSettings.setAlignmentY(0.0F);
-        pnlSettings.setMaximumSize(new java.awt.Dimension(250, 250));
-        pnlSettings.setMinimumSize(new java.awt.Dimension(250, 250));
-        pnlSettings.setPreferredSize(new java.awt.Dimension(250, 250));
+        pnlSettings.setMaximumSize(new java.awt.Dimension(250, 123));
+        pnlSettings.setMinimumSize(new java.awt.Dimension(250, 123));
+        pnlSettings.setPreferredSize(new java.awt.Dimension(250, 123));
+        pnlSettings.setLayout(new javax.swing.BoxLayout(pnlSettings, javax.swing.BoxLayout.Y_AXIS));
 
-        jLabel3.setText("Settings:");
+        jPanel6.setAlignmentX(0.0F);
+        jPanel6.setAlignmentY(0.0F);
+        jPanel6.setLayout(new javax.swing.BoxLayout(jPanel6, javax.swing.BoxLayout.LINE_AXIS));
 
         lblStartLevel.setText("Start at Level:");
+        jPanel6.add(lblStartLevel);
+        jPanel6.add(filler5);
 
-        lblSeed.setText("Seed:");
-        lblSeed.setEnabled(false);
+        sprStartLevel.setMaximumSize(new java.awt.Dimension(100, 20));
+        sprStartLevel.setMinimumSize(new java.awt.Dimension(100, 20));
+        sprStartLevel.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel6.add(sprStartLevel);
+
+        pnlSettings.add(jPanel6);
+
+        jPanel8.setAlignmentX(0.0F);
+        jPanel8.setAlignmentY(0.0F);
+        jPanel8.setLayout(new javax.swing.BoxLayout(jPanel8, javax.swing.BoxLayout.LINE_AXIS));
+
+        lblNumberOfJokers.setText("Number of Jokers:");
+        jPanel8.add(lblNumberOfJokers);
+        jPanel8.add(filler3);
+
+        sprNumberOfJokersValue.setMaximumSize(new java.awt.Dimension(100, 20));
+        sprNumberOfJokersValue.setMinimumSize(new java.awt.Dimension(100, 20));
+        sprNumberOfJokersValue.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel8.add(sprNumberOfJokersValue);
+        JFormattedTextField txt = ((JSpinner.NumberEditor) sprNumberOfJokersValue.getEditor()).getTextField();
+        ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
+        ((NumberFormatter) txt.getFormatter()).setMinimum(0);
+
+        pnlSettings.add(jPanel8);
 
         cbxRandomSeed.setSelected(true);
         cbxRandomSeed.setText("Random Seed");
+        cbxRandomSeed.setAlignmentY(0.0F);
+        cbxRandomSeed.setMaximumSize(new java.awt.Dimension(91, 20));
+        cbxRandomSeed.setMinimumSize(new java.awt.Dimension(91, 20));
+        cbxRandomSeed.setPreferredSize(new java.awt.Dimension(91, 20));
         cbxRandomSeed.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxRandomSeedActionPerformed(evt);
             }
         });
-
-        lblNumberOfJokers.setText("Number of Jokers:");
+        pnlSettings.add(cbxRandomSeed);
 
         cbxIncludeSpecialBlocks.setSelected(true);
         cbxIncludeSpecialBlocks.setText("Include Special Blocks");
+        cbxIncludeSpecialBlocks.setAlignmentY(0.0F);
+        cbxIncludeSpecialBlocks.setMaximumSize(new java.awt.Dimension(129, 20));
+        cbxIncludeSpecialBlocks.setMinimumSize(new java.awt.Dimension(129, 20));
+        cbxIncludeSpecialBlocks.setPreferredSize(new java.awt.Dimension(129, 20));
+        pnlSettings.add(cbxIncludeSpecialBlocks);
+
+        jPanel7.setAlignmentX(0.0F);
+        jPanel7.setAlignmentY(0.0F);
+        jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.LINE_AXIS));
+
+        lblSeed.setText("Seed:");
+        lblSeed.setEnabled(false);
+        jPanel7.add(lblSeed);
+        jPanel7.add(filler4);
 
         sprSeed.setEnabled(false);
+        sprSeed.setMaximumSize(new java.awt.Dimension(100, 20));
+        sprSeed.setMinimumSize(new java.awt.Dimension(100, 20));
+        sprSeed.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel7.add(sprSeed);
 
-        javax.swing.GroupLayout pnlSettingsLayout = new javax.swing.GroupLayout(pnlSettings);
-        pnlSettings.setLayout(pnlSettingsLayout);
-        pnlSettingsLayout.setHorizontalGroup(
-            pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSettingsLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addGroup(pnlSettingsLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(pnlSettingsLayout.createSequentialGroup()
-                                .addGroup(pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblNumberOfJokers)
-                                    .addComponent(lblStartLevel)
-                                    .addComponent(cbxRandomSeed)
-                                    .addComponent(cbxIncludeSpecialBlocks))
-                                .addGap(32, 32, 32)
-                                .addGroup(pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(sprStartLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(sprNumberOfJokersValue, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(pnlSettingsLayout.createSequentialGroup()
-                                .addComponent(lblSeed)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(sprSeed, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
-        );
-        pnlSettingsLayout.setVerticalGroup(
-            pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSettingsLayout.createSequentialGroup()
-                .addContainerGap(85, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNumberOfJokers)
-                    .addComponent(sprNumberOfJokersValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblStartLevel)
-                    .addComponent(sprStartLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbxRandomSeed)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblSeed)
-                    .addComponent(sprSeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbxIncludeSpecialBlocks)
-                .addContainerGap())
-        );
-
-        JFormattedTextField txt = ((JSpinner.NumberEditor) sprNumberOfJokersValue.getEditor()).getTextField();
-        ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
-        ((NumberFormatter) txt.getFormatter()).setMinimum(0);
+        pnlSettings.add(jPanel7);
 
         jPanel3.add(pnlSettings);
+        jPanel3.add(filler2);
 
         jPanel5.setAlignmentX(0.0F);
         jPanel5.setAlignmentY(0.0F);
+        jPanel5.setMaximumSize(new java.awt.Dimension(32910, 23));
+        jPanel5.setPreferredSize(new java.awt.Dimension(258, 23));
         jPanel5.setLayout(new javax.swing.BoxLayout(jPanel5, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel5.add(filler6);
 
         btnStart.setText("Start Game");
         btnStart.addActionListener(new java.awt.event.ActionListener() {
@@ -300,6 +320,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
             }
         });
         jPanel5.add(btnStart);
+        jPanel5.add(filler7);
 
         btnExit.setText("Exit");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
@@ -365,14 +386,22 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JCheckBox cbxIncludeSpecialBlocks;
     private javax.swing.JCheckBox cbxRandomSeed;
     private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler4;
+    private javax.swing.Box.Filler filler5;
+    private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSplitPane jSplitPane1;
