@@ -35,7 +35,7 @@ public class NetworkIntegrationTest {
     private GameServer gameServerImpl;
     private final String SERVER_NAME = "Tetris-Server";
     private final String PLAYER_NAME = "TestPlayer";
-    private final int MAX_SESSIONS = 4;
+    private final int MAX_SESSIONS = GameServer.MAX_SESSIONS;
     private static Registry registry;
     private static final String IP = "localhost";
     private static boolean flag;

@@ -38,7 +38,7 @@ public class RMILocalhostTest {
     private GameServerWithoutThread gameServerImpl;
     private final String SERVER_NAME = "Tetris-Server";
     private final String PLAYER_NAME = "TestPlayer";
-    private final int MAX_SESSIONS = 4;
+    private final int MAX_SESSIONS = GameServer.MAX_SESSIONS;
     private static Registry registry;
     private static final String IP = "localhost";
     private static boolean flag;
@@ -101,10 +101,11 @@ public class RMILocalhostTest {
     }
 
     @Test
-    public void testNbrOfSessionAddedUpdates() throws RemoteException {
+    public void testSessionAddedUpdates() throws RemoteException {
         Observer observer = createCountObserver(UpdateType.SESSION_ADDED);
-        connectSessions(MAX_SESSIONS + 1, observer);
-        assertEquals(6, count);
+        connectSessions(1, observer);
+        connectSessions(MAX_SESSIONS);
+        assertEquals(MAX_SESSIONS - 1, count);
     }
 
     @Test
@@ -144,8 +145,8 @@ public class RMILocalhostTest {
         handlers.get(0).sendChatMessage(MESSAGE);
         assertEquals(MAX_SESSIONS, count);
     }
-    
-    @Test(expected=GameAlreadyStartedException.class)
+
+    @Test(expected = GameAlreadyStartedException.class)
     public void testGameAlreadyStartedException() throws RemoteException {
         gameServerImpl.createSession("Hans", new ClientRemoteAdapter());
         gameServerImpl.startGame(1, 0, true, 1);
@@ -180,6 +181,17 @@ public class RMILocalhostTest {
             NetworkHandler handler = new NetworkHandlerWithoutThreads();
             handlers.add(handler);
             handler.addObserver(observer);
+            handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + i);
+        }
+        return handlers;
+    }
+
+    private List<NetworkHandler> connectSessions(int nbrOfSessions) {
+        List<NetworkHandler> handlers = new ArrayList<NetworkHandler>();
+
+        for (int i = 0; i < nbrOfSessions; i++) {
+            NetworkHandler handler = new NetworkHandlerWithoutThreads();
+            handlers.add(handler);
             handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME + i);
         }
         return handlers;
@@ -222,11 +234,12 @@ public class RMILocalhostTest {
     @Test
     public void testExceptionWhileSessionRemovedNotification() throws RemoteException {
         Observer observer = createCountObserver(UpdateType.SESSION_REMOVED);
-        List<NetworkHandler> handlers = connectSessions(MAX_SESSIONS - 1, observer);
+        connectSessions(1, observer);
+        List<NetworkHandler> handlers = connectSessions(MAX_SESSIONS - 2);
         gameServerImpl.createSession(PLAYER_NAME, new ClientRemoteUnreachable());
 
         handlers.get(0).disconnectFromServer();
-        assertEquals(4, count);
+        assertEquals(2, count);
     }
 
     @Test
