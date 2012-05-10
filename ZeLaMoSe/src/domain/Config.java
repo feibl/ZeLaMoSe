@@ -27,7 +27,11 @@ public class Config {
     public final static int EnemyGameFieldBlockSize = 10;
     public final static int blockStartPositionX = 4;
     public final static int blockStartPositionY = gridHeight - 1;
-
+    public final static String discoveryClientMessage = "ZeLaMoSe-Client";
+    public final static String discoveryServerMessage = "ZeLaMoSe-Server";
+    public final static String discoveryMultiCastGroup = "226.0.0.1";
+    public final static int disoveryPort = 6020;
+    
     public static File convertRMI(Class c) {
         File tf = null;
         try {
