@@ -227,9 +227,9 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         pnlSettings.setBorder(javax.swing.BorderFactory.createTitledBorder("Settings"));
         pnlSettings.setAlignmentX(0.0F);
         pnlSettings.setAlignmentY(0.0F);
-        pnlSettings.setMaximumSize(new java.awt.Dimension(250, 123));
-        pnlSettings.setMinimumSize(new java.awt.Dimension(250, 123));
-        pnlSettings.setPreferredSize(new java.awt.Dimension(250, 123));
+        pnlSettings.setMaximumSize(new java.awt.Dimension(250, 132));
+        pnlSettings.setMinimumSize(new java.awt.Dimension(250, 132));
+        pnlSettings.setPreferredSize(new java.awt.Dimension(250, 132));
         pnlSettings.setLayout(new javax.swing.BoxLayout(pnlSettings, javax.swing.BoxLayout.Y_AXIS));
 
         jPanel6.setAlignmentX(0.0F);
@@ -240,9 +240,9 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         jPanel6.add(lblStartLevel);
         jPanel6.add(filler5);
 
-        sprStartLevel.setMaximumSize(new java.awt.Dimension(100, 20));
-        sprStartLevel.setMinimumSize(new java.awt.Dimension(100, 20));
-        sprStartLevel.setPreferredSize(new java.awt.Dimension(100, 20));
+        sprStartLevel.setMaximumSize(new java.awt.Dimension(100, 21));
+        sprStartLevel.setMinimumSize(new java.awt.Dimension(100, 21));
+        sprStartLevel.setPreferredSize(new java.awt.Dimension(100, 21));
         jPanel6.add(sprStartLevel);
 
         pnlSettings.add(jPanel6);
@@ -255,9 +255,9 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         jPanel8.add(lblNumberOfJokers);
         jPanel8.add(filler3);
 
-        sprNumberOfJokersValue.setMaximumSize(new java.awt.Dimension(100, 20));
-        sprNumberOfJokersValue.setMinimumSize(new java.awt.Dimension(100, 20));
-        sprNumberOfJokersValue.setPreferredSize(new java.awt.Dimension(100, 20));
+        sprNumberOfJokersValue.setMaximumSize(new java.awt.Dimension(100, 21));
+        sprNumberOfJokersValue.setMinimumSize(new java.awt.Dimension(100, 21));
+        sprNumberOfJokersValue.setPreferredSize(new java.awt.Dimension(100, 21));
         jPanel8.add(sprNumberOfJokersValue);
         JFormattedTextField txt = ((JSpinner.NumberEditor) sprNumberOfJokersValue.getEditor()).getTextField();
         ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
@@ -268,9 +268,9 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         cbxRandomSeed.setSelected(true);
         cbxRandomSeed.setText("Random Seed");
         cbxRandomSeed.setAlignmentY(0.0F);
-        cbxRandomSeed.setMaximumSize(new java.awt.Dimension(91, 20));
+        cbxRandomSeed.setMaximumSize(new java.awt.Dimension(200, 20));
         cbxRandomSeed.setMinimumSize(new java.awt.Dimension(91, 20));
-        cbxRandomSeed.setPreferredSize(new java.awt.Dimension(91, 20));
+        cbxRandomSeed.setPreferredSize(new java.awt.Dimension(100, 20));
         cbxRandomSeed.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxRandomSeedActionPerformed(evt);
@@ -281,9 +281,9 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         cbxIncludeSpecialBlocks.setSelected(true);
         cbxIncludeSpecialBlocks.setText("Include Special Blocks");
         cbxIncludeSpecialBlocks.setAlignmentY(0.0F);
-        cbxIncludeSpecialBlocks.setMaximumSize(new java.awt.Dimension(129, 20));
-        cbxIncludeSpecialBlocks.setMinimumSize(new java.awt.Dimension(129, 20));
-        cbxIncludeSpecialBlocks.setPreferredSize(new java.awt.Dimension(129, 20));
+        cbxIncludeSpecialBlocks.setMaximumSize(new java.awt.Dimension(200, 21));
+        cbxIncludeSpecialBlocks.setMinimumSize(new java.awt.Dimension(129, 21));
+        cbxIncludeSpecialBlocks.setPreferredSize(new java.awt.Dimension(129, 21));
         pnlSettings.add(cbxIncludeSpecialBlocks);
 
         jPanel7.setAlignmentX(0.0F);
@@ -296,9 +296,9 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         jPanel7.add(filler4);
 
         sprSeed.setEnabled(false);
-        sprSeed.setMaximumSize(new java.awt.Dimension(100, 20));
-        sprSeed.setMinimumSize(new java.awt.Dimension(100, 20));
-        sprSeed.setPreferredSize(new java.awt.Dimension(100, 20));
+        sprSeed.setMaximumSize(new java.awt.Dimension(100, 21));
+        sprSeed.setMinimumSize(new java.awt.Dimension(100, 21));
+        sprSeed.setPreferredSize(new java.awt.Dimension(100, 21));
         jPanel7.add(sprSeed);
 
         pnlSettings.add(jPanel7);
