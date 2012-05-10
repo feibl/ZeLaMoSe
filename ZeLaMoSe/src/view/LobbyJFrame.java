@@ -97,21 +97,22 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         lblServerIP = new javax.swing.JLabel();
         lblServerIPValue = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        txtMessage = new javax.swing.JTextField();
-        btnSend = new javax.swing.JButton();
-        btnExit = new javax.swing.JButton();
-        btnStart = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
-        jSeparator2 = new javax.swing.JSeparator();
-        jSeparator3 = new javax.swing.JSeparator();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        lstPlayers = new javax.swing.JList();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        jPanel2 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         txpChat = new javax.swing.JTextPane();
+        jPanel4 = new javax.swing.JPanel();
+        txtMessage = new javax.swing.JTextField();
+        btnSend = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        lstPlayers = new javax.swing.JList();
         pnlSettings = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         lblStartLevel = new javax.swing.JLabel();
@@ -122,6 +123,9 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         cbxIncludeSpecialBlocks = new javax.swing.JCheckBox();
         sprNumberOfJokersValue = new javax.swing.JSpinner();
         sprSeed = new javax.swing.JSpinner(new SpinnerNumberModel(1, Long.MIN_VALUE, Long.MAX_VALUE, 1));
+        jPanel5 = new javax.swing.JPanel();
+        btnStart = new javax.swing.JButton();
+        btnExit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -130,17 +134,42 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
             }
         });
 
-        lblServerIP.setText("Server-IP:");
-
-        lblServerIPValue.setText("<ServerIPValue>");
+        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 10));
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
         jLabel1.setText("<html><h3>ZeLaMoSe-Tetris - Lobby</h3></html>");
+        jLabel1.setMaximumSize(new java.awt.Dimension(500, 37));
+        jPanel1.add(jLabel1);
+        jPanel1.add(filler1);
+
+        lblServerIP.setText("Server-IP:");
+        jPanel1.add(lblServerIP);
+
+        lblServerIPValue.setText("<ServerIPValue>");
+        jPanel1.add(lblServerIPValue);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.NORTH);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        jPanel2.setMaximumSize(new java.awt.Dimension(500, 500));
+        jPanel2.setMinimumSize(new java.awt.Dimension(500, 500));
+        jPanel2.setPreferredSize(new java.awt.Dimension(500, 500));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        txpChat.setEditable(false);
+        txpChat.setFocusable(false);
+        jScrollPane3.setViewportView(txpChat);
+
+        jPanel2.add(jScrollPane3, java.awt.BorderLayout.CENTER);
+
+        jPanel4.setLayout(new java.awt.BorderLayout());
 
         txtMessage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMessageActionPerformed(evt);
             }
         });
+        jPanel4.add(txtMessage, java.awt.BorderLayout.CENTER);
 
         btnSend.setText("Send");
         btnSend.addActionListener(new java.awt.event.ActionListener() {
@@ -148,30 +177,38 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 btnSendActionPerformed(evt);
             }
         });
+        jPanel4.add(btnSend, java.awt.BorderLayout.EAST);
 
-        btnExit.setText("Exit");
-        btnExit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExitActionPerformed(evt);
-            }
-        });
+        jPanel2.add(jPanel4, java.awt.BorderLayout.SOUTH);
 
-        btnStart.setText("Start Game");
-        btnStart.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnStartActionPerformed(evt);
-            }
-        });
+        jSplitPane1.setLeftComponent(jPanel2);
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        jPanel3.setMaximumSize(new java.awt.Dimension(250, 500));
+        jPanel3.setMinimumSize(new java.awt.Dimension(250, 500));
+        jPanel3.setPreferredSize(new java.awt.Dimension(250, 500));
+        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.Y_AXIS));
 
         jLabel2.setText("Players:");
+        jLabel2.setAlignmentY(0.0F);
+        jPanel3.add(jLabel2);
+
+        jScrollPane2.setAlignmentX(0.0F);
+        jScrollPane2.setAlignmentY(0.0F);
 
         lstPlayers.setModel(playerListModel);
+        lstPlayers.setAlignmentX(0.0F);
+        lstPlayers.setAlignmentY(0.0F);
         lstPlayers.setCellRenderer(playerListCellRenderer);
         jScrollPane2.setViewportView(lstPlayers);
 
-        txpChat.setEditable(false);
-        txpChat.setFocusable(false);
-        jScrollPane3.setViewportView(txpChat);
+        jPanel3.add(jScrollPane2);
+
+        pnlSettings.setAlignmentX(0.0F);
+        pnlSettings.setAlignmentY(0.0F);
+        pnlSettings.setMaximumSize(new java.awt.Dimension(250, 250));
+        pnlSettings.setMinimumSize(new java.awt.Dimension(250, 250));
+        pnlSettings.setPreferredSize(new java.awt.Dimension(250, 250));
 
         jLabel3.setText("Settings:");
 
@@ -200,7 +237,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         pnlSettingsLayout.setHorizontalGroup(
             pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSettingsLayout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addGroup(pnlSettingsLayout.createSequentialGroup()
@@ -225,7 +262,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         pnlSettingsLayout.setVerticalGroup(
             pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSettingsLayout.createSequentialGroup()
-                .addContainerGap(21, Short.MAX_VALUE)
+                .addContainerGap(85, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -250,71 +287,33 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
         ((NumberFormatter) txt.getFormatter()).setMinimum(0);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtMessage)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(203, 203, 203)
-                        .addComponent(lblServerIP, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(lblServerIPValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnExit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnStart, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)))
-                    .addComponent(pnlSettings, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblServerIP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblServerIPValue))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(11, 11, 11)
-                        .addComponent(pnlSettings, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(94, 94, 94)
-                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtMessage)
-                    .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
-                    .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
+        jPanel3.add(pnlSettings);
+
+        jPanel5.setAlignmentX(0.0F);
+        jPanel5.setAlignmentY(0.0F);
+        jPanel5.setLayout(new javax.swing.BoxLayout(jPanel5, javax.swing.BoxLayout.LINE_AXIS));
+
+        btnStart.setText("Start Game");
+        btnStart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStartActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btnStart);
+
+        btnExit.setText("Exit");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btnExit);
+
+        jPanel3.add(jPanel5);
+
+        jSplitPane1.setRightComponent(jPanel3);
+
+        getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -365,14 +364,18 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton btnStart;
     private javax.swing.JCheckBox cbxIncludeSpecialBlocks;
     private javax.swing.JCheckBox cbxRandomSeed;
+    private javax.swing.Box.Filler filler1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JLabel lblNumberOfJokers;
     private javax.swing.JLabel lblSeed;
     private javax.swing.JLabel lblServerIP;
