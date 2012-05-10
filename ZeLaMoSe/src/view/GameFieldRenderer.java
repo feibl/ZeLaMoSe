@@ -515,7 +515,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
                     grid[6][5] = dummyBlock;
                     grid[6][4] = dummyBlock;
                     grid[6][3] = dummyBlock;
-                    
+
                     grid[5][18] = dummyBlock;
                     grid[5][17] = dummyBlock;
                     grid[5][16] = dummyBlock;
@@ -533,7 +533,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
                     grid[5][4] = dummyBlock;
                     grid[5][3] = dummyBlock;
                     break;
-                case 2:                
+                case 2:
                     grid[8][18] = dummyBlock;
                     grid[7][18] = dummyBlock;
                     grid[6][18] = dummyBlock;
@@ -546,42 +546,42 @@ class GameFieldRenderer implements GLEventListener, Observer {
                     grid[5][17] = dummyBlock;
                     grid[4][17] = dummyBlock;
                     grid[3][17] = dummyBlock;
-                    
+
                     grid[2][16] = dummyBlock;
                     grid[1][16] = dummyBlock;
                     grid[2][15] = dummyBlock;
                     grid[1][15] = dummyBlock;
-                    
+
                     grid[10][16] = dummyBlock;
                     grid[9][16] = dummyBlock;
                     grid[10][15] = dummyBlock;
                     grid[9][15] = dummyBlock;
-                    
+
                     grid[10][14] = dummyBlock;
                     grid[9][14] = dummyBlock;
                     grid[10][13] = dummyBlock;
                     grid[9][13] = dummyBlock;
-                    
+
                     grid[8][12] = dummyBlock;
                     grid[7][12] = dummyBlock;
                     grid[8][11] = dummyBlock;
                     grid[7][11] = dummyBlock;
-                    
+
                     grid[6][10] = dummyBlock;
                     grid[5][10] = dummyBlock;
                     grid[6][9] = dummyBlock;
                     grid[5][9] = dummyBlock;
-                    
+
                     grid[4][8] = dummyBlock;
                     grid[3][8] = dummyBlock;
                     grid[4][7] = dummyBlock;
                     grid[3][7] = dummyBlock;
-                    
+
                     grid[2][6] = dummyBlock;
                     grid[1][6] = dummyBlock;
                     grid[2][5] = dummyBlock;
                     grid[1][5] = dummyBlock;
-                    
+
                     grid[10][4] = dummyBlock;
                     grid[9][4] = dummyBlock;
                     grid[8][4] = dummyBlock;
@@ -616,47 +616,47 @@ class GameFieldRenderer implements GLEventListener, Observer {
                     grid[5][17] = dummyBlock;
                     grid[4][17] = dummyBlock;
                     grid[3][17] = dummyBlock;
-                    
+
                     grid[2][16] = dummyBlock;
                     grid[1][16] = dummyBlock;
                     grid[2][15] = dummyBlock;
                     grid[1][15] = dummyBlock;
-                    
+
                     grid[10][16] = dummyBlock;
                     grid[9][16] = dummyBlock;
                     grid[10][15] = dummyBlock;
                     grid[9][15] = dummyBlock;
-                    
+
                     grid[10][14] = dummyBlock;
                     grid[9][14] = dummyBlock;
                     grid[10][13] = dummyBlock;
                     grid[9][13] = dummyBlock;
-                    
+
                     grid[8][12] = dummyBlock;
                     grid[7][12] = dummyBlock;
                     grid[8][11] = dummyBlock;
                     grid[7][11] = dummyBlock;
-                    
+
                     grid[10][10] = dummyBlock;
                     grid[9][10] = dummyBlock;
                     grid[10][9] = dummyBlock;
                     grid[9][9] = dummyBlock;
-                    
+
                     grid[10][8] = dummyBlock;
                     grid[9][8] = dummyBlock;
                     grid[10][7] = dummyBlock;
                     grid[9][7] = dummyBlock;
-                    
+
                     grid[10][6] = dummyBlock;
                     grid[9][6] = dummyBlock;
                     grid[10][5] = dummyBlock;
                     grid[9][5] = dummyBlock;
-                    
+
                     grid[2][6] = dummyBlock;
                     grid[1][6] = dummyBlock;
                     grid[2][5] = dummyBlock;
                     grid[1][5] = dummyBlock;
-                    
+
                     grid[8][4] = dummyBlock;
                     grid[7][4] = dummyBlock;
                     grid[6][4] = dummyBlock;
@@ -671,89 +671,75 @@ class GameFieldRenderer implements GLEventListener, Observer {
                     grid[3][3] = dummyBlock;
                     break;
                 case 4:
-                    grid[2][20] = dummyBlock;
-                    grid[3][20] = dummyBlock;
-
-                    grid[9][20] = dummyBlock;
-                    grid[10][20] = dummyBlock;
-                    grid[2][19] = dummyBlock;
-                    grid[3][19] = dummyBlock;
-
-                    grid[9][19] = dummyBlock;
-                    grid[10][19] = dummyBlock;
-
-
-
-                    grid[2][18] = dummyBlock;
-                    grid[2][17] = dummyBlock;
-                    grid[2][16] = dummyBlock;
-                    grid[2][15] = dummyBlock;
-                    grid[2][14] = dummyBlock;
-                    grid[2][13] = dummyBlock;
-                    grid[3][18] = dummyBlock;
-                    grid[3][17] = dummyBlock;
-                    grid[3][16] = dummyBlock;
-                    grid[3][15] = dummyBlock;
+                    grid[6][16] = dummyBlock;
+                    grid[5][16] = dummyBlock;
+                    grid[6][15] = dummyBlock;
+                    grid[5][15] = dummyBlock;
+                    
+                    grid[4][14] = dummyBlock;
                     grid[3][14] = dummyBlock;
+                    grid[4][13] = dummyBlock;
                     grid[3][13] = dummyBlock;
-
-
-
+                    
                     grid[2][12] = dummyBlock;
-                    grid[3][12] = dummyBlock;
-                    grid[4][12] = dummyBlock;
-                    grid[5][12] = dummyBlock;
-                    grid[6][12] = dummyBlock;
-                    grid[7][12] = dummyBlock;
-                    grid[8][12] = dummyBlock;
-                    grid[9][12] = dummyBlock;
-                    grid[10][12] = dummyBlock;
-
+                    grid[1][12] = dummyBlock;
                     grid[2][11] = dummyBlock;
-                    grid[3][11] = dummyBlock;
-                    grid[4][11] = dummyBlock;
-                    grid[5][11] = dummyBlock;
-                    grid[6][11] = dummyBlock;
-                    grid[7][11] = dummyBlock;
-                    grid[8][11] = dummyBlock;
-                    grid[9][11] = dummyBlock;
-                    grid[10][11] = dummyBlock;
-
-
-                    grid[9][4] = dummyBlock;
-                    grid[10][4] = dummyBlock;
-
-
-                    grid[9][3] = dummyBlock;
-                    grid[10][3] = dummyBlock;
-
-                    grid[9][18] = dummyBlock;
-                    grid[9][17] = dummyBlock;
-                    grid[9][16] = dummyBlock;
-                    grid[9][15] = dummyBlock;
-                    grid[9][14] = dummyBlock;
-                    grid[9][13] = dummyBlock;
-
-                    grid[10][18] = dummyBlock;
-                    grid[10][17] = dummyBlock;
-                    grid[10][16] = dummyBlock;
-                    grid[10][15] = dummyBlock;
-                    grid[10][14] = dummyBlock;
-                    grid[10][13] = dummyBlock;
-
-                    grid[9][10] = dummyBlock;
-                    grid[9][9] = dummyBlock;
-                    grid[9][8] = dummyBlock;
-                    grid[9][7] = dummyBlock;
-                    grid[9][6] = dummyBlock;
-                    grid[9][5] = dummyBlock;
+                    grid[1][11] = dummyBlock;
 
                     grid[10][10] = dummyBlock;
+                    grid[9][10] = dummyBlock;
+                    grid[8][10] = dummyBlock;
+                    grid[7][10] = dummyBlock;
+                    grid[6][10] = dummyBlock;
+                    grid[5][10] = dummyBlock;
+                    grid[4][10] = dummyBlock;
+                    grid[3][10] = dummyBlock;
+                    grid[2][10] = dummyBlock;
+                    grid[1][10] = dummyBlock;
                     grid[10][9] = dummyBlock;
-                    grid[10][8] = dummyBlock;
-                    grid[10][7] = dummyBlock;
-                    grid[10][6] = dummyBlock;
-                    grid[10][5] = dummyBlock;
+                    grid[9][9] = dummyBlock;
+                    grid[8][9] = dummyBlock;
+                    grid[7][9] = dummyBlock;
+                    grid[6][9] = dummyBlock;
+                    grid[5][9] = dummyBlock;
+                    grid[4][9] = dummyBlock;
+                    grid[3][9] = dummyBlock;
+                    grid[2][9] = dummyBlock;
+                    grid[1][9] = dummyBlock;
+
+                    grid[8][18] = dummyBlock;
+                    grid[7][18] = dummyBlock;
+                    grid[8][17] = dummyBlock;
+                    grid[7][17] = dummyBlock;
+                    grid[8][16] = dummyBlock;
+                    grid[7][16] = dummyBlock;
+                    grid[8][15] = dummyBlock;
+                    grid[7][15] = dummyBlock;
+                    grid[8][14] = dummyBlock;
+                    grid[7][14] = dummyBlock;
+                    grid[8][13] = dummyBlock;
+                    grid[7][13] = dummyBlock;
+                    grid[8][12] = dummyBlock;
+                    grid[7][12] = dummyBlock;
+                    grid[8][11] = dummyBlock;
+                    grid[7][11] = dummyBlock;
+
+                    grid[8][10] = dummyBlock;
+                    grid[7][10] = dummyBlock;
+                    grid[8][9] = dummyBlock;
+                    grid[7][9] = dummyBlock;
+                    grid[8][8] = dummyBlock;
+                    grid[7][8] = dummyBlock;
+                    grid[8][7] = dummyBlock;
+                    grid[7][7] = dummyBlock;
+                    grid[8][6] = dummyBlock;
+                    grid[7][6] = dummyBlock;
+                    grid[8][5] = dummyBlock;
+                    grid[7][5] = dummyBlock;
+                    grid[8][4] = dummyBlock;
+                    grid[7][4] = dummyBlock;
+                    grid[8][3] = dummyBlock;
+                    grid[7][3] = dummyBlock;
                     break;
             }
         }
