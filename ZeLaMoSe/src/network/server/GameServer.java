@@ -125,6 +125,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
                 try {
                     s.sendSteps(removedSteps);
                 } catch (RemoteException ex) {
+                    System.out.println("Removinfaklkfia");
                     removeSession(s);
                 }
             }
@@ -207,9 +208,6 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 
         while (!aquireComplete) {
             try {
-                //blocated
-                //currentNumberOfReceivedSteps.acquire(sessionList.size());
-                //not blocated
                 allStepsReceived = currentNumberOfReceivedSteps.tryAcquire(sessionList.size(), 5000, TimeUnit.MILLISECONDS);
                 aquireComplete = true;
             } catch (InterruptedException ex) {
@@ -220,6 +218,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         synchronized (this) {            
             if (!allStepsReceived) {
                 System.out.println("GameServer: remove Session. Stepqueue size: " + receivedSteps.size());
+                currentNumberOfReceivedSteps.drainPermits();
                 checkReceivedSteps();
             }
             Collection<Step> removedSteps = new ArrayList<Step>();
@@ -245,6 +244,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
                 }
             }
             if (!stepReceived) {
+                System.out.println("Server: Removing Session " + session.getSessionInformation().getId());
                 removeSession(session);
             }
         }
