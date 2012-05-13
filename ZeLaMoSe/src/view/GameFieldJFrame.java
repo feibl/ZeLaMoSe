@@ -4,15 +4,10 @@
  */
 package view;
 
-import com.jogamp.opengl.util.FPSAnimator;
-import domain.Config;
 import domain.GameEngine;
 import domain.InputSampler;
 import domain.SimulationStateAbstract;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-import javax.swing.SwingUtilities;
 
 /**
  *
