@@ -185,7 +185,10 @@ public class GameEngine extends GameEngineAbstract {
         }
         totalRemovedLines += linesToRemove.size();
         //Calculate the new level
-        level = totalRemovedLines / Config.levelUpMultiplier + 1;
+        int calculatedNewLevel = totalRemovedLines / Config.levelUpMultiplier + 1;
+        if ( calculatedNewLevel > level) {
+            level = calculatedNewLevel;
+        }   
     }
 
     private boolean checkForGameOver() {
