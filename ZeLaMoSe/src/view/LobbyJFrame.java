@@ -240,6 +240,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         jPanel6.add(lblStartLevel);
         jPanel6.add(filler5);
 
+        sprStartLevel.setModel(new javax.swing.SpinnerNumberModel(1, 1, 15, 1));
         sprStartLevel.setMaximumSize(new java.awt.Dimension(100, 21));
         sprStartLevel.setMinimumSize(new java.awt.Dimension(100, 21));
         sprStartLevel.setPreferredSize(new java.awt.Dimension(100, 21));
@@ -255,6 +256,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         jPanel8.add(lblNumberOfJokers);
         jPanel8.add(filler3);
 
+        sprNumberOfJokersValue.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
         sprNumberOfJokersValue.setMaximumSize(new java.awt.Dimension(100, 21));
         sprNumberOfJokersValue.setMinimumSize(new java.awt.Dimension(100, 21));
         sprNumberOfJokersValue.setPreferredSize(new java.awt.Dimension(100, 21));
@@ -287,6 +289,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         jPanel7.add(lblSeed);
         jPanel7.add(filler4);
 
+        sprSeed.setModel(new javax.swing.SpinnerNumberModel(Long.valueOf(0L), Long.valueOf(0L), null, Long.valueOf(1L)));
         sprSeed.setEnabled(false);
         sprSeed.setMaximumSize(new java.awt.Dimension(100, 21));
         sprSeed.setMinimumSize(new java.awt.Dimension(100, 21));
