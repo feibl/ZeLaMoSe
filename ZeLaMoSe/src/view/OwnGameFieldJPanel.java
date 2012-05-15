@@ -6,7 +6,6 @@ package view;
 
 import com.jogamp.opengl.util.FPSAnimator;
 import domain.Config;
-import domain.GameEngine;
 import domain.InputSampler;
 import domain.SimulationStateAbstract;
 import java.awt.KeyboardFocusManager;
@@ -260,10 +259,10 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
     private javax.swing.JToggleButton tglSound;
     // End of variables declaration//GEN-END:variables
     private GameFieldRenderer renderer;
-    private GameEngine gameEngine;
+    private SimulationStateAbstract gameEngine;
 
     public void initRenderer(SimulationStateAbstract gameEngine) {
-        this.gameEngine = (GameEngine)gameEngine;
+        this.gameEngine = gameEngine;
         gameEngine.addObserver(this);
         gameEngine.addObserver(soundEngine);
         initOwnGameFieldRenderer();
@@ -288,7 +287,7 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        final GameEngine ge = (GameEngine) o;
+        final SimulationStateAbstract ge = (SimulationStateAbstract) o;
         SwingUtilities.invokeLater(new Runnable() {
 
             @Override

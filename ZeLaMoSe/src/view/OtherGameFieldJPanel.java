@@ -6,7 +6,6 @@ package view;
 
 import com.jogamp.opengl.util.FPSAnimator;
 import domain.Config;
-import domain.GameEngine;
 import domain.SimulationStateAbstract;
 import java.util.Observable;
 import java.util.Observer;
@@ -17,14 +16,14 @@ import java.util.Observer;
  */
 public class OtherGameFieldJPanel extends javax.swing.JPanel implements Observer {
 
-    private GameEngine gameEngine;
+    private SimulationStateAbstract gameEngine;
 
     /**
      * Creates new form OtherGameFieldJPanel
      */
-    public OtherGameFieldJPanel(String playerName, GameEngine gameEngine) {
+    public OtherGameFieldJPanel(String playerName, SimulationStateAbstract gameEngine) {
         initComponents();
-        this.gameEngine = (GameEngine)gameEngine;
+        this.gameEngine = gameEngine;
         this.lblPlayerName.setText("<html><b>" + playerName + "</html></b>");
         initGLJPanel(gameEngine);
     }

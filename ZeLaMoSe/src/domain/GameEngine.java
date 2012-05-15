@@ -458,6 +458,7 @@ public class GameEngine extends GameEngineAbstract {
         this.nickName = nickName;
     }
 
+    @Override
     public String getNickName() {
         return nickName;
     }
