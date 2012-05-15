@@ -15,4 +15,5 @@ abstract public class GameEngineAbstract extends SimulationStateAbstract impleme
 
     abstract public void setNickName(String nickName);
     abstract public void setRank(int rank);
+    abstract public void setLevel(int currentHighestLevel);
 }

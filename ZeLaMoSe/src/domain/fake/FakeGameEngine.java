@@ -115,6 +115,11 @@ public class FakeGameEngine extends GameEngineAbstract {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public void setLevel(int currentHighestLevel) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
   
     
 }

@@ -29,8 +29,8 @@ public class Config {
     public final static int blockStartPositionY = gridHeight - 1;
     public final static String discoveryClientMessage = "ZeLaMoSe-Client";
     public final static String discoveryServerMessage = "ZeLaMoSe-Server";
-    public final static String discoveryMultiCastGroup = "226.0.0.1";
-    public final static int disoveryPort = 6020;
+    public final static String discoveryMultiCastGroup = "239.0.0.0";
+    public final static int discoveryPort = 1234;
     
     public static File convertRMI(Class c) {
         File tf = null;

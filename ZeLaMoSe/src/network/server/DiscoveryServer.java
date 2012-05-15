@@ -15,7 +15,7 @@ public class DiscoveryServer extends Thread {
     @Override
     public void run() {
         try {
-            MulticastSocket socket = new MulticastSocket(Config.disoveryPort);
+            MulticastSocket socket = new MulticastSocket(Config.discoveryPort);
             InetAddress group = InetAddress.getByName(Config.discoveryMultiCastGroup);
             socket.joinGroup(group);
             while (doDiscovery) {
