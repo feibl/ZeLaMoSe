@@ -4,7 +4,6 @@
  */
 package view;
 
-import domain.GameEngine;
 import domain.block.BlockAbstract;
 import domain.SimulationStateAbstract;
 import java.util.Observable;
@@ -82,7 +81,7 @@ class NextBlockRenderer implements GLEventListener, Observer {
 
     @Override
     public void update(Observable o, Object o1) {
-        nextBlock = ((GameEngine) o).getNextBlock();
+        nextBlock = ((SimulationStateAbstract) o).getNextBlock();
     }
 
     private void drawBlock(GL2 gl) {

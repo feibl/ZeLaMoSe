@@ -4,7 +4,6 @@
  */
 package view;
 
-import domain.GameEngine;
 import domain.InputSampler;
 import domain.SimulationStateAbstract;
 import java.util.List;
@@ -28,7 +27,7 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         ownGameFieldJPanel2.initRenderer(mainSimulation);
 
         for (SimulationStateAbstract gameEngine : otherSimulations) {
-            OtherGameFieldJPanel panel = new OtherGameFieldJPanel(((GameEngine) gameEngine).getNickName(), (GameEngine)gameEngine);            
+            OtherGameFieldJPanel panel = new OtherGameFieldJPanel((gameEngine).getNickName(), gameEngine);
             pnlEnemyAreas.add(panel);
             gameEngine.addObserver(panel);
         }
