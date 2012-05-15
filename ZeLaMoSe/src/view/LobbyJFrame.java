@@ -123,11 +123,11 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         sprNumberOfJokersValue = new javax.swing.JSpinner();
         cbxRandomSeed = new javax.swing.JCheckBox();
-        cbxIncludeSpecialBlocks = new javax.swing.JCheckBox();
         jPanel7 = new javax.swing.JPanel();
         lblSeed = new javax.swing.JLabel();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         sprSeed = new javax.swing.JSpinner(new SpinnerNumberModel(1, Long.MIN_VALUE, Long.MAX_VALUE, 1));
+        cbxIncludeSpecialBlocks = new javax.swing.JCheckBox();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
         jPanel5 = new javax.swing.JPanel();
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
@@ -278,14 +278,6 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         });
         pnlSettings.add(cbxRandomSeed);
 
-        cbxIncludeSpecialBlocks.setSelected(true);
-        cbxIncludeSpecialBlocks.setText("Include Special Blocks");
-        cbxIncludeSpecialBlocks.setAlignmentY(0.0F);
-        cbxIncludeSpecialBlocks.setMaximumSize(new java.awt.Dimension(200, 21));
-        cbxIncludeSpecialBlocks.setMinimumSize(new java.awt.Dimension(129, 21));
-        cbxIncludeSpecialBlocks.setPreferredSize(new java.awt.Dimension(129, 21));
-        pnlSettings.add(cbxIncludeSpecialBlocks);
-
         jPanel7.setAlignmentX(0.0F);
         jPanel7.setAlignmentY(0.0F);
         jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.LINE_AXIS));
@@ -302,6 +294,14 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         jPanel7.add(sprSeed);
 
         pnlSettings.add(jPanel7);
+
+        cbxIncludeSpecialBlocks.setSelected(true);
+        cbxIncludeSpecialBlocks.setText("Include Special Blocks");
+        cbxIncludeSpecialBlocks.setAlignmentY(0.0F);
+        cbxIncludeSpecialBlocks.setMaximumSize(new java.awt.Dimension(200, 21));
+        cbxIncludeSpecialBlocks.setMinimumSize(new java.awt.Dimension(129, 21));
+        cbxIncludeSpecialBlocks.setPreferredSize(new java.awt.Dimension(129, 21));
+        pnlSettings.add(cbxIncludeSpecialBlocks);
 
         jPanel3.add(pnlSettings);
         jPanel3.add(filler2);
