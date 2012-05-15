@@ -103,6 +103,7 @@ public class SimulationController implements StepInterface, Observer {
 
     private void distributeActions(Map<Action, Integer> actionList) {
         for (Map.Entry<Action, Integer> e : actionList.entrySet()) {
+            System.out.println("handleAction: "+e.getValue().toString() + " " + e.getKey().getType() +" "+ e.getKey().getTimestamp());
             if (!gameEngines.containsKey(e.getValue())) {
                 throw new IllegalStateException("Could not find gameEngine");
             }
