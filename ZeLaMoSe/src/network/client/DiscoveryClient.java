@@ -6,10 +6,8 @@ package network.client;
 
 import domain.Config;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
-import java.net.SocketTimeoutException;
+import java.net.*;
+import java.util.Enumeration;
 import java.util.Observable;
 import javax.swing.DefaultListModel;
 
@@ -54,9 +52,11 @@ public class DiscoveryClient extends Observable {
                         DatagramPacket recievePacket = new DatagramPacket(receiveBuffer, receiveBuffer.length);
                         socket.receive(recievePacket);
                         String hostAddress = recievePacket.getAddress().getHostAddress();
-                             
-                        if (receiveBuffer.toString().equals(Config.discoveryServerMessage)
-                                && !listModel.contains(hostAddress)) {
+                        
+                        
+                        if (new String(receiveBuffer,0,recievePacket.getLength()).equals(Config.discoveryServerMessage)
+                                && !listModel.contains(hostAddress)
+                                ) {
                             listModel.addElement(hostAddress);
                         }
                     } catch (Exception e) {

@@ -25,6 +25,7 @@ import paulscode.sound.libraries.LibraryJavaSound;
 public class SoundEngine implements Observer {
 
     private SoundSystem soundSystem;
+    private boolean isGameOver = false;
 
     public SoundEngine() {
         try {
@@ -39,14 +40,17 @@ public class SoundEngine implements Observer {
 
     @Override
     public void update(final Observable observable, Object o1) {
-        final Action a = ((SimulationStateAbstract) observable).getSimulationState();
-        processAction(a);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                processAction(a);
-            }
-        }).start();
+        if (!isGameOver) {
+            final Action a = ((SimulationStateAbstract) observable).getSimulationState();
+
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    processAction(a);
+                }
+            }).start();
+        }
     }
 
     public void processAction(Action action) {
@@ -54,6 +58,7 @@ public class SoundEngine implements Observer {
             case GAMEOVER:
                 stopBackGroundMusic(MusicFile.gameBackgroundMusic);
                 playSound(MusicFile.gameOverSound);
+                isGameOver = true;
                 break;
             case HARDDROP:
                 break;
@@ -75,7 +80,7 @@ public class SoundEngine implements Observer {
             case ROTATION:
                 playSound(MusicFile.rotateSound);
                 break;
-            case DARK:    
+            case DARK:
                 playSound(MusicFile.shadowSound);
                 break;
             case MIRROR:
