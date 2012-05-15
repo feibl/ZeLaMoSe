@@ -14,8 +14,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import network.client.NetworkHandlerAbstract;
@@ -45,13 +48,13 @@ public class MainJFrame extends javax.swing.JFrame {
     public MainJFrame(TetrisController tetrisController, domain.ChatController chatController) {
         this.tetrisController = tetrisController;
         this.chatController = chatController;
-
         try {
             nameGenerator = new NameGenerator("/resource/util/syllables.txt");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
         initComponents();
+        setupErrorDialog();
         soundEngine = new SoundEngine();
     }
 
@@ -262,6 +265,19 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void btnJoinGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinGameActionPerformed
         setupConnectionHandler(GameMode.MULTI_PLAYER_JOIN);
+    }
+    
+    private void setupErrorDialog() {
+        tetrisController.addObserver(new Observer() {
+            @Override
+            public void update(Observable o, Object o1) {
+                switch ((TetrisController.UpdateType) o1) {
+                    case EXCEPTION_THROWN:
+                        JOptionPane.showMessageDialog(MainJFrame.this, tetrisController.getThrownException(), "Exception", JOptionPane.ERROR_MESSAGE);
+                        break;
+                }
+            }
+        });
     }
 
     private void setupConnectionHandler(final GameMode gameMode) {
