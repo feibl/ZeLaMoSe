@@ -22,20 +22,25 @@ import view.MainJFrame.GameMode;
  */
 public class JoinGameJDialog extends javax.swing.JDialog implements Observer {
 
-    private final GameMode gameMode;    
-    private final String nickname;    
+    private final GameMode gameMode;
+    private final String nickname;
     private final CardLayout cardLayout;
     private DiscoveryClient serverDiscoveryClient;
     private final TetrisController tetrisController;
-
+    private Exception thrownException;
     private ReturnValue returnValue = ReturnValue.CANCELLED;
+
     public enum ReturnValue {
 
-        CONNECTED, CANCELLED, ERROR_RECEIVED
+        CONNECTED, CANCELLED, EXCEPTION_THROWN
     }
 
     public ReturnValue getReturnValue() {
         return returnValue;
+    }
+
+    public Exception getThrownException() {
+        return thrownException;
     }
 
     /**
@@ -315,7 +320,8 @@ public class JoinGameJDialog extends javax.swing.JDialog implements Observer {
                             }
                         });
                     } else {
-                        returnValue = ReturnValue.ERROR_RECEIVED;
+                        returnValue = ReturnValue.EXCEPTION_THROWN;
+                        thrownException = tetrisController.getThrownException();
                         tetrisController.deleteObserver(this);
                         dispose();
                     }
