@@ -15,13 +15,14 @@ public class DiscoveryServer extends Thread {
     @Override
     public void run() {
         try {
-            MulticastSocket socket = new MulticastSocket(Config.disoveryPort);
+            MulticastSocket socket = new MulticastSocket(Config.discoveryPort);
             InetAddress group = InetAddress.getByName(Config.discoveryMultiCastGroup);
             socket.joinGroup(group);
             while (doDiscovery) {
                 byte[] buffer = new byte[1024];
                 DatagramPacket input = new DatagramPacket(buffer, buffer.length);
                 socket.receive(input);
+                System.out.println(new String(buffer, 0, input.getLength()));
                 if ((new String(buffer, 0, input.getLength())).equals(Config.discoveryClientMessage) && doDiscovery) {
                     byte[] data = Config.discoveryServerMessage.getBytes();
                     DatagramPacket request = new DatagramPacket(data, data.length, input.getAddress(), input.getPort());

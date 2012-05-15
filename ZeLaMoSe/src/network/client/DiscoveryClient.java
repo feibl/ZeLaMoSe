@@ -30,16 +30,16 @@ public class DiscoveryClient extends Observable {
         setChanged();
         notifyObservers(DiscoveryState.STARTED);
         
-        final MulticastSocket socket = new MulticastSocket(Config.disoveryPort);
+        final MulticastSocket socket = new MulticastSocket(Config.discoveryPort);
         InetAddress group = InetAddress.getByName(Config.discoveryMultiCastGroup);
         socket.joinGroup(group);
         socket.setSoTimeout(receiveDuration);
 
         byte[] discoveryMessage = Config.discoveryClientMessage.getBytes();
-        socket.send(new DatagramPacket(discoveryMessage, discoveryMessage.length, group, Config.disoveryPort));
+        socket.send(new DatagramPacket(discoveryMessage, discoveryMessage.length, group, Config.discoveryPort));
         Thread.yield();
 //        In case first packet got lost
-        socket.send(new DatagramPacket(discoveryMessage, discoveryMessage.length, group, Config.disoveryPort));
+        socket.send(new DatagramPacket(discoveryMessage, discoveryMessage.length, group, Config.discoveryPort));
 
         final DefaultListModel listModel = new DefaultListModel();
         new Thread(new Runnable() {
