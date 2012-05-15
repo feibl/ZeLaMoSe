@@ -55,6 +55,7 @@ public class SimulationController implements StepInterface, Observer {
 
     public void initSimulation() {
         for (GameEngineAbstract e : gameEngines.values()) {
+            e.setLevel(currentHighestLevel);
             e.startGame();
         }
     }
@@ -171,8 +172,8 @@ public class SimulationController implements StepInterface, Observer {
         sessions.remove(sessionId);
     }
 
-    void setLevel(int startLevel) {
-        this.currentHighestLevel = startLevel;
+    void setLevel(int level) {
+        this.currentHighestLevel = level;
     }
 
 }

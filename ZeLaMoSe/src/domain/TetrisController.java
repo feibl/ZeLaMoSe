@@ -97,6 +97,7 @@ public class TetrisController extends Observable implements Observer {
     public void startGame(long blockQueueSeed, int nbrOfJokers, boolean includeSpecialBlocks, int startLevel) {
         gameServer.startGame(blockQueueSeed, nbrOfJokers, includeSpecialBlocks, startLevel);
         gameServer.stopDiscoveryServer();
+        
     }
 
     @Override
