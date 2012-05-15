@@ -30,7 +30,7 @@ import network.client.ClientRemoteInterface;
 public class GameServer extends UnicastRemoteObject implements GameServerInterface, GameServerRemoteInterface {
 
     protected List<SessionInterface> sessionList;
-    public static final int MAX_SESSIONS = 8;
+    public static final int MAX_SESSIONS = 4;
     private static int id = 1;
     private AtomicInteger readyCount = new AtomicInteger(0);
     protected ExecutorService threadPool;
