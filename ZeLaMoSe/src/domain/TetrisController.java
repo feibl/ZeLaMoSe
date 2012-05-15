@@ -36,9 +36,9 @@ public class TetrisController extends Observable implements Observer {
     private ConcurrentHashMap<Integer, String> sessionMap;
     private int localSessionID = -1;
     private volatile boolean gameRunning;
-    private Object exception;
+    private Exception exception;
 
-    public Object getThrownException() {
+    public Exception getThrownException() {
         return exception;
     }
 
