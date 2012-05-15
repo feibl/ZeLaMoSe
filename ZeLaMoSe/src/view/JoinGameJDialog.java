@@ -91,8 +91,6 @@ public class JoinGameJDialog extends javax.swing.JDialog implements Observer {
         btnJoin = new javax.swing.JButton();
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
         btnCancel = new javax.swing.JButton();
-        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
-        btnHelp = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         listServer = new javax.swing.JList();
@@ -108,8 +106,6 @@ public class JoinGameJDialog extends javax.swing.JDialog implements Observer {
         jPanel4 = new javax.swing.JPanel();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         btnCancel1 = new javax.swing.JButton();
-        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
-        btnHelp1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -161,13 +157,6 @@ public class JoinGameJDialog extends javax.swing.JDialog implements Observer {
             }
         });
         jPanel6.add(btnCancel);
-        jPanel6.add(filler2);
-
-        btnHelp.setText("Help");
-        btnHelp.setMaximumSize(new java.awt.Dimension(55, 31));
-        btnHelp.setMinimumSize(new java.awt.Dimension(55, 31));
-        btnHelp.setPreferredSize(new java.awt.Dimension(55, 31));
-        jPanel6.add(btnHelp);
 
         jPanel1.add(jPanel6, java.awt.BorderLayout.SOUTH);
 
@@ -207,7 +196,7 @@ public class JoinGameJDialog extends javax.swing.JDialog implements Observer {
                         .addComponent(btnRefresh)
                         .addGap(18, 18, 18)
                         .addComponent(lblRefreshing)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -215,7 +204,7 @@ public class JoinGameJDialog extends javax.swing.JDialog implements Observer {
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRefresh)
                     .addComponent(lblRefreshing))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -259,18 +248,6 @@ public class JoinGameJDialog extends javax.swing.JDialog implements Observer {
             }
         });
         jPanel4.add(btnCancel1);
-        jPanel4.add(filler4);
-
-        btnHelp1.setText("Help");
-        btnHelp1.setMaximumSize(new java.awt.Dimension(55, 31));
-        btnHelp1.setMinimumSize(new java.awt.Dimension(55, 31));
-        btnHelp1.setPreferredSize(new java.awt.Dimension(55, 31));
-        btnHelp1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHelp1ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(btnHelp1);
 
         jPanel2.add(jPanel4, java.awt.BorderLayout.SOUTH);
 
@@ -284,10 +261,6 @@ public class JoinGameJDialog extends javax.swing.JDialog implements Observer {
     private void btnJoinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinActionPerformed
         connectToServer(txtIPAddress.getText());
     }//GEN-LAST:event_btnJoinActionPerformed
-
-    private void btnHelp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHelp1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnHelp1ActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         returnValue = ReturnValue.CANCELLED;
@@ -365,14 +338,10 @@ public class JoinGameJDialog extends javax.swing.JDialog implements Observer {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnCancel1;
-    private javax.swing.JButton btnHelp;
-    private javax.swing.JButton btnHelp1;
     private javax.swing.JButton btnJoin;
     private javax.swing.JButton btnRefresh;
     private javax.swing.Box.Filler filler1;
-    private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
-    private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
