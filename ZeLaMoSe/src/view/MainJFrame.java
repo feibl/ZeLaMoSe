@@ -8,6 +8,7 @@ import domain.ChatController;
 import domain.ControllerFactory;
 import domain.TetrisController;
 import java.awt.Desktop;
+import java.awt.HeadlessException;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -91,7 +92,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabel1.setText("<html><h1>~ZeLaMoSe - Tetris~</h1></html>");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(70, 0, 265, 50);
+        jLabel1.setBounds(70, 0, 244, 53);
 
         pnlSinglePlayer.setOpaque(false);
         pnlSinglePlayer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -123,7 +124,7 @@ public class MainJFrame extends javax.swing.JFrame {
         );
 
         getContentPane().add(pnlSinglePlayer);
-        pnlSinglePlayer.setBounds(40, 100, 338, 78);
+        pnlSinglePlayer.setBounds(40, 100, 338, 80);
 
         pnlMultiPlayer.setOpaque(false);
         pnlMultiPlayer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -153,7 +154,7 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(pnlMultiPlayerLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnCreateGame, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(btnJoinGame, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -210,7 +211,7 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(pnlControlLayout.createSequentialGroup()
                         .addComponent(txtNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
                         .addComponent(btnExit)))
                 .addContainerGap())
         );
@@ -228,16 +229,16 @@ public class MainJFrame extends javax.swing.JFrame {
         );
 
         getContentPane().add(pnlControl);
-        pnlControl.setBounds(37, 283, 338, 86);
+        pnlControl.setBounds(37, 283, 338, 98);
 
         lblMultiPlayer.setBackground(new java.awt.Color(217, 19, 19));
         lblMultiPlayer.setText("<html><strong>MultiPlayer</strong></html>");
         getContentPane().add(lblMultiPlayer);
-        lblMultiPlayer.setBounds(40, 180, 76, 16);
+        lblMultiPlayer.setBounds(40, 180, 82, 21);
 
         lblSinglePlayer.setText("<html><strong>SinglePlayer</strong></html>");
         getContentPane().add(lblSinglePlayer);
-        lblSinglePlayer.setBounds(40, 80, 83, 16);
+        lblSinglePlayer.setBounds(40, 80, 90, 21);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/image/tetrisbg.jpeg")));
         getContentPane().add(jLabel2);
@@ -266,18 +267,23 @@ public class MainJFrame extends javax.swing.JFrame {
     private void btnJoinGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinGameActionPerformed
         setupConnectionHandler(GameMode.MULTI_PLAYER_JOIN);
     }
-    
+
     private void setupErrorDialog() {
         tetrisController.addObserver(new Observer() {
+
             @Override
             public void update(Observable o, Object o1) {
                 switch ((TetrisController.UpdateType) o1) {
                     case EXCEPTION_THROWN:
-                        JOptionPane.showMessageDialog(MainJFrame.this, tetrisController.getThrownException(), "Exception", JOptionPane.ERROR_MESSAGE);
+                        showExceptionDialog(tetrisController.getThrownException());
                         break;
                 }
             }
         });
+    }
+
+    private void showExceptionDialog(Exception exception) throws HeadlessException {
+        JOptionPane.showMessageDialog(MainJFrame.this, exception, "Exception", JOptionPane.ERROR_MESSAGE);
     }
 
     private void setupConnectionHandler(final GameMode gameMode) {
@@ -289,6 +295,9 @@ public class MainJFrame extends javax.swing.JFrame {
                 switch (joinDialog.getReturnValue()) {
                     case CONNECTED:
                         showLobby(gameMode);
+                        break;
+                    case EXCEPTION_THROWN:
+                        showExceptionDialog(joinDialog.getThrownException());
                         break;
                 }
             }
