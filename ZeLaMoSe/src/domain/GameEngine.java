@@ -447,6 +447,12 @@ public class GameEngine extends GameEngineAbstract {
     public int getLevel() {
         return level;
     }
+    
+   @Override
+    public void setLevel(int level) {
+        this.level = level;
+    }
+    
 
     @Override
     public int getScore() {
@@ -481,4 +487,5 @@ public class GameEngine extends GameEngineAbstract {
     public boolean getGameOver() {
         return gameOver;
     }
+
 }
