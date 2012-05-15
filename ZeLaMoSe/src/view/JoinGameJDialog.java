@@ -60,12 +60,8 @@ public class JoinGameJDialog extends javax.swing.JDialog implements Observer {
         if (gameMode == GameMode.MULTI_PLAYER_HOST || gameMode == GameMode.SINGLE_PLAYER) {
             connectToServer("localhost");
         }
-        try {
-            listServer.setModel(serverDiscoveryClient.getServerListModel());
-        } catch (IOException ex) {
-            Logger.getLogger(JoinGameJDialog.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        getRootPane().setDefaultButton(btnJoin);
+           listServer.setModel(serverDiscoveryClient.getServerListModel());
+       getRootPane().setDefaultButton(btnJoin);
     }
 
     private void connectToServer(final String serverIP) {
@@ -292,11 +288,7 @@ public class JoinGameJDialog extends javax.swing.JDialog implements Observer {
     }//GEN-LAST:event_listServerPropertyChange
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-        try {
             listServer.setModel(serverDiscoveryClient.getServerListModel());
-        } catch (IOException ex) {
-            Logger.getLogger(JoinGameJDialog.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     @Override

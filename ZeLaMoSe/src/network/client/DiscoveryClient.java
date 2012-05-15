@@ -24,10 +24,11 @@ public class DiscoveryClient extends Observable {
         STARTED, FINISHED
     }
 
-    public DefaultListModel getServerListModel() throws IOException {
+    public DefaultListModel getServerListModel(){
         setChanged();
         notifyObservers(DiscoveryState.STARTED);
-        
+        final DefaultListModel listModel = new DefaultListModel();
+        try{
         final MulticastSocket socket = new MulticastSocket(Config.discoveryPort);
         InetAddress group = InetAddress.getByName(Config.discoveryMultiCastGroup);
         socket.joinGroup(group);
@@ -39,7 +40,7 @@ public class DiscoveryClient extends Observable {
 //        In case first packet got lost
         socket.send(new DatagramPacket(discoveryMessage, discoveryMessage.length, group, Config.discoveryPort));
 
-        final DefaultListModel listModel = new DefaultListModel();
+        
         new Thread(new Runnable() {
 
             @Override
@@ -52,7 +53,6 @@ public class DiscoveryClient extends Observable {
                         DatagramPacket recievePacket = new DatagramPacket(receiveBuffer, receiveBuffer.length);
                         socket.receive(recievePacket);
                         String hostAddress = recievePacket.getAddress().getHostAddress();
-                        
                         
                         if (new String(receiveBuffer,0,recievePacket.getLength()).equals(Config.discoveryServerMessage)
                                 && !listModel.contains(hostAddress)
@@ -67,6 +67,8 @@ public class DiscoveryClient extends Observable {
 
             }
         }).start();
+        }catch(IOException e){
+        }
 
         return listModel;
     }
