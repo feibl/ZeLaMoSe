@@ -7,6 +7,7 @@ import domain.SimulationController;
 import domain.GameEngineAbstract;
 import domain.actions.Action;
 import domain.actions.GarbageLineAction;
+import domain.block.BlockAbstract;
 
 /**
  *
@@ -87,6 +88,31 @@ public class FakeGameEngine extends GameEngineAbstract {
     @Override
     public int getRank() {
         return 0;
+    }
+
+    @Override
+    public String getNickName() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public BlockAbstract getNextBlock() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public int getTotalRemovedLines() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public BlockAbstract getCurrentBlock() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public int getBlockCounter() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
   
