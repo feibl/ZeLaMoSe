@@ -38,6 +38,14 @@ public class MainJFrame extends javax.swing.JFrame {
     private ChatController chatController;
     private NameGenerator nameGenerator;
 
+    private void setButtonsEnabled(boolean enabled) {
+        btnCreateGame.setEnabled(enabled);
+        btnExit.setEnabled(enabled);
+        btnHelp.setEnabled(enabled);
+        btnJoinGame.setEnabled(enabled);
+        btnStartGame.setEnabled(enabled);
+    }
+
     public enum GameMode {
 
         SINGLE_PLAYER, MULTI_PLAYER_HOST, MULTI_PLAYER_JOIN
@@ -255,16 +263,19 @@ public class MainJFrame extends javax.swing.JFrame {
         }
     }
     private void btnStartGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartGameActionPerformed
+        setButtonsEnabled(false);
         createGame();
         setupConnectionHandler(GameMode.SINGLE_PLAYER);
     }//GEN-LAST:event_btnStartGameActionPerformed
 
     private void btnCreateGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateGameActionPerformed
+        setButtonsEnabled(false);
         createGame();
         setupConnectionHandler(GameMode.MULTI_PLAYER_HOST);
     }//GEN-LAST:event_btnCreateGameActionPerformed
 
     private void btnJoinGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinGameActionPerformed
+        setButtonsEnabled(false);
         setupConnectionHandler(GameMode.MULTI_PLAYER_JOIN);
     }
 
@@ -297,7 +308,11 @@ public class MainJFrame extends javax.swing.JFrame {
                         showLobby(gameMode);
                         break;
                     case EXCEPTION_THROWN:
+                        setButtonsEnabled(true);
                         showExceptionDialog(joinDialog.getThrownException());
+                        break;
+                    case CANCELLED:
+                        setButtonsEnabled(true);
                         break;
                 }
             }
