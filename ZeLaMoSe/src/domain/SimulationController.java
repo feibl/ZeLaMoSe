@@ -6,7 +6,6 @@ package domain;
 
 import domain.actions.Action;
 import domain.actions.GameOverAction;
-import domain.actions.GarbageLineAction;
 import domain.actions.MoveAction;
 import java.util.*;
 
@@ -16,19 +15,22 @@ import java.util.*;
  */
 public class SimulationController implements StepInterface, Observer {
 
-
-    private Map<Integer, Step> stepQueue = new HashMap<Integer, Step>();
+    private SortedMap<Integer, GameEngineAbstract> rankingMap = new TreeMap<Integer, GameEngineAbstract>();
     private Map<Integer, GameEngineAbstract> gameEngines = new HashMap<Integer, GameEngineAbstract>();
-    private Map<Integer, String> sessions = new HashMap<Integer, String>();
-    private SortedMap<Integer, GameEngineAbstract> rankingMap = new TreeMap<Integer, GameEngineAbstract>(new Comparator() { 
-    @Override 
-    public int compare(Object t, Object t1) { 
-        return ((Integer) t1).compareTo((Integer) t); 
-    } 
-    }); 
+    private SortedMap<Integer, String> sessions = new TreeMap<Integer, String>();
+    private Map<Integer, Step> stepQueue = new HashMap<Integer, Step>();
+    
     private int currentHighestLevel = 1;
-    public boolean autoadvance = true;
+    private boolean autoadvance = true;
 
+    public SimulationController() {
+        this(true);
+    }
+    
+    public SimulationController(boolean autoadvance) {
+        this.autoadvance = autoadvance;
+    }
+    
     @Override
     public void addStep(Step step) {
         if (!sessions.containsKey(step.getSessionID())) {
@@ -87,13 +89,13 @@ public class SimulationController implements StepInterface, Observer {
                 rankingMap.put(g.getScore(), g);
             }
         }
-        
+
         //Distribute Ranking
         int rank = 1;
         for (Map.Entry<Integer, GameEngineAbstract> e : rankingMap.entrySet()) {
             e.getValue().setRank(rank++);
         }
-        
+
         distributeActions(actionList);
 
         if (!stepQueue.isEmpty()) {
@@ -103,7 +105,7 @@ public class SimulationController implements StepInterface, Observer {
 
     private void distributeActions(Map<Action, Integer> actionList) {
         for (Map.Entry<Action, Integer> e : actionList.entrySet()) {
-            System.out.println("handleAction: "+e.getValue().toString() + " " + e.getKey().getType() +" "+ e.getKey().getTimestamp());
+            System.out.println("handleAction: " + e.getValue().toString() + " " + e.getKey().getType() + " " + e.getKey().getTimestamp());
             if (!gameEngines.containsKey(e.getValue())) {
                 throw new IllegalStateException("Could not find gameEngine");
             }
@@ -155,14 +157,13 @@ public class SimulationController implements StepInterface, Observer {
         }
     }
 
-    
     @Override
     public void update(Observable o, Object arg) {
-     if ((SimulationStateAbstract.UpdateType)arg == SimulationStateAbstract.UpdateType.ACTIONFOROTHERS) {
-            addActionForOthers(((GameEngineAbstract)o).getSessionID(),((GameEngineAbstract)o).getlastActionForOthers());
+        if ((SimulationStateAbstract.UpdateType) arg == SimulationStateAbstract.UpdateType.ACTIONFOROTHERS) {
+            addActionForOthers(((GameEngineAbstract) o).getSessionID(), ((GameEngineAbstract) o).getlastActionForOthers());
         }
     }
-    
+
     public void removeSession(int sessionId) {
         if (gameEngines.get(sessionId) == null) { //The session has already been removed
             return;
@@ -176,6 +177,4 @@ public class SimulationController implements StepInterface, Observer {
     void setLevel(int level) {
         this.currentHighestLevel = level;
     }
-
 }
- 

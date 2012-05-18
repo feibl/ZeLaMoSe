@@ -30,7 +30,7 @@ public class GameEngine extends GameEngineAbstract {
     private BlockAbstract[][] grid = new BlockAbstract[gridWidth][gridHeight];
     private BlockAbstract currentBlock;
     private BlockAbstract nextBlock;
-    private BlockQueueInterface queue;
+    private BlockQueueInterface blockQueue;
     private Action lastAction;
     private Action lastActionForOthers;
     private List<Integer> alreadyUsedSpecialBlocks = new ArrayList<Integer>();
@@ -40,9 +40,9 @@ public class GameEngine extends GameEngineAbstract {
         this(sessionId, seed, new BlockQueue(seed, includeSpecialBlocks), numberOfJokers);
     }
 
-    public GameEngine(int sessionId, long seed, BlockQueueInterface queue, int numberOfJokers) {
+    public GameEngine(int sessionId, long seed, BlockQueueInterface blockQueue, int numberOfJokers) {
         this.sessionId = sessionId;
-        this.queue = queue;
+        this.blockQueue = blockQueue;
         this.randomGarbageLineGenerator = new Random(seed);
         this.numberOfJokers = numberOfJokers;
     }
@@ -54,11 +54,11 @@ public class GameEngine extends GameEngineAbstract {
 
     private void nextBlock() {
         if (nextBlock == null) {
-            currentBlock = queue.getNextBlock();
+            currentBlock = blockQueue.getNextBlock();
         } else {
             currentBlock = nextBlock;
         }
-        nextBlock = queue.getNextBlock();
+        nextBlock = blockQueue.getNextBlock();
 
         if (!checkForGameOver()) {
             currentBlock.setX(blockStartPositionX);

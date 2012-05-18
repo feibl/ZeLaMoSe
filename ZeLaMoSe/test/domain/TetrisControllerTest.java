@@ -35,8 +35,7 @@ public class TetrisControllerTest {
         sC = new SimulationController();
         nH = new FakeNetworkHandler(new SessionInformation(sessionID, "test"));
         sG = new FakeStepGenerator();
-        tC = new TetrisController(sC, nH, sG);
-        tC.autorun = false;
+        tC = new TetrisController(sC, nH, sG, false);
     }
   
     @After
