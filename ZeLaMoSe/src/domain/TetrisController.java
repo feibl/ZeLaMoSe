@@ -36,11 +36,7 @@ public class TetrisController extends Observable implements Observer {
     private ConcurrentHashMap<Integer, String> sessionMap;
     private int localSessionID = -1;
     private volatile boolean gameRunning;
-    private Exception exception;
-
-    public Exception getThrownException() {
-        return exception;
-    }
+    private Exception thrownException;
 
     public enum UpdateType {
 
@@ -69,6 +65,10 @@ public class TetrisController extends Observable implements Observer {
 
     public InputSamplerInterface getInputSampler() {
         return stepGenerator.getInputSampler();
+    }
+        
+    public Exception getThrownException() {
+        return thrownException;
     }
 
     public void startServer() throws RemoteException, MalformedURLException {
@@ -176,7 +176,7 @@ public class TetrisController extends Observable implements Observer {
         e.printStackTrace();
         System.out.println(e.getMessage());
         
-        exception = e;
+        thrownException = e;
         setChanged();
         notifyObservers(UpdateType.EXCEPTION_THROWN);
     }
