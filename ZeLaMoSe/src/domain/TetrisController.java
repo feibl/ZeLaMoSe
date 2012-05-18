@@ -27,16 +27,19 @@ public class TetrisController extends Observable implements Observer {
 
     public final static int SERVER_PORT = Registry.REGISTRY_PORT;
     public static final String SERVER_NAME = "TetrisServer";
-    public boolean autorun = true;
+    private boolean autorun = true;
+    
+    private ConcurrentHashMap<Integer, String> sessionMap;
     private SimulationController simulationController;
     private NetworkHandlerAbstract networkHandler;
-    private StepGeneratorAbstract stepGenerator;
-    private int currentStep = 0;
+    private StepGeneratorAbstract stepGenerator;    
     private GameServerInterface gameServer;
-    private ConcurrentHashMap<Integer, String> sessionMap;
-    private int localSessionID = -1;
     private volatile boolean gameRunning;
     private Exception thrownException;
+    private int localSessionID = -1;
+    private int currentStep = 0;
+    
+    
 
     public enum UpdateType {
 
@@ -44,11 +47,16 @@ public class TetrisController extends Observable implements Observer {
     };
 
     public TetrisController(SimulationController sController, NetworkHandlerAbstract nH, StepGeneratorAbstract sG) {
+        this(sController, nH, sG, true);
+    }
+    
+    public TetrisController(SimulationController sController, NetworkHandlerAbstract nH, StepGeneratorAbstract sG, boolean autorun) {
         simulationController = sController;
         networkHandler = nH;
         networkHandler.addObserver(this);
         stepGenerator = sG;
         stepGenerator.addObserver(this);
+        this.autorun = autorun;
     }
 
     public int getLocalSessionID() {
@@ -70,7 +78,7 @@ public class TetrisController extends Observable implements Observer {
     public Exception getThrownException() {
         return thrownException;
     }
-
+    
     public void startServer() throws RemoteException, MalformedURLException {
         try {
             LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
@@ -135,11 +143,10 @@ public class TetrisController extends Observable implements Observer {
                 for (Map.Entry<Integer, String> entry : sessionMap.entrySet()) {
                     simulationController.addSession(entry.getKey(), entry.getValue(), new GameEngine(entry.getKey(), seed, gameParams.isIncludeSpecialBlocks(), numberOfJokers));
                 }
-
+                
                 setChanged();
                 notifyObservers(UpdateType.INIT_SIGNAL);
                 networkHandler.sendReadySignal();
-
                 break;
             case GAME_STARTED:
                 simulationController.initSimulation();
@@ -169,7 +176,6 @@ public class TetrisController extends Observable implements Observer {
         gameRunning = false;
         networkHandler.deleteObserver(this);
         stepGenerator.deleteObserver(this);
-
     }
 
     private void handleException(Exception e) {
