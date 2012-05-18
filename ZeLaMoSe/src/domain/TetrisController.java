@@ -203,9 +203,7 @@ public class TetrisController extends Observable implements Observer {
             currentStep++;
         } catch (IllegalStateException e) {
             System.out.println("Caught illegal state exception: " + e.getMessage());
-            e.printStackTrace();
             handleException(e);
-            //We cannot recover from illegal state exceptions, abort game
             abortGame();
         }
     }
