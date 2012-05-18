@@ -4,6 +4,7 @@
  */
 package domain;
 
+import domain.actions.GarbageLineAction;
 import domain.actions.HardDropAction;
 import domain.actions.MoveAction;
 import domain.actions.RotateAction;
@@ -616,5 +617,62 @@ public class GameEngineTest {
         gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
         gameEngine.handleAction(new HardDropAction(System.nanoTime()));
         assertEquals(true, gameEngine.getGameOver());
+    }
+    
+    @Test
+    public void garbageLineCollision() {
+        /*Expected:
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][I][I][I][I][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+         */
+        addCurrentBlockToExpectedGrid(4, 1);
+        addCurrentBlockToExpectedGrid(5, 1);
+        addCurrentBlockToExpectedGrid(6, 1);
+        addCurrentBlockToExpectedGrid(7, 1);
+
+        for (int i = 0; i < 21; i++) {
+            gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+        }
+        
+        int numberOfLines = 3;
+        int gridWidth = 12;
+        BlockAbstract[][] garbageLines = new BlockAbstract[12][numberOfLines];
+        
+        int emptyXPosition = 3;
+        GarbageBlock garbageBlock = new GarbageBlock(Integer.MAX_VALUE, 0);
+        for (int x = 0; x < gridWidth; ++x) {
+            if (x == emptyXPosition) {
+                continue;
+            }
+            for (int y = 0; y < numberOfLines; ++y) {
+                garbageLines[x][y] = garbageBlock;
+            }
+        }
+        
+        gameEngine.handleAction(new GarbageLineAction(System.nanoTime(), garbageLines));
+        System.out.println(gameEngine);
+        assertEqualBothGrids();
     }
 }
