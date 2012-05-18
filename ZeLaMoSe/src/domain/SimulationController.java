@@ -15,13 +15,22 @@ import java.util.*;
  */
 public class SimulationController implements StepInterface, Observer {
 
-    private Map<Integer, Step> stepQueue = new HashMap<Integer, Step>();
+    private SortedMap<Integer, GameEngineAbstract> rankingMap = new TreeMap<Integer, GameEngineAbstract>();
     private Map<Integer, GameEngineAbstract> gameEngines = new HashMap<Integer, GameEngineAbstract>();
     private Map<Integer, String> sessions = new HashMap<Integer, String>();
-    private SortedMap<Integer, GameEngineAbstract> rankingMap = new TreeMap<Integer, GameEngineAbstract>();
+    private Map<Integer, Step> stepQueue = new HashMap<Integer, Step>();
+    
     private int currentHighestLevel = 1;
-    public boolean autoadvance = true;
+    private boolean autoadvance = true;
 
+    public SimulationController() {
+        this(true);
+    }
+    
+    public SimulationController(boolean autoadvance) {
+        this.autoadvance = autoadvance;
+    }
+    
     @Override
     public void addStep(Step step) {
         if (!sessions.containsKey(step.getSessionID())) {

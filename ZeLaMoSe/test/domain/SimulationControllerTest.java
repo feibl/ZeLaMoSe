@@ -33,8 +33,7 @@ public class SimulationControllerTest {
   
   @Before
   public void setUp() {
-      instance = new SimulationController();
-      instance.autoadvance = false;
+      instance = new SimulationController(false);
       engine1 = new FakeGameEngine(sessionId);
       instance.addSession(sessionId, name, engine1);
       engine2 = new FakeGameEngine(sessionId2);
