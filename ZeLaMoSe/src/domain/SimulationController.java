@@ -17,7 +17,7 @@ public class SimulationController implements StepInterface, Observer {
 
     private SortedMap<Integer, GameEngineAbstract> rankingMap = new TreeMap<Integer, GameEngineAbstract>();
     private Map<Integer, GameEngineAbstract> gameEngines = new HashMap<Integer, GameEngineAbstract>();
-    private Map<Integer, String> sessions = new HashMap<Integer, String>();
+    private SortedMap<Integer, String> sessions = new TreeMap<Integer, String>();
     private Map<Integer, Step> stepQueue = new HashMap<Integer, Step>();
     
     private int currentHighestLevel = 1;
