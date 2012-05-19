@@ -355,21 +355,23 @@ public class GameEngine extends GameEngineAbstract {
             }
         }
 
-        currentBlock.setY(currentBlock.getY() + numberOfLines);
-
         for (int x = 0; x < gridWidth; x++) {
             System.arraycopy(action.getLines()[x], 0, grid[x], 0, numberOfLines);
         }
-
-        int tempY = currentBlock.getY();
-        int fieldsToMove = computeFieldsToMoveUntilCollision();
-        currentBlock.setY(tempY);
-        if (numberOfLines < fieldsToMove) {
-            moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, numberOfLines));
-        } else {
-            moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, fieldsToMove));
+        
+        boolean done = false;
+        for (int y = gridHeight-1; y >= 0; y--) {
+        for (int x = 0; x < gridWidth; x++) {
+                if (grid[x][y] == currentBlock) {
+                    currentBlock.setY(y);
+                    done = true;
+                    break;
+}
+            }
+            if (done) {
+   break;
+}
         }
-
         setLastAction(action);
     }
 
