@@ -323,13 +323,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
         }
 
         for (int x = 0; x < lines.length; x++) {
-            for (int y = 0; y < lines[x].length; y++) {
-                if (lines[x][y] != null) {
-                    grid[x][y] = lines[x][y];
-                } else {
-                    grid[x][y] = null;
-                }
-            }
+            System.arraycopy(lines[x], 0, grid[x], 0, lines[x].length);
         }
     }
 
