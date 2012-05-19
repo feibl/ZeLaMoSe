@@ -52,6 +52,15 @@ public class GameEngine extends GameEngineAbstract {
         nextBlock();
     }
 
+    private int computeFieldsToMoveUntilCollision() {
+        int fieldsToMove = 0;
+        while (!checkForCollision()) {
+            currentBlock.setY(currentBlock.getY() - 1);
+            fieldsToMove++;
+        }
+        return fieldsToMove;
+    }
+
     private void nextBlock() {
         if (nextBlock == null) {
             currentBlock = blockQueue.getNextBlock();
@@ -301,11 +310,7 @@ public class GameEngine extends GameEngineAbstract {
     private void handleHardDropAction() {
         //evaluate first how many gridfields the current stone can be moved down
         int tempY = currentBlock.getY();
-        int fieldsToMove = 0;
-        while (!checkForCollision()) {
-            currentBlock.setY(currentBlock.getY() - 1);
-            fieldsToMove++;
-        }
+        int fieldsToMove = computeFieldsToMoveUntilCollision();
         fieldsToMove--;
         currentBlock.setY(tempY);
         moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, fieldsToMove));
@@ -350,9 +355,21 @@ public class GameEngine extends GameEngineAbstract {
             }
         }
 
+        currentBlock.setY(currentBlock.getY() + numberOfLines);
+
         for (int x = 0; x < gridWidth; x++) {
             System.arraycopy(action.getLines()[x], 0, grid[x], 0, numberOfLines);
         }
+
+        int tempY = currentBlock.getY();
+        int fieldsToMove = computeFieldsToMoveUntilCollision();
+        currentBlock.setY(tempY);
+        if (numberOfLines < fieldsToMove) {
+            moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, numberOfLines));
+        } else {
+            moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, fieldsToMove));
+        }
+
         setLastAction(action);
     }
 
