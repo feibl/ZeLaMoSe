@@ -186,9 +186,9 @@ public class GameEngine extends GameEngineAbstract {
         totalRemovedLines += linesToRemove.size();
         //Calculate the new level
         int calculatedNewLevel = totalRemovedLines / Config.levelUpMultiplier + 1;
-        if ( calculatedNewLevel > level) {
+        if (calculatedNewLevel > level) {
             level = calculatedNewLevel;
-        }   
+        }
     }
 
     private boolean checkForGameOver() {
@@ -352,11 +352,7 @@ public class GameEngine extends GameEngineAbstract {
 
         for (int x = 0; x < gridWidth; x++) {
             for (int y = 0; y < numberOfLines; y++) {
-                if (action.getLines()[x][y] != null) {
-                    grid[x][y] = action.getLines()[x][y];
-                } else {
-                    grid[x][y] = null;
-                }
+                grid[x][y] = action.getLines()[x][y];
             }
         }
         setLastAction(action);
@@ -450,12 +446,11 @@ public class GameEngine extends GameEngineAbstract {
     public int getLevel() {
         return level;
     }
-    
-   @Override
+
+    @Override
     public void setLevel(int level) {
         this.level = level;
     }
-    
 
     @Override
     public int getScore() {
@@ -490,5 +485,4 @@ public class GameEngine extends GameEngineAbstract {
     public boolean getGameOver() {
         return gameOver;
     }
-
 }
