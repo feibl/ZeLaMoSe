@@ -52,17 +52,6 @@ public class GameEngine extends GameEngineAbstract {
         nextBlock();
     }
 
-    private int computeFieldsToMoveUntilCollision() {
-        int tempY = currentBlock.getY();
-        int fieldsToMove = 0;
-        while (!checkForCollision()) {
-            currentBlock.setY(currentBlock.getY() - 1);
-            fieldsToMove++;
-        }
-        currentBlock.setY(tempY);
-        return --fieldsToMove;
-    }
-
     private void nextBlock() {
         if (nextBlock == null) {
             currentBlock = blockQueue.getNextBlock();
@@ -176,6 +165,17 @@ public class GameEngine extends GameEngineAbstract {
             }
         }
         return true;
+    }
+
+    private int calculateFieldsToMoveUntilCollision() {
+        int tempY = currentBlock.getY();
+        int fieldsToMove = 0;
+        while (!checkForCollision()) {
+            currentBlock.setY(currentBlock.getY() - 1);
+            fieldsToMove++;
+        }
+        currentBlock.setY(tempY);
+        return --fieldsToMove;
     }
 
     private void calculatePlayerStats(ArrayList<Integer> linesToRemove) {
@@ -310,8 +310,7 @@ public class GameEngine extends GameEngineAbstract {
     }
 
     private void handleHardDropAction() {
-        //evaluate first how many gridfields the current stone can be moved down
-        int fieldsToMove = computeFieldsToMoveUntilCollision();
+        int fieldsToMove = calculateFieldsToMoveUntilCollision();
         moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, fieldsToMove));
         score += fieldsToMove * 2;
         removeAvailableLines();
@@ -360,9 +359,9 @@ public class GameEngine extends GameEngineAbstract {
 
         int oldY = currentBlock.getY();
         int numbersToMove;
-        if ((oldY + numberOfLines) > (gridHeight-1)) {
-            currentBlock.setY((gridHeight-1));
-            numbersToMove = (gridHeight-1) - oldY;
+        if ((oldY + numberOfLines) > (gridHeight - 1)) {
+            currentBlock.setY((gridHeight - 1));
+            numbersToMove = (gridHeight - 1) - oldY;
         } else {
             currentBlock.setY(oldY + numberOfLines);
             numbersToMove = numberOfLines;
@@ -370,10 +369,9 @@ public class GameEngine extends GameEngineAbstract {
 
         action.setYOffsetForCurrentBlock(currentBlock.getY() - oldY);
         setLastAction(action);
-        int moveToGarbage = computeFieldsToMoveUntilCollision();
+        int moveToGarbage = calculateFieldsToMoveUntilCollision();
 
         if (moveToGarbage > 0) {
-            System.out.println(moveToGarbage);;
             if (moveToGarbage <= numbersToMove) {
                 moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, moveToGarbage));
             } else {
