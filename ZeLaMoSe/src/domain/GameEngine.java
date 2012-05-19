@@ -351,9 +351,7 @@ public class GameEngine extends GameEngineAbstract {
         }
 
         for (int x = 0; x < gridWidth; x++) {
-            for (int y = 0; y < numberOfLines; y++) {
-                grid[x][y] = action.getLines()[x][y];
-            }
+            System.arraycopy(action.getLines()[x], 0, grid[x], 0, numberOfLines);
         }
         setLastAction(action);
     }
