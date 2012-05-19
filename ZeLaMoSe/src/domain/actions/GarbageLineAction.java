@@ -12,6 +12,7 @@ import domain.block.BlockAbstract;
  */
 public class GarbageLineAction extends Action{
     BlockAbstract[][] lines;
+    int currentBlockYOffset;
 
     public GarbageLineAction(long timestamp, BlockAbstract[][] line) {
         super(ActionType.GARBAGELINE, timestamp);
@@ -21,6 +22,14 @@ public class GarbageLineAction extends Action{
     
     public BlockAbstract[][] getLines() {
         return lines;
+    }
+
+    public void setYOffsetForCurrentBlock(int i) {
+        currentBlockYOffset = i;
+    }
+    
+    public int getYOffsetForCurrentBlock() {
+        return currentBlockYOffset;
     }
     
 }

@@ -69,7 +69,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
         GL2 gl = drawable.getGL().getGL2();
         GLU glu = new GLU();
 
-        gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         gl.glLineWidth(1.0f);
         gl.glViewport(0, 0, viewPortWidth, viewPortHeight);
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
@@ -315,7 +315,6 @@ class GameFieldRenderer implements GLEventListener, Observer {
     }
 
     private void handleGarbageLineAction(BlockAbstract[][] lines) {
-
         for (int x = 0; x < Config.gridWidth; x++) {
             for (int y = Config.gridHeight - 1 - lines[0].length; y >= 0; y--) {
                 grid[x][y + lines[0].length] = grid[x][y];
@@ -331,6 +330,23 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 }
             }
         }
+    }
+    
+        @Override
+    public String toString() {
+        StringBuilder gridAsString = new StringBuilder();
+        for (int i = Config.gridHeight - 1; i >= 0; i--) {
+            for (int j = 0; j < Config.gridWidth; j++) {
+                if (grid[j][i] != null) {
+                    gridAsString.append("[").append(grid[j][i].getPrintLetter()).append("]");
+                } else {
+                    gridAsString.append("[ ]");
+                }
+            }
+            gridAsString.append("\n");
+        }
+        gridAsString.append("\n");
+        return gridAsString.toString();
     }
 
     private BlockAbstract[][] getGridCopy() {
@@ -437,6 +453,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 break;
             case GARBAGELINE:
                 handleGarbageLineAction(((GarbageLineAction) action).getLines());
+                currentBlock.setY(currentBlock.getY()+((GarbageLineAction) action).getYOffsetForCurrentBlock());
                 break;
             case MIRROR:
                 handleMirrorAction();
