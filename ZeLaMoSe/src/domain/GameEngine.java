@@ -353,37 +353,32 @@ public class GameEngine extends GameEngineAbstract {
                 grid[x][y + numberOfLines] = grid[x][y];
             }
         }
-      
+
         for (int x = 0; x < gridWidth; x++) {
             System.arraycopy(action.getLines()[x], 0, grid[x], 0, numberOfLines);
         }
 
-
-                
-        boolean foundNewY = false;
         int oldY = currentBlock.getY();
-        for (int y = gridHeight - 1; y >= 0; y--) {
-            for (int x = 0; x < gridWidth; x++) {
-                if (grid[x][y] == currentBlock) {
-                    System.out.println("new y" + y);
-                    currentBlock.setY(y);
-                    foundNewY = true;
-                    break;
-                }
-            }
-            if (foundNewY) {
-                break;
-            }
+        int numbersToMove;
+        if ((oldY + numberOfLines) > (gridHeight-1)) {
+            currentBlock.setY((gridHeight-1));
+            numbersToMove = (gridHeight-1) - oldY;
+        } else {
+            currentBlock.setY(oldY + numberOfLines);
+            numbersToMove = numberOfLines;
         }
+
         action.setYOffsetForCurrentBlock(currentBlock.getY() - oldY);
         setLastAction(action);
-        System.out.println("b"+currentBlock.getY());
         int moveToGarbage = computeFieldsToMoveUntilCollision();
-        System.out.println("a"+currentBlock.getY());
-        System.out.println(moveToGarbage);
-        if (moveToGarbage <= numberOfLines && moveToGarbage > 0) {
-            System.out.println("in");
-            moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, moveToGarbage));
+
+        if (moveToGarbage > 0) {
+            System.out.println(moveToGarbage);;
+            if (moveToGarbage <= numbersToMove) {
+                moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, moveToGarbage));
+            } else {
+                moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, numbersToMove));
+            }
         }
     }
 
