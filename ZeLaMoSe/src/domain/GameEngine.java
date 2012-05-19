@@ -399,14 +399,17 @@ public class GameEngine extends GameEngineAbstract {
         return gridAsString.toString();
     }
 
+    @Override
     public BlockAbstract getNextBlock() {
         return (BlockAbstract) nextBlock.clone();
     }
 
+    @Override
     public int getTotalRemovedLines() {
         return totalRemovedLines;
     }
 
+    @Override
     public BlockAbstract getCurrentBlock() {
         return currentBlock;
     }
@@ -436,6 +439,7 @@ public class GameEngine extends GameEngineAbstract {
         return lastActionForOthers;
     }
 
+    @Override
     public int getBlockCounter() {
         return blockCounter;
     }
