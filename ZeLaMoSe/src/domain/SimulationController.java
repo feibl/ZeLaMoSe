@@ -96,9 +96,9 @@ public class SimulationController implements StepInterface, Observer {
         }
 
         //Distribute Ranking
-        int rank = 1;
+        int rank = sessions.size();
         for (Map.Entry<Integer, GameEngineAbstract> e : rankingMap.entrySet()) {
-            e.getValue().setRank(rank++);
+            e.getValue().setRank(rank--);
         }
 
         distributeActions(actionList);
