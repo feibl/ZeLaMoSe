@@ -53,12 +53,14 @@ public class GameEngine extends GameEngineAbstract {
     }
 
     private int computeFieldsToMoveUntilCollision() {
+        int tempY = currentBlock.getY();
         int fieldsToMove = 0;
         while (!checkForCollision()) {
             currentBlock.setY(currentBlock.getY() - 1);
             fieldsToMove++;
         }
-        return fieldsToMove;
+        currentBlock.setY(tempY);
+        return --fieldsToMove;
     }
 
     private void nextBlock() {
@@ -309,10 +311,7 @@ public class GameEngine extends GameEngineAbstract {
 
     private void handleHardDropAction() {
         //evaluate first how many gridfields the current stone can be moved down
-        int tempY = currentBlock.getY();
         int fieldsToMove = computeFieldsToMoveUntilCollision();
-        fieldsToMove--;
-        currentBlock.setY(tempY);
         moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, fieldsToMove));
         score += fieldsToMove * 2;
         removeAvailableLines();
@@ -354,16 +353,19 @@ public class GameEngine extends GameEngineAbstract {
                 grid[x][y + numberOfLines] = grid[x][y];
             }
         }
-
+      
         for (int x = 0; x < gridWidth; x++) {
             System.arraycopy(action.getLines()[x], 0, grid[x], 0, numberOfLines);
         }
 
+
+                
         boolean foundNewY = false;
         int oldY = currentBlock.getY();
         for (int y = gridHeight - 1; y >= 0; y--) {
             for (int x = 0; x < gridWidth; x++) {
                 if (grid[x][y] == currentBlock) {
+                    System.out.println("new y" + y);
                     currentBlock.setY(y);
                     foundNewY = true;
                     break;
@@ -374,8 +376,15 @@ public class GameEngine extends GameEngineAbstract {
             }
         }
         action.setYOffsetForCurrentBlock(currentBlock.getY() - oldY);
-        System.out.println(toString());
         setLastAction(action);
+        System.out.println("b"+currentBlock.getY());
+        int moveToGarbage = computeFieldsToMoveUntilCollision();
+        System.out.println("a"+currentBlock.getY());
+        System.out.println(moveToGarbage);
+        if (moveToGarbage <= numberOfLines && moveToGarbage > 0) {
+            System.out.println("in");
+            moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, moveToGarbage));
+        }
     }
 
     private void createGarbageLineAction(int numberOfLines) {
