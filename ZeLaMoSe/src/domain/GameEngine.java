@@ -13,7 +13,7 @@ import java.util.Random;
  *
  */
 public class GameEngine extends GameEngineAbstract {
-
+    
     private int gridWidth = Config.gridWidth;
     private int gridHeight = Config.gridHeight;
     private int blockStartPositionX = Config.blockStartPositionX;
@@ -27,7 +27,7 @@ public class GameEngine extends GameEngineAbstract {
     private int rank;
     private String nickName = "";
     private boolean gameOver;
-    private BlockAbstract[][] grid = new BlockAbstract[gridWidth][gridHeight];
+    private BlockAbstract[][] stack = new BlockAbstract[gridWidth][gridHeight];
     private BlockAbstract currentBlock;
     private BlockAbstract nextBlock;
     private BlockQueueInterface blockQueue;
@@ -35,23 +35,23 @@ public class GameEngine extends GameEngineAbstract {
     private Action lastActionForOthers;
     private List<Integer> alreadyUsedSpecialBlocks = new ArrayList<Integer>();
     private Random randomGarbageLineGenerator;
-
+    
     public GameEngine(int sessionId, long seed, boolean includeSpecialBlocks, int numberOfJokers) {
         this(sessionId, seed, new BlockQueue(seed, includeSpecialBlocks), numberOfJokers);
     }
-
+    
     public GameEngine(int sessionId, long seed, BlockQueueInterface blockQueue, int numberOfJokers) {
         this.sessionId = sessionId;
         this.blockQueue = blockQueue;
         this.randomGarbageLineGenerator = new Random(seed);
         this.numberOfJokers = numberOfJokers;
     }
-
+    
     @Override
     public void startGame() {
         nextBlock();
     }
-
+    
     private void nextBlock() {
         if (nextBlock == null) {
             currentBlock = blockQueue.getNextBlock();
@@ -59,44 +59,36 @@ public class GameEngine extends GameEngineAbstract {
             currentBlock = nextBlock;
         }
         nextBlock = blockQueue.getNextBlock();
-
+        
         if (!checkForGameOver()) {
             currentBlock.setX(blockStartPositionX);
             currentBlock.setY(blockStartPositionY);
-            saveCurrenblockToGrid();
             setLastAction(new NewBlockAction(currentBlock, sessionId));
             ++blockCounter;
         } else {
             setLastAction(new GameOverAction(sessionId));
         }
     }
-
-    private void saveCurrenblockToGrid() {
+    
+    private void addCurrentBlockToStack(BlockAbstract[][] stack) {
         BlockAbstract[][] blockGrid = currentBlock.getGrid();
-        for (int x = 0; x < gridWidth; x++) {
-            for (int y = 0; y < gridHeight; y++) {
-                if (currentBlock.equals(grid[x][y])) {
-                    grid[x][y] = null;
-                }
-            }
-        }
-
+        
         for (int x = 0; x < blockGrid.length; x++) {
             for (int y = 0; y < blockGrid.length; y++) {
                 if (blockGrid[x][y] != null) {
-                    grid[currentBlock.getX() + x][currentBlock.getY() - y] = currentBlock;
+                    stack[currentBlock.getX() + x][currentBlock.getY() - y] = currentBlock;
                 }
             }
         }
     }
-
+    
     private void removeAvailableLines() {
         boolean removeLine;
         ArrayList<Integer> linesToRemove = new ArrayList<Integer>();
         for (int y = 0; y < gridHeight; y++) {
             removeLine = true;
             for (int x = 0; x < gridWidth; x++) {
-                if (grid[x][y] == null) {
+                if (stack[x][y] == null) {
                     removeLine = false;
                 }
             }
@@ -104,12 +96,12 @@ public class GameEngine extends GameEngineAbstract {
                 linesToRemove.add(y);
             }
         }
-
+        
         if (linesToRemove.size() > 0) {
             removeLines(linesToRemove);
         }
     }
-
+    
     private void removeLines(ArrayList<Integer> linesToRemove) {
         if (linesToRemove.size() > 1) {
             createGarbageLineAction(linesToRemove.size() - 1);
@@ -120,28 +112,28 @@ public class GameEngine extends GameEngineAbstract {
             //remove the lineToRemove line
             for (int x = 0; x < gridWidth; x++) {
                 handleSpecialBlocks(x, lineToRemove);
-                grid[x][lineToRemove] = null;
+                stack[x][lineToRemove] = null;
             }
 
             //move everythign downward
             for (int y = lineToRemove + 1; y < gridHeight; y++) {
                 for (int x = 0; x < gridWidth; x++) {
-                    grid[x][y - 1] = grid[x][y];
+                    stack[x][y - 1] = stack[x][y];
                 }
             }
         }
         calculatePlayerStats(linesToRemove);
         setLastAction(new RemoveLineAction(0, linesToRemove));
     }
-
+    
     private void handleSpecialBlocks(int x, Integer lineToRemove) {
-        if (grid[x][lineToRemove] instanceof SpecialBlockInterface && checkIfBlockOccurencesWillBeRemoved(grid[x][lineToRemove])) {
-            int blockNumber = grid[x][lineToRemove].getBlockNumber();
+        if (stack[x][lineToRemove] instanceof SpecialBlockInterface && checkIfBlockOccurencesWillBeRemoved(stack[x][lineToRemove])) {
+            int blockNumber = stack[x][lineToRemove].getBlockNumber();
             if (!alreadyUsedSpecialBlocks.contains(blockNumber)) {
-                if (grid[x][lineToRemove] instanceof MirrorBlock) {
+                if (stack[x][lineToRemove] instanceof MirrorBlock) {
                     score += 300;
                     lastActionForOthers = new MirrorAction(0, blockNumber);
-                } else if (grid[x][lineToRemove] instanceof DarkBlock) {
+                } else if (stack[x][lineToRemove] instanceof DarkBlock) {
                     lastActionForOthers = new ShadowAction(0, blockNumber);
                     score += 500;
                 }
@@ -151,12 +143,12 @@ public class GameEngine extends GameEngineAbstract {
             }
         }
     }
-
+    
     private boolean checkIfBlockOccurencesWillBeRemoved(BlockAbstract block) {
         int counter = 0;
         for (int x = 0; x < gridWidth; x++) {
             for (int y = 0; y < gridHeight; y++) {
-                if (grid[x][y] == block) {
+                if (stack[x][y] == block) {
                     counter++;
                     if (counter > 1) {
                         return false;
@@ -166,7 +158,7 @@ public class GameEngine extends GameEngineAbstract {
         }
         return true;
     }
-
+    
     private int calculateFieldsToMoveUntilCollision() {
         int tempY = currentBlock.getY();
         int fieldsToMove = 0;
@@ -177,7 +169,7 @@ public class GameEngine extends GameEngineAbstract {
         currentBlock.setY(tempY);
         return --fieldsToMove;
     }
-
+    
     private void calculatePlayerStats(ArrayList<Integer> linesToRemove) {
         //Calculate the score
         switch (linesToRemove.size()) {
@@ -201,11 +193,11 @@ public class GameEngine extends GameEngineAbstract {
             level = calculatedNewLevel;
         }
     }
-
+    
     private boolean checkForGameOver() {
         for (int y = 0; y < currentBlock.getHeight(); y++) {
             for (int x = 0; x < currentBlock.getWidth(); x++) {
-                if (grid[blockStartPositionX + x][blockStartPositionY - y] != null) {
+                if (stack[blockStartPositionX + x][blockStartPositionY - y] != null) {
                     gameOver = true;
                     return gameOver;
                 }
@@ -213,14 +205,14 @@ public class GameEngine extends GameEngineAbstract {
         }
         return gameOver;
     }
-
+    
     private boolean checkForCollision() {
         BlockAbstract[][] blockGrid = currentBlock.getGrid();
         for (int x = 0; x < blockGrid.length; x++) {
             for (int y = 0; y < blockGrid.length; y++) {
                 if (blockGrid[x][y] != null) {
                     try {
-                        if (grid[currentBlock.getX() + x][currentBlock.getY() - y] != null && !grid[currentBlock.getX() + x][currentBlock.getY() - y].equals(currentBlock)) {
+                        if (stack[currentBlock.getX() + x][currentBlock.getY() - y] != null && !stack[currentBlock.getX() + x][currentBlock.getY() - y].equals(currentBlock)) {
                             return true;
                         }
                     } catch (IndexOutOfBoundsException e) {
@@ -231,7 +223,7 @@ public class GameEngine extends GameEngineAbstract {
         }
         return false;
     }
-
+    
     @Override
     public void handleAction(Action action) {
         if (!gameOver) {
@@ -270,7 +262,7 @@ public class GameEngine extends GameEngineAbstract {
             notifyObservers(UpdateType.RANKING);
         }
     }
-
+    
     private void handleMoveAction(MoveAction moveAction) {
         switch (moveAction.getDirection()) {
             case LEFT:
@@ -284,39 +276,38 @@ public class GameEngine extends GameEngineAbstract {
                 break;
         }
     }
-
+    
     private void moveSidewards(int offset, MoveAction moveAction) {
         currentBlock.setX(currentBlock.getX() + offset);
         if (checkForCollision()) {
             currentBlock.setX(currentBlock.getX() - offset);
         } else {
-            saveCurrenblockToGrid();
             setLastAction(moveAction);
         }
     }
-
+    
     private void moveDownwards(MoveAction moveAction) {
         int speed = moveAction.getSpeed();
         currentBlock.setY(currentBlock.getY() - speed);
         if (checkForCollision()) {
             currentBlock.setY(currentBlock.getY() + speed);
-            saveCurrenblockToGrid();
+            addCurrentBlockToStack(stack);
             removeAvailableLines();
             nextBlock();
         } else {
-            saveCurrenblockToGrid();
             setLastAction(moveAction);
         }
     }
-
+    
     private void handleHardDropAction() {
         int fieldsToMove = calculateFieldsToMoveUntilCollision();
         moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, fieldsToMove));
+        addCurrentBlockToStack(stack);
         score += fieldsToMove * 2;
         removeAvailableLines();
         nextBlock();
     }
-
+    
     private void handleRotateAction(RotateAction action) {
         int originX = currentBlock.getX();
         int originY = currentBlock.getY();
@@ -336,7 +327,6 @@ public class GameEngine extends GameEngineAbstract {
                 currentBlock.setX(originX);
                 currentBlock.setY(originY);
             } else {
-                saveCurrenblockToGrid();
                 action.setXOffset(currentBlock.getX() - originX);
                 action.setYOffset(currentBlock.getY() - originY);
                 setLastAction(action);
@@ -344,20 +334,20 @@ public class GameEngine extends GameEngineAbstract {
             }
         }
     }
-
+    
     private void handleGarbageLineAction(GarbageLineAction action) {
         int numberOfLines = action.getLines()[0].length;
         try {
             for (int x = 0; x < gridWidth; x++) {
                 for (int y = gridHeight - 1 - numberOfLines; y >= 0; y--) {
-                    grid[x][y + numberOfLines] = grid[x][y];
+                    stack[x][y + numberOfLines] = stack[x][y];
                 }
             }
-
+            
             for (int x = 0; x < gridWidth; x++) {
-                System.arraycopy(action.getLines()[x], 0, grid[x], 0, numberOfLines);
+                System.arraycopy(action.getLines()[x], 0, stack[x], 0, numberOfLines);
             }
-
+            
             int oldY = currentBlock.getY();
             int numbersToMove;
             if ((oldY + numberOfLines) > (gridHeight - 1)) {
@@ -367,11 +357,11 @@ public class GameEngine extends GameEngineAbstract {
                 currentBlock.setY(oldY + numberOfLines);
                 numbersToMove = numberOfLines;
             }
-
+            
             action.setYOffsetForCurrentBlock(currentBlock.getY() - oldY);
             setLastAction(action);
             int moveToGarbage = calculateFieldsToMoveUntilCollision();
-
+            
             if (moveToGarbage > 0) {
                 if (moveToGarbage <= numbersToMove) {
                     moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, moveToGarbage));
@@ -383,14 +373,14 @@ public class GameEngine extends GameEngineAbstract {
             handleAction(new GameOverAction(0));
         }
     }
-
+    
     private void createGarbageLineAction(int numberOfLines) {
         BlockAbstract[][] garbageLines = createGarbageLine(numberOfLines, randomGarbageLineGenerator.nextInt(gridWidth));
         lastActionForOthers = new GarbageLineAction(0, garbageLines);
         setChanged();
         notifyObservers(UpdateType.ACTIONFOROTHERS);
     }
-
+    
     public BlockAbstract[][] createGarbageLine(int numberOfLines, int emptyXPosition) {
         BlockAbstract[][] garbageLines = new BlockAbstract[gridWidth][numberOfLines];
         GarbageBlock garbageBlock = new GarbageBlock(Integer.MAX_VALUE, 0);
@@ -404,22 +394,22 @@ public class GameEngine extends GameEngineAbstract {
         }
         return garbageLines;
     }
-
+    
     private void clearGrid() {
         for (int x = 0; x < gridWidth; x++) {
             for (int y = 0; y < gridHeight; y++) {
-                grid[x][y] = null;
+                stack[x][y] = null;
             }
         }
     }
-
+    
     @Override
     public String toString() {
         StringBuilder gridAsString = new StringBuilder();
         for (int i = gridHeight - 1; i >= 0; i--) {
             for (int j = 0; j < gridWidth; j++) {
-                if (grid[j][i] != null) {
-                    gridAsString.append("[").append(grid[j][i].getPrintLetter()).append("]");
+                if (stack[j][i] != null) {
+                    gridAsString.append("[").append(stack[j][i].getPrintLetter()).append("]");
                 } else {
                     gridAsString.append("[ ]");
                 }
@@ -429,92 +419,102 @@ public class GameEngine extends GameEngineAbstract {
         gridAsString.append("\n");
         return gridAsString.toString();
     }
-
+    
     @Override
     public BlockAbstract getNextBlock() {
         return (BlockAbstract) nextBlock.clone();
     }
-
+    
     @Override
     public int getTotalRemovedLines() {
         return totalRemovedLines;
     }
-
+    
     @Override
     public BlockAbstract getCurrentBlock() {
         return currentBlock;
     }
-
-    public BlockAbstract[][] getGrid() {
-        return grid;
+    
+    public BlockAbstract[][] getStack() {
+        return stack;
     }
-
+    
+    public BlockAbstract[][] getCurrentGrid() {
+        BlockAbstract[][] copy = new BlockAbstract[gridWidth][gridHeight];
+        for(int x = 0; x < gridWidth; x++) {
+            System.arraycopy(stack[x], 0, copy[x], 0, gridHeight);
+        }
+        addCurrentBlockToStack(copy);
+        
+        return copy;
+    }
+    
     public void setLastAction(Action action) {
         lastAction = action;
         setChanged();
         notifyObservers(UpdateType.LASTACTION);
     }
-
+    
     @Override
     public int getSessionID() {
         return sessionId;
     }
-
+    
     @Override
     public Action getSimulationState() {
         return lastAction;
     }
-
+    
     @Override
     public Action getlastActionForOthers() {
         return lastActionForOthers;
     }
-
+    
     @Override
     public int getBlockCounter() {
         return blockCounter;
     }
-
+    
     @Override
     public int getLevel() {
         return level;
     }
-
+    
     @Override
     public void setLevel(int level) {
         this.level = level;
     }
-
+    
     @Override
     public int getScore() {
         return score;
     }
-
+    
     @Override
     public void setNickName(String nickName) {
         this.nickName = nickName;
     }
-
+    
     @Override
     public String getNickName() {
         return nickName;
     }
-
+    
     @Override
     public int getNumberOfJokers() {
         return this.numberOfJokers;
     }
-
+    
     @Override
     public int getRank() {
         return rank;
     }
-
+    
     @Override
     public void setRank(int rank) {
         this.rank = rank;
     }
-
+    
     public boolean getGameOver() {
         return gameOver;
     }

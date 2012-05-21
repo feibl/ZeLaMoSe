@@ -32,7 +32,7 @@ public class GameEngineTest {
     }
 
     private void assertEqualBothGrids() {
-        BlockAbstract[][] grid = gameEngine.getGrid();
+        BlockAbstract[][] grid = gameEngine.getCurrentGrid();
         for (int i = 0; i < grid[0].length; i++) {
             for (int j = 0; j < grid.length; j++) {
                 assertEquals(expectedGrid[j][i], grid[j][i]);
