@@ -347,36 +347,40 @@ public class GameEngine extends GameEngineAbstract {
 
     private void handleGarbageLineAction(GarbageLineAction action) {
         int numberOfLines = action.getLines()[0].length;
-        for (int x = 0; x < gridWidth; x++) {
-            for (int y = gridHeight - 1 - numberOfLines; y >= 0; y--) {
-                grid[x][y + numberOfLines] = grid[x][y];
+        try {
+            for (int x = 0; x < gridWidth; x++) {
+                for (int y = gridHeight - 1 - numberOfLines; y >= 0; y--) {
+                    grid[x][y + numberOfLines] = grid[x][y];
+                }
             }
-        }
 
-        for (int x = 0; x < gridWidth; x++) {
-            System.arraycopy(action.getLines()[x], 0, grid[x], 0, numberOfLines);
-        }
+            for (int x = 0; x < gridWidth; x++) {
+                System.arraycopy(action.getLines()[x], 0, grid[x], 0, numberOfLines);
+            }
 
-        int oldY = currentBlock.getY();
-        int numbersToMove;
-        if ((oldY + numberOfLines) > (gridHeight - 1)) {
-            currentBlock.setY((gridHeight - 1));
-            numbersToMove = (gridHeight - 1) - oldY;
-        } else {
-            currentBlock.setY(oldY + numberOfLines);
-            numbersToMove = numberOfLines;
-        }
-
-        action.setYOffsetForCurrentBlock(currentBlock.getY() - oldY);
-        setLastAction(action);
-        int moveToGarbage = calculateFieldsToMoveUntilCollision();
-
-        if (moveToGarbage > 0) {
-            if (moveToGarbage <= numbersToMove) {
-                moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, moveToGarbage));
+            int oldY = currentBlock.getY();
+            int numbersToMove;
+            if ((oldY + numberOfLines) > (gridHeight - 1)) {
+                currentBlock.setY((gridHeight - 1));
+                numbersToMove = (gridHeight - 1) - oldY;
             } else {
-                moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, numbersToMove));
+                currentBlock.setY(oldY + numberOfLines);
+                numbersToMove = numberOfLines;
             }
+
+            action.setYOffsetForCurrentBlock(currentBlock.getY() - oldY);
+            setLastAction(action);
+            int moveToGarbage = calculateFieldsToMoveUntilCollision();
+
+            if (moveToGarbage > 0) {
+                if (moveToGarbage <= numbersToMove) {
+                    moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, moveToGarbage));
+                } else {
+                    moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, numbersToMove));
+                }
+            }
+        } catch (IndexOutOfBoundsException ex) {
+            handleAction(new GameOverAction(0));
         }
     }
 
