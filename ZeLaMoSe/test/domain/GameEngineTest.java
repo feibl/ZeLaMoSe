@@ -774,10 +774,11 @@ public class GameEngineTest {
 
     @Test
     public void garbageLineGameOver() {
-        BlockAbstract[][] garbageLines = gameEngine.createGarbageLine(Config.gridHeight + 1, 5);
+        BlockAbstract[][] garbageLines = gameEngine.createGarbageLine(Config.gridHeight, 5);
         
         gameEngine.handleAction(new GarbageLineAction(System.nanoTime(), garbageLines));
         System.out.println(gameEngine);
+        gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
         assertEquals(true, gameEngine.getGameOver());
     }
         
