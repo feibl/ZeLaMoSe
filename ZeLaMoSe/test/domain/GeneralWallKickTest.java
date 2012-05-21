@@ -43,7 +43,7 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest2r0r90() {
         moveBlockToStartPositionr0r90();
-        actualStack[6][19] = dummyBlock;
+        actualGrid[6][19] = dummyBlock;
         doRotationr0r90();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 21);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 20);
@@ -56,8 +56,8 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest3r0r90() {
         moveBlockToStartPositionr0r90();
-        actualStack[4][19] = dummyBlock;
-        actualStack[6][19] = dummyBlock;
+        actualGrid[4][19] = dummyBlock;
+        actualGrid[6][19] = dummyBlock;
         doRotationr0r90();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 22);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 21);
@@ -70,9 +70,9 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest4r0r90() {
          moveBlockToStartPositionr0r90();
-        actualStack[4][19] = dummyBlock;
-        actualStack[4][22] = dummyBlock;
-        actualStack[6][19] = dummyBlock;
+        actualGrid[4][19] = dummyBlock;
+        actualGrid[4][22] = dummyBlock;
+        actualGrid[6][19] = dummyBlock;
         doRotationr0r90();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 19);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 18);
@@ -85,9 +85,9 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest5r0r90() {
          moveBlockToStartPositionr0r90();
-        actualStack[4][22] = dummyBlock;
-        actualStack[5][19] = dummyBlock;
-        actualStack[6][19] = dummyBlock;
+        actualGrid[4][22] = dummyBlock;
+        actualGrid[5][19] = dummyBlock;
+        actualGrid[6][19] = dummyBlock;
         doRotationr0r90();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 19);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 18);
@@ -100,10 +100,10 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickCollisionr0r90() {
          moveBlockToStartPositionr0r90();
-        actualStack[4][22] = dummyBlock;
-        actualStack[5][19] = dummyBlock;
-        actualStack[4][19] = dummyBlock;
-        actualStack[6][19] = dummyBlock;
+        actualGrid[4][22] = dummyBlock;
+        actualGrid[5][19] = dummyBlock;
+        actualGrid[4][19] = dummyBlock;
+        actualGrid[6][19] = dummyBlock;
         doRotationr0r90();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 20);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 20);
@@ -135,7 +135,7 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest2r90r0() {
         moveBlockToStartPositionr90r0();
-        actualStack[6][21] = dummyBlock;
+        actualGrid[6][21] = dummyBlock;
         doRotationr90r0();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 20);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 6, 20);
@@ -148,7 +148,7 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest3r90r0() {
         moveBlockToStartPositionr90r0();
-        actualStack[6][20] = dummyBlock;
+        actualGrid[6][20] = dummyBlock;
         doRotationr90r0();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 19);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 6, 19);
@@ -161,8 +161,8 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest4r90r0() {
         moveBlockToStartPositionr90r0();
-        actualStack[6][20] = dummyBlock;
-        actualStack[7][20] = dummyBlock;
+        actualGrid[6][20] = dummyBlock;
+        actualGrid[7][20] = dummyBlock;
         doRotationr90r0();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 22);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 22);
@@ -175,9 +175,9 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest5r90r0() {
         moveBlockToStartPositionr90r0();
-        actualStack[6][20] = dummyBlock;
-        actualStack[7][20] = dummyBlock;
-        actualStack[4][22] = dummyBlock;
+        actualGrid[6][20] = dummyBlock;
+        actualGrid[7][20] = dummyBlock;
+        actualGrid[4][22] = dummyBlock;
         doRotationr90r0();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 22);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 6, 22);
@@ -190,10 +190,10 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickCollisionr90r0() {
         moveBlockToStartPositionr90r0();
-        actualStack[6][20] = dummyBlock;
-        actualStack[7][20] = dummyBlock;
-        actualStack[4][22] = dummyBlock;
-        actualStack[5][22] = dummyBlock;
+        actualGrid[6][20] = dummyBlock;
+        actualGrid[7][20] = dummyBlock;
+        actualGrid[4][22] = dummyBlock;
+        actualGrid[5][22] = dummyBlock;
         doRotationr90r0();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 21);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 20);
@@ -225,7 +225,7 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest2r90r180() {
         moveBlockToStartPositionr90r180();
-        actualStack[4][19] = dummyBlock;
+        actualGrid[4][19] = dummyBlock;
         doRotationr90r180();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 20);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 6, 20);
@@ -238,8 +238,8 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest3r90r180() {
         moveBlockToStartPositionr90r180();
-        actualStack[4][19] = dummyBlock;
-        actualStack[7][20] = dummyBlock;
+        actualGrid[4][19] = dummyBlock;
+        actualGrid[7][20] = dummyBlock;
         doRotationr90r180();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 19);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 6, 19);
@@ -252,9 +252,9 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest4r90r180() {
         moveBlockToStartPositionr90r180();
-        actualStack[4][19] = dummyBlock;
-        actualStack[7][19] = dummyBlock;
-        actualStack[7][20] = dummyBlock;
+        actualGrid[4][19] = dummyBlock;
+        actualGrid[7][19] = dummyBlock;
+        actualGrid[7][20] = dummyBlock;
         doRotationr90r180();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 22);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 22);
@@ -267,10 +267,10 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest5r90r180() {
         moveBlockToStartPositionr90r180();
-        actualStack[4][19] = dummyBlock;
-        actualStack[4][22] = dummyBlock;
-        actualStack[7][19] = dummyBlock;
-        actualStack[7][20] = dummyBlock;
+        actualGrid[4][19] = dummyBlock;
+        actualGrid[4][22] = dummyBlock;
+        actualGrid[7][19] = dummyBlock;
+        actualGrid[7][20] = dummyBlock;
         doRotationr90r180();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 22);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 6, 22);
@@ -283,11 +283,11 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickCollisionr90r180() {
         moveBlockToStartPositionr90r180();
-        actualStack[4][19] = dummyBlock;
-        actualStack[4][22] = dummyBlock;
-        actualStack[7][19] = dummyBlock;
-        actualStack[7][20] = dummyBlock;
-        actualStack[7][22] = dummyBlock;
+        actualGrid[4][19] = dummyBlock;
+        actualGrid[4][22] = dummyBlock;
+        actualGrid[7][19] = dummyBlock;
+        actualGrid[7][20] = dummyBlock;
+        actualGrid[7][22] = dummyBlock;
         doRotationr90r180();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 21);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 20);
@@ -320,7 +320,7 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest2r180r90() {
         moveBlockToStartPositionr180r90();
-        actualStack[6][19] = dummyBlock;
+        actualGrid[6][19] = dummyBlock;
         doRotationr180r90();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 21);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 20);
@@ -333,8 +333,8 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest3r180r90() {
         moveBlockToStartPositionr180r90();
-        actualStack[5][19] = dummyBlock;
-        actualStack[6][19] = dummyBlock;
+        actualGrid[5][19] = dummyBlock;
+        actualGrid[6][19] = dummyBlock;
         doRotationr180r90();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 22);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 21);
@@ -347,9 +347,9 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest4r180r90() {
         moveBlockToStartPositionr180r90();
-        actualStack[4][22] = dummyBlock;
-        actualStack[4][21] = dummyBlock;
-        actualStack[6][19] = dummyBlock;
+        actualGrid[4][22] = dummyBlock;
+        actualGrid[4][21] = dummyBlock;
+        actualGrid[6][19] = dummyBlock;
         doRotationr180r90();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 19);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 18);
@@ -362,10 +362,10 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest5r180r90() {
         moveBlockToStartPositionr180r90();
-        actualStack[4][22] = dummyBlock;
-        actualStack[4][21] = dummyBlock;
-        actualStack[5][19] = dummyBlock;
-        actualStack[6][19] = dummyBlock;
+        actualGrid[4][22] = dummyBlock;
+        actualGrid[4][21] = dummyBlock;
+        actualGrid[5][19] = dummyBlock;
+        actualGrid[6][19] = dummyBlock;
         doRotationr180r90();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 19);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 18);
@@ -378,11 +378,11 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickCollisionr180r90() {
         moveBlockToStartPositionr180r90();
-        actualStack[4][22] = dummyBlock;
-        actualStack[4][21] = dummyBlock;
-        actualStack[4][18] = dummyBlock;
-        actualStack[5][19] = dummyBlock;
-        actualStack[6][19] = dummyBlock;
+        actualGrid[4][22] = dummyBlock;
+        actualGrid[4][21] = dummyBlock;
+        actualGrid[4][18] = dummyBlock;
+        actualGrid[5][19] = dummyBlock;
+        actualGrid[6][19] = dummyBlock;
         doRotationr180r90();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 20);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 20);
@@ -415,7 +415,7 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest2r180r270() {
         moveBlockToStartPositionr180r270();
-        actualStack[4][21] = dummyBlock;
+        actualGrid[4][21] = dummyBlock;
         doRotationr180r270();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 21);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 6, 21);
@@ -428,8 +428,8 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest3r180r270() {
         moveBlockToStartPositionr180r270();
-        actualStack[4][21] = dummyBlock;
-        actualStack[5][21] = dummyBlock;
+        actualGrid[4][21] = dummyBlock;
+        actualGrid[5][21] = dummyBlock;
         doRotationr180r270();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 22);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 6, 22);
@@ -442,9 +442,9 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest4r180r270() {
         moveBlockToStartPositionr180r270();
-        actualStack[4][21] = dummyBlock;
-        actualStack[5][21] = dummyBlock;
-        actualStack[5][22] = dummyBlock;
+        actualGrid[4][21] = dummyBlock;
+        actualGrid[5][21] = dummyBlock;
+        actualGrid[5][22] = dummyBlock;
         doRotationr180r270();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 19);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 19);
@@ -457,10 +457,10 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest5r180r270() {
         moveBlockToStartPositionr180r270();
-        actualStack[4][21] = dummyBlock;
-        actualStack[5][21] = dummyBlock;
-        actualStack[5][22] = dummyBlock;
-        actualStack[5][18] = dummyBlock;
+        actualGrid[4][21] = dummyBlock;
+        actualGrid[5][21] = dummyBlock;
+        actualGrid[5][22] = dummyBlock;
+        actualGrid[5][18] = dummyBlock;
         doRotationr180r270();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 19);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 6, 19);
@@ -473,11 +473,11 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickCollisionr180r270() {
         moveBlockToStartPositionr180r270();
-        actualStack[4][21] = dummyBlock;
-        actualStack[5][21] = dummyBlock;
-        actualStack[5][22] = dummyBlock;
-        actualStack[5][18] = dummyBlock;
-        actualStack[5][19] = dummyBlock;
+        actualGrid[4][21] = dummyBlock;
+        actualGrid[5][21] = dummyBlock;
+        actualGrid[5][22] = dummyBlock;
+        actualGrid[5][18] = dummyBlock;
+        actualGrid[5][19] = dummyBlock;
         doRotationr180r270();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 20);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 20);
@@ -511,7 +511,7 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest2r270r180() {
         moveBlockToStartPositionr270r180();
-        actualStack[6][20] = dummyBlock;
+        actualGrid[6][20] = dummyBlock;
         doRotationr270r180();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 3, 20);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 20);
@@ -524,8 +524,8 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest3r270r180() {
         moveBlockToStartPositionr270r180();
-        actualStack[4][20] = dummyBlock;
-        actualStack[6][20] = dummyBlock;
+        actualGrid[4][20] = dummyBlock;
+        actualGrid[6][20] = dummyBlock;
         doRotationr270r180();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 3, 19);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 19);
@@ -538,9 +538,9 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest4r270r180() {
         moveBlockToStartPositionr270r180();
-        actualStack[4][20] = dummyBlock;
-        actualStack[6][20] = dummyBlock;
-        actualStack[3][18] = dummyBlock;
+        actualGrid[4][20] = dummyBlock;
+        actualGrid[6][20] = dummyBlock;
+        actualGrid[3][18] = dummyBlock;
         doRotationr270r180();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 22);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 22);
@@ -553,10 +553,10 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest5r270r180() {
         moveBlockToStartPositionr270r180();
-        actualStack[4][20] = dummyBlock;
-        actualStack[6][20] = dummyBlock;
-        actualStack[6][22] = dummyBlock;
-        actualStack[3][18] = dummyBlock;
+        actualGrid[4][20] = dummyBlock;
+        actualGrid[6][20] = dummyBlock;
+        actualGrid[6][22] = dummyBlock;
+        actualGrid[3][18] = dummyBlock;
         doRotationr270r180();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 3, 22);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 22);
@@ -569,11 +569,11 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickCollisionr270r180() {
         moveBlockToStartPositionr270r180();
-        actualStack[4][20] = dummyBlock;
-        actualStack[6][20] = dummyBlock;
-        actualStack[6][22] = dummyBlock;
-        actualStack[5][22] = dummyBlock;
-        actualStack[3][18] = dummyBlock;
+        actualGrid[4][20] = dummyBlock;
+        actualGrid[6][20] = dummyBlock;
+        actualGrid[6][22] = dummyBlock;
+        actualGrid[5][22] = dummyBlock;
+        actualGrid[3][18] = dummyBlock;
         doRotationr270r180();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 21);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 21);
@@ -607,7 +607,7 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest2r270r0() {
          moveBlockToStartPositionr270r0();
-        actualStack[6][21] = dummyBlock;
+        actualGrid[6][21] = dummyBlock;
         doRotationr270r0();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 3, 20);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 20);
@@ -620,8 +620,8 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest3r270r0() {
          moveBlockToStartPositionr270r0();
-        actualStack[6][21] = dummyBlock;
-        actualStack[3][20] = dummyBlock;
+        actualGrid[6][21] = dummyBlock;
+        actualGrid[3][20] = dummyBlock;
         doRotationr270r0();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 3, 19);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 19);
@@ -634,9 +634,9 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest4r270r0() {
          moveBlockToStartPositionr270r0();
-        actualStack[6][21] = dummyBlock;
-        actualStack[3][20] = dummyBlock;
-        actualStack[4][19] = dummyBlock;
+        actualGrid[6][21] = dummyBlock;
+        actualGrid[3][20] = dummyBlock;
+        actualGrid[4][19] = dummyBlock;
         doRotationr270r0();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 22);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 22);
@@ -649,10 +649,10 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest5r270r0() {
          moveBlockToStartPositionr270r0();
-        actualStack[6][21] = dummyBlock;
-        actualStack[6][22] = dummyBlock;
-        actualStack[3][20] = dummyBlock;
-        actualStack[4][19] = dummyBlock;
+        actualGrid[6][21] = dummyBlock;
+        actualGrid[6][22] = dummyBlock;
+        actualGrid[3][20] = dummyBlock;
+        actualGrid[4][19] = dummyBlock;
         doRotationr270r0();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 3, 22);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 22);
@@ -665,11 +665,11 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickCollisionr270r0() {
          moveBlockToStartPositionr270r0();
-        actualStack[6][21] = dummyBlock;
-        actualStack[6][22] = dummyBlock;
-        actualStack[5][22] = dummyBlock;
-        actualStack[3][20] = dummyBlock;
-        actualStack[4][19] = dummyBlock;
+        actualGrid[6][21] = dummyBlock;
+        actualGrid[6][22] = dummyBlock;
+        actualGrid[5][22] = dummyBlock;
+        actualGrid[3][20] = dummyBlock;
+        actualGrid[4][19] = dummyBlock;
         doRotationr270r0();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 21);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 21);
@@ -700,7 +700,7 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest2r0r270() {
          moveBlockToStartPositionr0r270();
-        actualStack[4][21] = dummyBlock;
+        actualGrid[4][21] = dummyBlock;
         doRotationr0r270();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 21);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 6, 21);
@@ -713,8 +713,8 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest3r0r270() {
          moveBlockToStartPositionr0r270();
-        actualStack[4][21] = dummyBlock;
-        actualStack[5][21] = dummyBlock;
+        actualGrid[4][21] = dummyBlock;
+        actualGrid[5][21] = dummyBlock;
         doRotationr0r270();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 22);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 6, 22);
@@ -727,9 +727,9 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest4r0r270() {
          moveBlockToStartPositionr0r270();
-        actualStack[4][21] = dummyBlock;
-        actualStack[5][21] = dummyBlock;
-        actualStack[5][22] = dummyBlock;
+        actualGrid[4][21] = dummyBlock;
+        actualGrid[5][21] = dummyBlock;
+        actualGrid[5][22] = dummyBlock;
         doRotationr0r270();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 19);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 19);
@@ -742,10 +742,10 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickTest5r0r270() {
          moveBlockToStartPositionr0r270();
-         actualStack[4][19] = dummyBlock;
-        actualStack[4][21] = dummyBlock;
-        actualStack[5][21] = dummyBlock;
-        actualStack[5][22] = dummyBlock;
+         actualGrid[4][19] = dummyBlock;
+        actualGrid[4][21] = dummyBlock;
+        actualGrid[5][21] = dummyBlock;
+        actualGrid[5][22] = dummyBlock;
         doRotationr0r270();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 19);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 6, 19);
@@ -758,11 +758,11 @@ public class GeneralWallKickTest  extends WallKickTest{
     @Test
     public void WallKickCollisionr0r270() {
          moveBlockToStartPositionr0r270();
-         actualStack[4][19] = dummyBlock;
-        actualStack[4][21] = dummyBlock;
-        actualStack[5][19] = dummyBlock;
-        actualStack[5][21] = dummyBlock;
-        actualStack[5][22] = dummyBlock;
+         actualGrid[4][19] = dummyBlock;
+        actualGrid[4][21] = dummyBlock;
+        actualGrid[5][19] = dummyBlock;
+        actualGrid[5][21] = dummyBlock;
+        actualGrid[5][22] = dummyBlock;
         doRotationr0r270();
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 4, 20);
         addBlockToExpectedGrid(gameEngine.getCurrentBlock(), 5, 20);

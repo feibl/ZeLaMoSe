@@ -34,7 +34,7 @@ public abstract class WallKickTest {
     protected GameEngine gameEngine;
     protected FakeBlockQueue fakeQueue;
     protected BlockAbstract[][] expectedGrid;
-    protected BlockAbstract[][] actualStack;
+    protected BlockAbstract[][] actualGrid;
     protected GarbageBlock dummyBlock;
 
     protected void addBlockToExpectedGrid(BlockAbstract block, int x, int y) {
@@ -42,20 +42,18 @@ public abstract class WallKickTest {
     }
 
     protected void assertEqualBothGrids() {
-        BlockAbstract[][] grid = gameEngine.getCurrentGrid();
-        for (int i = 0; i < grid[0].length; i++) {
-            for (int j = 0; j < grid.length; j++) {
-                assertEquals(expectedGrid[j][i], grid[j][i]);
+        for (int i = 0; i < gameEngine.getGrid()[0].length; i++) {
+            for (int j = 0; j < gameEngine.getGrid().length; j++) {
+                assertEquals(expectedGrid[j][i], (gameEngine.getGrid())[j][i]);
             }
         }
     }
 
     protected void cloneGridOnlyOBlocks() {
-        BlockAbstract[][] grid = gameEngine.getCurrentGrid();
-        for (int i = 0; i < grid[0].length; i++) {
-            for (int j = 0; j < grid.length; j++) {
-                if (actualStack[j][i] != null && actualStack[j][i].equals(dummyBlock)) {
-                    expectedGrid[j][i] = actualStack[j][i];
+        for (int i = 0; i < gameEngine.getGrid()[0].length; i++) {
+            for (int j = 0; j < gameEngine.getGrid().length; j++) {
+                if (actualGrid[j][i] != null && actualGrid[j][i].equals(dummyBlock)) {
+                    expectedGrid[j][i] = actualGrid[j][i];
                 }
 
             }
@@ -77,7 +75,7 @@ public abstract class WallKickTest {
         fillInFakes();
         gameEngine = new GameEngine(12345, 1, fakeQueue,0);
         gameEngine.startGame();
-        actualStack = gameEngine.getStack();
+        actualGrid = gameEngine.getGrid();
         dummyBlock = new GarbageBlock(Integer.MAX_VALUE,0);
         System.out.println("Start " + testName.getMethodName() + "----------------------------------");
     }
