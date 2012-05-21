@@ -680,7 +680,7 @@ public class GameEngineTest {
     }
     
     @Test
-    public void garbageLine2() {
+    public void garbageLineIBlockInEmptyPosition() {
         /*Expected:
         [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
         [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
@@ -724,7 +724,53 @@ public class GameEngineTest {
         gameEngine.handleAction(new GarbageLineAction(System.nanoTime(), garbageLines));
         System.out.println(gameEngine);
         assertEqualBothGrids();
-    }  
+    }
+    
+        @Test
+    public void garbageLineNoCollision() {
+        /*Expected:
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][I][I][I][I][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+         */
+        addCurrentBlockToExpectedGrid(4, 1);
+        addCurrentBlockToExpectedGrid(5, 1);
+        addCurrentBlockToExpectedGrid(6, 1);
+        addCurrentBlockToExpectedGrid(7, 1);
+        
+
+        for (int i = 0; i < 21; i++) {
+            gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+        }
+
+        BlockAbstract[][] garbageLines = gameEngine.createGarbageLine(1, 5);
+        addGarbageLinesToExpectedGrid(garbageLines);
+        
+        gameEngine.handleAction(new GarbageLineAction(System.nanoTime(), garbageLines));
+        System.out.println(gameEngine);
+        assertEqualBothGrids();
+    }
 
     private void addGarbageLinesToExpectedGrid(BlockAbstract[][] garbageLines) {
         for (int y = 0; y < garbageLines[0].length; y++) {
