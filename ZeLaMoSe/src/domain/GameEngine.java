@@ -381,9 +381,14 @@ public class GameEngine extends GameEngineAbstract {
     }
 
     private void createGarbageLineAction(int numberOfLines) {
-        BlockAbstract[][] garbageLines = new BlockAbstract[gridWidth][numberOfLines];
+        BlockAbstract[][] garbageLines = createGarbageLine(numberOfLines, randomGarbageLineGenerator.nextInt(gridWidth));
+        lastActionForOthers = new GarbageLineAction(0, garbageLines);
+        setChanged();
+        notifyObservers(UpdateType.ACTIONFOROTHERS);
+    }
 
-        int emptyXPosition = randomGarbageLineGenerator.nextInt(gridWidth);
+    public BlockAbstract[][] createGarbageLine(int numberOfLines, int emptyXPosition) {
+        BlockAbstract[][] garbageLines = new BlockAbstract[gridWidth][numberOfLines];
         GarbageBlock garbageBlock = new GarbageBlock(Integer.MAX_VALUE, 0);
         for (int x = 0; x < gridWidth; ++x) {
             if (x == emptyXPosition) {
@@ -393,9 +398,7 @@ public class GameEngine extends GameEngineAbstract {
                 garbageLines[x][y] = garbageBlock;
             }
         }
-        lastActionForOthers = new GarbageLineAction(0, garbageLines);
-        setChanged();
-        notifyObservers(UpdateType.ACTIONFOROTHERS);
+        return garbageLines;
     }
 
     private void clearGrid() {
