@@ -772,6 +772,15 @@ public class GameEngineTest {
         assertEqualBothGrids();
     }
 
+    @Test
+    public void garbageLineGameOver() {
+        BlockAbstract[][] garbageLines = gameEngine.createGarbageLine(Config.gridHeight + 1, 5);
+        
+        gameEngine.handleAction(new GarbageLineAction(System.nanoTime(), garbageLines));
+        System.out.println(gameEngine);
+        assertEquals(true, gameEngine.getGameOver());
+    }
+        
     private void addGarbageLinesToExpectedGrid(BlockAbstract[][] garbageLines) {
         for (int y = 0; y < garbageLines[0].length; y++) {
             for (int x = 0; x < Config.gridWidth; x++) {
