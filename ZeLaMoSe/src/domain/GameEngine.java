@@ -450,7 +450,7 @@ public class GameEngine extends GameEngineAbstract {
     }
 
     public void setLastActionForOthers(Action action) {
-        System.out.println("out action for others: " + sessionId + " " + lastActionForOthers.getType().toString() + " " + lastActionForOthers.getTimestamp());
+        System.out.println("out action for others: " + sessionId + " " + action.getType().toString() + " " + action.getTimestamp());
         lastActionForOthers = action;
         setChanged();
         notifyObservers(UpdateType.ACTIONFOROTHERS);
