@@ -71,7 +71,7 @@ public class SimulationController implements StepInterface, Observer {
      * Execute simulation step. - Look for necessary states - Sort Actions - Simulation ACtions
      */
     public void simulateStep(int seqNum) {
-        Map<Action, Integer> actionList = new TreeMap<Action, Integer>(new Comparator() {
+        SortedMap<Action, Integer> actionList = new TreeMap<Action, Integer>(new Comparator() {
 
             @Override
             public int compare(Object t, Object t1) {
@@ -108,7 +108,7 @@ public class SimulationController implements StepInterface, Observer {
         }
     }
 
-    private void distributeActions(Map<Action, Integer> actionList) {
+    private void distributeActions(SortedMap<Action, Integer> actionList) {
         for (Map.Entry<Action, Integer> e : actionList.entrySet()) {
             System.out.println("handleAction: " + e.getValue().toString() + " " + e.getKey().getType() + " " + e.getKey().getTimestamp());
             if (!gameEngines.containsKey(e.getValue())) {
