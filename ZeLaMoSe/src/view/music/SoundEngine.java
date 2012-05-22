@@ -81,7 +81,7 @@ public class SoundEngine implements Observer {
                 playSound(MusicFile.rotateSound);
                 break;
             case DARK:
-                playSound(MusicFile.shadowSound);
+                playSound(MusicFile.darkSound);
                 break;
             case MIRROR:
                 playSound(MusicFile.mirrorSound);
@@ -104,5 +104,13 @@ public class SoundEngine implements Observer {
 
     public void stopBackGroundMusic(MusicFile backGroundMusic) {
         soundSystem.stop(backGroundMusic.name());
+    }
+
+    private void pauseSound(MusicFile musicFile) {
+        soundSystem.pause(musicFile.name());
+    }
+
+    private void continueSound(MusicFile musicFile) {
+        soundSystem.play(musicFile.name());
     }
 }
