@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
 import domain.actions.Action;
@@ -110,7 +106,6 @@ public class SimulationController implements StepInterface, Observer {
 
     private void distributeActions(SortedMap<Action, Integer> actionList) {
         for (Map.Entry<Action, Integer> e : actionList.entrySet()) {
-            System.out.println("handleAction: " + e.getValue().toString() + " " + e.getKey().getType() + " " + e.getKey().getTimestamp());
             if (!gameEngines.containsKey(e.getValue())) {
                 throw new IllegalStateException("Could not find gameEngine");
             }
@@ -128,7 +123,6 @@ public class SimulationController implements StepInterface, Observer {
     private void fillActionList(int seqNum, Map<Action, Integer> actionList) throws IllegalStateException {
         for (int session : sessions.keySet()) {
             Step s = stepQueue.remove(session);
-            //System.out.println("step: "+s+" session: "+session);
             if (s == null) {
                 throw new IllegalStateException("tried to simulate step, but not all steps are available. Session " + session + " is missing");
             }

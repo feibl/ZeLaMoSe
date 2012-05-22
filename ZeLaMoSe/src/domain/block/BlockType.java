@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain.block;
 
 import java.lang.reflect.Constructor;
@@ -25,7 +21,6 @@ public enum BlockType {
     public BlockAbstract createBlock(int blockNumber, long seed) {
         try {
             Constructor c = className.getConstructor(new Class[]{Integer.TYPE, Long.TYPE});
-
             return (BlockAbstract) (c.newInstance(new Object[]{blockNumber, seed}));
         } catch (Exception ex) {
             Logger.getLogger(BlockType.class.getName()).log(Level.SEVERE, null, ex);
@@ -36,7 +31,7 @@ public enum BlockType {
     BlockType(Class cn, int probability, boolean specialBlock) {
         this.className = cn;
         this.probability = probability;
-        this.specialBlock=specialBlock;
+        this.specialBlock = specialBlock;
     }
 
     public boolean isSpecialBlock() {
