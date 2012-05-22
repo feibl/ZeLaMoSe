@@ -20,7 +20,7 @@ public enum MusicFile {
     dropSound("drop.ogg"),
     gameOverSound("gameover.ogg"),
     moveSound("move.ogg"),
-    shadowSound("dark.ogg"),
+    darkSound("dark.ogg"),
     mirrorSound("mirror.ogg")
      ;
     private final static String basicPathToMusicFiles = "resource/music/";
