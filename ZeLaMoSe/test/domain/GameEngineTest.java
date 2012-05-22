@@ -4,10 +4,7 @@
  */
 package domain;
 
-import domain.actions.GarbageLineAction;
-import domain.actions.HardDropAction;
-import domain.actions.MoveAction;
-import domain.actions.RotateAction;
+import domain.actions.*;
 import domain.block.*;
 import domain.fake.FakeBlockQueue;
 import org.junit.After;
@@ -72,7 +69,7 @@ public class GameEngineTest {
         fakeQueue = new FakeBlockQueue();
         initializeExpectedGrid();
         fillInFakes();
-        gameEngine = new GameEngine(12345, 1, fakeQueue,0);
+        gameEngine = new GameEngine(12345, 1, fakeQueue, 1);
         gameEngine.startGame();
         System.out.println("Start " + testName.getMethodName() + "----------------------------------");
     }
@@ -771,7 +768,7 @@ public class GameEngineTest {
         System.out.println(gameEngine);
         assertEqualBothGrids();
     }
-
+        
     @Test
     public void garbageLineGameOver() {
         BlockAbstract[][] garbageLines = gameEngine.createGarbageLine(Config.gridHeight, 5);
@@ -790,5 +787,81 @@ public class GameEngineTest {
                 }
             }
         }
+    }
+        
+    @Test
+    public void joker() {
+        /*Expected:
+        [ ][ ][ ][ ][J][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][J][J][J][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+         */
+
+        gameEngine.handleAction(new HardDropAction(System.nanoTime()));
+        gameEngine.handleAction(new HardDropAction(System.nanoTime()));
+        gameEngine.handleAction(new HardDropAction(System.nanoTime()));
+        gameEngine.handleAction(new ClearAction(System.nanoTime()));
+        
+        System.out.println(gameEngine);
+        assertEqualBothGrids();
+    }
+    
+    @Test
+    public void darkBlockD() {
+        /*Expected:
+        [ ][ ][ ][ ][J][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][J][J][J][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+         */
+
+        gameEngine.handleAction(new HardDropAction(System.nanoTime()));
+        gameEngine.handleAction(new HardDropAction(System.nanoTime()));
+        gameEngine.handleAction(new HardDropAction(System.nanoTime()));
+        gameEngine.handleAction(new ClearAction(System.nanoTime()));
+        
+        System.out.println(gameEngine);
+        assertEqualBothGrids();
     }
 }
