@@ -97,8 +97,8 @@ public abstract class BlockAbstract implements Cloneable {
         rotation0(grid);
     }
 
-    private void generateRandomPositions(long blockNumber) {
-        Random random = new Random(blockNumber);
+    private void generateRandomPositions(long seed) {
+        Random random = new Random(seed);
         for (int i = 0; i < 32; i++) {
             posList.add(random.nextInt(4));
         }
