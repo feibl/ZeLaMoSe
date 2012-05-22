@@ -18,7 +18,7 @@ public class OBlock extends BlockAbstract {
     }
 
     @Override
-    protected void rotation0(BlockAbstract[][] grid) {
+    protected void rotation0() {
         grid[1][0] = this;
         grid[2][0] = this;
         grid[1][1] = this;
@@ -26,17 +26,17 @@ public class OBlock extends BlockAbstract {
     }
 
     @Override
-    protected void rotation90(BlockAbstract[][] grid) {
-        rotation0(grid);
+    protected void rotation90() {
+        rotation0();
     }
 
     @Override
-    protected void rotation180(BlockAbstract[][] grid) {
-        rotation0(grid);
+    protected void rotation180() {
+        rotation0();
     }
 
     @Override
-    protected void rotation270(BlockAbstract[][] grid) {
-        rotation0(grid);
+    protected void rotation270() {
+        rotation0();
     }
 }

@@ -21,22 +21,22 @@ public class GarbageBlock extends BlockAbstract {
     
 
     @Override
-    protected void rotation0(BlockAbstract[][] grid) {
+    protected void rotation0() {
         grid[0][0] = this;
     }
 
     @Override
-    protected void rotation90(BlockAbstract[][] grid) {
+    protected void rotation90() {
         throw new UnsupportedOperationException("Will never be Supported with this kind of Block");
     }
 
     @Override
-    protected void rotation180(BlockAbstract[][] grid) {
+    protected void rotation180() {
         throw new UnsupportedOperationException("Will never be Supported with this kind of Block");
     }
 
     @Override
-    protected void rotation270(BlockAbstract[][] grid) {
+    protected void rotation270() {
         throw new UnsupportedOperationException("Will never be Supported with this kind of Block");
     }
     

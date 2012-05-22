@@ -94,7 +94,7 @@ public abstract class BlockAbstract implements Cloneable {
         this.wallkick = wallkick;
         this.blockNumber = blockNumber;
         generateRandomPositions(blockNumber+seed);
-        rotation0(grid);
+        rotation0();
     }
 
     private void generateRandomPositions(long seed) {
@@ -131,10 +131,10 @@ public abstract class BlockAbstract implements Cloneable {
         handleRotation(false,wallKickTestNumber);
     }
     
-    protected abstract void rotation0 (BlockAbstract[][] grid);
-    protected abstract void rotation90 (BlockAbstract[][] grid);
-    protected abstract void rotation180 (BlockAbstract[][] grid);
-    protected abstract void rotation270 (BlockAbstract[][] grid);
+    protected abstract void rotation0 ();
+    protected abstract void rotation90 ();
+    protected abstract void rotation180 ();
+    protected abstract void rotation270 ();
     
     public BlockAbstract[][] getGrid() {
         return grid;
@@ -145,19 +145,19 @@ public abstract class BlockAbstract implements Cloneable {
         switch (rotation) {
             case 0:
                 blockRotationState = rightRotation ? BlockRotationState.r270r0 : BlockRotationState.r90r0;
-                rotation0(grid);
+                rotation0();
                 break;
             case 90:
                 blockRotationState = rightRotation ? BlockRotationState.r0r90 : BlockRotationState.r180r90;
-                rotation90(grid);
+                rotation90();
                 break;
             case 180:
                 blockRotationState = rightRotation ? BlockRotationState.r90r180 : BlockRotationState.r270r180;
-                rotation180(grid);
+                rotation180();
                 break;
             case 270:
                 blockRotationState = rightRotation ? BlockRotationState.r180r270 : BlockRotationState.r0r270;
-                rotation270(grid);
+                rotation270();
                 break;
         }
         switch(wallKickTestNumber){

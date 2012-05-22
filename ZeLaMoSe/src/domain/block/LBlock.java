@@ -18,7 +18,7 @@ public class LBlock extends BlockAbstract {
     }
 
     @Override
-    protected void rotation0(BlockAbstract[][] grid) {
+    protected void rotation0() {
         grid[0][1] = this;
         grid[1][1] = this;
         grid[2][0] = this;
@@ -26,7 +26,7 @@ public class LBlock extends BlockAbstract {
     }
 
     @Override
-    protected void rotation90(BlockAbstract[][] grid) {
+    protected void rotation90() {
         grid[1][0] = this;
         grid[1][1] = this;
         grid[1][2] = this;
@@ -34,7 +34,7 @@ public class LBlock extends BlockAbstract {
     }
 
     @Override
-    protected void rotation180(BlockAbstract[][] grid) {
+    protected void rotation180() {
         grid[0][1] = this;
         grid[0][2] = this;
         grid[1][1] = this;
@@ -42,7 +42,7 @@ public class LBlock extends BlockAbstract {
     }
 
     @Override
-    protected void rotation270(BlockAbstract[][] grid) {
+    protected void rotation270() {
         grid[0][0] = this;
         grid[1][0] = this;
         grid[1][1] = this;

@@ -21,7 +21,7 @@ public class MirrorBlock extends BlockAbstract implements SpecialBlockInterface 
     }
     
     @Override
-    protected void rotation0(BlockAbstract[][] grid) {
+    protected void rotation0() {
        // grid[0][0] = this;
         grid[posList.get(0)][posList.get(1)] = this;
         grid[posList.get(2)][posList.get(3)] = this;
@@ -31,7 +31,7 @@ public class MirrorBlock extends BlockAbstract implements SpecialBlockInterface 
     }
 
     @Override
-    protected void rotation90(BlockAbstract[][] grid) {
+    protected void rotation90() {
         grid[posList.get(8)][posList.get(9)] = this;
         grid[posList.get(10)][posList.get(11)] = this;
         grid[posList.get(12)][posList.get(13)] = this;
@@ -39,7 +39,7 @@ public class MirrorBlock extends BlockAbstract implements SpecialBlockInterface 
     }
 
     @Override
-    protected void rotation180(BlockAbstract[][] grid) {
+    protected void rotation180() {
         grid[posList.get(16)][posList.get(17)] = this;
         grid[posList.get(18)][posList.get(10)] = this;
         grid[posList.get(20)][posList.get(21)] = this;
@@ -47,7 +47,7 @@ public class MirrorBlock extends BlockAbstract implements SpecialBlockInterface 
     }
 
     @Override
-    protected void rotation270(BlockAbstract[][] grid) {
+    protected void rotation270() {
         grid[posList.get(24)][posList.get(25)] = this;
         grid[posList.get(26)][posList.get(27)] = this;
         grid[posList.get(28)][posList.get(29)] = this;

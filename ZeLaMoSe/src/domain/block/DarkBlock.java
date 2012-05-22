@@ -18,7 +18,7 @@ public class DarkBlock extends BlockAbstract implements SpecialBlockInterface {
     }
     
     @Override
-    protected void rotation0(BlockAbstract[][] grid) {
+    protected void rotation0() {
         grid[1][0] = this;
         grid[2][0] = this;
         grid[1][1] = this;
@@ -30,7 +30,7 @@ public class DarkBlock extends BlockAbstract implements SpecialBlockInterface {
     }
 
     @Override
-    protected void rotation90(BlockAbstract[][] grid) {
+    protected void rotation90() {
         grid[1][0] = this;
         grid[2][0] = this;
         grid[3][0] = this;
@@ -45,7 +45,7 @@ public class DarkBlock extends BlockAbstract implements SpecialBlockInterface {
     }
 
     @Override
-    protected void rotation180(BlockAbstract[][] grid) {
+    protected void rotation180() {
         grid[1][0] = this;
         grid[2][0] = this;
         grid[3][0] = this;
@@ -58,7 +58,7 @@ public class DarkBlock extends BlockAbstract implements SpecialBlockInterface {
     }
 
     @Override
-    protected void rotation270(BlockAbstract[][] grid) {
+    protected void rotation270() {
         grid[1][0] = this;
         grid[3][0] = this;
         grid[1][1] = this;
