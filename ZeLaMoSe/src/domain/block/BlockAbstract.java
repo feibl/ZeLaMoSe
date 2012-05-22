@@ -33,9 +33,9 @@ public abstract class BlockAbstract implements Cloneable {
     
     public int getHeight() {
         int height = 0;
-        for(int i = 0; i < grid.length ; i++){
-            for (int j = 0; j < grid.length; j++) {
-                if (grid[j][i] != null){
+        for(int y = 0; y < grid.length ; y++){
+            for (int x = 0; x < grid.length; x++) {
+                if (grid[x][y] != null){
                     height++;
                     break;
                 }
