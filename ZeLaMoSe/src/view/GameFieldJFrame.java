@@ -1,7 +1,7 @@
 package view;
 
-import domain.InputSampler;
-import domain.SimulationStateAbstract;
+import domain.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,15 +10,21 @@ import java.util.List;
  */
 public class GameFieldJFrame extends javax.swing.JFrame {
 
-    public GameFieldJFrame(InputSampler is, SimulationStateAbstract mainSimulation, List<SimulationStateAbstract> otherSimulations) {
-        initComponents();
-        ownGameFieldJPanel2.setInputSampler(is);
-        ownGameFieldJPanel2.initRenderer(mainSimulation);
+    private final TetrisController tetrisController;
 
-        for (SimulationStateAbstract gameEngine : otherSimulations) {
-            OtherGameFieldJPanel panel = new OtherGameFieldJPanel((gameEngine).getNickName(), gameEngine);
-            pnlEnemyAreas.add(panel);
-            gameEngine.addObserver(panel);
+    public GameFieldJFrame(TetrisController tetrisController) {
+        initComponents();
+        this.tetrisController = tetrisController;
+
+        ownGameFieldJPanel2.setInputSampler((InputSampler) tetrisController.getInputSampler());
+        ownGameFieldJPanel2.initRenderer(tetrisController.getSession(tetrisController.getLocalSessionID()));
+        for (Integer sessionID : tetrisController.getSessionMap().keySet()) {
+            if (sessionID != tetrisController.getLocalSessionID()) {
+                SimulationStateAbstract gameEngine = tetrisController.getSession(sessionID);
+                OtherGameFieldJPanel panel = new OtherGameFieldJPanel(gameEngine.getNickName(), gameEngine);
+                pnlEnemyAreas.add(panel);
+                gameEngine.addObserver(panel);
+            }
         }
     }
 
