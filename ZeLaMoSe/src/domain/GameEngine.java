@@ -234,6 +234,7 @@ public class GameEngine extends GameEngineAbstract {
 
     @Override
     public void handleAction(Action action) {
+        System.out.println(sessionId + " " + action.getType().toString() + " " + action.getTimestamp());
         if (!gameOver) {
             switch (action.getType()) {
                 case MOVE:
