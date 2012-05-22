@@ -22,9 +22,9 @@ public class SimulationController implements StepInterface, Observer {
             return ((Integer) t1).compareTo((Integer) t);
         }
     });
-    private Map<Integer, GameEngineAbstract> gameEngines = new HashMap<Integer, GameEngineAbstract>();
+    private SortedMap<Integer, GameEngineAbstract> gameEngines = new TreeMap<Integer, GameEngineAbstract>();
     private SortedMap<Integer, String> sessions = new TreeMap<Integer, String>();
-    private Map<Integer, Step> stepQueue = new HashMap<Integer, Step>();
+    private SortedMap<Integer, Step> stepQueue = new TreeMap<Integer, Step>();
     private int currentHighestLevel = 1;
     private boolean autoadvance = true;
 
