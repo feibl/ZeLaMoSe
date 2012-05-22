@@ -353,12 +353,14 @@ class GameFieldRenderer implements GLEventListener, Observer {
     }
 
     private void handleRemoveLineAction(final RemoveLineAction rmlineAction) {
+        saveCurrentblockToGrid();
+        currentBlock = null;
         new Thread(new Runnable() {
 
             @Override
             public void run() {
-                saveCurrentblockToGrid();
-                currentBlock = null;
+                
+                
 
                 BlockAbstract[][] linesToRemoveMarkedGrid = getGridCopy();
                 BlockAbstract[][] originalGrid = getGridCopy();
