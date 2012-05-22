@@ -145,6 +145,7 @@ public class GameEngine extends GameEngineAbstract {
                     lastActionForOthers = new ShadowAction(0, blockNumber);
                     score += 500;
                 }
+                System.out.println("out special: " + sessionId + " " + lastActionForOthers.getType().toString() + " " + lastActionForOthers.getTimestamp());
                 setChanged();
                 notifyObservers(UpdateType.ACTIONFOROTHERS);
                 alreadyUsedSpecialBlocks.add(blockNumber);
@@ -234,7 +235,7 @@ public class GameEngine extends GameEngineAbstract {
 
     @Override
     public void handleAction(Action action) {
-        System.out.println(sessionId + " " + action.getType().toString() + " " + action.getTimestamp());
+        System.out.println("in: " + sessionId + " " + action.getType().toString() + " " + action.getTimestamp());
         if (!gameOver) {
             switch (action.getType()) {
                 case MOVE:
@@ -381,9 +382,11 @@ public class GameEngine extends GameEngineAbstract {
         }
     }
 
-    private void createGarbageLineAction(int numberOfLines) {
+        private void createGarbageLineAction(int numberOfLines) {
         BlockAbstract[][] garbageLines = createGarbageLine(numberOfLines, randomGarbageLineGenerator.nextInt(gridWidth));
+        
         lastActionForOthers = new GarbageLineAction(0, garbageLines);
+        System.out.println("out garbage: " + sessionId + " " + lastActionForOthers.getType().toString() + " " + lastActionForOthers.getTimestamp());
         setChanged();
         notifyObservers(UpdateType.ACTIONFOROTHERS);
     }
@@ -447,6 +450,7 @@ public class GameEngine extends GameEngineAbstract {
     }
 
     public void setLastAction(Action action) {
+        System.out.println("out: " + sessionId + " " + action.getType().toString() + " " + action.getTimestamp());
         lastAction = action;
         setChanged();
         notifyObservers(UpdateType.LASTACTION);
