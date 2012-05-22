@@ -140,14 +140,11 @@ public class GameEngine extends GameEngineAbstract {
             if (!alreadyUsedSpecialBlocks.contains(blockNumber)) {
                 if (grid[x][lineToRemove] instanceof MirrorBlock) {
                     score += 300;
-                    lastActionForOthers = new MirrorAction(0, blockNumber);
+                    setLastActionForOthers(new MirrorAction(0, blockNumber));
                 } else if (grid[x][lineToRemove] instanceof DarkBlock) {
-                    lastActionForOthers = new ShadowAction(0, blockNumber);
                     score += 500;
+                    setLastActionForOthers(new ShadowAction(0, blockNumber));
                 }
-                System.out.println("out special: " + sessionId + " " + lastActionForOthers.getType().toString() + " " + lastActionForOthers.getTimestamp());
-                setChanged();
-                notifyObservers(UpdateType.ACTIONFOROTHERS);
                 alreadyUsedSpecialBlocks.add(blockNumber);
             }
         }
@@ -382,13 +379,9 @@ public class GameEngine extends GameEngineAbstract {
         }
     }
 
-        private void createGarbageLineAction(int numberOfLines) {
+    private void createGarbageLineAction(int numberOfLines) {
         BlockAbstract[][] garbageLines = createGarbageLine(numberOfLines, randomGarbageLineGenerator.nextInt(gridWidth));
-        
-        lastActionForOthers = new GarbageLineAction(0, garbageLines);
-        System.out.println("out garbage: " + sessionId + " " + lastActionForOthers.getType().toString() + " " + lastActionForOthers.getTimestamp());
-        setChanged();
-        notifyObservers(UpdateType.ACTIONFOROTHERS);
+        setLastActionForOthers(new GarbageLineAction(0, garbageLines));
     }
 
     public BlockAbstract[][] createGarbageLine(int numberOfLines, int emptyXPosition) {
@@ -454,6 +447,13 @@ public class GameEngine extends GameEngineAbstract {
         lastAction = action;
         setChanged();
         notifyObservers(UpdateType.LASTACTION);
+    }
+
+    public void setLastActionForOthers(Action action) {
+        System.out.println("out action for others: " + sessionId + " " + lastActionForOthers.getType().toString() + " " + lastActionForOthers.getTimestamp());
+        lastActionForOthers = action;
+        setChanged();
+        notifyObservers(UpdateType.ACTIONFOROTHERS);
     }
 
     @Override
