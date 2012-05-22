@@ -10,13 +10,6 @@ import java.util.List;
  */
 public class GameFieldJFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form frmGame
-     */
-    public GameFieldJFrame() {
-        initComponents();
-    }
-
     public GameFieldJFrame(InputSampler is, SimulationStateAbstract mainSimulation, List<SimulationStateAbstract> otherSimulations) {
         initComponents();
         ownGameFieldJPanel2.setInputSampler(is);
