@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jnlp codebase="http://152.96.56.80/ws/" href="launch.jnlp" spec="1.0+">
+    <information>
+        <title>Tetris</title>
+        <vendor>The ZeLaMoSe Company</vendor>
+        <homepage href=""/>
+        <description>Tetris</description>
+        <description kind="short">Tetris</description>
+        
+        
+    <offline-allowed/>
+</information>
+    <update check="background"/>
+    <security>
+<all-permissions/>
+</security>
+    <resources>
+        <j2se version="1.6+"/>
+        <jar href="ZeLaMoSe.jar" main="true"/>
+        
+        
+    <jar href="lib/SoundSystem.jar"/>
+<jar href="lib/LibraryJavaSound.jar"/>
+<jar href="lib/CodecJOrbis.jar"/>
+</resources>
+<resources os="Mac OSX">
+<jar href="lib/osx/gluegen-rt.jar"/>
+<jar href="lib/osx/jogl.all.jar"/>
+<jar href="lib/osx/jogl-all-natives-macosx-universal.jar"/>
+<jar href="lib/osx/gluegen-rt-natives-macosx-universal.jar"/>
+</resources>
+<resources os="Windows" arch="x86">
+<jar href="lib/windows/32/gluegen-rt-natives-windows-i586.jar"/>
+<jar href="lib/windows/32/gluegen-rt.jar"/>
+<jar href="lib/windows/32/jogl.all.jar"/>
+<jar href="lib/windows/32/jogl-all-natives-windows-i586.jar"/>
+</resources>
+<resources os="Windows" arch="amd64">
+<jar href="lib/windows/64/gluegen-rt-natives-windows-amd64.jar"/>
+<jar href="lib/windows/64/gluegen-rt.jar"/>
+<jar href="lib/windows/64/jogl-all-natives-windows-amd64.jar"/>
+<jar href="lib/windows/64/jogl.all.jar"/>
+</resources>
+<resources os="Linux" arch="x86">
+<jar href="lib/linux/32/gluegen-rt-natives-linux-i586.jar"/>
+<jar href="lib/linux/32/gluegen-rt.jar"/>
+<jar href="lib/linux/32/jogl-natives-linux-i586.jar"/>
+<jar href="lib/linux/32/jogl.all.jar"/>
+</resources>
+
+<resources os="Linux" arch="amd64">
+<jar href="lib/linux/64/gluegen-rt-natives-linux-amd64.jar"/>
+<jar href="lib/linux/64/gluegen-rt.jar"/>
+<jar href="lib/linux/64/jogl-natives-linux-amd64.jar"/>
+<jar href="lib/linux/64/jogl.all.jar"/>
+</resources>
+    <application-desc main-class="view.MainJFrame">
+        
+    </application-desc>
+</jnlp>
