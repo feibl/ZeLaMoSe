@@ -57,9 +57,9 @@ public abstract class BlockAbstract implements Cloneable {
     }
     public int getWidth() {
         int width = 0;
-        for(int i = 0; i < grid.length ; i++){
-            for (int j = 0; j < grid.length; j++) {
-                if (grid[i][j] != null){
+        for(int x = 0; x < grid.length ; x++){
+            for (int y = 0; y < grid.length; y++) {
+                if (grid[x][y] != null){
                     width++;
                     break;
                 }
