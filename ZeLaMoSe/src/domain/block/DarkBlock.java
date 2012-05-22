@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain.block;
 
 import domain.block.wallkick.NoWallKick;
@@ -13,10 +9,10 @@ import java.awt.Color;
  */
 public class DarkBlock extends BlockAbstract implements SpecialBlockInterface {
 
-    public DarkBlock(int blockNumber,long seed) {
-        super(new Color(40,40,40), "S", new NoWallKick(),blockNumber,seed);
+    public DarkBlock(int blockNumber, long seed) {
+        super(new Color(40, 40, 40), "S", new NoWallKick(), blockNumber, seed);
     }
-    
+
     @Override
     protected void rotation0() {
         grid[1][0] = this;
@@ -68,8 +64,4 @@ public class DarkBlock extends BlockAbstract implements SpecialBlockInterface {
         grid[1][3] = this;
         grid[3][3] = this;
     }
-    
-    
-    
-    
 }

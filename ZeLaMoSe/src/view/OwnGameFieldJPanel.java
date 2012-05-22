@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import com.jogamp.opengl.util.FPSAnimator;
@@ -25,13 +21,14 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
 
     private boolean useSound = false;
     private SoundEngine soundEngine = new SoundEngine();
+
     /**
      * Creates new form pnlGameField
      */
     public OwnGameFieldJPanel() {
         initComponents();
-        
-        
+
+
     }
 
     /**
@@ -226,20 +223,19 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tglSoundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tglSoundActionPerformed
-        
-        if(useSound){
+
+        if (useSound) {
             tglSound.setText("Sound On");
             soundEngine.playBackgroundMusic(MusicFile.gameBackgroundMusic);
             gameEngine.addObserver(soundEngine);
         } else {
             tglSound.setText("Sound Off");
-             soundEngine.stopBackGroundMusic(MusicFile.gameBackgroundMusic);
-             gameEngine.deleteObserver(soundEngine);
+            soundEngine.stopBackGroundMusic(MusicFile.gameBackgroundMusic);
+            gameEngine.deleteObserver(soundEngine);
         }
-       
+
         useSound = !useSound;
     }//GEN-LAST:event_tglSoundActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.media.opengl.awt.GLJPanel glPnlGameField;
     private javax.media.opengl.awt.GLJPanel glPnlNextBlock;
@@ -268,16 +264,14 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
         initOwnGameFieldRenderer();
         initNextBlockRenderer();
         soundEngine.playBackgroundMusic(MusicFile.gameBackgroundMusic);
-        
-        
+
+
     }
 
     public void setInputSampler(InputSampler is) {
         KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher(is);
     }
-
-   
 
     private GLCapabilities getGLCaps() {
         //best GL settings
@@ -304,23 +298,23 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
     }
 
     private void initOwnGameFieldRenderer() {
-        renderer = new GameFieldRenderer(Config.ownGameFieldBlockSize, gameEngine,true);
+        renderer = new GameFieldRenderer(Config.ownGameFieldBlockSize, gameEngine, true);
         glPnlGameField.addGLEventListener(renderer);
         FPSAnimator ownGameFieldAnimator = new FPSAnimator(glPnlGameField, Config.frameRate, true);
         ownGameFieldAnimator.start();
         SwingUtilities.invokeLater(new Runnable() {
+
             @Override
             public void run() {
-               lblPlayerName.setText(gameEngine.getNickName());
+                lblPlayerName.setText(gameEngine.getNickName());
             }
         });
     }
 
     private void initNextBlockRenderer() {
-        
+
         glPnlNextBlock.addGLEventListener(new NextBlockRenderer(gameEngine));
         FPSAnimator ownGameFieldAnimator = new FPSAnimator(glPnlNextBlock, Config.frameRate, true);
         ownGameFieldAnimator.start();
     }
-
 }

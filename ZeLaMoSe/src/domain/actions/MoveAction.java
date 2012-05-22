@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain.actions;
 
 /**
@@ -9,8 +5,9 @@ package domain.actions;
  * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public class MoveAction extends Action {
-    
+
     public enum Direction {
+
         LEFT, RIGHT, DOWN
     }
     private Direction direction;
@@ -21,14 +18,12 @@ public class MoveAction extends Action {
         this.direction = dir;
         this.speed = speed;
     }
-    
+
     public Direction getDirection() {
         return direction;
     }
-    
+
     public int getSpeed() {
         return speed;
     }
-    
-    
 }

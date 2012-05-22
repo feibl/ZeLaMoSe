@@ -7,11 +7,12 @@ import java.net.MulticastSocket;
 
 /**
  *
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class DiscoveryServer extends Thread {
+
     private boolean doDiscovery = true;
-    
+
     @Override
     public void run() {
         try {

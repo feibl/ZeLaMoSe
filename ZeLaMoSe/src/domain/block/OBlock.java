@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain.block;
 
 import domain.block.wallkick.NoWallKick;
@@ -13,8 +9,8 @@ import java.awt.Color;
  */
 public class OBlock extends BlockAbstract {
 
-    public OBlock(int blockNumber,long seed) {
-        super(new Color(255, 255, 0), "O", new NoWallKick(),blockNumber,seed);
+    public OBlock(int blockNumber, long seed) {
+        super(new Color(255, 255, 0), "O", new NoWallKick(), blockNumber, seed);
     }
 
     @Override

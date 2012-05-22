@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain.actions;
 
 /**
@@ -9,6 +5,7 @@ package domain.actions;
  * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public class RotateAction extends Action {
+
     private int XOffset, YOffset;
 
     public void setXOffset(int XOffset) {
@@ -19,9 +16,8 @@ public class RotateAction extends Action {
         this.YOffset = YOffset;
     }
 
-   
-    
     public enum Direction {
+
         LEFT, RIGHT
     }
     private Direction direction;
@@ -30,7 +26,7 @@ public class RotateAction extends Action {
         super(ActionType.ROTATION, timestamp);
         this.direction = dir;
     }
-    
+
     public Direction getDirection() {
         return direction;
     }
@@ -42,5 +38,4 @@ public class RotateAction extends Action {
     public int getYOffset() {
         return YOffset;
     }
-    
 }

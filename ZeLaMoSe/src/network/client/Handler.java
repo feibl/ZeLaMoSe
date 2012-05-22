@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package network.client;
 
 import domain.Config;
@@ -28,8 +24,8 @@ public class Handler extends UnicastRemoteObject implements HandlerInterface, Cl
 
     public Handler(NetworkHandler networkHandler) throws RemoteException {
         this.networkHandler = networkHandler;
-        File policy= Config.convertRMI(GameServer.class);
-        System.setProperty("java.security.policy", policy.getAbsolutePath() );
+        File policy = Config.convertRMI(GameServer.class);
+        System.setProperty("java.security.policy", policy.getAbsolutePath());
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new RMISecurityManager());
         }
@@ -40,7 +36,7 @@ public class Handler extends UnicastRemoteObject implements HandlerInterface, Cl
         try {
             sessionRemote.disconnect();
         } catch (RemoteException ex) {
-            System.out.println("Couldn't reach server while disconnected");
+            System.out.println("Couldn't reach server while disconnecting");
         }
     }
 

@@ -1,19 +1,15 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package network.client;
 
 import domain.Step;
 import domain.TetrisController.UpdateType;
-import java.net.MalformedURLException;
 import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.*;
-import network.*;
+import network.ChatMessage;
+import network.GameParams;
+import network.SessionInformation;
 import network.server.GameServerRemoteInterface;
 import network.server.SessionRemoteInterface;
 

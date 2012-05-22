@@ -1,24 +1,22 @@
 package domain;
 
-import domain.actions.Action;
-import domain.fake.FakeStepGenerator;
-import domain.fake.FakeNetworkHandler;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import domain.actions.MoveAction;
+import domain.fake.FakeNetworkHandler;
+import domain.fake.FakeStepGenerator;
 import java.util.Observable;
 import java.util.Observer;
 import network.SessionInformation;
-
+import org.junit.After;
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  *
  * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public class TetrisControllerTest {
-    
+
     TetrisController tC;
     SimulationController sC;
     FakeNetworkHandler nH;
@@ -26,10 +24,8 @@ public class TetrisControllerTest {
     int sessionID = 3;
 
     public TetrisControllerTest() {
-        
     }
-    
-    
+
     @Before
     public void setUp() {
         sC = new SimulationController();
@@ -37,11 +33,11 @@ public class TetrisControllerTest {
         sG = new FakeStepGenerator();
         tC = new TetrisController(sC, nH, sG, false);
     }
-  
+
     @After
     public void tearDown() {
     }
-    
+
     Step createStep(int i, int session) {
         Step s = new Step(i, session);
         s.addAction(new MoveAction(10, MoveAction.Direction.LEFT, 1));
@@ -50,7 +46,7 @@ public class TetrisControllerTest {
         s.addAction(new MoveAction(40, MoveAction.Direction.DOWN, 1));
         return s;
     }
-  
+
     @Test
     public void testSimulation() {
         assertTrue(nH.getSessionList().containsKey(sessionID));
@@ -59,12 +55,11 @@ public class TetrisControllerTest {
         nH.setGameStarted();
         SimulationStateAbstract gE = sC.getSimulationStateInterface(sessionID);
         assertNotNull(gE);
-        GameEngine gameEngine = (GameEngine)gE;
+        GameEngine gameEngine = (GameEngine) gE;
         assertEquals(gameEngine.getSessionID(), sessionID);
         System.out.println(gameEngine);
-        
+
         for (int i = 0; i < 10; i++) {
-//            System.out.println(i+"############################################");
             sG.step = createStep(i, sessionID);
             assertEquals(sG.step.getSequenceNumber(), i);
             tC.runStep();
@@ -73,9 +68,11 @@ public class TetrisControllerTest {
 
         System.out.println(gameEngine);
     }
-    
+
     class Tester implements Observer {
+
         GameEngine ge;
+
         Tester(GameEngine g) {
             g.addObserver(this);
             ge = g;
@@ -87,7 +84,7 @@ public class TetrisControllerTest {
             //Action s = ge.getSimulationState();
         }
     }
-    
+
     @Test
     public void testSimulationWithMultipleSessions() {
         nH.setConnected();
@@ -95,16 +92,16 @@ public class TetrisControllerTest {
         nH.getSessionList().put(5, "session5");
         nH.getSessionList().put(6, "session6");
         nH.setGameStarted();
-        
-        GameEngine gE1 = (GameEngine)sC.getSimulationStateInterface(sessionID);
+
+        GameEngine gE1 = (GameEngine) sC.getSimulationStateInterface(sessionID);
         new Tester(gE1);
-        GameEngine gE2 = (GameEngine)sC.getSimulationStateInterface(4);
+        GameEngine gE2 = (GameEngine) sC.getSimulationStateInterface(4);
         new Tester(gE2);
-        GameEngine gE3 = (GameEngine)sC.getSimulationStateInterface(5);
+        GameEngine gE3 = (GameEngine) sC.getSimulationStateInterface(5);
         new Tester(gE3);
-        GameEngine gE4 = (GameEngine)sC.getSimulationStateInterface(6);
+        GameEngine gE4 = (GameEngine) sC.getSimulationStateInterface(6);
         new Tester(gE4);
-        
+
         for (int i = 0; i < 10; i++) {
             sG.step = createStep(i, sessionID);
             tC.runStep();
@@ -113,13 +110,12 @@ public class TetrisControllerTest {
             nH.addRemoteStep(createStep(i, 5));
             nH.addRemoteStep(createStep(i, 6));
             if (i > 0) { //Start of simulations
-                
             }
         }
-        
-        GameEngine gE = (GameEngine)sC.getSimulationStateInterface(sessionID);
+
+        GameEngine gE = (GameEngine) sC.getSimulationStateInterface(sessionID);
         assertNotNull(gE);
 
-        
-    } 
+
+    }
 }

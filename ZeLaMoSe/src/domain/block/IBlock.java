@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain.block;
 
 import domain.block.wallkick.IWallKick;
@@ -12,10 +8,9 @@ import java.awt.Color;
  * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class IBlock extends BlockAbstract {
-    
-    
-    public IBlock(int blockNumber,long seed){
-        super(new Color(0,255,255),"I",new IWallKick(),blockNumber,seed);
+
+    public IBlock(int blockNumber, long seed) {
+        super(new Color(0, 255, 255), "I", new IWallKick(), blockNumber, seed);
     }
 
     @Override
@@ -49,5 +44,4 @@ public class IBlock extends BlockAbstract {
         grid[1][2] = this;
         grid[1][3] = this;
     }
-    
 }

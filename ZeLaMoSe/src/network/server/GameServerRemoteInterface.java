@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package network.server;
 
 import java.rmi.Remote;
@@ -17,6 +13,8 @@ import network.client.ClientRemoteInterface;
  * @author Fabian Senn <fsenn@hsr.ch>
  */
 public interface GameServerRemoteInterface extends Remote {
-  public SessionRemoteInterface createSession(String nickname, ClientRemoteInterface clientRemote) throws RemoteException, ServerFullException, GameAlreadyStartedException;
-  public List<SessionInformation> getSessionList() throws RemoteException;
+
+    public SessionRemoteInterface createSession(String nickname, ClientRemoteInterface clientRemote) throws RemoteException, ServerFullException, GameAlreadyStartedException;
+
+    public List<SessionInformation> getSessionList() throws RemoteException;
 }

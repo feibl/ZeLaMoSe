@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain.actions;
 
 import domain.block.BlockAbstract;
@@ -10,7 +6,8 @@ import domain.block.BlockAbstract;
  *
  * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
-public class GarbageLineAction extends Action{
+public class GarbageLineAction extends Action {
+
     BlockAbstract[][] lines;
     int currentBlockYOffset;
 
@@ -19,7 +16,6 @@ public class GarbageLineAction extends Action{
         this.lines = line;
     }
 
-    
     public BlockAbstract[][] getLines() {
         return lines;
     }
@@ -27,9 +23,8 @@ public class GarbageLineAction extends Action{
     public void setYOffsetForCurrentBlock(int i) {
         currentBlockYOffset = i;
     }
-    
+
     public int getYOffsetForCurrentBlock() {
         return currentBlockYOffset;
     }
-    
 }

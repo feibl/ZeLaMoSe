@@ -1,12 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
 import domain.block.BlockAbstract;
 import domain.block.BlockType;
-import domain.block.GarbageBlock;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -20,12 +15,6 @@ public class BlockQueue implements BlockQueueInterface {
     private Random randomGenerator;
     private List<BlockType> blocksProbability;
     private int blockCounter;
-    /**
-     * initalise blockqueue with given seed to make sure it's always the same order
-     *
-     * @param seed
-     *
-     */
     private long seed;
 
     public BlockQueue(long seed) {

@@ -1,16 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import domain.ChatController;
 import domain.TetrisController;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.AbstractListModel;
-import javax.swing.ListModel;
-import javax.swing.event.ListDataListener;
 import network.SessionInformation;
 
 /**

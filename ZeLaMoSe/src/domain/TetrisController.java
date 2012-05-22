@@ -1,19 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
-import java.net.*;
+import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.*;
+import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.concurrent.ConcurrentHashMap;
 import network.GameParams;
 import network.client.NetworkHandlerAbstract;
-import network.server.GameServerInterface;
 import network.server.GameServer;
+import network.server.GameServerInterface;
 
 /**
  *
@@ -28,18 +26,15 @@ public class TetrisController extends Observable implements Observer {
     public final static int SERVER_PORT = Registry.REGISTRY_PORT;
     public static final String SERVER_NAME = "TetrisServer";
     private boolean autorun = true;
-    
     private ConcurrentHashMap<Integer, String> sessionMap;
     private SimulationController simulationController;
     private NetworkHandlerAbstract networkHandler;
-    private StepGeneratorAbstract stepGenerator;    
+    private StepGeneratorAbstract stepGenerator;
     private GameServerInterface gameServer;
     private volatile boolean gameRunning;
     private Exception thrownException;
     private int localSessionID = -1;
     private int currentStep = 0;
-    
-    
 
     public enum UpdateType {
 
@@ -49,7 +44,7 @@ public class TetrisController extends Observable implements Observer {
     public TetrisController(SimulationController sController, NetworkHandlerAbstract nH, StepGeneratorAbstract sG) {
         this(sController, nH, sG, true);
     }
-    
+
     public TetrisController(SimulationController sController, NetworkHandlerAbstract nH, StepGeneratorAbstract sG, boolean autorun) {
         simulationController = sController;
         networkHandler = nH;
@@ -74,11 +69,11 @@ public class TetrisController extends Observable implements Observer {
     public InputSamplerInterface getInputSampler() {
         return stepGenerator.getInputSampler();
     }
-        
+
     public Exception getThrownException() {
         return thrownException;
     }
-    
+
     public void startServer() throws RemoteException, MalformedURLException {
         try {
             LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
@@ -105,7 +100,7 @@ public class TetrisController extends Observable implements Observer {
     public void startGame(long blockQueueSeed, int nbrOfJokers, boolean includeSpecialBlocks, int startLevel) {
         gameServer.startGame(blockQueueSeed, nbrOfJokers, includeSpecialBlocks, startLevel);
         gameServer.stopDiscoveryServer();
-        
+
     }
 
     @Override
@@ -143,7 +138,7 @@ public class TetrisController extends Observable implements Observer {
                 for (Map.Entry<Integer, String> entry : sessionMap.entrySet()) {
                     simulationController.addSession(entry.getKey(), entry.getValue(), new GameEngine(entry.getKey(), seed, gameParams.isIncludeSpecialBlocks(), numberOfJokers));
                 }
-                
+
                 setChanged();
                 notifyObservers(UpdateType.INIT_SIGNAL);
                 networkHandler.sendReadySignal();
@@ -179,9 +174,8 @@ public class TetrisController extends Observable implements Observer {
     }
 
     private void handleException(Exception e) {
-        e.printStackTrace();
         System.out.println(e.getMessage());
-        
+
         thrownException = e;
         setChanged();
         notifyObservers(UpdateType.EXCEPTION_THROWN);
@@ -193,7 +187,6 @@ public class TetrisController extends Observable implements Observer {
      * public for testing
      */
     public void runStep() {
-        //System.out.println("running step: " + currentStep + " time: " + System.currentTimeMillis());
         try {
             if (currentStep > 0) { //on the first step we don't have all steps available so we wait for the others and don't simulate yet
                 networkHandler.processStep();

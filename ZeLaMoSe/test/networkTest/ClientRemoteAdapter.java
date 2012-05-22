@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package networkTest;
 
 import domain.Step;
@@ -9,9 +5,8 @@ import java.rmi.RemoteException;
 import java.util.Collection;
 import network.ChatMessage;
 import network.GameParams;
-import network.client.ClientRemoteInterface;
-import network.server.SessionRemoteInterface;
 import network.SessionInformation;
+import network.client.ClientRemoteInterface;
 import org.junit.Ignore;
 
 /**
@@ -44,5 +39,4 @@ public class ClientRemoteAdapter implements ClientRemoteInterface {
     @Override
     public void receiveSteps(Collection<Step> steps) throws RemoteException {
     }
-
 }

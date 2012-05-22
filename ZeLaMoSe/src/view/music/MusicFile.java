@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.music;
 
 import java.net.URL;
@@ -11,6 +7,7 @@ import java.net.URL;
  * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public enum MusicFile {
+
     gameBackgroundMusic("BackgroundThemeA.ogg"),
     mainBackgroundMusic("main.ogg"),
     lobbyBackgroundMusic("lobby.ogg"),
@@ -21,22 +18,21 @@ public enum MusicFile {
     gameOverSound("gameover.ogg"),
     moveSound("move.ogg"),
     darkSound("dark.ogg"),
-    mirrorSound("mirror.ogg")
-     ;
+    mirrorSound("mirror.ogg");
     private final static String basicPathToMusicFiles = "resource/music/";
     private URL url;
     private String fileName;
+
     private MusicFile(String musicFile) {
         fileName = musicFile;
         this.url = this.getClass().getClassLoader().getResource(basicPathToMusicFiles + fileName);
     }
-    
-    public String getFileName(){
+
+    public String getFileName() {
         return fileName;
     }
 
     public URL getUrl() {
         return url;
     }
-    
 }

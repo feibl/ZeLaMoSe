@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain.block;
 
 import domain.block.wallkick.GeneralWallKick;
@@ -13,8 +9,8 @@ import java.awt.Color;
  */
 public class ZBlock extends BlockAbstract {
 
-    public ZBlock(int blockNumber,long seed) {
-        super(new Color(255,0,0),"Z", new GeneralWallKick(),blockNumber,seed);
+    public ZBlock(int blockNumber, long seed) {
+        super(new Color(255, 0, 0), "Z", new GeneralWallKick(), blockNumber, seed);
     }
 
     @Override
@@ -48,5 +44,4 @@ public class ZBlock extends BlockAbstract {
         grid[1][1] = this;
         grid[0][2] = this;
     }
-    
 }

@@ -1,14 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain.block;
 
 import domain.block.wallkick.NoWallKick;
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 /**
  *
@@ -16,18 +9,18 @@ import java.util.Random;
  */
 public class MirrorBlock extends BlockAbstract implements SpecialBlockInterface {
 
-    public MirrorBlock(int blockNumber,long seed) {
-        super(Color.white, "M", new NoWallKick(),blockNumber,seed);
+    public MirrorBlock(int blockNumber, long seed) {
+        super(Color.white, "M", new NoWallKick(), blockNumber, seed);
     }
-    
+
     @Override
     protected void rotation0() {
-       // grid[0][0] = this;
+        // grid[0][0] = this;
         grid[posList.get(0)][posList.get(1)] = this;
         grid[posList.get(2)][posList.get(3)] = this;
         grid[posList.get(4)][posList.get(5)] = this;
         grid[posList.get(6)][posList.get(7)] = this;
-    
+
     }
 
     @Override
@@ -56,22 +49,19 @@ public class MirrorBlock extends BlockAbstract implements SpecialBlockInterface 
 
     @Override
     public float getGlBlue() {
-        glBlue=(glBlue+0.015f)%1;
+        glBlue = (glBlue + 0.015f) % 1;
         return super.getGlBlue();
     }
 
     @Override
     public float getGlGreen() {
-        glGreen = (glGreen+0.01f)%1;
+        glGreen = (glGreen + 0.01f) % 1;
         return super.getGlGreen();
     }
 
     @Override
     public float getGlRed() {
-        glRed = (glRed+0.016f)%1;
+        glRed = (glRed + 0.016f) % 1;
         return super.getGlRed();
     }
-    
-    
-    
 }

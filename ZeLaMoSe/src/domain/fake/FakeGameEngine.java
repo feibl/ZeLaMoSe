@@ -1,9 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain.fake;
-import domain.SimulationController;
+
 import domain.GameEngineAbstract;
 import domain.actions.Action;
 import domain.actions.GarbageLineAction;
@@ -14,39 +10,40 @@ import domain.block.BlockAbstract;
  * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public class FakeGameEngine extends GameEngineAbstract {
-  private Action lastAction  = null;
-  private int sessionId;
-  public FakeGameEngine(int sessionId) {
-      this.sessionId = sessionId;
-  }
 
-  @Override
-  public int getSessionID() {
-    return this.sessionId;
-  }
+    private Action lastAction = null;
+    private int sessionId;
+
+    public FakeGameEngine(int sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    @Override
+    public int getSessionID() {
+        return this.sessionId;
+    }
 
     @Override
     public void startGame() {
-      
-    }  
-  
-  @Override
-  public void handleAction(Action action) {
-//      System.out.println("simulate action");
-      lastAction = action;
-      setChanged();
-      notifyObservers();
-  }
-  
-  public Action getLastAction() {
-      return lastAction;
-  }
+    }
 
-  @Override
-  public Action getSimulationState() {
-    //do nothing
-      return lastAction;
-  }
+    @Override
+    public void handleAction(Action action) {
+//      System.out.println("simulate action");
+        lastAction = action;
+        setChanged();
+        notifyObservers();
+    }
+
+    public Action getLastAction() {
+        return lastAction;
+    }
+
+    @Override
+    public Action getSimulationState() {
+        //do nothing
+        return lastAction;
+    }
 
     @Override
     public int getLevel() {
@@ -59,30 +56,27 @@ public class FakeGameEngine extends GameEngineAbstract {
         return "MockGameEndine " + sessionId;
     }
 
-
     @Override
     public void setNickName(String nickName) {
-       
     }
 
     @Override
     public GarbageLineAction getlastActionForOthers() {
-       return null;
+        return null;
     }
 
     @Override
     public int getNumberOfJokers() {
-       return 0;
+        return 0;
     }
 
     @Override
     public int getScore() {
-       return 0;
+        return 0;
     }
 
     @Override
     public void setRank(int rank) {
-        
     }
 
     @Override
@@ -119,7 +113,4 @@ public class FakeGameEngine extends GameEngineAbstract {
     public void setLevel(int currentHighestLevel) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
-  
-    
 }

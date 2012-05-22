@@ -1,19 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
-import network.client.DiscoveryClient;
 import domain.TetrisController;
 import java.awt.CardLayout;
-import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.SwingUtilities;
+import network.client.DiscoveryClient;
 import view.MainJFrame.GameMode;
 
 /**
@@ -60,8 +53,8 @@ public class JoinGameJDialog extends javax.swing.JDialog implements Observer {
         if (gameMode == GameMode.MULTI_PLAYER_HOST || gameMode == GameMode.SINGLE_PLAYER) {
             connectToServer("localhost");
         }
-           listServer.setModel(serverDiscoveryClient.getServerListModel());
-       getRootPane().setDefaultButton(btnJoin);
+        listServer.setModel(serverDiscoveryClient.getServerListModel());
+        getRootPane().setDefaultButton(btnJoin);
     }
 
     private void connectToServer(final String serverIP) {
@@ -288,7 +281,7 @@ public class JoinGameJDialog extends javax.swing.JDialog implements Observer {
     }//GEN-LAST:event_listServerPropertyChange
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-            listServer.setModel(serverDiscoveryClient.getServerListModel());
+        listServer.setModel(serverDiscoveryClient.getServerListModel());
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     @Override

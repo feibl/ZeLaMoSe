@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package networkTest;
 
 import domain.Config;
@@ -20,11 +16,12 @@ import java.util.Observer;
 import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import network.client.NetworkHandlerAbstract;
 import network.client.NetworkHandler;
+import network.client.NetworkHandlerAbstract;
 import network.server.GameServer;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.*;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -162,7 +159,7 @@ public class NetworkIntegrationTest {
                 future.cancel(true);
             }
 
-            assertEquals(MAX_SESSIONS * MAX_SESSIONS * (stepSequencyNr+1), count);
+            assertEquals(MAX_SESSIONS * MAX_SESSIONS * (stepSequencyNr + 1), count);
             assertTrue(timeAfter >= 0);
             System.out.println("Delay(ms): " + (timeAfter - timeBefore));
             assertTrue(timeAfter - timeBefore < 50);

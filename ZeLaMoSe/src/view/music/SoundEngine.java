@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.music;
 
 import domain.SimulationStateAbstract;
@@ -20,7 +16,7 @@ import paulscode.sound.libraries.LibraryJavaSound;
 
 /**
  *
- * @author Cyrill
+ * @author Cyrill Lam <clam@hsr.ch>
  */
 public class SoundEngine implements Observer {
 
@@ -32,7 +28,6 @@ public class SoundEngine implements Observer {
             SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
             soundSystem = new SoundSystem(LibraryJavaSound.class);
         } catch (SoundSystemException ex) {
-            ex.printStackTrace();
             Logger.getLogger(SoundEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
 

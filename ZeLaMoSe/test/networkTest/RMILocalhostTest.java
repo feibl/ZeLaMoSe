@@ -1,33 +1,23 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package networkTest;
 
 import domain.Config;
 import domain.Step;
+import domain.TetrisController.UpdateType;
+import java.io.File;
 import java.net.MalformedURLException;
+import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Observable;
-import java.util.Observer;
-import domain.TetrisController.UpdateType;
-import java.io.File;
-import java.rmi.RMISecurityManager;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import network.GameAlreadyStartedException;
 import network.SessionInformation;
 import network.client.Handler;
 import network.client.NetworkHandler;
 import network.server.GameServer;
 import network.server.Session;
-import network.server.SessionRemoteInterface;
-import org.junit.*;
 import static org.junit.Assert.*;
-import sun.awt.geom.AreaOp;
+import org.junit.*;
 
 /**
  *

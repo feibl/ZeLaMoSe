@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain.block;
 
 import domain.block.wallkick.GeneralWallKick;
@@ -13,8 +9,8 @@ import java.awt.Color;
  */
 public class LBlock extends BlockAbstract {
 
-    public LBlock(int blockNumber,long seed) {
-        super(new Color(255, 170, 0), "L", new GeneralWallKick(), blockNumber,seed);
+    public LBlock(int blockNumber, long seed) {
+        super(new Color(255, 170, 0), "L", new GeneralWallKick(), blockNumber, seed);
     }
 
     @Override

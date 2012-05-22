@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
@@ -13,7 +9,10 @@ import domain.block.BlockAbstract;
 import domain.block.GarbageBlock;
 import domain.block.OBlock;
 import java.awt.Font;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -325,8 +324,8 @@ class GameFieldRenderer implements GLEventListener, Observer {
             System.arraycopy(lines[x], 0, grid[x], 0, lines[x].length);
         }
     }
-    
-        @Override
+
+    @Override
     public String toString() {
         StringBuilder gridAsString = new StringBuilder();
         for (int i = Config.gridHeight - 1; i >= 0; i--) {
@@ -359,9 +358,6 @@ class GameFieldRenderer implements GLEventListener, Observer {
 
             @Override
             public void run() {
-                
-                
-
                 BlockAbstract[][] linesToRemoveMarkedGrid = getGridCopy();
                 BlockAbstract[][] originalGrid = getGridCopy();
 
@@ -449,7 +445,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 break;
             case GARBAGELINE:
                 handleGarbageLineAction(((GarbageLineAction) action).getLines());
-                currentBlock.setY(currentBlock.getY()+((GarbageLineAction) action).getYOffsetForCurrentBlock());
+                currentBlock.setY(currentBlock.getY() + ((GarbageLineAction) action).getYOffsetForCurrentBlock());
                 break;
             case MIRROR:
                 handleMirrorAction();
@@ -688,12 +684,12 @@ class GameFieldRenderer implements GLEventListener, Observer {
                     grid[5][16] = dummyBlock;
                     grid[6][15] = dummyBlock;
                     grid[5][15] = dummyBlock;
-                    
+
                     grid[4][14] = dummyBlock;
                     grid[3][14] = dummyBlock;
                     grid[4][13] = dummyBlock;
                     grid[3][13] = dummyBlock;
-                    
+
                     grid[2][12] = dummyBlock;
                     grid[1][12] = dummyBlock;
                     grid[2][11] = dummyBlock;

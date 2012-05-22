@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain.block;
 
 import domain.Config;
@@ -21,8 +17,6 @@ public abstract class BlockAbstract implements Cloneable {
 
     protected Color color;
     protected float glRed, glGreen, glBlue;
-
-    
     protected BlockAbstract[][] grid = new BlockAbstract[Config.gridBlockWidth][Config.gridBlockHeight];
     protected int rotation, x, y;
     protected String printLetter;
@@ -30,12 +24,12 @@ public abstract class BlockAbstract implements Cloneable {
     protected WallKickAbstract wallkick;
     private final int blockNumber;
     protected List<Integer> posList = new ArrayList<Integer>();
-    
+
     public int getHeight() {
         int height = 0;
-        for(int y = 0; y < grid.length ; y++){
-            for (int x = 0; x < grid.length; x++) {
-                if (grid[x][y] != null){
+        for (int curY = 0; curY < grid.length; curY++) {
+            for (int curX = 0; curX < grid.length; curX++) {
+                if (grid[curX][curY] != null) {
                     height++;
                     break;
                 }
@@ -52,14 +46,15 @@ public abstract class BlockAbstract implements Cloneable {
         return rotation;
     }
 
-    public BlockRotationState getBlockRotationState(){
+    public BlockRotationState getBlockRotationState() {
         return blockRotationState;
     }
+
     public int getWidth() {
         int width = 0;
-        for(int x = 0; x < grid.length ; x++){
-            for (int y = 0; y < grid.length; y++) {
-                if (grid[x][y] != null){
+        for (int curX = 0; curX < grid.length; curX++) {
+            for (int curY = 0; curY < grid.length; curY++) {
+                if (grid[curX][curY] != null) {
                     width++;
                     break;
                 }
@@ -68,32 +63,32 @@ public abstract class BlockAbstract implements Cloneable {
         return width;
     }
 
-
     public int getX() {
         return x;
     }
 
     public void setX(int x) {
-        this.x  = x;
+        this.x = x;
     }
-    
+
     public int getY() {
         return y;
     }
+
     public void setY(int y) {
-        this.y  = y;
+        this.y = y;
     }
-     
-    public BlockAbstract(Color c,String printLetter, WallKickAbstract wallkick,int blockNumber,long seed){
+
+    public BlockAbstract(Color c, String printLetter, WallKickAbstract wallkick, int blockNumber, long seed) {
         color = c;
         glRed = convertRgbToGlColor(color.getRed());
         glBlue = convertRgbToGlColor(color.getBlue());
         glGreen = convertRgbToGlColor(color.getGreen());
-        rotation = 0; 
+        rotation = 0;
         this.printLetter = printLetter;
         this.wallkick = wallkick;
         this.blockNumber = blockNumber;
-        generateRandomPositions(blockNumber+seed);
+        generateRandomPositions(blockNumber + seed);
         rotation0();
     }
 
@@ -103,7 +98,7 @@ public abstract class BlockAbstract implements Cloneable {
             posList.add(random.nextInt(4));
         }
     }
-        
+
     protected void initializeGrid(BlockAbstract[][] grid) {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
@@ -111,15 +106,14 @@ public abstract class BlockAbstract implements Cloneable {
             }
         }
     }
-        
-    public Color getColor(){
+
+    public Color getColor() {
         return color;
     }
-    
 
     public void rotateRight(int wallKickTestNumber) {
         rotation = (rotation + 90) % 360;
-        handleRotation(true,wallKickTestNumber);
+        handleRotation(true, wallKickTestNumber);
     }
 
     public void rotateLeft(int wallKickTestNumber) {
@@ -128,19 +122,22 @@ public abstract class BlockAbstract implements Cloneable {
         } else {
             rotation -= 90;
         }
-        handleRotation(false,wallKickTestNumber);
+        handleRotation(false, wallKickTestNumber);
     }
-    
-    protected abstract void rotation0 ();
-    protected abstract void rotation90 ();
-    protected abstract void rotation180 ();
-    protected abstract void rotation270 ();
-    
+
+    protected abstract void rotation0();
+
+    protected abstract void rotation90();
+
+    protected abstract void rotation180();
+
+    protected abstract void rotation270();
+
     public BlockAbstract[][] getGrid() {
         return grid;
     }
-    
-     protected void handleRotation(boolean rightRotation, int wallKickTestNumber) {
+
+    protected void handleRotation(boolean rightRotation, int wallKickTestNumber) {
         initializeGrid(grid);
         switch (rotation) {
             case 0:
@@ -160,40 +157,41 @@ public abstract class BlockAbstract implements Cloneable {
                 rotation270();
                 break;
         }
-        switch(wallKickTestNumber){
+        switch (wallKickTestNumber) {
             case 2:
                 wallkick.Test2(this);
-                 break;
+                break;
             case 3:
                 wallkick.Test3(this);
-                 break;
+                break;
             case 4:
                 wallkick.Test4(this);
-                 break;
+                break;
             case 5:
                 wallkick.Test5(this);
-                 break;
+                break;
             default:
                 wallkick.Test1(this);
                 break;
         }
-    
-   }
-       
-   public String getPrintLetter(){
-       return printLetter;
-   }
-   
-   
-   public Object clone(){
+
+    }
+
+    public String getPrintLetter() {
+        return printLetter;
+    }
+
+    @Override
+    public Object clone() {
         try {
-            return (BlockAbstract)super.clone();
+            return (BlockAbstract) super.clone();
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(BlockAbstract.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-   }
-   public float getGlBlue() {
+    }
+
+    public float getGlBlue() {
         return glBlue;
     }
 
@@ -204,7 +202,7 @@ public abstract class BlockAbstract implements Cloneable {
     public float getGlRed() {
         return glRed;
     }
-   
+
     /**
      * Converts an RGB Color To openGL Color scala which has a Range from 0.0 to 1.0
      *

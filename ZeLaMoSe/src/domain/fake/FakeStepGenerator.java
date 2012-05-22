@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain.fake;
 
 import domain.InputSampler;
@@ -14,19 +10,20 @@ import domain.TetrisController;
  * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public class FakeStepGenerator extends StepGeneratorAbstract {
+
     public Step step;
 
     @Override
     public void setSessionID(int sessionID) {
         //do nothing
-    }    
+    }
 
     @Override
     public void processStep() {
         setChanged();
         notifyObservers(TetrisController.UpdateType.STEP);
     }
-    
+
     @Override
     public Step getStep() {
         return step;

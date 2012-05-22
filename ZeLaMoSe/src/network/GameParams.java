@@ -1,16 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package network;
 
 import java.io.Serializable;
 
 /**
  *
- * @author feibl
+ * @author Fabian Senn <fsenn@hsr.ch>
  */
-public class GameParams implements Serializable{
+public class GameParams implements Serializable {
+
     private final long blockQueueSeed;
     private final int nbrOfJokers;
     private final boolean includeSpecialBlocks;
@@ -38,5 +35,4 @@ public class GameParams implements Serializable{
     public int getStartLevel() {
         return startLevel;
     }
-    
 }

@@ -1,16 +1,20 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
-import domain.*;
+import domain.ChatController;
+import domain.InputSampler;
+import domain.SimulationStateAbstract;
+import domain.TetrisController;
 import java.awt.Color;
-import java.net.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.JFormattedTextField;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.text.*;
 import network.ChatMessage;
 import util.NetworkUtil;

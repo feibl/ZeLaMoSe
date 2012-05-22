@@ -1,11 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain.block;
 
 import domain.block.wallkick.NoWallKick;
-import domain.block.wallkick.WallKickAbstract;
 import java.awt.Color;
 
 /**
@@ -14,11 +9,9 @@ import java.awt.Color;
  */
 public class GarbageBlock extends BlockAbstract {
 
-    public GarbageBlock(int blockNumber,long seed) {
-        super(Color.GRAY, "G", new NoWallKick(),blockNumber,seed);
+    public GarbageBlock(int blockNumber, long seed) {
+        super(Color.GRAY, "G", new NoWallKick(), blockNumber, seed);
     }
-    
-    
 
     @Override
     protected void rotation0() {
@@ -39,5 +32,4 @@ public class GarbageBlock extends BlockAbstract {
     protected void rotation270() {
         throw new UnsupportedOperationException("Will never be Supported with this kind of Block");
     }
-    
 }

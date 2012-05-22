@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
 import domain.actions.InputEvent;
@@ -13,31 +9,28 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  *
- * This class is the "KeyListener" of the GUIs he gets the events and notifys the StepGenerator
- *
  * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class InputSampler implements KeyEventDispatcher, InputSamplerInterface {
 
-   private ConcurrentLinkedQueue<InputEvent> keyEventQueue;
+    private ConcurrentLinkedQueue<InputEvent> keyEventQueue;
 
-   public InputSampler() {
-      keyEventQueue = new ConcurrentLinkedQueue<InputEvent>();
-   }
+    public InputSampler() {
+        keyEventQueue = new ConcurrentLinkedQueue<InputEvent>();
+    }
 
-   @Override
-   public boolean dispatchKeyEvent(KeyEvent e) {
-//        if (e.getID() == KeyEvent.KEY_TYPED) {
-      if (e.getID() == KeyEvent.KEY_PRESSED) {
-         keyEventQueue.add(new InputEvent(e, System.nanoTime()));
-      }
-      //Allow the event to be redispatched
-      return false;
-   }
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent e) {
+        if (e.getID() == KeyEvent.KEY_PRESSED) {
+            keyEventQueue.add(new InputEvent(e, System.nanoTime()));
+        }
+        return false;
+    }
 
-   public Collection<InputEvent> getAndRemoveAll() {
-      Collection<InputEvent> c = new ArrayList<InputEvent>(keyEventQueue);
-      keyEventQueue.removeAll(c);
-      return c;
-   }
+    @Override
+    public Collection<InputEvent> getAndRemoveAll() {
+        Collection<InputEvent> c = new ArrayList<InputEvent>(keyEventQueue);
+        keyEventQueue.removeAll(c);
+        return c;
+    }
 }

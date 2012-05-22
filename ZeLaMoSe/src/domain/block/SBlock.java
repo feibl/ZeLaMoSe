@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain.block;
 
 import domain.block.wallkick.GeneralWallKick;
@@ -13,8 +9,8 @@ import java.awt.Color;
  */
 public class SBlock extends BlockAbstract {
 
-    public SBlock(int blockNumber,long seed) {
-        super(new Color(0,139,0),"S", new GeneralWallKick(),blockNumber,seed);
+    public SBlock(int blockNumber, long seed) {
+        super(new Color(0, 139, 0), "S", new GeneralWallKick(), blockNumber, seed);
     }
 
     @Override
@@ -48,5 +44,4 @@ public class SBlock extends BlockAbstract {
         grid[1][1] = this;
         grid[1][2] = this;
     }
-    
 }

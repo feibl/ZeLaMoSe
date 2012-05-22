@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package networkTest;
 
 import domain.Step;
@@ -9,8 +5,6 @@ import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import network.GameParams;
 import network.server.GameServer;
 import network.server.SessionInterface;
@@ -53,10 +47,10 @@ public class GameServerWithoutThread extends GameServer {
             removeSession(s);
         }
     }
-    
+
     public SessionInterface getSession(int id) {
-        for(SessionInterface session : sessionList) {
-            if(session.getSessionInformation().getId() == id) {
+        for (SessionInterface session : sessionList) {
+            if (session.getSessionInformation().getId() == id) {
                 return session;
             }
         }

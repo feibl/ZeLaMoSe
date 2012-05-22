@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
 import java.net.InetAddress;
@@ -29,11 +25,11 @@ public class ChatController extends Observable implements Observer {
     public ConcurrentHashMap<Integer, String> getSessionList() {
         return nH.getSessionList();
     }
-    
+
     public SessionInformation getOwnSession() {
         return nH.getOwnSession();
     }
-    
+
     public void tearDown() {
         nH.deleteObserver(this);
     }
@@ -55,7 +51,7 @@ public class ChatController extends Observable implements Observer {
     public SessionInformation getRemovedSession() {
         return nH.getRemovedSession();
     }
-    
+
     public void sendChatMessage(String message) {
         nH.sendChatMessage(message);
     }

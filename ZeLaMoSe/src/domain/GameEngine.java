@@ -9,7 +9,7 @@ import java.util.Random;
 
 /**
  *
- * @author Cyrill Lam <clam@hsr.ch>, Patrick Zenhäusern <pzenhaeu@hsr.ch>
+ * @author Cyrill Lam <clam@hsr.ch>
  *
  */
 public class GameEngine extends GameEngineAbstract {

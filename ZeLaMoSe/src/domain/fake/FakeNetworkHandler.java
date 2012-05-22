@@ -1,9 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain.fake;
-
 
 import domain.Step;
 import domain.TetrisController.UpdateType;
@@ -19,7 +14,9 @@ import network.client.NetworkHandlerAbstract;
  * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public class FakeNetworkHandler extends NetworkHandlerAbstract {
+
     public Step lastStep;
+
     @Override
     public SessionInformation getAddedSession() {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -44,9 +41,7 @@ public class FakeNetworkHandler extends NetworkHandlerAbstract {
     public void disconnectFromServer() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
     public ConcurrentHashMap<Integer, Step> stepMap = new ConcurrentHashMap<Integer, Step>();
-    
     private SessionInformation localSession;
     private ConcurrentHashMap<Integer, String> sessionMap = new ConcurrentHashMap<Integer, String>();
 
@@ -59,12 +54,12 @@ public class FakeNetworkHandler extends NetworkHandlerAbstract {
     public SessionInformation getOwnSession() {
         return localSession;
     }
-    
+
     public void setConnected() {
         setChanged();
         notifyObservers(UpdateType.CONNECTION_ESTABLISHED);
     }
-    
+
     public void setGameStarted() {
         setChanged();
         notifyObservers(UpdateType.INIT_SIGNAL);
@@ -101,8 +96,8 @@ public class FakeNetworkHandler extends NetworkHandlerAbstract {
     public void addStep(Step step) {
         lastStep = step;
     }
-    
     private Step remoteStep;
+
     public void addRemoteStep(Step step) {
         remoteStep = step;
         setChanged();
@@ -128,5 +123,4 @@ public class FakeNetworkHandler extends NetworkHandlerAbstract {
     public GameParams getGameParams() {
         return new GameParams(1, 0, true, 1);
     }
-    
 }

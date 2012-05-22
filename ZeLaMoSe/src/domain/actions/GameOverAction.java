@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain.actions;
 
 /**
@@ -11,7 +7,6 @@ package domain.actions;
 public class GameOverAction extends Action {
 
     public GameOverAction(long timestamp) {
-        super(ActionType.GAMEOVER,timestamp);
+        super(ActionType.GAMEOVER, timestamp);
     }
-    
 }

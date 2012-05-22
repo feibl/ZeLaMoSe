@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
 import domain.actions.*;
@@ -10,7 +6,6 @@ import java.awt.event.KeyEvent;
 /**
  *
  * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
- *
  *
  */
 public class StepGenerator extends StepGeneratorAbstract {

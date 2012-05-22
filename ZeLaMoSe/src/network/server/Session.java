@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package network.server;
 
 import domain.Step;
@@ -17,11 +13,12 @@ import network.client.ClientRemoteInterface;
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
-public class Session extends UnicastRemoteObject implements SessionRemoteInterface, SessionInterface  {
+public class Session extends UnicastRemoteObject implements SessionRemoteInterface, SessionInterface {
+
     private ClientRemoteInterface client;
     private GameServer gameServer;
     private SessionInformation sessionInformation;
-    
+
     public Session(SessionInformation sessionInformation, ClientRemoteInterface client, GameServer gameServer) throws RemoteException {
         this.sessionInformation = sessionInformation;
         this.gameServer = gameServer;
@@ -47,8 +44,8 @@ public class Session extends UnicastRemoteObject implements SessionRemoteInterfa
     public SessionInformation getRemoteSessionInformation() throws RemoteException {
         return getSessionInformation();
     }
-    
-        @Override
+
+    @Override
     public SessionInformation getSessionInformation() {
         return sessionInformation;
     }
@@ -87,5 +84,4 @@ public class Session extends UnicastRemoteObject implements SessionRemoteInterfa
     public void sendInitSignal(GameParams gameParams) throws RemoteException {
         client.receiveInitSignal(gameParams);
     }
-    
 }

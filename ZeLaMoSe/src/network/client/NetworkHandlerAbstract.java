@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package network.client;
 
 import domain.StepInterface;
@@ -19,31 +15,29 @@ import network.SessionInformation;
  */
 public abstract class NetworkHandlerAbstract extends Observable implements StepInterface, StepProducerInterface {
 
+    public abstract SessionInformation getAddedSession();
 
+    public abstract int getRandomGeneratorSeed();
 
-   public abstract SessionInformation getAddedSession();
+    public abstract SessionInformation getRemovedSession();
 
-   public abstract int getRandomGeneratorSeed();
+    public abstract void connectToServer(String ip, String serverName, String nickname);
 
-   public abstract SessionInformation getRemovedSession();
+    public abstract void disconnectFromServer();
 
-   public abstract void connectToServer(String ip, String serverName, String nickname);
+    public abstract SessionInformation getOwnSession();
 
-   public abstract void disconnectFromServer();
-   
-   public abstract SessionInformation getOwnSession();
-   
-   public abstract ConcurrentHashMap<Integer, String> getSessionList();
-   
-   public abstract void sendChatMessage(String message);
-   
-   public abstract ChatMessage getChatMessage();
-   
-   public abstract Exception getThrownException();
-   
-   public abstract ExecutorService getThreadPool();
-   
-   public abstract GameParams getGameParams();
-   
-   public abstract void sendReadySignal();
+    public abstract ConcurrentHashMap<Integer, String> getSessionList();
+
+    public abstract void sendChatMessage(String message);
+
+    public abstract ChatMessage getChatMessage();
+
+    public abstract Exception getThrownException();
+
+    public abstract ExecutorService getThreadPool();
+
+    public abstract GameParams getGameParams();
+
+    public abstract void sendReadySignal();
 }

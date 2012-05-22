@@ -1,15 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain.actions;
 
 /**
  *
- * @author Patrick Zenhäusern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class ClearAction extends Action {
-        public ClearAction(long timestamp) {
+
+    public ClearAction(long timestamp) {
         super(ActionType.CLEAR, timestamp);
     }
 }

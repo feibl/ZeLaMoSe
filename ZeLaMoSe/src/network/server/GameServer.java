@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package network.server;
 
 import domain.Config;
@@ -12,7 +8,9 @@ import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
@@ -59,10 +57,9 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     @Override
     public synchronized SessionRemoteInterface createSession(String nickname, ClientRemoteInterface clientRemote) throws RemoteException, ServerFullException, GameAlreadyStartedException {
         SessionInformation sInfo = new SessionInformation(id++, nickname);
-        if(gameStarted) {
+        if (gameStarted) {
             throw new GameAlreadyStartedException();
-        }
-        else if (sessionList.size() < MAX_SESSIONS) {
+        } else if (sessionList.size() < MAX_SESSIONS) {
             Session newSession = new Session(sInfo, clientRemote, this);
             notifyOthersSessionAdded(newSession);
             sessionList.add(newSession);
@@ -125,7 +122,6 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
                 try {
                     s.sendSteps(removedSteps);
                 } catch (RemoteException ex) {
-                    System.out.println("Removinfaklkfia");
                     removeSession(s);
                 }
             }
@@ -191,7 +187,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     protected synchronized void notifyAllInitSignal(GameParams gameParams) {
         List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionList);
         for (SessionInterface s : copy) {
-            sendInitSignal(s,gameParams);
+            sendInitSignal(s, gameParams);
         }
     }
 
@@ -215,9 +211,8 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
             }
         }
 
-        synchronized (this) {            
+        synchronized (this) {
             if (!allStepsReceived) {
-                System.out.println("GameServer: remove Session. Stepqueue size: " + receivedSteps.size());
                 currentNumberOfReceivedSteps.drainPermits();
                 checkReceivedSteps();
             }
@@ -225,7 +220,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
 
             receivedSteps.drainTo(removedSteps);
             currentStep++;
-            
+
             List<SessionInterface> sessionListCopy = new ArrayList<SessionInterface>(sessionList);
             for (final SessionInterface s : sessionListCopy) {
                 sendSteps(s, removedSteps);
@@ -244,7 +239,6 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
                 }
             }
             if (!stepReceived) {
-                System.out.println("Server: Removing Session " + session.getSessionInformation().getId());
                 removeSession(session);
             }
         }
@@ -276,5 +270,4 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     public void stopDiscoveryServer() {
         discoveryServer.end();
     }
-
 }

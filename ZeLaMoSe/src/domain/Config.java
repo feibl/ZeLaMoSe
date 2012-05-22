@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
 import java.io.File;
@@ -31,7 +27,7 @@ public class Config {
     public final static String discoveryServerMessage = "ZeLaMoSe-Server";
     public final static String discoveryMultiCastGroup = "239.0.0.0";
     public final static int discoveryPort = 1234;
-    
+
     public static File convertRMI(Class c) {
         File tf = null;
         try {

@@ -1,11 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
-import domain.block.BlockAbstract;
 import domain.SimulationStateAbstract;
+import domain.block.BlockAbstract;
 import java.util.Observable;
 import java.util.Observer;
 import javax.media.opengl.GL;

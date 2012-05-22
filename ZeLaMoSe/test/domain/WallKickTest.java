@@ -1,35 +1,22 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
-import domain.fake.FakeBlockQueue;
 import domain.actions.RotateAction;
 import domain.block.BlockAbstract;
 import domain.block.GarbageBlock;
-import domain.block.OBlock;
+import domain.fake.FakeBlockQueue;
 import org.junit.After;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.rules.TestName;
-import static org.junit.Assert.*;
-import org.junit.Ignore;
 
 /**
  *
  * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
- @Ignore
+@Ignore
 public abstract class WallKickTest {
-    /*
-     * To change this template, choose Tools | Templates and open the template in the editor.
-     *
-     *
-     * /**
-     *
-     * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
-     */
 
     protected GameEngine gameEngine;
     protected FakeBlockQueue fakeQueue;
@@ -73,10 +60,10 @@ public abstract class WallKickTest {
         fakeQueue = new FakeBlockQueue();
         initializeExpectedGrid();
         fillInFakes();
-        gameEngine = new GameEngine(12345, 1, fakeQueue,0);
+        gameEngine = new GameEngine(12345, 1, fakeQueue, 0);
         gameEngine.startGame();
         actualGrid = gameEngine.getGrid();
-        dummyBlock = new GarbageBlock(Integer.MAX_VALUE,0);
+        dummyBlock = new GarbageBlock(Integer.MAX_VALUE, 0);
         System.out.println("Start " + testName.getMethodName() + "----------------------------------");
     }
 
@@ -92,11 +79,17 @@ public abstract class WallKickTest {
     }
 
     protected abstract void moveBlockToStartPositionr0r90();
+
     public abstract void WallKickTest1r0r90();
+
     public abstract void WallKickTest2r0r90();
+
     public abstract void WallKickTest3r0r90();
+
     public abstract void WallKickTest4r0r90();
+
     public abstract void WallKickTest5r0r90();
+
     public abstract void WallKickCollisionr0r90();
 
     protected void doRotationr90r0() {
@@ -105,11 +98,17 @@ public abstract class WallKickTest {
     }
 
     protected abstract void moveBlockToStartPositionr90r0();
+
     public abstract void WallKickTest1r90r0();
+
     public abstract void WallKickTest2r90r0();
+
     public abstract void WallKickTest3r90r0();
+
     public abstract void WallKickTest4r90r0();
+
     public abstract void WallKickTest5r90r0();
+
     public abstract void WallKickCollisionr90r0();
 
     protected void doRotationr90r180() {
@@ -118,17 +117,17 @@ public abstract class WallKickTest {
     }
 
     protected abstract void moveBlockToStartPositionr90r180();
+
     public abstract void WallKickTest1r90r180();
+
     public abstract void WallKickTest2r90r180();
+
     public abstract void WallKickTest3r90r180();
 
-    
     public abstract void WallKickTest4r90r180();
 
-    
     public abstract void WallKickTest5r90r180();
 
-    
     public abstract void WallKickCollisionr90r180();
 
     protected void doRotationr180r90() {
@@ -138,22 +137,16 @@ public abstract class WallKickTest {
 
     protected abstract void moveBlockToStartPositionr180r90();
 
-    
     public abstract void WallKickTest1r180r90();
 
-    
     public abstract void WallKickTest2r180r90();
 
-    
     public abstract void WallKickTest3r180r90();
 
-    
     public abstract void WallKickTest4r180r90();
 
-    
     public abstract void WallKickTest5r180r90();
 
-    
     public abstract void WallKickCollisionr180r90();
 
     protected void doRotationr180r270() {
@@ -163,22 +156,16 @@ public abstract class WallKickTest {
 
     protected abstract void moveBlockToStartPositionr180r270();
 
-    
     public abstract void WallKickTest1r180r270();
 
-    
     public abstract void WallKickTest2r180r270();
 
-    
     public abstract void WallKickTest3r180r270();
 
-    
     public abstract void WallKickTest4r180r270();
 
-    
     public abstract void WallKickTest5r180r270();
 
-    
     public abstract void WallKickCollisionr180r270();
 
     protected void doRotationr270r180() {
@@ -188,22 +175,16 @@ public abstract class WallKickTest {
 
     protected abstract void moveBlockToStartPositionr270r180();
 
-    
     public abstract void WallKickTest1r270r1800();
 
-    
     public abstract void WallKickTest2r270r180();
 
-    
     public abstract void WallKickTest3r270r180();
 
-    
     public abstract void WallKickTest4r270r180();
 
-    
     public abstract void WallKickTest5r270r180();
 
-    
     public abstract void WallKickCollisionr270r180();
 
     protected void doRotationr270r0() {
@@ -213,22 +194,16 @@ public abstract class WallKickTest {
 
     protected abstract void moveBlockToStartPositionr270r0();
 
-    
     public abstract void WallKickTest1r270r0();
 
-    
     public abstract void WallKickTest2r270r0();
 
-    
     public abstract void WallKickTest3r270r0();
 
-    
     public abstract void WallKickTest4r270r0();
 
-    
     public abstract void WallKickTest5r270r0();
 
-    
     public abstract void WallKickCollisionr270r0();
 
     protected void doRotationr0r270() {
@@ -238,21 +213,15 @@ public abstract class WallKickTest {
 
     protected abstract void moveBlockToStartPositionr0r270();
 
-    
     public abstract void WallKickTest1r0r270();
 
-    
     public abstract void WallKickTest2r0r270();
 
-    
     public abstract void WallKickTest3r0r270();
 
-    
     public abstract void WallKickTest4r0r270();
 
-    
     public abstract void WallKickTest5r0r270();
 
-    
     public abstract void WallKickCollisionr0r270();
 }

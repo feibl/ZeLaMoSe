@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import domain.InputSampler;
@@ -10,7 +6,7 @@ import java.util.List;
 
 /**
  *
- * @author Patrick Zenh√§usern
+ * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
 public class GameFieldJFrame extends javax.swing.JFrame {
 
