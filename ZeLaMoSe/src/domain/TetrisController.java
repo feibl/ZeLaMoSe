@@ -1,5 +1,8 @@
 package domain;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -35,6 +38,7 @@ public class TetrisController extends Observable implements Observer {
     private Exception thrownException;
     private int localSessionID = -1;
     private int currentStep = 0;
+    private ReplayData replayData;
 
     public enum UpdateType {
 
@@ -51,6 +55,7 @@ public class TetrisController extends Observable implements Observer {
         networkHandler.addObserver(this);
         stepGenerator = sG;
         stepGenerator.addObserver(this);
+        replayData = new ReplayData();
         this.autorun = autorun;
     }
 
@@ -100,7 +105,6 @@ public class TetrisController extends Observable implements Observer {
     public void startGame(long blockQueueSeed, int nbrOfJokers, boolean includeSpecialBlocks, int startLevel) {
         gameServer.startGame(blockQueueSeed, nbrOfJokers, includeSpecialBlocks, startLevel);
         gameServer.stopDiscoveryServer();
-
     }
 
     @Override
@@ -108,6 +112,9 @@ public class TetrisController extends Observable implements Observer {
         if (o == null || o1 == null) {
             throw new IllegalStateException();
         }
+
+        updateReplayData(o, o1);
+
         switch ((UpdateType) o1) {
             case STEP:
                 StepProducerInterface producer = (StepProducerInterface) o;
@@ -164,7 +171,37 @@ public class TetrisController extends Observable implements Observer {
         }
     }
 
-    private void abortGame() {
+    private void updateReplayData(Observable o, Object o1) {
+        switch ((UpdateType) o1) {
+            case STEP:
+                if (o == networkHandler) {
+                    this.replayData.addStep(networkHandler.getStep());
+                }
+                break;
+            case INIT_SIGNAL:
+                this.replayData.setGameParams(networkHandler.getGameParams());
+                break;
+            case GAME_STARTED:
+                this.replayData.setOwnSessionId(networkHandler.getOwnSession().getId());
+                this.replayData.setSessionList(networkHandler.getSessionList());
+                break;
+        }
+    }
+    
+    public void saveReplayData(String filename) {
+        
+        try {
+            FileOutputStream fos = new FileOutputStream(filename);
+             ObjectOutputStream out = new ObjectOutputStream(fos);
+            out.writeObject(replayData);
+            out.close();
+        } catch (IOException ex) {
+            System.out.println("FileOutputStream Error");
+            System.out.println(filename);
+        }
+    }
+
+    public void abortGame() {
         for (int sessionID : sessionMap.keySet()) {
             simulationController.removeSession(sessionID);
         }
