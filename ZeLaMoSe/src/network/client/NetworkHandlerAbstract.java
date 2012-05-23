@@ -17,8 +17,6 @@ public abstract class NetworkHandlerAbstract extends Observable implements StepI
 
     public abstract SessionInformation getAddedSession();
 
-    public abstract int getRandomGeneratorSeed();
-
     public abstract SessionInformation getRemovedSession();
 
     public abstract void connectToServer(String ip, String serverName, String nickname);

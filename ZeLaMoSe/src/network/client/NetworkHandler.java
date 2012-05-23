@@ -68,11 +68,6 @@ public class NetworkHandler extends NetworkHandlerAbstract {
     }
 
     @Override
-    public int getRandomGeneratorSeed() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public SessionInformation getRemovedSession() {
         return lastRemovedSession;
     }
