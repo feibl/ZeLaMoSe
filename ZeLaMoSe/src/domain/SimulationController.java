@@ -173,7 +173,7 @@ public class SimulationController implements StepInterface, Observer {
         sessions.remove(sessionId);
     }
 
-    void setLevel(int level) {
+    public void setLevel(int level) {
         this.currentHighestLevel = level;
     }
 }
