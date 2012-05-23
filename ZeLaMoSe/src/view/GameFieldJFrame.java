@@ -51,6 +51,7 @@ public class GameFieldJFrame extends javax.swing.JFrame {
             final ReplayController replayController = new ReplayController(replayData, simulationController);
 
             GameParams params = replayData.getGameParams();
+            simulationController.setLevel(params.getStartLevel());
             GameEngine ownGameEngine = new GameEngine(replayData.getOwnSessionId(), params.getBlockQueueSeed(), params.isIncludeSpecialBlocks(), params.getNbrOfJokers());
             List<SimulationStateAbstract> otherEngines = new ArrayList<SimulationStateAbstract>();
             simulationController.addSession(replayData.getOwnSessionId(), replayData.getSessionList().get(replayData.getOwnSessionId()), ownGameEngine);
