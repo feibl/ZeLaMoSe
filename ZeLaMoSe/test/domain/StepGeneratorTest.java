@@ -30,10 +30,10 @@ public class StepGeneratorTest {
         stepGenerator = new StepGenerator(sessionId, inputSampler);
         dummyComponent = new Frame("test");
 
-        inputEvents.add(new InputEvent(new KeyEvent(dummyComponent, 0, 0, 0, KeyEvent.VK_LEFT), 0));
-        inputEvents.add(new InputEvent(new KeyEvent(dummyComponent, 1, 1, 0, KeyEvent.VK_Y), 0));
-        inputEvents.add(new InputEvent(new KeyEvent(dummyComponent, 2, 2, 0, KeyEvent.VK_SPACE), 0));
-        inputEvents.add(new InputEvent(new KeyEvent(dummyComponent, 3, 3, 0, KeyEvent.VK_J), 0));
+        inputEvents.add(new InputEvent(new KeyEvent(dummyComponent, 0, 0, 0, KeyEvent.VK_LEFT,KeyEvent.CHAR_UNDEFINED), 0));
+        inputEvents.add(new InputEvent(new KeyEvent(dummyComponent, 1, 1, 0, KeyEvent.VK_Y,'y'), 0));
+        inputEvents.add(new InputEvent(new KeyEvent(dummyComponent, 2, 2, 0, KeyEvent.VK_SPACE,' '), 0));
+        inputEvents.add(new InputEvent(new KeyEvent(dummyComponent, 3, 3, 0, KeyEvent.VK_J,'j'), 0));
         inputSampler.inputEvents = inputEvents;
     }
 
