@@ -364,16 +364,16 @@ public class GameEngine extends GameEngineAbstract {
             currentBlock.setY(oldY + numberOfLines);
         }
         
-        int numbersToMove = currentBlock.getY() - oldY;
-        action.setYOffsetForCurrentBlock(numbersToMove);
+        int yOffset = currentBlock.getY() - oldY;
+        action.setYOffsetForCurrentBlock(yOffset);
         setLastAction(action);
-        int moveToGarbage = calculateFieldsToMoveUntilCollision();
+        int fieldsToGarbage = calculateFieldsToMoveUntilCollision();
 
-        if (moveToGarbage > 0) {
-            if (moveToGarbage <= numbersToMove) {
-                moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, moveToGarbage));
+        if (fieldsToGarbage > 0) {
+            if (fieldsToGarbage <= yOffset) {
+                moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, fieldsToGarbage));
             } else {
-                moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, numbersToMove));
+                moveDownwards(new MoveAction(0, MoveAction.Direction.DOWN, yOffset));
             }
         }
     }
