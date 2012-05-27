@@ -417,6 +417,8 @@ public class MainJFrame extends javax.swing.JFrame {
                         replayController.run();
                     }
                 });
+            } else {
+                setButtonsEnabled(true);
             }
         } catch (FileNotFoundException e) {
             setButtonsEnabled(true);
