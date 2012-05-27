@@ -75,8 +75,8 @@ public class TetrisController extends Observable implements Observer {
 
     public List<SimulationStateAbstract> getOtherSessions() {
         List<SimulationStateAbstract> otherEngines = new ArrayList<SimulationStateAbstract>();
-        for (Map.Entry<Integer, String> session : replayData.getSessionList().entrySet()) {
-            if (session.getKey() != replayData.getOwnSessionId()) {
+        for (Map.Entry<Integer, String> session : sessionMap.entrySet()) {
+            if (session.getKey() != localSessionID) {
                 otherEngines.add(getSession(session.getKey()));
             }
         }
