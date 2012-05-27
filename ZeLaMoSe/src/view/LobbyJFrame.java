@@ -1,12 +1,8 @@
 package view;
 
 import domain.ChatController;
-import domain.InputSampler;
-import domain.SimulationStateAbstract;
 import domain.TetrisController;
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
@@ -424,7 +420,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 chatController.deleteObserver(playerListModel);
                 chatController.tearDown();
                 tetrisController.deleteObserver(this);
-                final GameFieldJFrame gameField = new GameFieldJFrame(tetrisController);
+                final GameFieldJFrame gameField = new GameFieldJFrame(tetrisController, tetrisController.getInputSampler(), tetrisController.getOwnSession(), tetrisController.getOtherSessions());
 
                 SwingUtilities.invokeLater(new Runnable() {
 
