@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  */
-public class InputSampler implements KeyEventDispatcher, InputSamplerInterface {
+public class InputSampler implements KeyEventDispatcher {
 
     private ConcurrentLinkedQueue<InputEvent> keyEventQueue;
 
@@ -27,7 +27,6 @@ public class InputSampler implements KeyEventDispatcher, InputSamplerInterface {
         return false;
     }
 
-    @Override
     public Collection<InputEvent> getAndRemoveAll() {
         Collection<InputEvent> c = new ArrayList<InputEvent>(keyEventQueue);
         keyEventQueue.removeAll(c);

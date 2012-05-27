@@ -1,6 +1,6 @@
 package domain.fake;
 
-import domain.InputSamplerInterface;
+import domain.InputSampler;
 import domain.actions.InputEvent;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
-public class FakeInputSampler implements InputSamplerInterface {
+public class FakeInputSampler extends InputSampler {
 
     public Collection<InputEvent> inputEvents = new ConcurrentLinkedQueue<InputEvent>();
 

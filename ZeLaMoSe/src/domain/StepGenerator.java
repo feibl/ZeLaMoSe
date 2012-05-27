@@ -10,7 +10,7 @@ import java.awt.event.KeyEvent;
  */
 public class StepGenerator extends StepGeneratorAbstract {
 
-    private InputSamplerInterface inputSampler;
+    private InputSampler inputSampler;
     private Step step;
     private int counter = 0;
     private int sessionID;
@@ -19,7 +19,7 @@ public class StepGenerator extends StepGeneratorAbstract {
         this.inputSampler = inputsampler;
     }
 
-    public StepGenerator(int sessionID, InputSamplerInterface inputsampler) {
+    public StepGenerator(int sessionID, InputSampler inputsampler) {
         this.sessionID = sessionID;
         this.inputSampler = inputsampler;
     }
@@ -30,7 +30,7 @@ public class StepGenerator extends StepGeneratorAbstract {
     }
 
     @Override
-    public InputSamplerInterface getInputSampler() {
+    public InputSampler getInputSampler() {
         return inputSampler;
     }
 

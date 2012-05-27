@@ -83,7 +83,7 @@ public class TetrisController extends Observable implements Observer {
         return otherEngines;
     }
 
-    public InputSamplerInterface getInputSampler() {
+    public InputSampler getInputSampler() {
         return stepGenerator.getInputSampler();
     }
 

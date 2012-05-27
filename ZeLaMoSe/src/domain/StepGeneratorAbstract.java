@@ -10,5 +10,5 @@ abstract public class StepGeneratorAbstract extends Observable implements StepPr
 
     abstract public void setSessionID(int sessionID);
 
-    abstract public InputSamplerInterface getInputSampler();
+    abstract public InputSampler getInputSampler();
 }

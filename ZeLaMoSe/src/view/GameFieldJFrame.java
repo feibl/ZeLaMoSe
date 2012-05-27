@@ -1,7 +1,6 @@
 package view;
 
 import domain.InputSampler;
-import domain.InputSamplerInterface;
 import domain.SimulationStateAbstract;
 import domain.TetrisController;
 import java.io.File;
@@ -17,14 +16,14 @@ public class GameFieldJFrame extends javax.swing.JFrame {
 
     private TetrisController tetrisController;
 
-    public GameFieldJFrame(TetrisController tetrisController, InputSamplerInterface is, SimulationStateAbstract mainSimulation, List<SimulationStateAbstract> otherSimulations) {
+    public GameFieldJFrame(TetrisController tetrisController, InputSampler is, SimulationStateAbstract mainSimulation, List<SimulationStateAbstract> otherSimulations) {
         this(is, mainSimulation, otherSimulations);
         this.tetrisController = tetrisController;
     }
 
-    public GameFieldJFrame(InputSamplerInterface is, SimulationStateAbstract mainSimulation, List<SimulationStateAbstract> otherSimulations) {
+    public GameFieldJFrame(InputSampler is, SimulationStateAbstract mainSimulation, List<SimulationStateAbstract> otherSimulations) {
         initComponents();
-        ownGameFieldJPanel2.setInputSampler((InputSampler)is);
+        ownGameFieldJPanel2.setInputSampler(is);
         ownGameFieldJPanel2.initRenderer(mainSimulation);
 
         for (SimulationStateAbstract gameEngine : otherSimulations) {
