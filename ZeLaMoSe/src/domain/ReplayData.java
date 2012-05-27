@@ -7,17 +7,16 @@ package domain;
 import java.io.Serializable;
 import java.util.*;
 import network.GameParams;
-import network.SessionInformation;
 
 /**
  *
  * @author feibl
  */
 public class ReplayData implements Serializable {
-
-    network.GameParams gameParams;
+    
     SortedMap<Integer, List<Step>> steps = new TreeMap<Integer, List<Step>>();
     Map<Integer, String> sessionList;
+    network.GameParams gameParams;
     int ownSessionId;
 
     public SortedMap<Integer, List<Step>> getSteps() {
@@ -53,9 +52,8 @@ public class ReplayData implements Serializable {
         if (steps.containsKey(step.getSequenceNumber())) {
             steps.get(step.getSequenceNumber()).add(step);
         } else {
-            
             steps.put(step.getSequenceNumber(), new ArrayList<Step>());
-                    steps.get(step.getSequenceNumber()).add(step);
+            steps.get(step.getSequenceNumber()).add(step);
         }
 
     }
