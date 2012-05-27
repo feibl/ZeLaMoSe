@@ -193,6 +193,52 @@ public class GameEngineTest {
     }
 
     @Test
+    public void hardDropActionAtBottom() {
+        /*Expected:
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][I][I][I][I][ ][ ][ ][ ]
+         */
+        addCurrentBlockToExpectedGrid(4, 0);
+        addCurrentBlockToExpectedGrid(5, 0);
+        addCurrentBlockToExpectedGrid(6, 0);
+        addCurrentBlockToExpectedGrid(7, 0);
+
+        for (int i = 0; i < 22; i++) {
+            gameEngine.handleAction(new MoveAction(System.nanoTime(), MoveAction.Direction.DOWN, 1));
+        }
+        
+        gameEngine.handleAction(new HardDropAction(System.nanoTime()));
+        addCurrentBlockToExpectedGrid(4, 23);
+        addCurrentBlockToExpectedGrid(4, 22);
+        addCurrentBlockToExpectedGrid(5, 22);
+        addCurrentBlockToExpectedGrid(6, 22);
+
+        assertEqualBothGrids();
+    }
+    
+    @Test
     public void leftMoveAction() {
         /*Expected:
         [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
