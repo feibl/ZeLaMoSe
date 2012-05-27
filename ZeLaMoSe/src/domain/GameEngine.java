@@ -357,16 +357,15 @@ public class GameEngine extends GameEngineAbstract {
         }
 
         int oldY = currentBlock.getY();
-        int numbersToMove;
+        
         if ((oldY + numberOfLines) > (gridHeight - 1)) {
-            currentBlock.setY((gridHeight - 1));
-            numbersToMove = (gridHeight - 1) - oldY;
+            currentBlock.setY(gridHeight - 1);
         } else {
             currentBlock.setY(oldY + numberOfLines);
-            numbersToMove = numberOfLines;
         }
-
-        action.setYOffsetForCurrentBlock(currentBlock.getY() - oldY);
+        
+        int numbersToMove = currentBlock.getY() - oldY;
+        action.setYOffsetForCurrentBlock(numbersToMove);
         setLastAction(action);
         int moveToGarbage = calculateFieldsToMoveUntilCollision();
 
