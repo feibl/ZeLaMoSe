@@ -1,16 +1,12 @@
 package view;
 
-import domain.*;
-import java.awt.event.KeyEvent;
-import java.io.*;
-import java.util.ArrayList;
+import domain.InputSampler;
+import domain.SimulationStateAbstract;
+import domain.TetrisController;
+import java.io.File;
 import java.util.List;
-import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import network.GameParams;
-import sun.swing.SwingUtilities2;
 
 /**
  *
@@ -20,66 +16,9 @@ public class GameFieldJFrame extends javax.swing.JFrame {
 
     private TetrisController tetrisController;
 
-    public GameFieldJFrame(TetrisController tetrisController) {
-        initComponents();
+    public GameFieldJFrame(TetrisController tetrisController, InputSampler is, SimulationStateAbstract mainSimulation, List<SimulationStateAbstract> otherSimulations) {
+        this(is, mainSimulation, otherSimulations);
         this.tetrisController = tetrisController;
-
-        ownGameFieldJPanel2.setInputSampler((InputSampler) tetrisController.getInputSampler());
-        ownGameFieldJPanel2.initRenderer(tetrisController.getSession(tetrisController.getLocalSessionID()));
-        for (Integer sessionID : tetrisController.getSessionMap().keySet()) {
-            if (sessionID != tetrisController.getLocalSessionID()) {
-                SimulationStateAbstract gameEngine = tetrisController.getSession(sessionID);
-                OtherGameFieldJPanel panel = new OtherGameFieldJPanel(gameEngine.getNickName(), gameEngine);
-                pnlEnemyAreas.add(panel);
-                gameEngine.addObserver(panel);
-            }
-        }
-    }
-
-    public static void main(String[] args) throws ClassNotFoundException, IOException {
-        JFileChooser fc = new JFileChooser();
-        fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-
-            FileInputStream fis = new FileInputStream(file);
-            ObjectInputStream in = new ObjectInputStream(fis);
-            ReplayData replayData = (ReplayData) in.readObject();
-            in.close();
-
-            SimulationController simulationController = new SimulationController();
-            final ReplayController replayController = new ReplayController(replayData, simulationController);
-
-            GameParams params = replayData.getGameParams();
-            simulationController.setLevel(params.getStartLevel());
-            GameEngine ownGameEngine = new GameEngine(replayData.getOwnSessionId(), params.getBlockQueueSeed(), params.isIncludeSpecialBlocks(), params.getNbrOfJokers());
-            List<SimulationStateAbstract> otherEngines = new ArrayList<SimulationStateAbstract>();
-            simulationController.addSession(replayData.getOwnSessionId(), replayData.getSessionList().get(replayData.getOwnSessionId()), ownGameEngine);
-
-            for (Map.Entry<Integer, String> session : replayData.getSessionList().entrySet()) {
-                if (session.getKey() != replayData.getOwnSessionId()) {
-                    GameEngine gameEngine = new GameEngine(session.getKey(), params.getBlockQueueSeed(), params.isIncludeSpecialBlocks(), params.getNbrOfJokers());
-                    otherEngines.add(gameEngine);
-                    simulationController.addSession(session.getKey(), session.getValue(), gameEngine);
-                }
-            }
-            final GameFieldJFrame gameFieldJFrame = new GameFieldJFrame(new InputSampler() {
-
-                @Override
-                public boolean dispatchKeyEvent(KeyEvent e) {
-                    return false;
-                }
-            }, ownGameEngine, otherEngines);
-
-            SwingUtilities.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                    gameFieldJFrame.setVisible(true);
-                    replayController.run();
-                }
-            });
-        }
     }
 
     public GameFieldJFrame(InputSampler is, SimulationStateAbstract mainSimulation, List<SimulationStateAbstract> otherSimulations) {
