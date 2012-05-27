@@ -45,6 +45,7 @@ public class MainJFrame extends javax.swing.JFrame {
         btnHelp.setEnabled(enabled);
         btnJoinGame.setEnabled(enabled);
         btnStartGame.setEnabled(enabled);
+        btnWatchReplay.setEnabled(enabled);
     }
 
     public enum GameMode {
