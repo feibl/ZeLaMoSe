@@ -1,23 +1,20 @@
 package view;
 
-import domain.ChatController;
-import domain.ControllerFactory;
-import domain.TetrisController;
+import domain.*;
 import java.awt.Desktop;
 import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Observable;
-import java.util.Observer;
+import java.io.*;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import network.GameParams;
 import network.client.NetworkHandlerAbstract;
 import util.NameGenerator;
 import view.music.MusicFile;
@@ -33,6 +30,14 @@ public class MainJFrame extends javax.swing.JFrame {
     private SoundEngine soundEngine;
     private ChatController chatController;
     private NameGenerator nameGenerator;
+
+    public ReplayData readReplayData(File file) throws FileNotFoundException, IOException, ClassNotFoundException {
+        FileInputStream fis = new FileInputStream(file);
+        ObjectInputStream in = new ObjectInputStream(fis);
+        ReplayData replayData = (ReplayData) in.readObject();
+        in.close();
+        return replayData;
+    }
 
     private void setButtonsEnabled(boolean enabled) {
         btnCreateGame.setEnabled(enabled);
@@ -74,6 +79,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         pnlSinglePlayer = new javax.swing.JPanel();
         btnStartGame = new javax.swing.JButton();
+        btnWatchReplay = new javax.swing.JButton();
         pnlMultiPlayer = new javax.swing.JPanel();
         btnCreateGame = new javax.swing.JButton();
         btnJoinGame = new javax.swing.JButton();
@@ -110,21 +116,34 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
+        btnWatchReplay.setText("Watch Replay");
+        btnWatchReplay.setMaximumSize(new java.awt.Dimension(95, 23));
+        btnWatchReplay.setMinimumSize(new java.awt.Dimension(95, 23));
+        btnWatchReplay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnWatchReplayActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlSinglePlayerLayout = new javax.swing.GroupLayout(pnlSinglePlayer);
         pnlSinglePlayer.setLayout(pnlSinglePlayerLayout);
         pnlSinglePlayerLayout.setHorizontalGroup(
             pnlSinglePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlSinglePlayerLayout.createSequentialGroup()
-                .addGap(89, 89, 89)
+                .addContainerGap()
                 .addComponent(btnStartGame, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(105, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addComponent(btnWatchReplay, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         pnlSinglePlayerLayout.setVerticalGroup(
             pnlSinglePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlSinglePlayerLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(btnStartGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addGap(24, 24, 24)
+                .addGroup(pnlSinglePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnStartGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnWatchReplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlSinglePlayer);
@@ -290,7 +309,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     private void showExceptionDialog(Exception exception) throws HeadlessException {
-        JOptionPane.showMessageDialog(MainJFrame.this, exception, "Exception", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(MainJFrame.this, exception.getMessage(), "Exception", JOptionPane.ERROR_MESSAGE);
     }
 
     private void setupConnectionHandler(final GameMode gameMode) {
@@ -354,6 +373,62 @@ public class MainJFrame extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_btnExitActionPerformed
 
+    private void btnWatchReplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWatchReplayActionPerformed
+        setButtonsEnabled(false);
+        try {
+            JFileChooser fc = new JFileChooser();
+            fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                File file = fc.getSelectedFile();
+                ReplayData replayData = readReplayData(file);
+
+                SimulationController simulationController = new SimulationController();
+                GameParams params = replayData.getGameParams();
+                simulationController.setLevel(params.getStartLevel());
+                final ReplayController replayController = new ReplayController(replayData, simulationController);
+                
+                GameEngine ownGameEngine = new GameEngine(replayData.getOwnSessionId(), params.getBlockQueueSeed(), params.isIncludeSpecialBlocks(), params.getNbrOfJokers());
+                simulationController.addSession(replayData.getOwnSessionId(), replayData.getSessionList().get(replayData.getOwnSessionId()), ownGameEngine);
+                
+                List<SimulationStateAbstract> otherEngines = new ArrayList<SimulationStateAbstract>();
+                for (Map.Entry<Integer, String> session : replayData.getSessionList().entrySet()) {
+                    if (session.getKey() != replayData.getOwnSessionId()) {
+                        GameEngine gameEngine = new GameEngine(session.getKey(), params.getBlockQueueSeed(), params.isIncludeSpecialBlocks(), params.getNbrOfJokers());
+                        otherEngines.add(gameEngine);
+                        simulationController.addSession(session.getKey(), session.getValue(), gameEngine);
+                    }
+                }
+                
+                final GameFieldJFrame gameFieldJFrame = new GameFieldJFrame(new InputSampler() {
+
+                    @Override
+                    public boolean dispatchKeyEvent(KeyEvent e) {
+                        return false;
+                    }
+                }, ownGameEngine, otherEngines);
+
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        setVisible(false);
+                        gameFieldJFrame.setVisible(true);
+                        replayController.run();
+                    }
+                });
+            }
+        } catch (FileNotFoundException e) {
+            setButtonsEnabled(true);
+            showExceptionDialog(e);
+        } catch (IOException e) {
+            setButtonsEnabled(true);
+            JOptionPane.showMessageDialog(MainJFrame.this, "Not a Replay File", "Exception", JOptionPane.ERROR_MESSAGE);
+        } catch (ClassNotFoundException e) {
+            setButtonsEnabled(true);
+            JOptionPane.showMessageDialog(MainJFrame.this, "Old Version of Replay File", "Exception", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnWatchReplayActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -402,6 +477,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnHelp;
     private javax.swing.JButton btnJoinGame;
     private javax.swing.JButton btnStartGame;
+    private javax.swing.JButton btnWatchReplay;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel lblMultiPlayer;
