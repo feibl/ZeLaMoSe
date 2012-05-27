@@ -7,9 +7,7 @@ import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import network.GameParams;
 import network.client.NetworkHandlerAbstract;
@@ -69,6 +67,20 @@ public class TetrisController extends Observable implements Observer {
 
     public SimulationStateAbstract getSession(int sessionId) {
         return simulationController.getSimulationStateInterface(sessionId);
+    }
+
+    public SimulationStateAbstract getOwnSession() {
+        return getSession(localSessionID);
+    }
+
+    public List<SimulationStateAbstract> getOtherSessions() {
+        List<SimulationStateAbstract> otherEngines = new ArrayList<SimulationStateAbstract>();
+        for (Map.Entry<Integer, String> session : replayData.getSessionList().entrySet()) {
+            if (session.getKey() != replayData.getOwnSessionId()) {
+                otherEngines.add(getSession(session.getKey()));
+            }
+        }
+        return otherEngines;
     }
 
     public InputSamplerInterface getInputSampler() {
@@ -187,12 +199,12 @@ public class TetrisController extends Observable implements Observer {
                 break;
         }
     }
-    
+
     public void saveReplayData(String filename) {
-        
+
         try {
             FileOutputStream fos = new FileOutputStream(filename);
-             ObjectOutputStream out = new ObjectOutputStream(fos);
+            ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(replayData);
             out.close();
         } catch (IOException ex) {
