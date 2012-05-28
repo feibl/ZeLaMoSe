@@ -19,17 +19,17 @@ import network.server.SessionRemoteInterface;
  */
 public class NetworkHandler extends NetworkHandlerAbstract {
 
-    private HandlerInterface handler;
-    private BlockingQueue<Collection<Step>> stepQueue = new LinkedBlockingQueue<Collection<Step>>();
-    private Step lastStep;
-    private SessionInformation lastAddedSession;
-    private SessionInformation lastRemovedSession;
-    private SessionInformation localSessionInformation;
-    private ChatMessage chatMessage;
-    private ExecutorService threadPool;
     private ConcurrentHashMap<Integer, String> sessionList = new ConcurrentHashMap<Integer, String>();
+    private BlockingQueue<Collection<Step>> stepQueue = new LinkedBlockingQueue<Collection<Step>>();
+    private SessionInformation localSessionInformation;
+    private SessionInformation lastRemovedSession;
+    private SessionInformation lastAddedSession;
+    private ExecutorService threadPool;
     private Exception thrownException;
+    private HandlerInterface handler;
+    private ChatMessage chatMessage;
     private GameParams gameParams;
+    private Step lastStep;
 
     @Override
     public void processStep() {
