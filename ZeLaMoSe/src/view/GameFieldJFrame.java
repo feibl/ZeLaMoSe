@@ -4,7 +4,11 @@ import domain.InputSampler;
 import domain.SimulationStateAbstract;
 import domain.TetrisController;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -86,7 +90,11 @@ public class GameFieldJFrame extends javax.swing.JFrame {
                     fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                     if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
                         File file = fc.getSelectedFile();
-                        tetrisController.saveReplayData(file.getAbsolutePath());
+                        try {
+                            tetrisController.saveReplayData(file.getAbsolutePath());
+                        } catch (IOException ex) {
+                            JOptionPane.showMessageDialog(this, ex.getMessage(), "Exception", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
 
                     break;

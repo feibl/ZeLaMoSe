@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -201,17 +202,11 @@ public class TetrisController extends Observable implements Observer {
         }
     }
 
-    public void saveReplayData(String filename) {
-
-        try {
+    public void saveReplayData(String filename) throws FileNotFoundException, IOException {
             FileOutputStream fos = new FileOutputStream(filename);
             ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(replayData);
             out.close();
-        } catch (IOException ex) {
-            System.out.println("FileOutputStream Error");
-            System.out.println(filename);
-        }
     }
 
     public void abortGame() {
