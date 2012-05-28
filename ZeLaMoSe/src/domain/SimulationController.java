@@ -11,14 +11,14 @@ import java.util.*;
  */
 public class SimulationController implements StepInterface, Observer {
 
-    private SortedMap<Integer, GameEngineAbstract> rankingMap = new TreeMap<Integer, GameEngineAbstract>(new Comparator() {
+    private SortedMap<Integer, GameEngine> rankingMap = new TreeMap<Integer, GameEngine>(new Comparator() {
 
         @Override
         public int compare(Object t, Object t1) {
             return ((Integer) t1).compareTo((Integer) t);
         }
     });
-    private SortedMap<Integer, GameEngineAbstract> gameEngines = new TreeMap<Integer, GameEngineAbstract>();
+    private SortedMap<Integer, GameEngine> gameEngines = new TreeMap<Integer, GameEngine>();
     private SortedMap<Integer, String> sessions = new TreeMap<Integer, String>();
     private SortedMap<Integer, Step> stepQueue = new TreeMap<Integer, Step>();
     private int currentHighestLevel = 1;
@@ -46,7 +46,7 @@ public class SimulationController implements StepInterface, Observer {
     /*
      * Register session
      */
-    public void addSession(int sessionId, String name, GameEngineAbstract gameEngine) {
+    public void addSession(int sessionId, String name, GameEngine gameEngine) {
         if (gameEngines.containsKey(sessionId)) {
             throw new IllegalStateException("session already added");
         }
@@ -57,7 +57,7 @@ public class SimulationController implements StepInterface, Observer {
     }
 
     public void initSimulation() {
-        for (GameEngineAbstract e : gameEngines.values()) {
+        for (GameEngine e : gameEngines.values()) {
             e.setLevel(currentHighestLevel);
             e.startGame();
         }
@@ -82,7 +82,7 @@ public class SimulationController implements StepInterface, Observer {
 
         if (autoadvance && (seqNum % (Config.advanceStepLimit - currentHighestLevel) == 0)) {
             rankingMap.clear();
-            for (GameEngineAbstract g : gameEngines.values()) {
+            for (GameEngine g : gameEngines.values()) {
                 g.handleAction(new MoveAction(0, MoveAction.Direction.DOWN, 1));
                 if (g.getLevel() > currentHighestLevel && currentHighestLevel < Config.maxLevelForSpeed) {
                     currentHighestLevel = g.getLevel();
@@ -93,7 +93,7 @@ public class SimulationController implements StepInterface, Observer {
 
         //Distribute Ranking
         int rank = 1;
-        for (Map.Entry<Integer, GameEngineAbstract> e : rankingMap.entrySet()) {
+        for (Map.Entry<Integer, GameEngine> e : rankingMap.entrySet()) {
             e.getValue().setRank(rank++);
         }
 
@@ -109,7 +109,7 @@ public class SimulationController implements StepInterface, Observer {
             if (!gameEngines.containsKey(e.getValue())) {
                 throw new IllegalStateException("Could not find gameEngine");
             }
-            GameEngineAbstract g = gameEngines.get(e.getValue());
+            GameEngine g = gameEngines.get(e.getValue());
             if (g.getSessionID() != e.getValue()) {
                 throw new IllegalStateException("wrong session id: " + e.getValue());
             }
@@ -159,7 +159,7 @@ public class SimulationController implements StepInterface, Observer {
     @Override
     public void update(Observable o, Object arg) {
         if ((SimulationStateAbstract.UpdateType) arg == SimulationStateAbstract.UpdateType.ACTIONFOROTHERS) {
-            addActionForOthers(((GameEngineAbstract) o).getSessionID(), ((GameEngineAbstract) o).getlastActionForOthers());
+            addActionForOthers(((GameEngine) o).getSessionID(), ((GameEngine) o).getlastActionForOthers());
         }
     }
 

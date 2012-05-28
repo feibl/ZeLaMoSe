@@ -1,6 +1,6 @@
 package domain.fake;
 
-import domain.GameEngineAbstract;
+import domain.GameEngine;
 import domain.actions.Action;
 import domain.actions.GarbageLineAction;
 import domain.block.BlockAbstract;
@@ -9,13 +9,12 @@ import domain.block.BlockAbstract;
  *
  * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
-public class FakeGameEngine extends GameEngineAbstract {
+public class FakeGameEngine extends GameEngine {
 
     private Action lastAction = null;
-    private int sessionId;
 
     public FakeGameEngine(int sessionId) {
-        this.sessionId = sessionId;
+        super(sessionId, 1, true, 1);
     }
 
     @Override

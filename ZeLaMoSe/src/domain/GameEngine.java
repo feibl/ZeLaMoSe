@@ -12,13 +12,13 @@ import java.util.Random;
  * @author Cyrill Lam <clam@hsr.ch>
  *
  */
-public class GameEngine extends GameEngineAbstract {
+public class GameEngine extends SimulationStateAbstract implements ActionInterface {
 
     private int gridWidth = Config.gridWidth;
     private int gridHeight = Config.gridHeight;
     private int blockStartPositionX = Config.blockStartPositionX;
     private int blockStartPositionY = Config.blockStartPositionY;
-    private int sessionId;
+    protected int sessionId;
     private int score;
     private int blockCounter;
     private int level = 1;
@@ -480,7 +480,6 @@ public class GameEngine extends GameEngineAbstract {
         return level;
     }
 
-    @Override
     public void setLevel(int level) {
         this.level = level;
     }
@@ -490,7 +489,6 @@ public class GameEngine extends GameEngineAbstract {
         return score;
     }
 
-    @Override
     public void setNickName(String nickName) {
         this.nickName = nickName;
     }
@@ -510,7 +508,6 @@ public class GameEngine extends GameEngineAbstract {
         return rank;
     }
 
-    @Override
     public void setRank(int rank) {
         this.rank = rank;
     }
