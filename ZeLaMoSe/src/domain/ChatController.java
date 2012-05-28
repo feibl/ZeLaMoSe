@@ -27,7 +27,7 @@ public class ChatController extends Observable implements Observer {
     }
 
     public SessionInformation getOwnSession() {
-        return nH.getLocalSession();
+        return nH.getLocalSessionInformation();
     }
 
     public void tearDown() {

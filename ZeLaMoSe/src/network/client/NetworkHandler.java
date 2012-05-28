@@ -162,7 +162,7 @@ public class NetworkHandler extends NetworkHandlerAbstract {
     }
 
     @Override
-    public SessionInformation getLocalSession() {
+    public SessionInformation getLocalSessionInformation() {
         return localSessionInformation;
     }
 

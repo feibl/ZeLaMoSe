@@ -23,7 +23,7 @@ public abstract class NetworkHandlerAbstract extends Observable implements StepI
 
     public abstract void disconnectFromServer();
 
-    public abstract SessionInformation getLocalSession();
+    public abstract SessionInformation getLocalSessionInformation();
 
     public abstract ConcurrentHashMap<Integer, String> getSessionMap();
 
