@@ -25,7 +25,7 @@ public abstract class NetworkHandlerAbstract extends Observable implements StepI
 
     public abstract SessionInformation getLocalSession();
 
-    public abstract ConcurrentHashMap<Integer, String> getSessionList();
+    public abstract ConcurrentHashMap<Integer, String> getSessionMap();
 
     public abstract void sendChatMessage(String message);
 

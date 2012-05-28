@@ -80,7 +80,7 @@ public class RMILocalhostTest {
     public void testSessionListConnectToServer() {
         Observer observer = createCountObserver(UpdateType.CONNECTION_ESTABLISHED);
         List<NetworkHandler> handlers = connectSessions(MAX_SESSIONS, observer);
-        assertEquals(MAX_SESSIONS, handlers.get(0).getSessionList().size());
+        assertEquals(MAX_SESSIONS, handlers.get(0).getSessionMap().size());
     }
 
     @Test

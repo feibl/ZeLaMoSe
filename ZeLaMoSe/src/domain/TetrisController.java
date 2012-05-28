@@ -144,7 +144,7 @@ public class TetrisController extends Observable implements Observer {
                 break;
             case CONNECTION_ESTABLISHED:
                 localSessionID = networkHandler.getLocalSession().getId();
-                sessionMap = networkHandler.getSessionList();
+                sessionMap = networkHandler.getSessionMap();
 
                 setChanged();
                 notifyObservers(UpdateType.CONNECTION_ESTABLISHED);
@@ -196,7 +196,7 @@ public class TetrisController extends Observable implements Observer {
                 break;
             case GAME_STARTED:
                 this.replayData.setOwnSessionId(networkHandler.getLocalSession().getId());
-                this.replayData.setSessionList(networkHandler.getSessionList());
+                this.replayData.setSessionList(networkHandler.getSessionMap());
                 break;
         }
     }

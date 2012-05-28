@@ -49,8 +49,8 @@ public class TetrisControllerTest {
 
     @Test
     public void testSimulation() {
-        assertTrue(nH.getSessionList().containsKey(sessionID));
-        assertNotNull(nH.getSessionList().get(sessionID));
+        assertTrue(nH.getSessionMap().containsKey(sessionID));
+        assertNotNull(nH.getSessionMap().get(sessionID));
         nH.setConnected();
         nH.setGameStarted();
         SimulationStateAbstract gE = sC.getSimulationStateInterface(sessionID);
@@ -88,9 +88,9 @@ public class TetrisControllerTest {
     @Test
     public void testSimulationWithMultipleSessions() {
         nH.setConnected();
-        nH.getSessionList().put(4, "session4");
-        nH.getSessionList().put(5, "session5");
-        nH.getSessionList().put(6, "session6");
+        nH.getSessionMap().put(4, "session4");
+        nH.getSessionMap().put(5, "session5");
+        nH.getSessionMap().put(6, "session6");
         nH.setGameStarted();
 
         GameEngine gE1 = (GameEngine) sC.getSimulationStateInterface(sessionID);

@@ -176,7 +176,7 @@ public class NetworkHandler extends NetworkHandlerAbstract {
     }
 
     @Override
-    public ConcurrentHashMap<Integer, String> getSessionList() {
+    public ConcurrentHashMap<Integer, String> getSessionMap() {
         return sessionList;
     }
 

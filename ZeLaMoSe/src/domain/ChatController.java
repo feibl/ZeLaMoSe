@@ -23,7 +23,7 @@ public class ChatController extends Observable implements Observer {
     }
 
     public ConcurrentHashMap<Integer, String> getSessionList() {
-        return nH.getSessionList();
+        return nH.getSessionMap();
     }
 
     public SessionInformation getOwnSession() {
