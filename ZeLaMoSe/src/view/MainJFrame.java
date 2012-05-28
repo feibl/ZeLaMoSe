@@ -350,7 +350,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         if (Desktop.isDesktopSupported()) {
             Desktop desktop = Desktop.getDesktop();
-            File tf = null;
+            File tf;
             try {
                 tf = File.createTempFile("manual", ".pdf");
                 tf.deleteOnExit();
@@ -388,8 +388,8 @@ public class MainJFrame extends javax.swing.JFrame {
                 simulationController.setLevel(params.getStartLevel());
                 final ReplayController replayController = new ReplayController(replayData, simulationController);
                 
-                GameEngine ownGameEngine = new GameEngine(replayData.getOwnSessionId(), params.getBlockQueueSeed(), params.isIncludeSpecialBlocks(), params.getNbrOfJokers());
-                simulationController.addSession(replayData.getOwnSessionId(), replayData.getSessionList().get(replayData.getOwnSessionId()), ownGameEngine);
+                GameEngine localGameEngine = new GameEngine(replayData.getOwnSessionId(), params.getBlockQueueSeed(), params.isIncludeSpecialBlocks(), params.getNbrOfJokers());
+                simulationController.addSession(replayData.getOwnSessionId(), replayData.getSessionList().get(replayData.getOwnSessionId()), localGameEngine);
                 
                 List<SimulationStateAbstract> otherEngines = new ArrayList<SimulationStateAbstract>();
                 for (Map.Entry<Integer, String> session : replayData.getSessionList().entrySet()) {
@@ -406,7 +406,7 @@ public class MainJFrame extends javax.swing.JFrame {
                     public boolean dispatchKeyEvent(KeyEvent e) {
                         return false;
                     }
-                }, ownGameEngine, otherEngines);
+                }, localGameEngine, otherEngines);
 
                 SwingUtilities.invokeLater(new Runnable() {
 
