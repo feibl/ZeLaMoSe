@@ -30,7 +30,7 @@ public class GameEngine extends SimulationStateAbstract implements ActionInterfa
     private BlockAbstract[][] grid = new BlockAbstract[gridWidth][gridHeight];
     private BlockAbstract currentBlock;
     private BlockAbstract nextBlock;
-    private BlockQueueInterface blockQueue;
+    private BlockQueue blockQueue;
     private Action lastAction;
     private Action lastActionForOthers;
     private List<Integer> alreadyUsedSpecialBlocks = new ArrayList<Integer>();
@@ -40,7 +40,7 @@ public class GameEngine extends SimulationStateAbstract implements ActionInterfa
         this(sessionId, seed, new BlockQueue(seed, includeSpecialBlocks), numberOfJokers);
     }
 
-    public GameEngine(int sessionId, long seed, BlockQueueInterface blockQueue, int numberOfJokers) {
+    public GameEngine(int sessionId, long seed, BlockQueue blockQueue, int numberOfJokers) {
         this.sessionId = sessionId;
         this.blockQueue = blockQueue;
         this.randomGarbageLineGenerator = new Random(seed);
