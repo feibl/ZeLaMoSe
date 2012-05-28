@@ -24,7 +24,7 @@ public class NetworkHandler extends NetworkHandlerAbstract {
     private Step lastStep;
     private SessionInformation lastAddedSession;
     private SessionInformation lastRemovedSession;
-    private SessionInformation ownSession;
+    private SessionInformation localSessionInformation;
     private ChatMessage chatMessage;
     private ExecutorService threadPool;
     private ConcurrentHashMap<Integer, String> sessionList = new ConcurrentHashMap<Integer, String>();
@@ -163,11 +163,11 @@ public class NetworkHandler extends NetworkHandlerAbstract {
 
     @Override
     public SessionInformation getLocalSession() {
-        return ownSession;
+        return localSessionInformation;
     }
 
     public void notifyConnectionEstablished(SessionInformation ownSession, List<SessionInformation> sessionList) {
-        this.ownSession = ownSession;
+        this.localSessionInformation = ownSession;
         for (SessionInformation session : sessionList) {
             this.sessionList.put(session.getId(), session.getNickname());
         }
