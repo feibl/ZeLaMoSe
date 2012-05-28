@@ -144,7 +144,7 @@ public class NetworkIntegrationTest {
             executor.execute(future);
             long timeBefore = System.currentTimeMillis();
             for (NetworkHandler handler : players) {
-                handler.addStep(new Step(stepSequencyNr, handler.getOwnSession().getId()));
+                handler.addStep(new Step(stepSequencyNr, handler.getLocalSession().getId()));
             }
             gameServerImpl.distributeSteps();
 

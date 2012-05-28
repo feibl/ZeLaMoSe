@@ -46,7 +46,7 @@ public class FakeNetworkHandler extends NetworkHandlerAbstract {
     }
 
     @Override
-    public SessionInformation getOwnSession() {
+    public SessionInformation getLocalSession() {
         return localSession;
     }
 

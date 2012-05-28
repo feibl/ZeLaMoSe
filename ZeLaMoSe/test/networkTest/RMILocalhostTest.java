@@ -73,7 +73,7 @@ public class RMILocalhostTest {
     public void testOwnSessionInformationConnectToServer() {
         final NetworkHandler handler = new NetworkHandlerWithoutThreads();
         handler.connectToServer(IP, SERVER_NAME, PLAYER_NAME);
-        assertEquals(PLAYER_NAME, handler.getOwnSession().getNickname());
+        assertEquals(PLAYER_NAME, handler.getLocalSession().getNickname());
     }
 
     @Test
@@ -205,7 +205,7 @@ public class RMILocalhostTest {
         Observer observer = createCountObserver(UpdateType.STEP);
         List<NetworkHandler> handlers = connectSessions(MAX_SESSIONS, observer);
         for (NetworkHandler handler : handlers) {
-            handler.addStep(new Step(0, handler.getOwnSession().getId()));
+            handler.addStep(new Step(0, handler.getLocalSession().getId()));
         }
         gameServerImpl.distributeSteps();
         for (NetworkHandler handler : handlers) {
@@ -272,7 +272,7 @@ public class RMILocalhostTest {
 
         gameServerImpl.addStep(session, new Step(0, session.getSessionInformation().getId()));
         for (NetworkHandler handler : handlers) {
-            handler.addStep(new Step(0, handler.getOwnSession().getId()));
+            handler.addStep(new Step(0, handler.getLocalSession().getId()));
         }
         gameServerImpl.distributeSteps();
         assertEquals(MAX_SESSIONS - 1, count);
@@ -301,7 +301,7 @@ public class RMILocalhostTest {
         });
         for (int i = 0; i < NBR_OF_STEPS; i++) {
             for (NetworkHandler handler : handlers) {
-                handler.addStep(new Step(i, handler.getOwnSession().getId()));
+                handler.addStep(new Step(i, handler.getLocalSession().getId()));
             }
             gameServerImpl.distributeSteps();
             for (NetworkHandler handler : handlers) {

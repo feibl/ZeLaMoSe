@@ -26,7 +26,7 @@ public class TetrisController extends Observable implements Observer {
 
     public final static int SERVER_PORT = Registry.REGISTRY_PORT;
     public static final String SERVER_NAME = "TetrisServer";
-    private boolean autorun = true;
+    
     private ConcurrentHashMap<Integer, String> sessionMap;
     private SimulationController simulationController;
     private NetworkHandlerAbstract networkHandler;
@@ -35,8 +35,9 @@ public class TetrisController extends Observable implements Observer {
     private volatile boolean gameRunning;
     private Exception thrownException;
     private int localSessionID = -1;
-    private int currentStep = 0;
+    private boolean autorun = true;
     private ReplayData replayData;
+    private int currentStep = 0;    
 
     public enum UpdateType {
 
@@ -65,19 +66,19 @@ public class TetrisController extends Observable implements Observer {
         return sessionMap;
     }
 
-    public SimulationStateAbstract getSession(int sessionId) {
+    public SimulationStateAbstract getSimulationStateInterface(int sessionId) {
         return simulationController.getSimulationStateInterface(sessionId);
     }
 
-    public SimulationStateAbstract getOwnSession() {
-        return getSession(localSessionID);
+    public SimulationStateAbstract getLocalSimulationStateInterface() {
+        return getSimulationStateInterface(localSessionID);
     }
 
-    public List<SimulationStateAbstract> getOtherSessions() {
+    public List<SimulationStateAbstract> getOtherSimulationStateInterfaces() {
         List<SimulationStateAbstract> otherEngines = new ArrayList<SimulationStateAbstract>();
         for (Map.Entry<Integer, String> session : sessionMap.entrySet()) {
             if (session.getKey() != localSessionID) {
-                otherEngines.add(getSession(session.getKey()));
+                otherEngines.add(getSimulationStateInterface(session.getKey()));
             }
         }
         return otherEngines;
@@ -142,7 +143,7 @@ public class TetrisController extends Observable implements Observer {
                 }
                 break;
             case CONNECTION_ESTABLISHED:
-                localSessionID = networkHandler.getOwnSession().getId();
+                localSessionID = networkHandler.getLocalSession().getId();
                 sessionMap = networkHandler.getSessionList();
 
                 setChanged();
@@ -194,7 +195,7 @@ public class TetrisController extends Observable implements Observer {
                 this.replayData.setGameParams(networkHandler.getGameParams());
                 break;
             case GAME_STARTED:
-                this.replayData.setOwnSessionId(networkHandler.getOwnSession().getId());
+                this.replayData.setOwnSessionId(networkHandler.getLocalSession().getId());
                 this.replayData.setSessionList(networkHandler.getSessionList());
                 break;
         }
