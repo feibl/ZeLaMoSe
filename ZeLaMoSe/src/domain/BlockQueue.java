@@ -10,7 +10,7 @@ import java.util.Random;
  *
  * @author Cyrill Lam <clam@hsr.ch>
  */
-public class BlockQueue implements BlockQueueInterface {
+public class BlockQueue {
 
     private Random randomGenerator;
     private List<BlockType> blocksProbability;
@@ -28,7 +28,6 @@ public class BlockQueue implements BlockQueueInterface {
         fillBlockList(includeSpecialBlocks);
     }
 
-    @Override
     public BlockAbstract getNextBlock() {
         BlockAbstract returnValue;
         returnValue = blocksProbability.get(randomGenerator.nextInt(blocksProbability.size())).createBlock(++blockCounter, seed);
