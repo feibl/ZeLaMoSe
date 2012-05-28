@@ -30,7 +30,7 @@ public class TetrisController extends Observable implements Observer {
     private ConcurrentHashMap<Integer, String> sessionMap;
     private SimulationController simulationController;
     private NetworkHandlerAbstract networkHandler;
-    private StepGeneratorAbstract stepGenerator;
+    private StepGenerator stepGenerator;
     private GameServerInterface gameServer;
     private volatile boolean gameRunning;
     private Exception thrownException;
@@ -43,11 +43,11 @@ public class TetrisController extends Observable implements Observer {
         STEP, SESSION_ADDED, SESSION_REMOVED, CONNECTION_ESTABLISHED, EXCEPTION_THROWN, CHAT_MESSAGE_RECEIVED, GAME_STARTED, INIT_SIGNAL, TIMED_OUT
     };
 
-    public TetrisController(SimulationController sController, NetworkHandlerAbstract nH, StepGeneratorAbstract sG) {
+    public TetrisController(SimulationController sController, NetworkHandlerAbstract nH, StepGenerator sG) {
         this(sController, nH, sG, true);
     }
 
-    public TetrisController(SimulationController sController, NetworkHandlerAbstract nH, StepGeneratorAbstract sG, boolean autorun) {
+    public TetrisController(SimulationController sController, NetworkHandlerAbstract nH, StepGenerator sG, boolean autorun) {
         simulationController = sController;
         networkHandler = nH;
         networkHandler.addObserver(this);

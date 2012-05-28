@@ -2,13 +2,14 @@ package domain;
 
 import domain.actions.*;
 import java.awt.event.KeyEvent;
+import java.util.Observable;
 
 /**
  *
  * @author Patrick Zenhäusern <pzenhaeu@hsr.ch>
  *
  */
-public class StepGenerator extends StepGeneratorAbstract {
+public class StepGenerator extends Observable implements StepProducerInterface {
 
     private InputSampler inputSampler;
     private Step step;
@@ -24,12 +25,10 @@ public class StepGenerator extends StepGeneratorAbstract {
         this.inputSampler = inputsampler;
     }
 
-    @Override
     public void setSessionID(int sessionID) {
         this.sessionID = sessionID;
     }
 
-    @Override
     public InputSampler getInputSampler() {
         return inputSampler;
     }

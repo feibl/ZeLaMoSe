@@ -2,16 +2,27 @@ package domain.fake;
 
 import domain.InputSampler;
 import domain.Step;
-import domain.StepGeneratorAbstract;
+import domain.StepGenerator;
 import domain.TetrisController;
+import java.awt.event.KeyEvent;
 
 /**
  *
  * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
-public class FakeStepGenerator extends StepGeneratorAbstract {
+public class FakeStepGenerator extends StepGenerator {
 
     public Step step;
+
+    public FakeStepGenerator() {
+        super(new InputSampler() {
+
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent e) {
+                return false;
+            }
+        });
+    }
 
     @Override
     public void setSessionID(int sessionID) {
