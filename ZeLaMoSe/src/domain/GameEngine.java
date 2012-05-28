@@ -12,7 +12,7 @@ import java.util.Random;
  * @author Cyrill Lam <clam@hsr.ch>
  *
  */
-public class GameEngine extends SimulationStateAbstract implements ActionInterface {
+public class GameEngine extends SimulationStateAbstract {
 
     private int gridWidth = Config.gridWidth;
     private int gridHeight = Config.gridHeight;
@@ -230,7 +230,6 @@ public class GameEngine extends SimulationStateAbstract implements ActionInterfa
         return false;
     }
 
-    @Override
     public void handleAction(Action action) {
         System.out.println("in: " + sessionId + " " + action.getType().toString() + " " + action.getTimestamp());
         if (!gameOver) {
