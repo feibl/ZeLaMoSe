@@ -231,7 +231,6 @@ public class GameEngine extends SimulationStateAbstract {
     }
 
     public void handleAction(Action action) {
-        System.out.println("in: " + sessionId + " " + action.getType().toString() + " " + action.getTimestamp());
         if (!gameOver) {
             switch (action.getType()) {
                 case MOVE:
@@ -441,14 +440,12 @@ public class GameEngine extends SimulationStateAbstract {
     }
 
     public void setLastAction(Action action) {
-        System.out.println("out: " + sessionId + " " + action.getType().toString() + " " + action.getTimestamp());
         lastAction = action;
         setChanged();
         notifyObservers(UpdateType.LASTACTION);
     }
 
     public void setLastActionForOthers(Action action) {
-        System.out.println("out action for others: " + sessionId + " " + action.getType().toString() + " " + action.getTimestamp());
         lastActionForOthers = action;
         setChanged();
         notifyObservers(UpdateType.ACTIONFOROTHERS);

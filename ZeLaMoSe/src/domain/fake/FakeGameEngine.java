@@ -28,7 +28,6 @@ public class FakeGameEngine extends GameEngine {
 
     @Override
     public void handleAction(Action action) {
-//      System.out.println("simulate action");
         lastAction = action;
         setChanged();
         notifyObservers();
