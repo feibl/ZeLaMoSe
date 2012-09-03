@@ -396,12 +396,10 @@ class GameFieldRenderer implements GLEventListener, Observer {
 
     private void removeLinesFromGrid(final List<Integer> linesToRemove) {
         for (Integer lineToRemove : linesToRemove) {
-            //remove the lineToRemove line
             for (int x = 0; x < Config.gridWidth; x++) {
                 grid[x][lineToRemove] = null;
             }
 
-            //move everythign downward
             for (int y = lineToRemove + 1; y <= Config.gridHeight - 1; y++) {
                 for (int x = 0; x < Config.gridWidth; x++) {
                     grid[x][y - 1] = grid[x][y];
