@@ -357,16 +357,9 @@ class GameFieldRenderer implements GLEventListener, Observer {
         new Thread(new Runnable() {
 
             @Override
-            public void run() {
-                BlockAbstract[][] linesToRemoveMarkedGrid = getGridCopy();
+            public void run() {               
                 BlockAbstract[][] originalGrid = getGridCopy();
-
-                for (Integer lineToRemove : rmlineAction.getLinesToRemove()) {
-
-                    for (int x = 0; x < Config.gridWidth; x++) {
-                        linesToRemoveMarkedGrid[x][lineToRemove] = null;
-                    }
-                }
+                BlockAbstract[][] linesToRemoveMarkedGrid = createMarkedGridCopy(rmlineAction.getLinesToRemove());
 
                 for (int i = 0; i < 4; i++) {
                     if (i % 2 == 0) {
@@ -403,6 +396,16 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 isAnimating = false;
             }
         }).start();
+    }
+
+    private BlockAbstract[][] createMarkedGridCopy(List<Integer> linesToRemove) {
+        BlockAbstract[][] linesToRemoveMarkedGrid = getGridCopy();
+        for (Integer lineToRemove : linesToRemove) {
+            for (int x = 0; x < Config.gridWidth; x++) {
+                linesToRemoveMarkedGrid[x][lineToRemove] = null;
+            }
+        }
+        return linesToRemoveMarkedGrid;
     }
 
     private void handleGameOverAction() {
