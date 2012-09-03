@@ -172,20 +172,15 @@ class GameFieldRenderer implements GLEventListener, Observer {
     public void update(Observable o, Object o1) {
         switch ((SimulationStateAbstract.UpdateType) o1) {
             case LASTACTION:
-                processAction(gameEngine.getSimulationState());
-                break;
+        handleAction(gameEngine.getSimulationState());
+        break;
             case RANKING:
                 if (isGameOver) {
                     setRanking(((SimulationStateAbstract) o).getRank());
                 }
-
                 break;
         }
 
-    }
-
-    private void processAction(Action action) {
-        handleAction(action);
     }
 
     private void drawGridLines(GL2 gl) {
