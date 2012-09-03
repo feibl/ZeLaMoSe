@@ -357,7 +357,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
         new Thread(new Runnable() {
 
             @Override
-            public void run() {               
+            public void run() {
                 BlockAbstract[][] originalGrid = getGridCopy();
                 BlockAbstract[][] linesToRemoveMarkedGrid = createMarkedGridCopy(rmlineAction.getLinesToRemove());
 
@@ -373,21 +373,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
                         Logger.getLogger(GameFieldRenderer.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-
-
-                for (Integer lineToRemove : rmlineAction.getLinesToRemove()) {
-                    //remove the lineToRemove line
-                    for (int x = 0; x < Config.gridWidth; x++) {
-                        grid[x][lineToRemove] = null;
-                    }
-
-                    //move everythign downward
-                    for (int y = lineToRemove + 1; y <= Config.gridHeight - 1; y++) {
-                        for (int x = 0; x < Config.gridWidth; x++) {
-                            grid[x][y - 1] = grid[x][y];
-                        }
-                    }
-                }
+                removeLinesFromGrid(rmlineAction.getLinesToRemove());
 
                 Action action;
                 while ((action = actionQueue.poll()) != null) {
@@ -406,6 +392,22 @@ class GameFieldRenderer implements GLEventListener, Observer {
             }
         }
         return linesToRemoveMarkedGrid;
+    }
+
+    private void removeLinesFromGrid(final List<Integer> linesToRemove) {
+        for (Integer lineToRemove : linesToRemove) {
+            //remove the lineToRemove line
+            for (int x = 0; x < Config.gridWidth; x++) {
+                grid[x][lineToRemove] = null;
+            }
+
+            //move everythign downward
+            for (int y = lineToRemove + 1; y <= Config.gridHeight - 1; y++) {
+                for (int x = 0; x < Config.gridWidth; x++) {
+                    grid[x][y - 1] = grid[x][y];
+                }
+            }
+        }
     }
 
     private void handleGameOverAction() {
