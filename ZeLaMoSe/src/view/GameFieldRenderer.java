@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.*;
@@ -45,6 +47,9 @@ class GameFieldRenderer implements GLEventListener, Observer {
     private boolean ownGameField;
     private volatile boolean isGameOver;
     private int rank = 0;
+    private volatile boolean continueAnimation;
+    private Semaphore continueAnimating;
+    private Semaphore removeLineFinished;
 
     public GameFieldRenderer(int blocksize, SimulationStateAbstract gameEngine, boolean ownGameField) {
         this.blockSize = blocksize;
@@ -180,13 +185,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
     }
 
     private void processAction(Action action) {
-        if (isAnimating) {
-            actionQueue.add(action);
-        } else {
-
-            handleAction(action);
-        }
-
+        handleAction(action);
     }
 
     private void drawGridLines(GL2 gl) {
@@ -354,6 +353,9 @@ class GameFieldRenderer implements GLEventListener, Observer {
     private void handleRemoveLineAction(final RemoveLineAction rmlineAction) {
         saveCurrentblockToGrid();
         currentBlock = null;
+        continueAnimation= true;
+        continueAnimating = new Semaphore(0);
+        removeLineFinished = new Semaphore(0);
         new Thread(new Runnable() {
 
             @Override
@@ -361,25 +363,21 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 BlockAbstract[][] originalGrid = getGridCopy();
                 BlockAbstract[][] linesToRemoveMarkedGrid = createMarkedGridCopy(rmlineAction.getLinesToRemove());
 
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < 4 && continueAnimation; i++) {
                     if (i % 2 == 0) {
                         grid = linesToRemoveMarkedGrid;
                     } else {
                         grid = originalGrid;
                     }
                     try {
-                        Thread.sleep(200);
+                        continueAnimating.tryAcquire(200, TimeUnit.MILLISECONDS);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(GameFieldRenderer.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
                 removeLinesFromGrid(rmlineAction.getLinesToRemove());
-
-                Action action;
-                while ((action = actionQueue.poll()) != null) {
-                    handleAction(action);
-                }
                 isAnimating = false;
+                removeLineFinished.release();
             }
         }).start();
     }
@@ -404,6 +402,20 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 for (int x = 0; x < Config.gridWidth; x++) {
                     grid[x][y - 1] = grid[x][y];
                 }
+            }
+        }
+    }
+
+    private void stopAnimation() {
+        continueAnimation = false;
+        continueAnimating.release();
+        boolean acquired = false;
+        while (!acquired) {
+            try {
+                removeLineFinished.acquire();
+                acquired = true;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(GameFieldRenderer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -443,9 +455,15 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 handleMoveAction((MoveAction) action);
                 break;
             case NEWBLOCK:
+                if (isAnimating && currentBlock != null) {
+                    stopAnimation();
+                }
                 handleNewBlockAction(((NewBlockAction) action).getBlocktype());
                 break;
             case GARBAGELINE:
+                if (isAnimating) {
+                    stopAnimation();
+                }
                 handleGarbageLineAction(((GarbageLineAction) action).getLines());
                 currentBlock.setY(currentBlock.getY() + ((GarbageLineAction) action).getYOffsetForCurrentBlock());
                 break;
@@ -453,16 +471,28 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 handleMirrorAction();
                 break;
             case DARK:
+                if (isAnimating) {
+                    stopAnimation();
+                }
                 handleShadowAction();
                 break;
             case REMOVELINE:
+                if (isAnimating) {
+                    stopAnimation();
+                }
                 isAnimating = true;
                 handleRemoveLineAction((RemoveLineAction) action);
                 break;
             case GAMEOVER:
+                if (isAnimating) {
+                    stopAnimation();
+                }
                 handleGameOverAction();
                 break;
             case CLEAR:
+                if (isAnimating) {
+                    stopAnimation();
+                }
                 fillStackGrid(null);
                 break;
         }
