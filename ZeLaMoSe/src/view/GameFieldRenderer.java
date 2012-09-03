@@ -361,8 +361,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 BlockAbstract[][] linesToRemoveMarkedGrid = getGridCopy();
                 BlockAbstract[][] originalGrid = getGridCopy();
 
-                List<Integer> linesToRemove = rmlineAction.getLinesToRemove();
-                for (Integer lineToRemove : linesToRemove) {
+                for (Integer lineToRemove : rmlineAction.getLinesToRemove()) {
 
                     for (int x = 0; x < Config.gridWidth; x++) {
                         linesToRemoveMarkedGrid[x][lineToRemove] = null;
@@ -383,7 +382,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 }
 
 
-                for (Integer lineToRemove : linesToRemove) {
+                for (Integer lineToRemove : rmlineAction.getLinesToRemove()) {
                     //remove the lineToRemove line
                     for (int x = 0; x < Config.gridWidth; x++) {
                         grid[x][lineToRemove] = null;
