@@ -92,26 +92,26 @@ public class GameFieldJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        if (tetrisController != null) {
-            tetrisController.abortGame();
-            switch (JOptionPane.showConfirmDialog(this, "Do you want to save the Replay?", "Save Replay?", JOptionPane.YES_NO_OPTION)) {
-                case JOptionPane.YES_OPTION:
-                    JFileChooser fc = new JFileChooser();
-                    fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-                    if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                        File file = fc.getSelectedFile();
-                        try {
-                            tetrisController.saveReplayData(file.getAbsolutePath());
-                        } catch (IOException ex) {
-                            JOptionPane.showMessageDialog(this, ex.getMessage(), "Exception", JOptionPane.ERROR_MESSAGE);
-                        }
-                    }
-
-                    break;
-                case JOptionPane.NO_OPTION:
-                    break;
-            }
-        }
+//        if (tetrisController != null) {
+//            tetrisController.abortGame();
+//            switch (JOptionPane.showConfirmDialog(this, "Do you want to save the Replay?", "Save Replay?", JOptionPane.YES_NO_OPTION)) {
+//                case JOptionPane.YES_OPTION:
+//                    JFileChooser fc = new JFileChooser();
+//                    fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+//                    if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+//                        File file = fc.getSelectedFile();
+//                        try {
+//                            tetrisController.saveReplayData(file.getAbsolutePath());
+//                        } catch (IOException ex) {
+//                            JOptionPane.showMessageDialog(this, ex.getMessage(), "Exception", JOptionPane.ERROR_MESSAGE);
+//                        }
+//                    }
+//
+//                    break;
+//                case JOptionPane.NO_OPTION:
+//                    break;
+//            }
+//        }
         System.exit(0);
     }//GEN-LAST:event_formWindowClosing
     // Variables declaration - do not modify//GEN-BEGIN:variables
