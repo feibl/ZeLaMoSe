@@ -18,7 +18,7 @@ import paulscode.sound.libraries.LibraryJavaSound;
  *
  * @author Cyrill Lam <clam@hsr.ch>
  */
-public class SoundEngine implements SoundEngineInterface {
+public class SoundEngine implements Observer {
 
     private SoundSystem soundSystem;
     private boolean isGameOver = false;
