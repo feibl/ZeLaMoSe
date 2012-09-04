@@ -54,6 +54,7 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         btnFullscreen = new javax.swing.JButton();
         ownGameFieldJPanel2 = new view.OwnGameFieldJPanel();
+        btnRequestRestart = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1920, 1080));
@@ -81,6 +82,9 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         jPanel1.add(jPanel2, java.awt.BorderLayout.NORTH);
         jPanel1.add(ownGameFieldJPanel2, java.awt.BorderLayout.CENTER);
 
+        btnRequestRestart.setText("Request Restart");
+        jPanel1.add(btnRequestRestart, java.awt.BorderLayout.PAGE_END);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -100,7 +104,7 @@ public class GameFieldJFrame extends javax.swing.JFrame {
                 .addComponent(pnlEnemyAreas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(1126, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1126, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -144,6 +148,7 @@ public class GameFieldJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFullscreenActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFullscreen;
+    private javax.swing.JButton btnRequestRestart;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

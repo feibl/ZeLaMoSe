@@ -118,4 +118,9 @@ public class FakeNetworkHandler extends NetworkHandlerAbstract {
     public GameParams getGameParams() {
         return new GameParams(1, 0, true, 1);
     }
+
+    @Override
+    public void requestRestart() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

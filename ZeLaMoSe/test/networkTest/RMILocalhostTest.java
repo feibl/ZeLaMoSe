@@ -336,4 +336,15 @@ public class RMILocalhostTest {
         System.out.println(timeAfter - timeBefore);
         assertTrue(timeAfter - timeBefore < 50);
     }
+
+    @Test
+    public void testRestart() {
+        Observer observer = createCountObserver(UpdateType.RESTART);
+        List<NetworkHandler> handlers = connectSessions(MAX_SESSIONS, observer);
+        for (NetworkHandler handler : handlers) {
+            handler.requestRestart();
+        }
+        
+        assertEquals(MAX_SESSIONS, count);
+    }
 }

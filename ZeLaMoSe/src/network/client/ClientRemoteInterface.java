@@ -26,4 +26,6 @@ public interface ClientRemoteInterface extends Remote, Serializable {
     public void receiveStartSignal() throws RemoteException;
 
     public void receiveInitSignal(GameParams gameParams) throws RemoteException;
+
+    public void receiveRestartSignal() throws RemoteException;
 }

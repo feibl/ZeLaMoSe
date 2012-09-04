@@ -101,4 +101,18 @@ public class Handler extends UnicastRemoteObject implements HandlerInterface, Cl
     public void receiveInitSignal(GameParams gameParams) throws RemoteException {
         networkHandler.notifyInit(gameParams);
     }
+
+    @Override
+    public void sendRestartRequest() {
+        try {
+            sessionRemote.receiveRestartRequest();
+        } catch (RemoteException ex) {
+            networkHandler.notifyExceptionThrown(ex);
+        }
+    }
+
+    @Override
+    public void receiveRestartSignal() throws RemoteException {
+        networkHandler.notifyGameRestarted();
+    }
 }

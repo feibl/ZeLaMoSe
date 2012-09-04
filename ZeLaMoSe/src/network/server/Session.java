@@ -84,4 +84,14 @@ public class Session extends UnicastRemoteObject implements SessionRemoteInterfa
     public void sendInitSignal(GameParams gameParams) throws RemoteException {
         client.receiveInitSignal(gameParams);
     }
+
+    @Override
+    public void receiveRestartRequest() throws RemoteException {
+        gameServer.requestRestart(this);
+    }
+
+    @Override
+    public void sendRestartSignal() throws RemoteException {
+        client.receiveRestartSignal();
+    }
 }

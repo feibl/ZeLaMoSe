@@ -48,6 +48,15 @@ public class GameServerWithoutThread extends GameServer {
         }
     }
 
+    @Override
+    protected void sendRestartSignal(SessionInterface s) {
+        try {
+            s.sendRestartSignal();
+        } catch (RemoteException ex) {
+            removeSession(s);
+        }
+    }
+
     public SessionInterface getSession(int id) {
         for (SessionInterface session : sessionList) {
             if (session.getSessionInformation().getId() == id) {

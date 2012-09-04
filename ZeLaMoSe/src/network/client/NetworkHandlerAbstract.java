@@ -38,4 +38,6 @@ public abstract class NetworkHandlerAbstract extends Observable implements StepI
     public abstract GameParams getGameParams();
 
     public abstract void sendReadySignal();
+
+    public abstract void requestRestart();
 }

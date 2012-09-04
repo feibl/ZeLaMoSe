@@ -30,4 +30,11 @@ public class NetworkHandlerWithoutThreads extends NetworkHandler {
     public void addStep(Step step) {
         runAddStep(step);
     }
+
+    @Override
+    public void requestRestart() {
+        runSendRestartRequest();
+    }
+    
+    
 }

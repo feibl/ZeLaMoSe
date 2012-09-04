@@ -43,7 +43,7 @@ public class TetrisController extends Observable implements Observer {
     public enum UpdateType {
 
         STEP, SESSION_ADDED, SESSION_REMOVED, CONNECTION_ESTABLISHED, EXCEPTION_THROWN, CHAT_MESSAGE_RECEIVED, GAME_STARTED, INIT_SIGNAL, TIMED_OUT
-    };
+    ,   RESTART};
 
     public TetrisController(SimulationController sController, NetworkHandlerAbstract nH, StepGenerator sG) {
         this(sController, nH, sG, true);
@@ -103,6 +103,10 @@ public class TetrisController extends Observable implements Observer {
         Registry registry = LocateRegistry.getRegistry();
         gameServer = new GameServer(TetrisController.SERVER_NAME, registry);
         gameServer.startDiscoveryServer();
+    }
+    
+    public void requestRestart() {
+        networkHandler.requestRestart();
     }
 
     public void connectToServer(String ip, int port, String nickname) {
@@ -170,6 +174,9 @@ public class TetrisController extends Observable implements Observer {
                     gameRunning = true;
                     run();
                 }
+                break;
+            case RESTART:
+                
                 break;
             case SESSION_REMOVED:
                 if (gameRunning) {

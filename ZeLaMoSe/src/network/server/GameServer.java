@@ -31,6 +31,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     public static final int MAX_SESSIONS = 4;
     private static int id = 1;
     private AtomicInteger readyCount = new AtomicInteger(0);
+    private AtomicInteger restartRequestCount = new AtomicInteger(0);
     protected ExecutorService threadPool;
     private BlockingQueue<Step> receivedSteps = new LinkedBlockingQueue<Step>();
     private final int stepDuration = 50; //in millisecond
@@ -114,6 +115,20 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         });
     }
 
+    protected void sendRestartSignal(final SessionInterface s) {
+        threadPool.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    s.sendRestartSignal();
+                } catch (RemoteException ex) {
+                    removeSession(s);
+                }
+            }
+        });
+    }
+
     protected void sendSteps(final SessionInterface s, final Collection<Step> removedSteps) {
         threadPool.execute(new Runnable() {
 
@@ -176,11 +191,24 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         }
     }
 
-    //TODO 5 sec TimeOut
+    protected synchronized void notifyAllGameRestarted() {
+        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionList);
+        for (SessionInterface s : copy) {
+            sendRestartSignal(s);
+        }
+    }
+
     public synchronized void notifyReadySignalReceived(SessionInterface session) {
         if (sessionList.size() == readyCount.incrementAndGet()) {
             notifyAllGameStarted();
             start();
+        }
+    }
+    
+    public synchronized void requestRestart(SessionInterface sender) {
+        if (sessionList.size() <= restartRequestCount.incrementAndGet()) {
+            restartRequestCount.set(0);
+            notifyAllGameRestarted();
         }
     }
 
