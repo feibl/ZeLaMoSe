@@ -172,8 +172,8 @@ class GameFieldRenderer implements GLEventListener, Observer {
     public void update(Observable o, Object o1) {
         switch ((SimulationStateAbstract.UpdateType) o1) {
             case LASTACTION:
-        handleAction(gameEngine.getSimulationState());
-        break;
+                handleAction(gameEngine.getSimulationState());
+                break;
             case RANKING:
                 if (isGameOver) {
                     setRanking(((SimulationStateAbstract) o).getRank());
@@ -348,7 +348,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
     private void handleRemoveLineAction(final RemoveLineAction rmlineAction) {
         saveCurrentblockToGrid();
         currentBlock = null;
-        stopAnimationRequested= false;
+        stopAnimationRequested = false;
         stopAnimationRequest = new Semaphore(0);
         removeLineFinished = new Semaphore(0);
         new Thread(new Runnable() {
@@ -442,6 +442,9 @@ class GameFieldRenderer implements GLEventListener, Observer {
     }
 
     private void handleAction(Action action) {
+        if (isAnimating && stopAnimationRequired(action.getType())) {
+            stopAnimation();
+        }
         switch (action.getType()) {
             case ROTATION:
                 handleRotateAction((RotateAction) action);
@@ -450,15 +453,9 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 handleMoveAction((MoveAction) action);
                 break;
             case NEWBLOCK:
-                if (isAnimating && currentBlock != null) {
-                    stopAnimation();
-                }
                 handleNewBlockAction(((NewBlockAction) action).getBlocktype());
                 break;
             case GARBAGELINE:
-                if (isAnimating) {
-                    stopAnimation();
-                }
                 handleGarbageLineAction(((GarbageLineAction) action).getLines());
                 currentBlock.setY(currentBlock.getY() + ((GarbageLineAction) action).getYOffsetForCurrentBlock());
                 break;
@@ -466,31 +463,40 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 handleMirrorAction();
                 break;
             case DARK:
-                if (isAnimating) {
-                    stopAnimation();
-                }
                 handleShadowAction();
                 break;
             case REMOVELINE:
-                if (isAnimating) {
-                    stopAnimation();
-                }
                 isAnimating = true;
                 handleRemoveLineAction((RemoveLineAction) action);
                 break;
             case GAMEOVER:
-                if (isAnimating) {
-                    stopAnimation();
-                }
                 handleGameOverAction();
                 break;
             case CLEAR:
-                if (isAnimating) {
-                    stopAnimation();
-                }
                 fillStackGrid(null);
                 break;
         }
+    }
+
+    private boolean stopAnimationRequired(ActionType type) {
+        switch (type) {
+            case ROTATION:
+            case MOVE:
+            case MIRROR:
+                return false;
+            case NEWBLOCK:
+                if (currentBlock != null) {
+                    return true;
+                }
+                return false;
+            case GARBAGELINE:
+            case DARK:
+            case REMOVELINE:
+            case GAMEOVER:
+            case CLEAR:
+                return true;
+        }
+        return false;
     }
 
     private void handleMirrorAction() {
