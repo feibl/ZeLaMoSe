@@ -56,26 +56,27 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
         lblNbrOfBlocks = new javax.swing.JLabel();
         lblScore1 = new javax.swing.JLabel();
 
-        glPnlGameField.setPreferredSize(new java.awt.Dimension(360, 660));
+        glPnlGameField.setPreferredSize(new java.awt.Dimension(480, 880));
 
         javax.swing.GroupLayout glPnlGameFieldLayout = new javax.swing.GroupLayout(glPnlGameField);
         glPnlGameField.setLayout(glPnlGameFieldLayout);
         glPnlGameFieldLayout.setHorizontalGroup(
             glPnlGameFieldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 360, Short.MAX_VALUE)
+            .addGap(0, 480, Short.MAX_VALUE)
         );
         glPnlGameFieldLayout.setVerticalGroup(
             glPnlGameFieldLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 660, Short.MAX_VALUE)
+            .addGap(0, 880, Short.MAX_VALUE)
         );
 
+        lblNextPiece.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblNextPiece.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblNextPiece.setText("<html><b>Next Piece:</b></html>");
-        lblNextPiece.setBorder(null);
+        lblNextPiece.setText("<html><b>Next:</b></html>");
         lblNextPiece.setMaximumSize(new java.awt.Dimension(81, 18));
         lblNextPiece.setMinimumSize(new java.awt.Dimension(81, 18));
         lblNextPiece.setPreferredSize(new java.awt.Dimension(81, 18));
 
+        lblYourScoreValue.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblYourScoreValue.setText("<YourScoreValue>");
 
         tglSound.setSelected(true);
@@ -87,19 +88,22 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
             }
         });
 
+        lblPlayerName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblPlayerName.setText("<PlayerName>");
 
         lblZeLaMoSe.setText("© ZeLaMoSe");
 
+        lblLevelValue.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblLevelValue.setText("<LevelValue>");
 
+        lblLevel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblLevel.setText("<html><b>Level:</b></html>");
-        lblLevel.setBorder(null);
         lblLevel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         lblLevel.setMaximumSize(new java.awt.Dimension(81, 21));
         lblLevel.setMinimumSize(new java.awt.Dimension(81, 21));
         lblLevel.setPreferredSize(new java.awt.Dimension(81, 21));
 
+        lblNumberOfLinesValue.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblNumberOfLinesValue.setText("<NumberOfLinesValue>");
 
         glPnlNextBlock.setMaximumSize(new java.awt.Dimension(160, 160));
@@ -117,33 +121,35 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
             .addGap(0, 160, Short.MAX_VALUE)
         );
 
+        lblBlockCounter1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblBlockCounter1.setText("<YourBlocksValue>");
 
+        lblJokerValue.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblJokerValue.setText("<JokerValue>");
 
+        lblNbrOfLines1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblNbrOfLines1.setText("<html><b>Number of Lines:</b></html>");
-        lblNbrOfLines1.setBorder(null);
         lblNbrOfLines1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         lblNbrOfLines1.setMaximumSize(new java.awt.Dimension(81, 21));
         lblNbrOfLines1.setMinimumSize(new java.awt.Dimension(81, 21));
         lblNbrOfLines1.setPreferredSize(new java.awt.Dimension(81, 21));
 
+        lblJoker1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblJoker1.setText("<html><b>Joker:</b></html>");
-        lblJoker1.setBorder(null);
         lblJoker1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         lblJoker1.setMaximumSize(new java.awt.Dimension(81, 21));
         lblJoker1.setMinimumSize(new java.awt.Dimension(81, 21));
         lblJoker1.setPreferredSize(new java.awt.Dimension(81, 21));
 
+        lblNbrOfBlocks.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblNbrOfBlocks.setText("<html><b>Number of Blocks:</b></html>");
-        lblNbrOfBlocks.setBorder(null);
         lblNbrOfBlocks.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         lblNbrOfBlocks.setMaximumSize(new java.awt.Dimension(81, 21));
         lblNbrOfBlocks.setMinimumSize(new java.awt.Dimension(81, 21));
         lblNbrOfBlocks.setPreferredSize(new java.awt.Dimension(81, 21));
 
+        lblScore1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblScore1.setText("<html><b>Score:</b></html>");
-        lblScore1.setBorder(null);
         lblScore1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         lblScore1.setMaximumSize(new java.awt.Dimension(81, 21));
         lblScore1.setMinimumSize(new java.awt.Dimension(81, 21));
@@ -162,7 +168,6 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
                             .addComponent(glPnlGameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblNextPiece, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(glPnlNextBlock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(lblBlockCounter1)
                                 .addComponent(lblLevelValue)
@@ -174,7 +179,8 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(lblNbrOfBlocks, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
                                     .addComponent(lblNbrOfLines1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addComponent(lblYourScoreValue)))
+                                .addComponent(lblYourScoreValue)
+                                .addComponent(lblNextPiece, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(layout.createSequentialGroup()
                             .addGap(132, 132, 132)
                             .addComponent(lblZeLaMoSe)))
@@ -220,6 +226,8 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
                 .addComponent(lblZeLaMoSe)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        lblNextPiece.getAccessibleContext().setAccessibleName("<html><b>Next</b></html>");
     }// </editor-fold>//GEN-END:initComponents
 
     private void tglSoundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tglSoundActionPerformed
