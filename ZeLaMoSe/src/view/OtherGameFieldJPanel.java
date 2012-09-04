@@ -44,59 +44,65 @@ public class OtherGameFieldJPanel extends javax.swing.JPanel implements Observer
         lblNbrOfBlocks = new javax.swing.JLabel();
 
         gLPnlEnemyArea1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        gLPnlEnemyArea1.setMaximumSize(new java.awt.Dimension(120, 220));
-        gLPnlEnemyArea1.setMinimumSize(new java.awt.Dimension(120, 220));
+        gLPnlEnemyArea1.setMaximumSize(new java.awt.Dimension(180, 330));
+        gLPnlEnemyArea1.setMinimumSize(new java.awt.Dimension(180, 330));
+        gLPnlEnemyArea1.setPreferredSize(new java.awt.Dimension(180, 330));
 
         javax.swing.GroupLayout gLPnlEnemyArea1Layout = new javax.swing.GroupLayout(gLPnlEnemyArea1);
         gLPnlEnemyArea1.setLayout(gLPnlEnemyArea1Layout);
         gLPnlEnemyArea1Layout.setHorizontalGroup(
             gLPnlEnemyArea1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 116, Short.MAX_VALUE)
+            .addGap(0, 176, Short.MAX_VALUE)
         );
         gLPnlEnemyArea1Layout.setVerticalGroup(
             gLPnlEnemyArea1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 216, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        lblPlayerName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblPlayerName.setText("<OtherPlayerName1>");
 
+        lblScoreTitle.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblScoreTitle.setText("<html><b>Score:</b></html>");
-        lblScoreTitle.setBorder(null);
         lblScoreTitle.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         lblScoreTitle.setMaximumSize(new java.awt.Dimension(81, 21));
         lblScoreTitle.setMinimumSize(new java.awt.Dimension(81, 21));
         lblScoreTitle.setPreferredSize(new java.awt.Dimension(81, 21));
 
+        lblScore.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblScore.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblScore.setText("<OtherScoreValue1>");
 
+        lblLevelTitle.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblLevelTitle.setText("<html><b>Level:</b></html>");
-        lblLevelTitle.setBorder(null);
         lblLevelTitle.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         lblLevelTitle.setMaximumSize(new java.awt.Dimension(81, 21));
         lblLevelTitle.setMinimumSize(new java.awt.Dimension(81, 21));
         lblLevelTitle.setPreferredSize(new java.awt.Dimension(81, 21));
 
+        lblLevel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblLevel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblLevel.setText("<OtherLevel1>");
 
+        lblNbrOfLinesTitle.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblNbrOfLinesTitle.setText("<html><b>Number of Lines:</b></html>");
-        lblNbrOfLinesTitle.setBorder(null);
         lblNbrOfLinesTitle.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         lblNbrOfLinesTitle.setMaximumSize(new java.awt.Dimension(81, 21));
         lblNbrOfLinesTitle.setMinimumSize(new java.awt.Dimension(81, 21));
         lblNbrOfLinesTitle.setPreferredSize(new java.awt.Dimension(81, 21));
 
+        lblNbrOfLines.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblNbrOfLines.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblNbrOfLines.setText("<OtherLines>");
 
+        lblNbrOfBlocksTitle.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblNbrOfBlocksTitle.setText("<html><b>Number of Blocks:</b></html>");
-        lblNbrOfBlocksTitle.setBorder(null);
         lblNbrOfBlocksTitle.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         lblNbrOfBlocksTitle.setMaximumSize(new java.awt.Dimension(81, 21));
         lblNbrOfBlocksTitle.setMinimumSize(new java.awt.Dimension(81, 21));
         lblNbrOfBlocksTitle.setPreferredSize(new java.awt.Dimension(81, 21));
 
+        lblNbrOfBlocks.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblNbrOfBlocks.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblNbrOfBlocks.setText("<OtherBlocks>");
 
@@ -108,19 +114,24 @@ public class OtherGameFieldJPanel extends javax.swing.JPanel implements Observer
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(gLPnlEnemyArea1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblPlayerName, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(gLPnlEnemyArea1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblScoreTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblScore)
                             .addComponent(lblLevelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblLevel)
-                            .addComponent(lblNbrOfLinesTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblNbrOfBlocksTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblNbrOfLines)
-                            .addComponent(lblNbrOfBlocks)))
-                    .addComponent(lblPlayerName, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lblNbrOfLinesTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblScoreTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblNbrOfBlocksTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblScore)
+                                    .addComponent(lblLevel)
+                                    .addComponent(lblNbrOfLines)
+                                    .addComponent(lblNbrOfBlocks))))
+                        .addGap(68, 68, 68))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -129,25 +140,24 @@ public class OtherGameFieldJPanel extends javax.swing.JPanel implements Observer
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(gLPnlEnemyArea1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(lblScoreTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblScore)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(lblLevelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblLevel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(lblNbrOfLinesTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblNbrOfLines)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(lblNbrOfBlocksTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblNbrOfBlocks)
-                        .addContainerGap())))
+                        .addGap(0, 108, Short.MAX_VALUE))
+                    .addComponent(gLPnlEnemyArea1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables

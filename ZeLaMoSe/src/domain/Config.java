@@ -20,7 +20,7 @@ public class Config {
     public final static int advanceStepLimit = 21;
     public final static int frameRate = 30;
     public final static int ownGameFieldBlockSize = 40;
-    public final static int EnemyGameFieldBlockSize = 10;
+    public final static int EnemyGameFieldBlockSize = 15;
     public final static int blockStartPositionX = 4;
     public final static int blockStartPositionY = gridHeight - 1;
     public final static String discoveryClientMessage = "ZeLaMoSe-Client";

@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 public class GameFieldJFrame extends javax.swing.JFrame {
 
     private TetrisController tetrisController;
+    private boolean fullscreenOn = false;
 
     public GameFieldJFrame(TetrisController tetrisController, InputSampler is, SimulationStateAbstract mainSimulation, List<SimulationStateAbstract> otherSimulations) {
         this(is, mainSimulation, otherSimulations);
@@ -37,13 +38,6 @@ public class GameFieldJFrame extends javax.swing.JFrame {
             pnlEnemyAreas.add(panel);
             gameEngine.addObserver(panel);
         }
-        
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice device = ge.getDefaultScreenDevice();
-
-        if (device.isFullScreenSupported()) {
-            device.setFullScreenWindow(this);
-        }
     }
 
     /**
@@ -54,8 +48,12 @@ public class GameFieldJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        ownGameFieldJPanel2 = new view.OwnGameFieldJPanel();
         pnlEnemyAreas = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        btnFullscreen = new javax.swing.JButton();
+        ownGameFieldJPanel2 = new view.OwnGameFieldJPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1920, 1080));
@@ -67,25 +65,42 @@ public class GameFieldJFrame extends javax.swing.JFrame {
 
         pnlEnemyAreas.setLayout(new javax.swing.BoxLayout(pnlEnemyAreas, javax.swing.BoxLayout.Y_AXIS));
 
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel2.add(filler1);
+
+        btnFullscreen.setText("Fullscreen off");
+        btnFullscreen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFullscreenActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnFullscreen);
+
+        jPanel1.add(jPanel2, java.awt.BorderLayout.NORTH);
+        jPanel1.add(ownGameFieldJPanel2, java.awt.BorderLayout.CENTER);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(ownGameFieldJPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(706, 706, 706)
                 .addComponent(pnlEnemyAreas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(354, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 370, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(ownGameFieldJPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 46, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addComponent(pnlEnemyAreas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(1126, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1126, Short.MAX_VALUE))
         );
 
         pack();
@@ -114,7 +129,24 @@ public class GameFieldJFrame extends javax.swing.JFrame {
 //        }
         System.exit(0);
     }//GEN-LAST:event_formWindowClosing
+
+    private void btnFullscreenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFullscreenActionPerformed
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice device = ge.getDefaultScreenDevice();
+        if (fullscreenOn) {
+            device.setFullScreenWindow(null);
+            btnFullscreen.setText("Fullscreen off");
+        } else {
+            device.setFullScreenWindow(this);
+            btnFullscreen.setText("Fullscreen off");
+        }
+        fullscreenOn = !fullscreenOn;
+    }//GEN-LAST:event_btnFullscreenActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFullscreen;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private view.OwnGameFieldJPanel ownGameFieldJPanel2;
     private javax.swing.JPanel pnlEnemyAreas;
     // End of variables declaration//GEN-END:variables
