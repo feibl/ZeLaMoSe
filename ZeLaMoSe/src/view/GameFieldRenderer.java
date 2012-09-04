@@ -47,8 +47,8 @@ class GameFieldRenderer implements GLEventListener, Observer {
     private boolean ownGameField;
     private volatile boolean isGameOver;
     private int rank = 0;
-    private volatile boolean stopRequested;
-    private Semaphore continueAnimation;
+    private volatile boolean stopAnimationRequested;
+    private Semaphore stopAnimationRequest;
     private Semaphore removeLineFinished;
 
     public GameFieldRenderer(int blocksize, SimulationStateAbstract gameEngine, boolean ownGameField) {
@@ -348,8 +348,8 @@ class GameFieldRenderer implements GLEventListener, Observer {
     private void handleRemoveLineAction(final RemoveLineAction rmlineAction) {
         saveCurrentblockToGrid();
         currentBlock = null;
-        stopRequested= true;
-        continueAnimation = new Semaphore(0);
+        stopAnimationRequested= false;
+        stopAnimationRequest = new Semaphore(0);
         removeLineFinished = new Semaphore(0);
         new Thread(new Runnable() {
 
@@ -358,14 +358,14 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 BlockAbstract[][] originalGrid = getGridCopy();
                 BlockAbstract[][] linesToRemoveMarkedGrid = createMarkedGridCopy(rmlineAction.getLinesToRemove());
 
-                for (int i = 0; i < 4 && stopRequested; i++) {
+                for (int i = 0; i < 4 && !stopAnimationRequested; i++) {
                     if (i % 2 == 0) {
                         grid = linesToRemoveMarkedGrid;
                     } else {
                         grid = originalGrid;
                     }
                     try {
-                        continueAnimation.tryAcquire(200, TimeUnit.MILLISECONDS);
+                        stopAnimationRequest.tryAcquire(200, TimeUnit.MILLISECONDS);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(GameFieldRenderer.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -402,8 +402,8 @@ class GameFieldRenderer implements GLEventListener, Observer {
     }
 
     private void stopAnimation() {
-        stopRequested = false;
-        continueAnimation.release();
+        stopAnimationRequested = true;
+        stopAnimationRequest.release();
         boolean acquired = false;
         while (!acquired) {
             try {
