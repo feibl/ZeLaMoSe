@@ -3,6 +3,8 @@ package view;
 import domain.InputSampler;
 import domain.SimulationStateAbstract;
 import domain.TetrisController;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,6 +36,13 @@ public class GameFieldJFrame extends javax.swing.JFrame {
             OtherGameFieldJPanel panel = new OtherGameFieldJPanel((gameEngine).getNickName(), gameEngine);
             pnlEnemyAreas.add(panel);
             gameEngine.addObserver(panel);
+        }
+        
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice device = ge.getDefaultScreenDevice();
+
+        if (device.isFullScreenSupported()) {
+            device.setFullScreenWindow(this);
         }
     }
 
