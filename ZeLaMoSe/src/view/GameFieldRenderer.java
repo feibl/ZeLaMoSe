@@ -31,7 +31,6 @@ class GameFieldRenderer implements GLEventListener, Observer {
     private long timeToMirror = 0;
     private long timeToShadow = 0;
     private volatile boolean isAnimating = false;
-    private ConcurrentLinkedQueue<Action> actionQueue;
     private final int defaultTimeToMirror = 15000;
     private final int defaultTimeToShadow = 15000;
     private int viewPortWidth, viewPortHeight, blockSize;
@@ -58,7 +57,6 @@ class GameFieldRenderer implements GLEventListener, Observer {
         viewPortHeight = (Config.gridHeight - 2) * blocksize;
         effectTextRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 18), true, true);
         statusMsgsTextRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 10), true, true);
-        actionQueue = new ConcurrentLinkedQueue<Action>();
 
         fillStackGrid(null);
 
