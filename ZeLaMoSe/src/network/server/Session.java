@@ -13,7 +13,7 @@ import network.client.ClientRemoteInterface;
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
-public class Session extends UnicastRemoteObject implements SessionRemoteInterface, SessionInterface {
+public class Session extends UnicastRemoteObject implements SessionRemoteInterface {
 
     private ClientRemoteInterface client;
     private GameServer gameServer;
@@ -45,32 +45,26 @@ public class Session extends UnicastRemoteObject implements SessionRemoteInterfa
         return getSessionInformation();
     }
 
-    @Override
     public SessionInformation getSessionInformation() {
         return sessionInformation;
     }
 
-    @Override
     public void sendChatMessage(SessionInformation sender, String message) throws RemoteException {
         client.receiveChatMessage(new ChatMessage(sender, message));
     }
 
-    @Override
     public void sendSteps(Collection<Step> steps) throws RemoteException {
         client.receiveSteps(steps);
     }
 
-    @Override
     public void sendSessionAddedMessage(SessionInformation sessionInfo) throws RemoteException {
         client.receiveSessionAddedMessage(sessionInfo);
     }
 
-    @Override
     public void sendSessionRemovedMessage(SessionInformation sessionInfo) throws RemoteException {
         client.receiveSessionRemovedMessage(sessionInfo);
     }
 
-    @Override
     public void sendStartSignal() throws RemoteException {
         client.receiveStartSignal();
     }
@@ -80,7 +74,6 @@ public class Session extends UnicastRemoteObject implements SessionRemoteInterfa
         gameServer.notifyReadySignalReceived(this);
     }
 
-    @Override
     public void sendInitSignal(GameParams gameParams) throws RemoteException {
         client.receiveInitSignal(gameParams);
     }
