@@ -18,6 +18,4 @@ public interface HandlerInterface {
     public void setSessionRemote(SessionRemoteInterface sessionRemote);
 
     public void sendReadySignal();
-
-    public void sendRestartRequest();
 }

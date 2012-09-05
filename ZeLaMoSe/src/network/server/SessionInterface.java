@@ -25,6 +25,4 @@ public interface SessionInterface {
     public void sendStartSignal() throws RemoteException;
 
     public void sendInitSignal(GameParams gameParams) throws RemoteException;
-
-    public void sendRestartSignal() throws RemoteException;
 }

@@ -39,8 +39,4 @@ public class ClientRemoteAdapter implements ClientRemoteInterface {
     @Override
     public void receiveSteps(Collection<Step> steps) throws RemoteException {
     }
-
-    @Override
-    public void receiveRestartSignal() throws RemoteException {
-    }
 }
