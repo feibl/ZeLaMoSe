@@ -236,24 +236,4 @@ public class NetworkHandler extends NetworkHandlerAbstract {
     public GameParams getGameParams() {
         return gameParams;
     }
-
-    @Override
-    public void requestRestart() {
-        threadPool.execute(new Runnable() {
-
-            @Override
-            public void run() {
-                runSendRestartRequest();
-            }
-        });
-    }
-
-    protected void runSendRestartRequest() {
-        handler.sendRestartRequest();
-    }
-
-    void notifyGameRestarted() {
-        setChanged();
-        notifyObservers(UpdateType.RESTART);
-    }
 }

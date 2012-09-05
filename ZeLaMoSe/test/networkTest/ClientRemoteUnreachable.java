@@ -43,9 +43,4 @@ public class ClientRemoteUnreachable implements ClientRemoteInterface {
     public void receiveInitSignal(GameParams gameParams) throws RemoteException {
         throw new RemoteException();
     }
-
-    @Override
-    public void receiveRestartSignal() throws RemoteException {
-        throw new RemoteException();
-    }
 }

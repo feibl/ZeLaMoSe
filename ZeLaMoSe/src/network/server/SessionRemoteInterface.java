@@ -21,6 +21,4 @@ public interface SessionRemoteInterface extends Remote, Serializable {
     public SessionInformation getRemoteSessionInformation() throws RemoteException;
 
     public void receiveReadySignal() throws RemoteException;
-
-    public void receiveRestartRequest() throws RemoteException;
 }
