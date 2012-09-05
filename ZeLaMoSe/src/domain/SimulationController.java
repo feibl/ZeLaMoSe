@@ -200,7 +200,8 @@ public class SimulationController implements StepInterface, Observer {
     private void checkForRestart() {
         if (gameOverList.containsAll(sessions.keySet())) {
             restartNeeded = true;
-            stepsUntilRestart = 50;
+            //5 Seconds
+            stepsUntilRestart = 100;
         }
     }
 }
