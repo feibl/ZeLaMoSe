@@ -90,7 +90,7 @@ public class SimulationController implements StepInterface, Observer {
             rankingMap.clear();
             for (GameEngine g : gameEngines.values()) {
                 g.handleAction(new MoveAction(0, MoveAction.Direction.DOWN, 1));
-                if (g.getLevel() > currentHighestLevel && currentHighestLevel < Config.maxLevelForSpeed) {
+                if (g.getLevel() > currentHighestLevel && currentHighestLevel <= Config.maxLevelForSpeed) {
                     currentHighestLevel = g.getLevel();
                 }
                 rankingMap.put(g.getScore(), g);
