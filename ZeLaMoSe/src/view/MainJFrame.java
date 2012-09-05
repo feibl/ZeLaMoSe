@@ -17,8 +17,6 @@ import javax.swing.UIManager;
 import network.GameParams;
 import network.client.NetworkHandlerAbstract;
 import util.NameGenerator;
-import view.music.MusicFile;
-import view.music.SoundEngine;
 
 /**
  *
@@ -27,7 +25,6 @@ import view.music.SoundEngine;
 public class MainJFrame extends javax.swing.JFrame {
 
     private TetrisController tetrisController;
-    private SoundEngine soundEngine;
     private ChatController chatController;
     private NameGenerator nameGenerator;
 
@@ -66,7 +63,6 @@ public class MainJFrame extends javax.swing.JFrame {
         }
         initComponents();
         setupErrorDialog();
-        soundEngine = new SoundEngine();
     }
 
     /**
@@ -96,14 +92,14 @@ public class MainJFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(417, 396));
         setMinimumSize(new java.awt.Dimension(417, 396));
-        setName("frmMain");
+        setName("frmMain"); // NOI18N
         setPreferredSize(new java.awt.Dimension(417, 396));
         setResizable(false);
         getContentPane().setLayout(null);
 
         jLabel1.setText("<html><h1>~ZeLaMoSe - Tetris~</h1></html>");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(70, 0, 254, 49);
+        jLabel1.setBounds(70, 0, 265, 50);
 
         pnlSinglePlayer.setOpaque(false);
         pnlSinglePlayer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -148,7 +144,7 @@ public class MainJFrame extends javax.swing.JFrame {
         );
 
         getContentPane().add(pnlSinglePlayer);
-        pnlSinglePlayer.setBounds(40, 100, 338, 72);
+        pnlSinglePlayer.setBounds(40, 100, 330, 78);
 
         pnlMultiPlayer.setOpaque(false);
         pnlMultiPlayer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -178,7 +174,7 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(pnlMultiPlayerLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnCreateGame, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addComponent(btnJoinGame, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -231,12 +227,12 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGap(41, 41, 41)
                 .addGroup(pnlControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlControlLayout.createSequentialGroup()
-                        .addComponent(lblNickName, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(pnlControlLayout.createSequentialGroup()
                         .addComponent(txtNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-                        .addComponent(btnExit)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                        .addComponent(btnExit))
+                    .addGroup(pnlControlLayout.createSequentialGroup()
+                        .addComponent(lblNickName, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlControlLayout.setVerticalGroup(
@@ -253,16 +249,16 @@ public class MainJFrame extends javax.swing.JFrame {
         );
 
         getContentPane().add(pnlControl);
-        pnlControl.setBounds(37, 283, 338, 82);
+        pnlControl.setBounds(37, 283, 338, 86);
 
         lblMultiPlayer.setBackground(new java.awt.Color(217, 19, 19));
         lblMultiPlayer.setText("<html><strong>MultiPlayer</strong></html>");
         getContentPane().add(lblMultiPlayer);
-        lblMultiPlayer.setBounds(40, 180, 64, 14);
+        lblMultiPlayer.setBounds(40, 180, 76, 16);
 
         lblSinglePlayer.setText("<html><strong>SinglePlayer</strong></html>");
         getContentPane().add(lblSinglePlayer);
-        lblSinglePlayer.setBounds(40, 80, 70, 14);
+        lblSinglePlayer.setBounds(40, 80, 83, 16);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/image/tetrisbg.jpeg")));
         getContentPane().add(jLabel2);
@@ -492,16 +488,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtNickname;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void setVisible(boolean b) {
-        super.setVisible(b);
-        if (!b) {
-            soundEngine.stopBackGroundMusic(MusicFile.mainBackgroundMusic);
-        } else {
-            soundEngine.playBackgroundMusic(MusicFile.mainBackgroundMusic);
-        }
-
-    }
 
     private void showLobby(final GameMode gameMode) {
         final LobbyJFrame lobby = new LobbyJFrame(tetrisController, chatController, gameMode);

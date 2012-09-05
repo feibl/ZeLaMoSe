@@ -10,8 +10,6 @@ import java.util.Observer;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.swing.SwingUtilities;
-import view.music.MusicFile;
-import view.music.SoundEngine;
 
 /**
  *
@@ -19,7 +17,6 @@ import view.music.SoundEngine;
  */
 public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
 
-    private SoundEngine soundEngine = new SoundEngine();
 
     /**
      * Creates new form pnlGameField
@@ -242,10 +239,8 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
     public void initRenderer(SimulationStateAbstract gameEngine) {
         this.gameEngine = gameEngine;
         gameEngine.addObserver(this);
-        gameEngine.addObserver(soundEngine);
         initOwnGameFieldRenderer();
         initNextBlockRenderer();
-        soundEngine.playBackgroundMusic(MusicFile.gameBackgroundMusic);
 
 
     }

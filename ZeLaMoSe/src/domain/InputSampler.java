@@ -22,6 +22,9 @@ public class InputSampler implements KeyEventDispatcher {
     @Override
     public boolean dispatchKeyEvent(KeyEvent e) {
         if (e.getID() == KeyEvent.KEY_PRESSED) {
+            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                e.consume();
+            }
             keyEventQueue.add(new InputEvent(e, System.nanoTime()));
         }
         return false;
