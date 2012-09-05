@@ -40,7 +40,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     private DiscoveryServer discoveryServer;
 
     public GameServer(String serverName, Registry registry) throws RemoteException, MalformedURLException {
-        this();
+        sessionList = new ArrayList<Session>(MAX_SESSIONS);
         File policy = Config.convertRMI(GameServer.class);
         System.setProperty("java.security.policy", policy.getAbsolutePath());
         if (System.getSecurityManager() == null) {
@@ -48,10 +48,6 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         }
         registry.rebind(serverName, this);
         discoveryServer = new DiscoveryServer();
-    }
-
-    public GameServer() throws RemoteException {
-        sessionList = new ArrayList<Session>(MAX_SESSIONS);
     }
 
     @Override
