@@ -133,14 +133,16 @@ public class GameFieldJFrame extends javax.swing.JFrame {
     private void btnFullscreenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFullscreenActionPerformed
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice device = ge.getDefaultScreenDevice();
-        if (fullscreenOn) {
-            device.setFullScreenWindow(null);
-            btnFullscreen.setText("Fullscreen off");
-        } else {
-            device.setFullScreenWindow(this);
-            btnFullscreen.setText("Fullscreen off");
+        if (device.isFullScreenSupported()) {
+            if (fullscreenOn) {
+                device.setFullScreenWindow(null);
+                btnFullscreen.setText("Fullscreen off");
+            } else {
+                device.setFullScreenWindow(this);
+                btnFullscreen.setText("Fullscreen off");
+            }
+            fullscreenOn = !fullscreenOn;
         }
-        fullscreenOn = !fullscreenOn;
     }//GEN-LAST:event_btnFullscreenActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFullscreen;
