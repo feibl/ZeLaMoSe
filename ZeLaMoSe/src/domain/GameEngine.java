@@ -67,8 +67,25 @@ public class GameEngine extends SimulationStateAbstract {
             setLastAction(new NewBlockAction(currentBlock, sessionId));
             ++blockCounter;
         } else {
-            setLastAction(new GameOverAction(sessionId));
+            setGameOver();
         }
+    }
+    
+    
+    public void setGameOver() {
+        gameOver = true;
+        setLastAction(new GameOverAction(sessionId));
+    }
+
+    private boolean checkForGameOver() {
+        for (int y = 0; y < currentBlock.getHeight(); y++) {
+            for (int x = 0; x < currentBlock.getWidth(); x++) {
+                if (grid[blockStartPositionX + x][blockStartPositionY - y] != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void saveCurrenblockToGrid() {
@@ -200,18 +217,6 @@ public class GameEngine extends SimulationStateAbstract {
         }
     }
 
-    private boolean checkForGameOver() {
-        for (int y = 0; y < currentBlock.getHeight(); y++) {
-            for (int x = 0; x < currentBlock.getWidth(); x++) {
-                if (grid[blockStartPositionX + x][blockStartPositionY - y] != null) {
-                    gameOver = true;
-                    return gameOver;
-                }
-            }
-        }
-        return gameOver;
-    }
-
     private boolean checkForCollision() {
         BlockAbstract[][] blockGrid = currentBlock.getGrid();
         for (int x = 0; x < blockGrid.length; x++) {
@@ -249,10 +254,6 @@ public class GameEngine extends SimulationStateAbstract {
                     break;
                 case GARBAGELINE:
                     handleGarbageLineAction((GarbageLineAction) action);
-                    break;
-                case GAMEOVER:
-                    gameOver = true;
-                    setLastAction(new GameOverAction(0));
                     break;
                 case CLEAR:
                     if (numberOfJokers > 0) {
@@ -355,13 +356,13 @@ public class GameEngine extends SimulationStateAbstract {
         }
 
         int oldY = currentBlock.getY();
-        
+
         if ((oldY + numberOfLines) > (gridHeight - 1)) {
             currentBlock.setY(gridHeight - 1);
         } else {
             currentBlock.setY(oldY + numberOfLines);
         }
-        
+
         int yOffset = currentBlock.getY() - oldY;
         action.setYOffsetForCurrentBlock(yOffset);
         setLastAction(action);
