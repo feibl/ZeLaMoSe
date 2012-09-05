@@ -19,12 +19,9 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="lblPlayerName" min="-2" pref="170" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <Component id="lblPlayerName" min="-2" pref="170" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="gLPnlEnemyArea1" max="32767" attributes="0"/>
+                      <Component id="gLPnlEnemyArea1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="lblLevelTitle" min="-2" max="-2" attributes="0"/>
@@ -41,9 +38,9 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace pref="68" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -69,9 +66,8 @@
                       <Component id="lblNbrOfBlocksTitle" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblNbrOfBlocks" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="108" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="gLPnlEnemyArea1" max="32767" attributes="0"/>
+                  <Component id="gLPnlEnemyArea1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -105,7 +101,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="326" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
