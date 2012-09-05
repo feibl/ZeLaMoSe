@@ -9,6 +9,7 @@ import domain.block.BlockAbstract;
 import domain.block.GarbageBlock;
 import domain.block.OBlock;
 import java.awt.Font;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
@@ -48,6 +49,8 @@ class GameFieldRenderer implements GLEventListener, Observer {
     private volatile boolean stopAnimationRequested;
     private Semaphore stopAnimationRequest;
     private Semaphore removeLineFinished;
+    private boolean restarting = false;
+    private int remainingTimeUntilRestart;
 
     public GameFieldRenderer(int blocksize, SimulationStateAbstract gameEngine, boolean ownGameField) {
         this.blockSize = blocksize;
@@ -131,6 +134,11 @@ class GameFieldRenderer implements GLEventListener, Observer {
             renderText(drawable, "Player not connected", 10, 130, statusMsgsTextRenderer);
 
         }
+        if (ownGameField && isGameOver && restarting) {
+            DecimalFormat df = new DecimalFormat("0.0");
+            String text = "Restart in: " + df.format((double)remainingTimeUntilRestart/1000) + " Seconds";
+            renderText(drawable, text, 30, 50, effectTextRenderer);
+        }
     }
 
     private void renderText(GLAutoDrawable drawable, String text, int x, int y, TextRenderer renderer) throws GLException {
@@ -176,7 +184,7 @@ class GameFieldRenderer implements GLEventListener, Observer {
     private void drawGridLines(GL2 gl) {
         gl.glColor3f(0, 0, 0);
         gl.glBegin(GL.GL_LINES);
-        
+
         for (int x = 0; x <= viewPortWidth; x += blockSize) {
             gl.glVertex2d(x, 0);
             gl.glVertex2d(x, viewPortHeight);
@@ -450,9 +458,16 @@ class GameFieldRenderer implements GLEventListener, Observer {
             case GAMEOVER:
                 handleGameOverAction();
                 break;
+            case RESTART_COUNTDOWN:
+                if (!restarting) {
+                    restarting = true;
+                }
+                remainingTimeUntilRestart = ((RestartCountdownAction) action).getRemainingTime();
+                break;
             case CLEAR:
-                if(isGameOver) {
+                if (isGameOver) {
                     isGameOver = false;
+                    restarting = false;
                     rank = 0;
                 }
                 fillStackGrid(null);

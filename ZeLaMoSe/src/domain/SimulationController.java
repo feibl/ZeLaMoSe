@@ -4,12 +4,14 @@ import domain.actions.Action;
 import domain.actions.GameOverAction;
 import domain.actions.MoveAction;
 import java.util.*;
+import network.server.GameServer;
 
 /**
  *
  * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public class SimulationController implements StepInterface, Observer {
+    public static final int STEPS_UNTIL_RESTART = 100;
 
     private SortedMap<Integer, GameEngine> rankingMap = new TreeMap<Integer, GameEngine>(new Comparator() {
 
@@ -70,8 +72,14 @@ public class SimulationController implements StepInterface, Observer {
      * Execute simulation step. - Look for necessary states - Sort Actions - Simulation ACtions
      */
     public void simulateStep(int seqNum) {
-        if (restartNeeded && --stepsUntilRestart == 0) {
-            restart();
+        if (restartNeeded) {
+            if (--stepsUntilRestart == 0) {
+                restart();
+            } else {
+                for(GameEngine engine: gameEngines.values()) {
+                    engine.restartCountdown(stepsUntilRestart * GameServer.STEP_DURATION);
+                }
+            }
         }
         SortedMap<Action, Integer> actionList = new TreeMap<Action, Integer>(new Comparator() {
 
@@ -201,7 +209,7 @@ public class SimulationController implements StepInterface, Observer {
         if (gameOverList.containsAll(sessions.keySet())) {
             restartNeeded = true;
             //5 Seconds
-            stepsUntilRestart = 100;
+            stepsUntilRestart = STEPS_UNTIL_RESTART;
         }
     }
 }

@@ -1,5 +1,6 @@
 package domain;
 
+import domain.actions.RestartCountdownAction;
 import domain.actions.*;
 import domain.block.*;
 import java.util.ArrayList;
@@ -528,5 +529,9 @@ public class GameEngine extends SimulationStateAbstract {
         setLastAction(new ClearAction(0));
         nextBlock = null;
         startGame();
+    }
+
+    void restartCountdown(int remainingTime) {
+        setLastAction(new RestartCountdownAction(0, remainingTime));
     }
 }
