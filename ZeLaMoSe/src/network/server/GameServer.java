@@ -33,7 +33,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     private AtomicInteger readyCount = new AtomicInteger(0);
     protected ExecutorService threadPool;
     private BlockingQueue<Step> receivedSteps = new LinkedBlockingQueue<Step>();
-    private final int stepDuration = 50; //in millisecond
+    public final int STEP_DURATION = 50; //in millisecond
     private Semaphore currentNumberOfReceivedSteps = new Semaphore(0);
     private int currentStep = 0;
     private boolean gameStarted = false;
@@ -251,7 +251,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
             public void run() {
                 while (true) {
                     try {
-                        Thread.sleep(stepDuration);
+                        Thread.sleep(STEP_DURATION);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(GameServer.class.getName()).log(Level.SEVERE, null, ex);
                     }
