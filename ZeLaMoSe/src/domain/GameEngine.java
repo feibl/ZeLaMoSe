@@ -70,11 +70,12 @@ public class GameEngine extends SimulationStateAbstract {
             setGameOver();
         }
     }
-    
-    
+
     public void setGameOver() {
         gameOver = true;
         setLastAction(new GameOverAction(sessionId));
+        setChanged();
+        notifyObservers(UpdateType.GAME_OVER);
     }
 
     private boolean checkForGameOver() {

@@ -21,6 +21,7 @@ public class SimulationController implements StepInterface, Observer {
     private SortedMap<Integer, GameEngine> gameEngines = new TreeMap<Integer, GameEngine>();
     private SortedMap<Integer, String> sessions = new TreeMap<Integer, String>();
     private SortedMap<Integer, Step> stepQueue = new TreeMap<Integer, Step>();
+    private Set<Integer> gameOverList = new HashSet<Integer>();
     private int currentHighestLevel = 1;
     private boolean autoadvance = true;
 
@@ -161,19 +162,37 @@ public class SimulationController implements StepInterface, Observer {
         if ((SimulationStateAbstract.UpdateType) arg == SimulationStateAbstract.UpdateType.ACTIONFOROTHERS) {
             addActionForOthers(((GameEngine) o).getSessionID(), ((GameEngine) o).getlastActionForOthers());
         }
+        else if((SimulationStateAbstract.UpdateType) arg == SimulationStateAbstract.UpdateType.GAME_OVER) {
+            gameOverList.add(((GameEngine) o).getSessionID());
+            if(allGameOver()) {
+                restart();
+            }
+        }
     }
 
     public void removeSession(int sessionId) {
         if (gameEngines.get(sessionId) == null) { //The session has already been removed
             return;
-        }
-        gameEngines.get(sessionId).setGameOver();
-        gameEngines.remove(sessionId).deleteObserver(this);
+        } 
+        GameEngine removedGameEngine = gameEngines.remove(sessionId);
+        removedGameEngine.deleteObserver(this);
         stepQueue.remove(sessionId);
         sessions.remove(sessionId);
+        removedGameEngine.setGameOver();
+        if(allGameOver()) {
+            restart();
+        }
     }
 
     public void setLevel(int level) {
         this.currentHighestLevel = level;
+    }
+
+    private void restart() {
+        System.out.println("restart");
+    }    
+    
+    private boolean allGameOver() {
+        return gameOverList.containsAll(sessions.keySet());
     }
 }

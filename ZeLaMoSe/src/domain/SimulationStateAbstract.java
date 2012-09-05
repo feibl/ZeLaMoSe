@@ -38,6 +38,6 @@ abstract public class SimulationStateAbstract extends Observable {
 
     public enum UpdateType {
 
-        LASTACTION, ACTIONFOROTHERS, RANKING
+        LASTACTION, ACTIONFOROTHERS, RANKING, GAME_OVER
     }
 }
