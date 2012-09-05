@@ -139,7 +139,7 @@ public class GameFieldJFrame extends javax.swing.JFrame {
                 btnFullscreen.setText("Fullscreen off");
             } else {
                 device.setFullScreenWindow(this);
-                btnFullscreen.setText("Fullscreen off");
+                btnFullscreen.setText("Fullscreen on");
             }
             fullscreenOn = !fullscreenOn;
         }
