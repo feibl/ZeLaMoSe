@@ -17,8 +17,6 @@ import javax.swing.UIManager;
 import network.GameParams;
 import network.client.NetworkHandlerAbstract;
 import util.NameGenerator;
-import view.music.MusicFile;
-import view.music.SoundEngine;
 
 /**
  *
@@ -27,7 +25,6 @@ import view.music.SoundEngine;
 public class MainJFrame extends javax.swing.JFrame {
 
     private TetrisController tetrisController;
-    private SoundEngine soundEngine;
     private ChatController chatController;
     private NameGenerator nameGenerator;
 
@@ -66,7 +63,6 @@ public class MainJFrame extends javax.swing.JFrame {
         }
         initComponents();
         setupErrorDialog();
-        soundEngine = new SoundEngine();
     }
 
     /**
@@ -492,16 +488,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtNickname;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void setVisible(boolean b) {
-        super.setVisible(b);
-        if (!b) {
-            soundEngine.stopBackGroundMusic(MusicFile.mainBackgroundMusic);
-        } else {
-            soundEngine.playBackgroundMusic(MusicFile.mainBackgroundMusic);
-        }
-
-    }
 
     private void showLobby(final GameMode gameMode) {
         final LobbyJFrame lobby = new LobbyJFrame(tetrisController, chatController, gameMode);

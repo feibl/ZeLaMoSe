@@ -14,8 +14,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.*;
 import network.ChatMessage;
 import util.NetworkUtil;
-import view.music.MusicFile;
-import view.music.SoundEngine;
 
 /**
  *
@@ -26,7 +24,6 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
     private final TetrisController tetrisController;
     private final PlayerListModel playerListModel;
     private final ChatController chatController;
-    private SoundEngine soundEngine;
     private final PlayerListCellRenderer playerListCellRenderer;
     final static SimpleAttributeSet DEFAULT = new SimpleAttributeSet();
     final static SimpleAttributeSet BOLD = new SimpleAttributeSet();
@@ -61,13 +58,9 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                 lblServerIPValue.setText("");
                 btnStart.setEnabled(false);
                 pnlSettings.setVisible(false);
-                soundEngine = new SoundEngine();
-                soundEngine.playBackgroundMusic(MusicFile.lobbyBackgroundMusic);
                 break;
             case MULTI_PLAYER_HOST:
                 lblServerIPValue.setText(NetworkUtil.getLocalIP());
-                soundEngine = new SoundEngine();
-                soundEngine.playBackgroundMusic(MusicFile.lobbyBackgroundMusic);
                 break;
         }
     }
@@ -427,9 +420,6 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
                     @Override
                     public void run() {
                         gameField.setVisible(true);
-                        if (soundEngine != null) {
-                            soundEngine.stopBackGroundMusic(MusicFile.lobbyBackgroundMusic);
-                        }
                         dispose();
                     }
                 });
