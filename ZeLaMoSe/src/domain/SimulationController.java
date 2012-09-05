@@ -190,6 +190,8 @@ public class SimulationController implements StepInterface, Observer {
 
     private void restart() {
         restartNeeded = false;
+        currentHighestLevel = 1;
+        gameOverList.clear();
         for (GameEngine gameEngine : gameEngines.values()) {
             gameEngine.restart(1, 1, true, 1);
         }
