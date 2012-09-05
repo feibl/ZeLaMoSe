@@ -24,6 +24,8 @@ public class SimulationController implements StepInterface, Observer {
     private Set<Integer> gameOverList = new HashSet<Integer>();
     private int currentHighestLevel = 1;
     private boolean autoadvance = true;
+    private boolean restartNeeded;
+    private int stepsUntilRestart;
 
     public SimulationController() {
         this(true);
@@ -68,6 +70,9 @@ public class SimulationController implements StepInterface, Observer {
      * Execute simulation step. - Look for necessary states - Sort Actions - Simulation ACtions
      */
     public void simulateStep(int seqNum) {
+        if (restartNeeded && --stepsUntilRestart == 0) {
+            restart();
+        }
         SortedMap<Action, Integer> actionList = new TreeMap<Action, Integer>(new Comparator() {
 
             @Override
@@ -161,27 +166,22 @@ public class SimulationController implements StepInterface, Observer {
     public void update(Observable o, Object arg) {
         if ((SimulationStateAbstract.UpdateType) arg == SimulationStateAbstract.UpdateType.ACTIONFOROTHERS) {
             addActionForOthers(((GameEngine) o).getSessionID(), ((GameEngine) o).getlastActionForOthers());
-        }
-        else if((SimulationStateAbstract.UpdateType) arg == SimulationStateAbstract.UpdateType.GAME_OVER) {
+        } else if ((SimulationStateAbstract.UpdateType) arg == SimulationStateAbstract.UpdateType.GAME_OVER) {
             gameOverList.add(((GameEngine) o).getSessionID());
-            if(allGameOver()) {
-                restart();
-            }
+            checkForRestart();
         }
     }
 
     public void removeSession(int sessionId) {
         if (gameEngines.get(sessionId) == null) { //The session has already been removed
             return;
-        } 
+        }
         GameEngine removedGameEngine = gameEngines.remove(sessionId);
         removedGameEngine.deleteObserver(this);
         stepQueue.remove(sessionId);
         sessions.remove(sessionId);
         removedGameEngine.setGameOver();
-        if(allGameOver()) {
-            restart();
-        }
+        checkForRestart();
     }
 
     public void setLevel(int level) {
@@ -189,10 +189,16 @@ public class SimulationController implements StepInterface, Observer {
     }
 
     private void restart() {
-        System.out.println("restart");
-    }    
-    
-    private boolean allGameOver() {
-        return gameOverList.containsAll(sessions.keySet());
+        restartNeeded = false;
+        for (GameEngine gameEngine : gameEngines.values()) {
+            gameEngine.restart(1, 1, true, 1);
+        }
+    }
+
+    private void checkForRestart() {
+        if (gameOverList.containsAll(sessions.keySet())) {
+            restartNeeded = true;
+            stepsUntilRestart = 50;
+        }
     }
 }

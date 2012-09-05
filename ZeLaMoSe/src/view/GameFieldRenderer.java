@@ -451,6 +451,9 @@ class GameFieldRenderer implements GLEventListener, Observer {
                 handleGameOverAction();
                 break;
             case CLEAR:
+                if(isGameOver) {
+                    isGameOver = false;
+                }
                 fillStackGrid(null);
                 break;
         }
