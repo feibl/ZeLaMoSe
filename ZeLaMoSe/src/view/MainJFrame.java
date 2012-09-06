@@ -380,22 +380,8 @@ public class MainJFrame extends javax.swing.JFrame {
                 ReplayData replayData = readReplayData(file);
 
                 SimulationController simulationController = new SimulationController();
-                GameParams params = replayData.getGameParams();
-                simulationController.setGameParameters(params);
-                simulationController.setLevel(params.getStartLevel());
+                simulationController.setGameParameters(replayData.getGameParams(), replayData.getSessionList());
                 final ReplayController replayController = new ReplayController(replayData, simulationController);
-                
-                GameEngine localGameEngine = new GameEngine(replayData.getOwnSessionId(), params.getBlockQueueSeed(), params.isIncludeSpecialBlocks(), params.getNbrOfJokers());
-                simulationController.addSession(replayData.getOwnSessionId(), replayData.getSessionList().get(replayData.getOwnSessionId()), localGameEngine);
-                
-                List<SimulationStateAbstract> otherEngines = new ArrayList<SimulationStateAbstract>();
-                for (Map.Entry<Integer, String> session : replayData.getSessionList().entrySet()) {
-                    if (session.getKey() != replayData.getOwnSessionId()) {
-                        GameEngine gameEngine = new GameEngine(session.getKey(), params.getBlockQueueSeed(), params.isIncludeSpecialBlocks(), params.getNbrOfJokers());
-                        otherEngines.add(gameEngine);
-                        simulationController.addSession(session.getKey(), session.getValue(), gameEngine);
-                    }
-                }
                 
                 final GameFieldJFrame gameFieldJFrame = new GameFieldJFrame(new InputSampler() {
 
@@ -403,7 +389,7 @@ public class MainJFrame extends javax.swing.JFrame {
                     public boolean dispatchKeyEvent(KeyEvent e) {
                         return false;
                     }
-                }, localGameEngine, otherEngines);
+                }, replayData.getOwnSessionId(), simulationController.getGameEngines());
 
                 SwingUtilities.invokeLater(new Runnable() {
 

@@ -5,7 +5,12 @@ import domain.SimulationStateAbstract;
 import domain.TetrisController;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,21 +21,23 @@ public class GameFieldJFrame extends javax.swing.JFrame {
     private TetrisController tetrisController;
     private boolean fullscreenOn = false;
 
-    public GameFieldJFrame(TetrisController tetrisController, InputSampler is, SimulationStateAbstract mainSimulation, List<SimulationStateAbstract> otherSimulations) {
-        this(is, mainSimulation, otherSimulations);
-        this.tetrisController = tetrisController;
-    }
-
-    public GameFieldJFrame(InputSampler is, SimulationStateAbstract mainSimulation, List<SimulationStateAbstract> otherSimulations) {
+    public GameFieldJFrame(InputSampler is, int ownSessionId, Map<Integer, ? extends SimulationStateAbstract> simulationMap) {
         initComponents();
         ownGameFieldJPanel2.setInputSampler(is);
-        ownGameFieldJPanel2.initRenderer(mainSimulation);
-
-        for (SimulationStateAbstract gameEngine : otherSimulations) {
-            OtherGameFieldJPanel panel = new OtherGameFieldJPanel((gameEngine).getNickName(), gameEngine);
-            pnlEnemyAreas.add(panel);
-            gameEngine.addObserver(panel);
+        for (Map.Entry<Integer, ? extends SimulationStateAbstract> entry : simulationMap.entrySet()) {
+            if (entry.getKey() == ownSessionId) {
+                ownGameFieldJPanel2.initRenderer(entry.getValue());
+            } else {
+                OtherGameFieldJPanel panel = new OtherGameFieldJPanel(entry.getValue().getNickName(), entry.getValue());
+                pnlEnemyAreas.add(panel);
+                entry.getValue().addObserver(panel);
+            }
         }
+    }
+
+    public GameFieldJFrame(TetrisController tetrisController, InputSampler is, int ownSessionId, Map<Integer, ? extends SimulationStateAbstract> simulationMap) {
+        this(is, ownSessionId, simulationMap);
+        this.tetrisController = tetrisController;
     }
 
     /**
@@ -267,7 +274,7 @@ public class GameFieldJFrame extends javax.swing.JFrame {
 //                    break;
 //            }
 //        }
-        System.exit(0);
+//        System.exit(0);
     }//GEN-LAST:event_formWindowClosing
 
     private void btnFullscreenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFullscreenActionPerformed
