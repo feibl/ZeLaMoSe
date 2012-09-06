@@ -4,6 +4,7 @@ import domain.actions.Action;
 import domain.actions.GameOverAction;
 import domain.actions.MoveAction;
 import java.util.*;
+import network.GameParams;
 import network.server.GameServer;
 
 /**
@@ -28,6 +29,7 @@ public class SimulationController implements StepInterface, Observer {
     private boolean autoadvance = true;
     private boolean restartNeeded;
     private int stepsUntilRestart;
+    private GameParams parameters;
 
     public SimulationController() {
         this(true);
@@ -48,6 +50,10 @@ public class SimulationController implements StepInterface, Observer {
         stepQueue.put(step.getSessionID(), step);
     }
 
+    public void setGameParameters(GameParams parameters) {
+        this.parameters = parameters;
+    }
+    
     public void addSession(int sessionId, String name, GameEngine gameEngine) {
         if (gameEngines.containsKey(sessionId)) {
             throw new IllegalStateException("session already added");
