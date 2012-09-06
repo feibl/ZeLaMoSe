@@ -30,6 +30,7 @@ public class SimulationController implements StepInterface, Observer {
     private boolean restartNeeded;
     private int stepsUntilRestart;
     private GameParams parameters;
+    private Random restartSeedGenerator;
 
     public SimulationController() {
         this(true);
@@ -52,6 +53,8 @@ public class SimulationController implements StepInterface, Observer {
 
     public void setGameParameters(GameParams parameters) {
         this.parameters = parameters;
+        restartSeedGenerator = new Random(parameters.getBlockQueueSeed());
+        setLevel(parameters.getStartLevel());
     }
     
     public void addSession(int sessionId, String name, GameEngine gameEngine) {
@@ -203,8 +206,9 @@ public class SimulationController implements StepInterface, Observer {
         restartNeeded = false;
         currentHighestLevel = 1;
         gameOverList.clear();
+        long seed = restartSeedGenerator.nextLong();
         for (GameEngine gameEngine : gameEngines.values()) {
-            gameEngine.restart(1, 1, true, 1);
+            gameEngine.restart(parameters.getStartLevel(), seed, parameters.isIncludeSpecialBlocks(), parameters.getNbrOfJokers());
         }
     }
 
