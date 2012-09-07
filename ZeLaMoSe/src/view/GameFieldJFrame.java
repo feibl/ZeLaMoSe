@@ -50,27 +50,30 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel3 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         btnFullscreen = new javax.swing.JButton();
         ownGameFieldJPanel2 = new view.OwnGameFieldJPanel();
+        jPanel1 = new javax.swing.JPanel();
         pnlEnemyAreas = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
-        jTextPane2 = new javax.swing.JTextPane();
-        jPanel4 = new javax.swing.JPanel();
-        jTextPane4 = new javax.swing.JTextPane();
-        jPanel10 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jPanel15 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        jTextPane3 = new javax.swing.JTextPane();
+        jLabel18 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
+        jPanel4 = new javax.swing.JPanel();
+        jLabel17 = new javax.swing.JLabel();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
         jPanel6 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -85,7 +88,7 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 21), new java.awt.Dimension(0, 21), new java.awt.Dimension(32767, 21));
         jPanel11 = new javax.swing.JPanel();
-        jTextPane5 = new javax.swing.JTextPane();
+        jLabel20 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1920, 1080));
@@ -96,10 +99,9 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jPanel3.setPreferredSize(new java.awt.Dimension(730, 1080));
-        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.X_AXIS));
-
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        jPanel3.setMinimumSize(new java.awt.Dimension(720, 1080));
+        jPanel3.setPreferredSize(new java.awt.Dimension(720, 1080));
+        jPanel3.setLayout(new java.awt.BorderLayout());
 
         jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
         jPanel2.add(filler1);
@@ -112,132 +114,54 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         });
         jPanel2.add(btnFullscreen);
 
-        jPanel1.add(jPanel2, java.awt.BorderLayout.NORTH);
-        jPanel1.add(ownGameFieldJPanel2, java.awt.BorderLayout.CENTER);
+        jPanel3.add(jPanel2, java.awt.BorderLayout.NORTH);
 
-        jPanel3.add(jPanel1);
+        ownGameFieldJPanel2.setMinimumSize(new java.awt.Dimension(720, 955));
+        ownGameFieldJPanel2.setPreferredSize(new java.awt.Dimension(720, 1080));
+        jPanel3.add(ownGameFieldJPanel2, java.awt.BorderLayout.CENTER);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         getContentPane().add(jPanel3, gridBagConstraints);
 
-        pnlEnemyAreas.setLayout(new javax.swing.BoxLayout(pnlEnemyAreas, javax.swing.BoxLayout.X_AXIS));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
-        getContentPane().add(pnlEnemyAreas, gridBagConstraints);
+        jPanel1.setPreferredSize(new java.awt.Dimension(1200, 1080));
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
+        pnlEnemyAreas.setMaximumSize(new java.awt.Dimension(1200, 800));
+        pnlEnemyAreas.setLayout(new javax.swing.BoxLayout(pnlEnemyAreas, javax.swing.BoxLayout.X_AXIS));
+        jPanel1.add(pnlEnemyAreas, java.awt.BorderLayout.CENTER);
+
+        jPanel7.setMinimumSize(new java.awt.Dimension(1200, 545));
+        jPanel7.setPreferredSize(new java.awt.Dimension(1200, 800));
         jPanel7.setLayout(new java.awt.GridBagLayout());
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Special Blocks:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 18), new java.awt.Color(0, 51, 204))); // NOI18N
-        jPanel8.setMinimumSize(new java.awt.Dimension(536, 356));
-        jPanel8.setLayout(new java.awt.GridBagLayout());
+        jPanel8.setMinimumSize(new java.awt.Dimension(750, 356));
+        jPanel8.setPreferredSize(new java.awt.Dimension(750, 1001));
+        jPanel8.setLayout(new java.awt.BorderLayout());
 
-        jTextPane2.setBackground(javax.swing.UIManager.getDefaults().getColor("Label.background"));
-        jTextPane2.setBorder(null);
-        jTextPane2.setEditable(false);
-        jTextPane2.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        jTextPane2.setText("Special Blocks differ from normal Blocks in their appearance. The first Player, who is able to remove one of them completly, will trigger its effect.\nRemoving the Block after another player has acivated it will generate no effect.");
-        jTextPane2.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        jTextPane2.setEnabled(false);
-        jTextPane2.setFocusCycleRoot(false);
-        jTextPane2.setFocusable(false);
-        jTextPane2.setMinimumSize(new java.awt.Dimension(500, 100));
-        jTextPane2.setPreferredSize(new java.awt.Dimension(500, 100));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
-        jPanel8.add(jTextPane2, gridBagConstraints);
+        jLabel19.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel19.setText("<html>Special Blocks differ from normal Blocks in their appearance. The first Player, who is able to remove one of them completly, will trigger its effect.<br><br>Removing the Block after another player has acivated it will generate no effect.</html>");
+        jLabel19.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 20, 10));
+        jPanel8.add(jLabel19, java.awt.BorderLayout.NORTH);
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Mirror Block:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 18), new java.awt.Color(0, 51, 204))); // NOI18N
-        jPanel4.setPreferredSize(new java.awt.Dimension(300, 817));
-        jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.Y_AXIS));
-
-        jTextPane4.setBackground(new java.awt.Color(240, 240, 240));
-        jTextPane4.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
-        jTextPane4.setEditable(false);
-        jTextPane4.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        jTextPane4.setText("The Mirror Block will turn your enemy's gamefield through 180 degrees, so that his controls are inverted.\n\nYou will recognize the Mirror Block by its everchanging color and its random appearance.");
-        jTextPane4.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        jTextPane4.setEnabled(false);
-        jTextPane4.setFocusCycleRoot(false);
-        jTextPane4.setFocusable(false);
-        jTextPane4.setMinimumSize(new java.awt.Dimension(0, 130));
-        jTextPane4.setPreferredSize(new java.awt.Dimension(595, 200));
-        jPanel4.add(jTextPane4);
-
-        jLabel6.setText("<html><b>Sample Appearance:</b></html>");
-
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/image/mirr2.png"))); // NOI18N
-
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/image/mirr1.png"))); // NOI18N
-
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 238, Short.MAX_VALUE)
-            .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel10Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel10Layout.createSequentialGroup()
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(jLabel5))
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 162, Short.MAX_VALUE)
-            .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel10Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        );
-
-        jPanel4.add(jPanel10);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipady = 31;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 5);
-        jPanel8.add(jPanel4, gridBagConstraints);
+        jPanel15.setLayout(new javax.swing.BoxLayout(jPanel15, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Dark Block:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 18), new java.awt.Color(0, 51, 204))); // NOI18N
         jPanel5.setPreferredSize(new java.awt.Dimension(300, 621));
         jPanel5.setLayout(new javax.swing.BoxLayout(jPanel5, javax.swing.BoxLayout.Y_AXIS));
 
-        jTextPane3.setBackground(new java.awt.Color(240, 240, 240));
-        jTextPane3.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
-        jTextPane3.setEditable(false);
-        jTextPane3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        jTextPane3.setText("The Dark Block will turn your enemy's field pitch black for 15 seconds.\n\nThe Dark Block is hard to distinguish from the background due to its color.");
-        jTextPane3.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        jTextPane3.setEnabled(false);
-        jTextPane3.setFocusCycleRoot(false);
-        jTextPane3.setFocusable(false);
-        jTextPane3.setMinimumSize(new java.awt.Dimension(0, 0));
-        jTextPane3.setPreferredSize(new java.awt.Dimension(595, 200));
-        jPanel5.add(jTextPane3);
+        jLabel18.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel18.setText("<html>The Dark Block will turn your enemy's field pitch black for 15 seconds.<br><br>The Dark Block is hard to distinguish from the background due to its color.</html>");
+        jLabel18.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
+        jPanel5.add(jLabel18);
+
+        jPanel9.setAlignmentX(0.0F);
+        jPanel9.setAlignmentY(0.0F);
+        jPanel9.setPreferredSize(new java.awt.Dimension(238, 200));
 
         jLabel7.setText("<html><b>Sample Appearance:</b></html>");
 
@@ -249,7 +173,7 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 238, Short.MAX_VALUE)
+            .addGap(0, 357, Short.MAX_VALUE)
             .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel9Layout.createSequentialGroup()
                     .addContainerGap()
@@ -259,11 +183,11 @@ public class GameFieldJFrame extends javax.swing.JFrame {
                             .addGap(18, 18, 18)
                             .addComponent(jLabel8))
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addContainerGap(129, Short.MAX_VALUE)))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 160, Short.MAX_VALUE)
+            .addGap(0, 239, Short.MAX_VALUE)
             .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel9Layout.createSequentialGroup()
                     .addContainerGap()
@@ -272,36 +196,83 @@ public class GameFieldJFrame extends javax.swing.JFrame {
                     .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addContainerGap(90, Short.MAX_VALUE)))
         );
 
         jPanel5.add(jPanel9);
+        jPanel5.add(filler5);
+
+        jPanel15.add(jPanel5);
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Mirror Block:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 18), new java.awt.Color(0, 51, 204))); // NOI18N
+        jPanel4.setPreferredSize(new java.awt.Dimension(300, 817));
+        jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.Y_AXIS));
+
+        jLabel17.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel17.setText("<html>The Mirror Block will turn your enemy's gamefield through 180 degrees, so that his controls are inverted.<br><br>You will recognize the Mirror Block by its everchanging color and its random appearance.</html>");
+        jLabel17.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
+        jPanel4.add(jLabel17);
+
+        jPanel10.setAlignmentX(0.0F);
+
+        jLabel6.setText("<html><b>Sample Appearance:</b></html>");
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/image/mirr2.png"))); // NOI18N
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/image/mirr1.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 357, Short.MAX_VALUE)
+            .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel10Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel10Layout.createSequentialGroup()
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(jLabel5))
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addContainerGap(129, Short.MAX_VALUE)))
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 258, Short.MAX_VALUE)
+            .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel10Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addContainerGap(107, Short.MAX_VALUE)))
+        );
+
+        jPanel4.add(jPanel10);
+        jPanel4.add(filler4);
+
+        jPanel15.add(jPanel4);
+
+        jPanel8.add(jPanel15, java.awt.BorderLayout.CENTER);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipady = 66;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 10);
-        jPanel8.add(jPanel5, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 6, 0, 0);
         jPanel7.add(jPanel8, gridBagConstraints);
 
         jPanel6.setMinimumSize(new java.awt.Dimension(300, 256));
+        jPanel6.setPreferredSize(new java.awt.Dimension(450, 353));
         jPanel6.setLayout(new javax.swing.BoxLayout(jPanel6, javax.swing.BoxLayout.Y_AXIS));
 
         jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Controls", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 18), new java.awt.Color(0, 51, 204))); // NOI18N
-        jPanel12.setMinimumSize(new java.awt.Dimension(0, 0));
+        jPanel12.setMinimumSize(new java.awt.Dimension(300, 0));
         jPanel12.setPreferredSize(new java.awt.Dimension(131, 120));
         jPanel12.setLayout(new java.awt.GridBagLayout());
 
@@ -422,36 +393,30 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         jPanel11.setMinimumSize(new java.awt.Dimension(300, 256));
         jPanel11.setLayout(new java.awt.BorderLayout());
 
-        jTextPane5.setBackground(new java.awt.Color(240, 240, 240));
-        jTextPane5.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
-        jTextPane5.setEditable(false);
-        jTextPane5.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        jTextPane5.setText("The Joker allows you to clear your whole gamefield and save you from Game Over.\n\nUse it wisely!");
-        jTextPane5.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        jTextPane5.setEnabled(false);
-        jTextPane5.setFocusCycleRoot(false);
-        jTextPane5.setFocusable(false);
-        jTextPane5.setMinimumSize(new java.awt.Dimension(104, 200));
-        jTextPane5.setPreferredSize(new java.awt.Dimension(595, 200));
-        jPanel11.add(jTextPane5, java.awt.BorderLayout.CENTER);
+        jLabel20.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel20.setText("<html>The Joker allows you to clear your whole gamefield and save you from Game Over.<br><br>Use it wisely!</html>");
+        jLabel20.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
+        jPanel11.add(jLabel20, java.awt.BorderLayout.PAGE_START);
 
         jPanel6.add(jPanel11);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipady = 289;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 40, 0, 0);
         jPanel7.add(jPanel6, gridBagConstraints);
 
+        jPanel1.add(jPanel7, java.awt.BorderLayout.SOUTH);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
-        getContentPane().add(jPanel7, gridBagConstraints);
+        getContentPane().add(jPanel1, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -499,6 +464,8 @@ public class GameFieldJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnFullscreen;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler4;
+    private javax.swing.Box.Filler filler5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -507,7 +474,11 @@ public class GameFieldJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -519,6 +490,7 @@ public class GameFieldJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -527,10 +499,6 @@ public class GameFieldJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JTextPane jTextPane2;
-    private javax.swing.JTextPane jTextPane3;
-    private javax.swing.JTextPane jTextPane4;
-    private javax.swing.JTextPane jTextPane5;
     private view.OwnGameFieldJPanel ownGameFieldJPanel2;
     private javax.swing.JPanel pnlEnemyAreas;
     // End of variables declaration//GEN-END:variables
