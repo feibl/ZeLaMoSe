@@ -381,7 +381,6 @@ public class MainJFrame extends javax.swing.JFrame {
 
                 SimulationController simulationController = new SimulationController();
                 GameParams params = replayData.getGameParams();
-                simulationController.setGameParameters(params);
                 simulationController.setLevel(params.getStartLevel());
                 final ReplayController replayController = new ReplayController(replayData, simulationController);
                 
