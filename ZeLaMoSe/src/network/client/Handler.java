@@ -17,7 +17,7 @@ import network.server.SessionRemoteInterface;
  *
  * @author Fabian Senn <fsenn@hsr.ch>
  */
-public class Handler extends UnicastRemoteObject implements ClientRemoteInterface {
+public class Handler extends UnicastRemoteObject implements HandlerInterface, ClientRemoteInterface {
 
     private NetworkHandler networkHandler;
     private SessionRemoteInterface sessionRemote;
@@ -31,6 +31,7 @@ public class Handler extends UnicastRemoteObject implements ClientRemoteInterfac
         }
     }
 
+    @Override
     public void disconnect() {
         try {
             sessionRemote.disconnect();
@@ -39,6 +40,7 @@ public class Handler extends UnicastRemoteObject implements ClientRemoteInterfac
         }
     }
 
+    @Override
     public void sendChatMessage(String message) {
         try {
             sessionRemote.receiveChatMessage(message);
@@ -47,6 +49,7 @@ public class Handler extends UnicastRemoteObject implements ClientRemoteInterfac
         }
     }
 
+    @Override
     public void sendStep(Step step) {
         try {
             sessionRemote.receiveStep(step);
@@ -80,10 +83,12 @@ public class Handler extends UnicastRemoteObject implements ClientRemoteInterfac
         networkHandler.notifyGameStarted();
     }
 
+    @Override
     public void setSessionRemote(SessionRemoteInterface sessionRemote) {
         this.sessionRemote = sessionRemote;
     }
 
+    @Override
     public void sendReadySignal() {
         try {
             sessionRemote.receiveReadySignal();

@@ -26,7 +26,7 @@ public class NetworkHandler extends NetworkHandlerAbstract {
     private SessionInformation lastAddedSession;
     private ExecutorService threadPool;
     private Exception thrownException;
-    private Handler handler;
+    private HandlerInterface handler;
     private ChatMessage chatMessage;
     private GameParams gameParams;
     private Step lastStep;
@@ -50,11 +50,11 @@ public class NetworkHandler extends NetworkHandlerAbstract {
         }
     }
 
-    public void setHandler(Handler handler) {
+    public void setHandler(HandlerInterface handler) {
         this.handler = handler;
     }
 
-    public Handler getHandler() {
+    public HandlerInterface getHandler() {
         return handler;
     }
 
