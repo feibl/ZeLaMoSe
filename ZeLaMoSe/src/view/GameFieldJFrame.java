@@ -135,7 +135,7 @@ public class GameFieldJFrame extends javax.swing.JFrame {
         jPanel1.add(pnlEnemyAreas, java.awt.BorderLayout.CENTER);
 
         jPanel7.setMinimumSize(new java.awt.Dimension(1200, 545));
-        jPanel7.setPreferredSize(new java.awt.Dimension(1200, 600));
+        jPanel7.setPreferredSize(new java.awt.Dimension(1200, 800));
         jPanel7.setLayout(new java.awt.GridBagLayout());
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Special Blocks:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 18), new java.awt.Color(0, 51, 204))); // NOI18N
