@@ -48,6 +48,9 @@ public class SimulationController implements StepInterface, Observer {
         stepQueue.put(step.getSessionID(), step);
     }
 
+    /*
+     * Register session
+     */
     public void addSession(int sessionId, String name, GameEngine gameEngine) {
         if (gameEngines.containsKey(sessionId)) {
             throw new IllegalStateException("session already added");
