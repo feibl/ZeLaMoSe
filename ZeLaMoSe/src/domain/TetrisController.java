@@ -127,7 +127,7 @@ public class TetrisController extends Observable implements Observer {
             throw new IllegalStateException();
         }
 
-        //updateReplayData(o, o1);
+        updateReplayData(o, o1);
 
         switch ((UpdateType) o1) {
             case STEP:
