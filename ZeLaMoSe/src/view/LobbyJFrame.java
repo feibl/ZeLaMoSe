@@ -237,7 +237,7 @@ public class LobbyJFrame extends javax.swing.JFrame implements Observer {
         jPanel8.add(lblNumberOfJokers);
         jPanel8.add(filler3);
 
-        sprNumberOfJokersValue.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
+        sprNumberOfJokersValue.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(3), Integer.valueOf(0), null, Integer.valueOf(1)));
         sprNumberOfJokersValue.setMaximumSize(new java.awt.Dimension(100, 21));
         sprNumberOfJokersValue.setMinimumSize(new java.awt.Dimension(100, 21));
         sprNumberOfJokersValue.setPreferredSize(new java.awt.Dimension(100, 21));
