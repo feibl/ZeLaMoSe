@@ -27,7 +27,7 @@ import network.client.ClientRemoteInterface;
  */
 public class GameServer extends UnicastRemoteObject implements GameServerInterface, GameServerRemoteInterface {
 
-    protected List<Session> sessionList;
+    protected List<SessionInterface> sessionList;
     public static final int MAX_SESSIONS = 4;
     private static int id = 1;
     private AtomicInteger readyCount = new AtomicInteger(0);
@@ -51,7 +51,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     }
 
     public GameServer() throws RemoteException {
-        sessionList = new ArrayList<Session>(MAX_SESSIONS);
+        sessionList = new ArrayList<SessionInterface>(MAX_SESSIONS);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     @Override
     public synchronized List<SessionInformation> getSessionList() {
         List<SessionInformation> returnList = new ArrayList<SessionInformation>();
-        for (Session session : sessionList) {
+        for (SessionInterface session : sessionList) {
             if (session != null) {
                 returnList.add(session.getSessionInformation());
             }
@@ -79,14 +79,14 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         return returnList;
     }
 
-    public synchronized void removeSession(Session session) {
+    public synchronized void removeSession(SessionInterface session) {
         if (sessionList.contains(session)) {
             sessionList.remove(session);
             notifyAllSessionRemoved(session);
         }
     }
 
-    protected void sendInitSignal(final Session s, final GameParams gameParams) {
+    protected void sendInitSignal(final SessionInterface s, final GameParams gameParams) {
         threadPool.execute(new Runnable() {
 
             @Override
@@ -100,7 +100,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         });
     }
 
-    protected void sendStartSignal(final Session s) {
+    protected void sendStartSignal(final SessionInterface s) {
         threadPool.execute(new Runnable() {
 
             @Override
@@ -114,7 +114,7 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         });
     }
 
-    protected void sendSteps(final Session s, final Collection<Step> removedSteps) {
+    protected void sendSteps(final SessionInterface s, final Collection<Step> removedSteps) {
         threadPool.execute(new Runnable() {
 
             @Override
@@ -128,9 +128,9 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         });
     }
 
-    private void notifyAllSessionRemoved(Session session) {
-        List<Session> copy = new ArrayList<Session>(sessionList);
-        for (Session s : copy) {
+    private void notifyAllSessionRemoved(SessionInterface session) {
+        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionList);
+        for (SessionInterface s : copy) {
             try {
                 s.sendSessionRemovedMessage(session.getSessionInformation());
             } catch (RemoteException ex) {
@@ -139,9 +139,9 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         }
     }
 
-    private void notifyOthersSessionAdded(Session session) {
-        List<Session> copy = new ArrayList<Session>(sessionList);
-        for (Session s : copy) {
+    private void notifyOthersSessionAdded(SessionInterface session) {
+        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionList);
+        for (SessionInterface s : copy) {
             try {
                 s.sendSessionAddedMessage(session.getSessionInformation());
             } catch (RemoteException ex) {
@@ -150,9 +150,9 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
         }
     }
 
-    public synchronized void postChatMessage(Session sender, String message) {
-        List<Session> copy = new ArrayList<Session>(sessionList);
-        for (Session s : copy) {
+    public synchronized void postChatMessage(SessionInterface sender, String message) {
+        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionList);
+        for (SessionInterface s : copy) {
             try {
                 s.sendChatMessage(sender.getSessionInformation(), message);
             } catch (RemoteException ex) {
@@ -170,14 +170,14 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     }
 
     protected synchronized void notifyAllGameStarted() {
-        List<Session> copy = new ArrayList<Session>(sessionList);
-        for (Session s : copy) {
+        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionList);
+        for (SessionInterface s : copy) {
             sendStartSignal(s);
         }
     }
 
     //TODO 5 sec TimeOut
-    public synchronized void notifyReadySignalReceived(Session session) {
+    public synchronized void notifyReadySignalReceived(SessionInterface session) {
         if (sessionList.size() == readyCount.incrementAndGet()) {
             notifyAllGameStarted();
             start();
@@ -185,13 +185,13 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
     }
 
     protected synchronized void notifyAllInitSignal(GameParams gameParams) {
-        List<Session> copy = new ArrayList<Session>(sessionList);
-        for (Session s : copy) {
+        List<SessionInterface> copy = new ArrayList<SessionInterface>(sessionList);
+        for (SessionInterface s : copy) {
             sendInitSignal(s, gameParams);
         }
     }
 
-    public synchronized void addStep(Session sender, Step step) {
+    public synchronized void addStep(SessionInterface sender, Step step) {
         if (step.getSequenceNumber() == currentStep && sessionList.contains(sender)) {
             receivedSteps.add(step);
             currentNumberOfReceivedSteps.release();
@@ -221,16 +221,16 @@ public class GameServer extends UnicastRemoteObject implements GameServerInterfa
             receivedSteps.drainTo(removedSteps);
             currentStep++;
 
-            List<Session> sessionListCopy = new ArrayList<Session>(sessionList);
-            for (final Session s : sessionListCopy) {
+            List<SessionInterface> sessionListCopy = new ArrayList<SessionInterface>(sessionList);
+            for (final SessionInterface s : sessionListCopy) {
                 sendSteps(s, removedSteps);
             }
         }
     }
 
     private void checkReceivedSteps() {
-        List<Session> sessionListCopy = new ArrayList<Session>(sessionList);
-        for (Session session : sessionListCopy) {
+        List<SessionInterface> sessionListCopy = new ArrayList<SessionInterface>(sessionList);
+        for (SessionInterface session : sessionListCopy) {
             boolean stepReceived = false;
             for (Step step : receivedSteps) {
                 if (step.getSessionID() == session.getSessionInformation().getId()) {
