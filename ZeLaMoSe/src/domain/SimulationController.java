@@ -12,8 +12,8 @@ import network.server.GameServer;
  * @author Christian Mollekopf <cmolleko@hsr.ch>
  */
 public class SimulationController implements StepInterface, Observer {
-
     public static final int STEPS_UNTIL_RESTART = 100;
+
     private SortedMap<Integer, GameEngine> rankingMap = new TreeMap<Integer, GameEngine>(new Comparator() {
 
         @Override
@@ -51,15 +51,12 @@ public class SimulationController implements StepInterface, Observer {
         stepQueue.put(step.getSessionID(), step);
     }
 
-    public void setGameParameters(GameParams parameters, Map<Integer, String> sessionMap) {
+    public void setGameParameters(GameParams parameters) {
         this.parameters = parameters;
         restartSeedGenerator = new Random(parameters.getBlockQueueSeed());
         setLevel(parameters.getStartLevel());
-        for (Map.Entry<Integer, String> entry : sessionMap.entrySet()) {
-            addSession(entry.getKey(), entry.getValue(), new GameEngine(entry.getKey(), parameters.getBlockQueueSeed(), parameters.isIncludeSpecialBlocks(), parameters.getNbrOfJokers()));
-        }
     }
-
+    
     public void addSession(int sessionId, String name, GameEngine gameEngine) {
         if (gameEngines.containsKey(sessionId)) {
             throw new IllegalStateException("session already added");
@@ -85,7 +82,7 @@ public class SimulationController implements StepInterface, Observer {
             if (--stepsUntilRestart == 0) {
                 restart();
             } else {
-                for (GameEngine engine : gameEngines.values()) {
+                for(GameEngine engine: gameEngines.values()) {
                     engine.restartCountdown(stepsUntilRestart * GameServer.STEP_DURATION);
                 }
             }
@@ -221,9 +218,5 @@ public class SimulationController implements StepInterface, Observer {
             //5 Seconds
             stepsUntilRestart = STEPS_UNTIL_RESTART;
         }
-    }
-
-    public SortedMap<Integer, GameEngine> getGameEngines() {
-        return gameEngines;
     }
 }

@@ -27,6 +27,7 @@ public class TetrisController extends Observable implements Observer {
 
     public final static int SERVER_PORT = Registry.REGISTRY_PORT;
     public static final String SERVER_NAME = "TetrisServer";
+    
     private ConcurrentHashMap<Integer, String> sessionMap;
     private SimulationController simulationController;
     private NetworkHandlerAbstract networkHandler;
@@ -37,7 +38,7 @@ public class TetrisController extends Observable implements Observer {
     private int localSessionID = -1;
     private boolean autorun = true;
     private ReplayData replayData;
-    private int currentStep = 0;
+    private int currentStep = 0;    
 
     public enum UpdateType {
 
@@ -70,8 +71,18 @@ public class TetrisController extends Observable implements Observer {
         return simulationController.getSimulationStateInterface(sessionId);
     }
 
-    public Map<Integer, ? extends SimulationStateAbstract> getSimulationStateInterfaceMap() {
-        return simulationController.getGameEngines();
+    public SimulationStateAbstract getLocalSimulationStateInterface() {
+        return getSimulationStateInterface(localSessionID);
+    }
+
+    public List<SimulationStateAbstract> getOtherSimulationStateInterfaces() {
+        List<SimulationStateAbstract> otherEngines = new ArrayList<SimulationStateAbstract>();
+        for (Map.Entry<Integer, String> session : sessionMap.entrySet()) {
+            if (session.getKey() != localSessionID) {
+                otherEngines.add(getSimulationStateInterface(session.getKey()));
+            }
+        }
+        return otherEngines;
     }
 
     public InputSampler getInputSampler() {
@@ -116,7 +127,7 @@ public class TetrisController extends Observable implements Observer {
             throw new IllegalStateException();
         }
 
-//        updateReplayData(o, o1);
+        //updateReplayData(o, o1);
 
         switch ((UpdateType) o1) {
             case STEP:
@@ -141,7 +152,14 @@ public class TetrisController extends Observable implements Observer {
                 break;
             case INIT_SIGNAL:
                 stepGenerator.setSessionID(localSessionID);
-                simulationController.setGameParameters(networkHandler.getGameParams(), sessionMap);
+                GameParams gameParams = networkHandler.getGameParams();
+                long seed = gameParams.getBlockQueueSeed();
+                int numberOfJokers = gameParams.getNbrOfJokers();
+                simulationController.setLevel(gameParams.getStartLevel());
+                simulationController.setGameParameters(gameParams);
+                for (Map.Entry<Integer, String> entry : sessionMap.entrySet()) {
+                    simulationController.addSession(entry.getKey(), entry.getValue(), new GameEngine(entry.getKey(), seed, gameParams.isIncludeSpecialBlocks(), numberOfJokers));
+                }
 
                 setChanged();
                 notifyObservers(UpdateType.INIT_SIGNAL);
@@ -186,10 +204,10 @@ public class TetrisController extends Observable implements Observer {
     }
 
     public void saveReplayData(String filename) throws FileNotFoundException, IOException {
-        FileOutputStream fos = new FileOutputStream(filename);
-        ObjectOutputStream out = new ObjectOutputStream(fos);
-        out.writeObject(replayData);
-        out.close();
+            FileOutputStream fos = new FileOutputStream(filename);
+            ObjectOutputStream out = new ObjectOutputStream(fos);
+            out.writeObject(replayData);
+            out.close();
     }
 
     public void abortGame() {
