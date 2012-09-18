@@ -50,6 +50,12 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
         lblJoker1 = new javax.swing.JLabel();
         lblNbrOfBlocks = new javax.swing.JLabel();
         lblScore1 = new javax.swing.JLabel();
+        lblNbrOfBlocks1 = new javax.swing.JLabel();
+        lblBlockCounter2 = new javax.swing.JLabel();
+        lblBlockCounter3 = new javax.swing.JLabel();
+        lblBlockCounter4 = new javax.swing.JLabel();
+        lblBlockCounter5 = new javax.swing.JLabel();
+        lblBlockCounter6 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(730, 1080));
 
@@ -143,6 +149,28 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
         lblScore1.setMinimumSize(new java.awt.Dimension(81, 21));
         lblScore1.setPreferredSize(new java.awt.Dimension(81, 21));
 
+        lblNbrOfBlocks1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblNbrOfBlocks1.setText("<html><b>Controls:</b></html>");
+        lblNbrOfBlocks1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        lblNbrOfBlocks1.setMaximumSize(new java.awt.Dimension(81, 21));
+        lblNbrOfBlocks1.setMinimumSize(new java.awt.Dimension(81, 21));
+        lblNbrOfBlocks1.setPreferredSize(new java.awt.Dimension(81, 21));
+
+        lblBlockCounter2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblBlockCounter2.setText("Move:      left / right arrow");
+
+        lblBlockCounter3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblBlockCounter3.setText("Rotate:     X / Y");
+
+        lblBlockCounter4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblBlockCounter4.setText("Softdrop:  down arrow");
+
+        lblBlockCounter5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblBlockCounter5.setText("Harddrop: up arrow / space");
+
+        lblBlockCounter6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblBlockCounter6.setText("Joker:       J");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -161,7 +189,8 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
                             .addComponent(lblLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(lblNbrOfBlocks, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                                .addComponent(lblNbrOfLines1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(lblNbrOfLines1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblNbrOfBlocks1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
                             .addComponent(lblNextPiece, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
@@ -170,8 +199,12 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
                                     .addComponent(lblNumberOfLinesValue)
                                     .addComponent(lblLevelValue)
                                     .addComponent(lblYourScoreValue)
-                                    .addComponent(lblJokerValue))))))
-                .addGap(24, 24, 24))
+                                    .addComponent(lblJokerValue)))
+                            .addComponent(lblBlockCounter3)
+                            .addComponent(lblBlockCounter2)
+                            .addComponent(lblBlockCounter4)
+                            .addComponent(lblBlockCounter5)
+                            .addComponent(lblBlockCounter6)))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(210, 210, 210)
                 .addComponent(lblZeLaMoSe))
@@ -203,6 +236,18 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
                         .addComponent(lblNbrOfBlocks, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblBlockCounter1)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblNbrOfBlocks1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblBlockCounter2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblBlockCounter3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblBlockCounter4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblBlockCounter5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblBlockCounter6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblNextPiece, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -210,7 +255,7 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
                     .addComponent(glPnlGameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblZeLaMoSe)
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(138, Short.MAX_VALUE))
         );
 
         lblNextPiece.getAccessibleContext().setAccessibleName("<html><b>Next</b></html>");
@@ -220,11 +265,17 @@ public class OwnGameFieldJPanel extends javax.swing.JPanel implements Observer {
     private javax.media.opengl.awt.GLJPanel glPnlGameField;
     private javax.media.opengl.awt.GLJPanel glPnlNextBlock;
     private javax.swing.JLabel lblBlockCounter1;
+    private javax.swing.JLabel lblBlockCounter2;
+    private javax.swing.JLabel lblBlockCounter3;
+    private javax.swing.JLabel lblBlockCounter4;
+    private javax.swing.JLabel lblBlockCounter5;
+    private javax.swing.JLabel lblBlockCounter6;
     private javax.swing.JLabel lblJoker1;
     private javax.swing.JLabel lblJokerValue;
     private javax.swing.JLabel lblLevel;
     private javax.swing.JLabel lblLevelValue;
     private javax.swing.JLabel lblNbrOfBlocks;
+    private javax.swing.JLabel lblNbrOfBlocks1;
     private javax.swing.JLabel lblNbrOfLines1;
     private javax.swing.JLabel lblNextPiece;
     private javax.swing.JLabel lblNumberOfLinesValue;
